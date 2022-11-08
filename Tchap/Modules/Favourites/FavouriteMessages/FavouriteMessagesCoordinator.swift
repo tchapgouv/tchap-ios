@@ -49,7 +49,7 @@ final class FavouriteMessagesCoordinator: FavouriteMessagesCoordinatorType {
         formatter.treatMatrixUserIdAsLink = true
         formatter.treatMatrixRoomIdAsLink = true
         formatter.treatMatrixRoomAliasAsLink = true
-        formatter.treatMatrixGroupIdAsLink = true
+//        formatter.treatMatrixGroupIdAsLink = true
         formatter.eventTypesFilterForMessages = MXKAppSettings.standard()?.eventsFilterForMessages
 
         // But do not display "...(Edited)"

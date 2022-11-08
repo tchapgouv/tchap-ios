@@ -198,8 +198,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     UIView *launchAnimationContainerView;
 }
 
-@property (strong, nonatomic) UIAlertController *mxInAppNotification;
-
 @property (strong, nonatomic) UIAlertController *logoutConfirmation;
 
 @property (weak, nonatomic) UIAlertController *gdprConsentNotGivenAlertController;
@@ -426,8 +424,8 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     MXLogDebug(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@", @([application isProtectedDataAvailable]));
 
     _configuration = [AppConfiguration new];
+
     self.clearingCache = NO;
-    
     // Log app information
     NSString *appDisplayName = self.appInfo.displayName;
     NSString* appVersion = self.appVersion;
@@ -456,6 +454,8 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
     // Set up theme
     ThemeService.shared.themeId = RiotSettings.shared.userInterfaceTheme;
+    
+    application.windows.firstObject.overrideUserInterfaceStyle = [ThemeService.shared isCurrentThemeDark] ? UIUserInterfaceStyleDark : UIUserInterfaceStyleLight;
 
     mxSessionArray = [NSMutableArray array];
     callEventsListeners = [NSMutableDictionary dictionary];
@@ -607,13 +607,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     // Remove expired URL previews from the cache
     [URLPreviewService.shared removeExpiredCacheData];
     
-    // Hide potential notification
-    if (self.mxInAppNotification)
-    {
-        [self.mxInAppNotification dismissViewControllerAnimated:NO completion:nil];
-        self.mxInAppNotification = nil;
-    }
-    
     // Discard any process on pending universal link
     [self resetPendingUniversalLink];
     
@@ -646,13 +639,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 
     [MXSDKOptions.sharedInstance.profiler resume];
-    
-    // Force each session to refresh here their publicised groups by user dictionary.
-    // When these publicised groups are retrieved for a user, they are cached and reused until the app is backgrounded and enters in the foreground again
-    for (MXSession *session in mxSessionArray)
-    {
-        [session markOutdatedPublicisedGroupsByUserData];
-    }
     
     _isAppForeground = YES;
 }
@@ -1148,21 +1134,66 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                        threadId:(NSString *)threadId
                          sender:(NSString *)userId
 {
-    if (roomId)
-    {
-        MXRoom *room = [self.mxSessions.firstObject roomWithRoomId:roomId];
-        if (room.summary.membership != MXMembershipJoin)
+    void(^sessionReadyBlock)(MXSession*) = ^(MXSession *session){
+        if (roomId)
         {
-            Analytics.shared.joinedRoomTrigger = AnalyticsJoinedRoomTriggerNotification;
+            MXRoom *room = [session roomWithRoomId:roomId];
+            if (room.summary.membership != MXMembershipJoin)
+            {
+                Analytics.shared.joinedRoomTrigger = AnalyticsJoinedRoomTriggerNotification;
+            }
+            else
+            {
+                Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerNotification;
+            }
+        }
+
+        self.lastNavigatedRoomIdFromPush = roomId;
+
+        if (threadId)
+        {
+            if(![[MXKRoomDataSourceManager sharedManagerForMatrixSession:session] hasRoomDataSourceForRoom:roomId])
+            {
+                //  the room having this thread probably was not opened before, paginate room messages to build threads
+                MXRoom *room = [session roomWithRoomId:roomId];
+                [room liveTimeline:^(id<MXEventTimeline> liveTimeline) {
+                    [liveTimeline resetPagination];
+                    [liveTimeline paginate:NSUIntegerMax direction:MXTimelineDirectionBackwards onlyFromStore:YES complete:^{
+                        [liveTimeline resetPagination];
+                        [self navigateToRoomById:roomId threadId:threadId sender:userId];
+                    } failure:^(NSError * _Nonnull error) {
+                        [self navigateToRoomById:roomId threadId:threadId sender:userId];
+                    }];
+                }];
+            }
+            else
+            {
+                //  the room has been opened before, we should be ok to continue
+                [self navigateToRoomById:roomId threadId:threadId sender:userId];
+            }
         }
         else
         {
-            Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerNotification;
+            [self navigateToRoomById:roomId threadId:threadId sender:userId];
         }
-    }
+    };
 
-    _lastNavigatedRoomIdFromPush = roomId;
-    [self navigateToRoomById:roomId threadId:threadId sender:userId];
+    MXSession *mxSession = self.mxSessions.firstObject;
+    if (mxSession.state >= MXSessionStateSyncInProgress)
+    {
+        sessionReadyBlock(mxSession);
+    }
+    else
+    {
+        //  wait for session state to be sync in progress
+        __block id sessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:mxSession queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+            if (mxSession.state >= MXSessionStateSyncInProgress)
+            {
+                [[NSNotificationCenter defaultCenter] removeObserver:sessionStateObserver];
+                sessionReadyBlock(mxSession);
+            }
+        }];
+    }
 }
 
 #pragma mark - Badge Count
@@ -1271,7 +1302,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                 // Continue the registration with the passed nextLink
                 MXLogDebug(@"[AppDelegate] handleUniversalLink. Complete registration with nextLink");
                 NSURL *nextLink = [NSURL URLWithString:queryParams[@"nextLink"]];
-                [self handleUniversalLinkFragment:nextLink.fragment fromURL:nextLink];
+                [self handleUniversalLinkURL:nextLink];
             }
             else
             {
@@ -1329,8 +1360,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     BOOL continueUserActivity = NO;
     MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
     
-    MXLogDebug(@"[AppDelegate] Universal link: handleUniversalLinkFragment: %@", fragment);
-    
     // Make sure we have plain utf8 character for separators
     fragment = [fragment stringByRemovingPercentEncoding];
     MXLogDebug(@"[AppDelegate] Universal link: handleUniversalLinkFragment: %@", fragment);
@@ -1346,14 +1375,13 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     // Sanity check
     if (!pathParams.count)
     {
-        MXLogDebug(@"[AppDelegate] Universal link: Error: No path parameters");
+        MXLogFailure(@"[AppDelegate] Universal link: Error: No path parameters");
         return NO;
     }
     
     NSString *roomIdOrAlias;
     NSString *eventId;
     NSString *userId;
-    NSString *groupId;
     
     // Check permalink to room or event
     if ([pathParams[0] isEqualToString:@"room"] && pathParams.count >= 2)
@@ -1363,11 +1391,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         
         // Is it a link to an event of a room?
         eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
-    }
-    else if ([pathParams[0] isEqualToString:@"group"] && pathParams.count >= 2)
-    {
-        // The link is the form of "/group/[groupId]"
-        groupId = pathParams[1];
     }
     else if (([pathParams[0] hasPrefix:@"#"] || [pathParams[0] hasPrefix:@"!"]) && pathParams.count >= 1)
     {
@@ -1448,7 +1471,9 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                                 event = eventFromServer;
                                 dispatch_group_leave(eventDispatchGroup);
                             } failure:^(NSError *error) {
-                                MXLogError(@"[LegacyAppDelegate] handleUniversalLinkWithParameters: event fetch failed: %@", error);
+                                MXLogErrorDetails(@"[LegacyAppDelegate] handleUniversalLinkWithParameters: event fetch failed", @{
+                                    @"error": error ?: @"unknown"
+                                });
                                 dispatch_group_leave(eventDispatchGroup);
                             }];
                         }
@@ -1524,9 +1549,11 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                                     if (newFragment && ![newFragment isEqualToString:fragment])
                                     {
                                         self->universalLinkFragmentPendingRoomAlias = @{resolution.roomId: roomIdOrAlias};
-
+                                        
+                                        // Create a new link with the updated fragment, otherwise we loop back round resolving the room ID infinitely.
+                                        UniversalLink *newLink = [[UniversalLink alloc] initWithUrl:universalLink.url updatedFragment:newFragment];
                                         UniversalLinkParameters *newParameters = [[UniversalLinkParameters alloc] initWithFragment:newFragment
-                                                                                                                     universalLink:universalLink
+                                                                                                                     universalLink:newLink
                                                                                                             presentationParameters:presentationParameters];
                                         [self handleUniversalLinkWithParameters:newParameters];
                                     }
@@ -1675,44 +1702,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
         continueUserActivity = YES;
     }
-    else if (groupId)
-    {
-        // @FIXME: In case of multi-account, ask the user which one to use
-        MXKAccount* account = accountManager.activeAccounts.firstObject;
-        if (account)
-        {
-            MXGroup *group = [account.mxSession groupWithGroupId:groupId];
-            
-            if (!group)
-            {
-                // Create a group instance to display its preview
-                group = [[MXGroup alloc] initWithGroupId:groupId];
-            }
-            
-            // Display the group details
-            [self showGroup:group withMatrixSession:account.mxSession presentationParamters:presentationParameters];
-            
-            continueUserActivity = YES;
-        }
-        else
-        {
-            // There is no account. The app will display the AuthenticationVC.
-            // Wait for a successful login
-            MXLogDebug(@"[AppDelegate] Universal link: The user is not logged in. Wait for a successful login");
-            universalLinkFragmentPending = fragment;
-            
-            // Register an observer in order to handle new account
-            universalLinkWaitingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-                
-                // Check that 'fragment' has not been cancelled
-                if ([self->universalLinkFragmentPending isEqualToString:fragment])
-                {
-                    MXLogDebug(@"[AppDelegate] Universal link: The user is now logged in. Retry the link");
-                    [self handleUniversalLinkWithParameters:universalLinkParameters];
-                }
-            }];
-        }
-    }
     else
     {
         // Unknown command: Do nothing except coming back to the main screen
@@ -1731,8 +1720,9 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 {
     // iOS Patch: fix vector.im urls before using it
     NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:universalLinkURL];
+    UniversalLink *link = [[UniversalLink alloc] initWithUrl:universalLinkURL];
     
-    return [self handleUniversalLinkFragment:fixedURL.fragment fromURL:universalLinkURL];
+    return [self handleUniversalLinkFragment:fixedURL.fragment fromLink:link];
 }
 
 - (void)resetPendingUniversalLink
@@ -1987,18 +1977,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             // Tchap: Disable Calls
 //            [self.callPresenter start];
             
-            // Look for the account related to this session.
-            NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
-            for (MXKAccount *account in mxAccounts)
-            {
-                if (account.mxSession == mxSession)
-                {
-                    // Enable inApp notifications (if they are allowed for this account).
-                    [self enableInAppNotificationsForAccount:account];
-                    break;
-                }
-            }
-            
             [self.configuration setupSettingsWhenLoadedFor:mxSession];
             
             // Register to user new device sign in notification
@@ -2055,9 +2033,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                 // Set up push notifications
                 [self.pushNotificationService registerUserNotificationSettings];
             }
-            
-            // Observe inApp notifications toggle change
-            [account addObserver:self forKeyPath:@"enableInAppNotifications" options:0 context:nil];
         }
         
         // Load the local contacts on first account creation.
@@ -2074,10 +2049,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         
         // Remove inApp notifications toggle change
         MXKAccount *account = notif.object;
-        if (!account.isSoftLogout)
-        {
-            [account removeObserver:self forKeyPath:@"enableInAppNotifications"];
-        }
 
         // Clear Modular data
         [[WidgetManager sharedManager] deleteDataForUser:account.mxCredentials.userId];
@@ -2157,12 +2128,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         
         // Set up push notifications
         [self.pushNotificationService registerUserNotificationSettings];
-        
-        // Observe inApp notifications toggle change for each account
-        for (MXKAccount *account in mxAccounts)
-        {
-            [account addObserver:self forKeyPath:@"enableInAppNotifications" options:0 context:nil];
-        }
     }
 }
 
@@ -2380,6 +2345,9 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 - (void)logoutSendingRequestServer:(BOOL)sendLogoutServerRequest
                         completion:(void (^)(BOOL isLoggedOut))completion
 {
+    MXSession *mainSession = self.mxSessions.firstObject;
+    [mainSession close];
+
     [self.pushNotificationService deregisterRemoteNotifications];
 
     // Clear cache
@@ -2414,6 +2382,9 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     // Logout all matrix account
     [[MXKAccountManager sharedManager] logoutWithCompletion:^{
         
+        // We reset allChatsOnboardingHasBeenDisplayed flag on logout
+        RiotSettings.shared.allChatsOnboardingHasBeenDisplayed = NO;
+        
         if (completion)
         {
             completion (YES);
@@ -2438,10 +2409,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     {
         // Flush and restore Matrix data
         [self reloadMatrixSessions:NO];
-    }
-    else if ([@"enableInAppNotifications" isEqualToString:keyPath] && [object isKindOfClass:[MXKAccount class]])
-    {
-        [self enableInAppNotificationsForAccount:(MXKAccount*)object];
     }
     else if (object == [MXKAppSettings standardAppSettings] && [keyPath isEqualToString:@"enableCallKit"])
     {
@@ -2843,100 +2810,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 #pragma mark - Matrix Accounts handling
 
-- (void)enableInAppNotificationsForAccount:(MXKAccount*)account
-{
-    if (account.mxSession)
-    {
-        if (account.enableInAppNotifications)
-        {
-            // Build MXEvent -> NSString formatter
-            EventFormatter *eventFormatter = [[EventFormatter alloc] initWithMatrixSession:account.mxSession];
-            eventFormatter.isForSubtitle = YES;
-            
-            [account listenToNotifications:^(MXEvent *event, MXRoomState *roomState, MXPushRule *rule) {
-                
-                // Check conditions to display this notification
-                if (![self.visibleRoomId isEqualToString:event.roomId]
-                    && !self.window.rootViewController.presentedViewController)
-                {
-                    MXKEventFormatterError error;
-                    NSString* messageText = [eventFormatter stringFromEvent:event
-                                                              withRoomState:roomState
-                                                         andLatestRoomState:nil
-                                                                      error:&error];
-                    if (messageText.length && (error == MXKEventFormatterErrorNone))
-                    {
-                        // Removing existing notification (if any)
-                        if (self.mxInAppNotification)
-                        {
-                            [self.mxInAppNotification dismissViewControllerAnimated:NO completion:nil];
-                        }
-                        
-                        // Check whether tweak is required
-                        for (MXPushRuleAction *ruleAction in rule.actions)
-                        {
-                            if (ruleAction.actionType == MXPushRuleActionTypeSetTweak)
-                            {
-                                if ([[ruleAction.parameters valueForKey:@"set_tweak"] isEqualToString:@"sound"])
-                                {
-                                    // Play message sound
-                                    AudioServicesPlaySystemSound(self->_messageSound);
-                                }
-                            }
-                        }
-                        
-                        MXRoomSummary *roomSummary = [account.mxSession roomSummaryWithRoomId:event.roomId];
-                        
-                        __weak typeof(self) weakSelf = self;
-                        self.mxInAppNotification = [UIAlertController alertControllerWithTitle:roomSummary.displayname
-                                                                                       message:messageText
-                                                                                preferredStyle:UIAlertControllerStyleAlert];
-                        
-                        [self.mxInAppNotification addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
-                                                                                     style:UIAlertActionStyleCancel
-                                                                                   handler:^(UIAlertAction * action) {
-                                                                                       
-                                                                                       if (weakSelf)
-                                                                                       {
-                                                                                           typeof(self) self = weakSelf;
-                                                                                           self.mxInAppNotification = nil;
-                                                                                           [account updateNotificationListenerForRoomId:event.roomId ignore:YES];
-                                                                                       }
-                                                                                       
-                                                                                   }]];
-                        
-                        [self.mxInAppNotification addAction:[UIAlertAction actionWithTitle:[VectorL10n view]
-                                                                                     style:UIAlertActionStyleDefault
-                                                                                   handler:^(UIAlertAction * action) {
-                                                                                       
-                                                                                       if (weakSelf)
-                                                                                       {
-                                                                                           typeof(self) self = weakSelf;
-                                                                                           self.mxInAppNotification = nil;
-                                                                                           // Show the room
-                                                                                           [self showRoom:event.roomId andEventId:nil withMatrixSession:account.mxSession];
-                                                                                       }
-                                                                                       
-                                                                                   }]];
-                        
-                        [self.window.rootViewController presentViewController:self.mxInAppNotification animated:YES completion:nil];
-                    }
-                }
-            }];
-        }
-        else
-        {
-            [account removeNotificationListener];
-        }
-    }
-    
-    if (self.mxInAppNotification)
-    {
-        [self.mxInAppNotification dismissViewControllerAnimated:NO completion:nil];
-        self.mxInAppNotification = nil;
-    }
-}
-
 - (void)selectMatrixAccount:(void (^)(MXKAccount *selectedAccount))onSelection
 {
     NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
@@ -3148,6 +3021,18 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     [self showRoomWithParameters:parameters];
 }
 
+- (void)showNewDirectChat:(NSString*)userId withMatrixSession:(MXSession*)mxSession completion:(void (^)(void))completion
+{
+    // Ask to restore initial display
+    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES];
+    
+    RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithUserId:userId
+                                                                                  mxSession:mxSession
+                                                                     presentationParameters:presentationParameters];
+    
+    [self showRoomWithParameters:parameters completion:completion];
+}
+
 - (void)showRoomPreviewWithParameters:(RoomPreviewNavigationParameters*)parameters completion:(void (^)(void))completion
 {
     void (^showRoomPreview)(void) = ^() {
@@ -3247,7 +3132,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 //                                                 session:parameters.mxSession
 //                                                animated:YES];
 //    };
-//
+//    
 //    if (parameters.presentationParameters.restoreInitialDisplay)
 //    {
 //        [self restoreInitialDisplay:^{
@@ -3275,7 +3160,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     _visibleRoomId = roomId;
 }
 
-- (void)createDirectChatWithUserId:(NSString*)userId completion:(void (^)(void))completion
+- (void)createDirectChatWithUserId:(NSString*)userId completion:(void (^)(NSString *roomId))completion
 {
     // Handle here potential multiple accounts
     [self selectMatrixAccount:^(MXKAccount *selectedAccount) {
@@ -3294,7 +3179,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
                 if (completion)
                 {
-                    completion();
+                    completion(nil);
                 }
             };
 
@@ -3315,13 +3200,12 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
                 [mxSession createRoomWithParameters:roomCreationParameters success:^(MXRoom *room) {
 
-                    // Open created room
+                    // Room is created
                     Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerCreated;
-                    [self showRoom:room.roomId andEventId:nil withMatrixSession:mxSession];
 
                     if (completion)
                     {
-                        completion();
+                        completion(room.roomId);
                     }
 
                 } failure:onFailure];
@@ -3330,7 +3214,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         }
         else if (completion)
         {
-            completion();
+            completion(nil);
         }
         
     }];
@@ -3345,21 +3229,24 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         
         if (mxSession)
         {
-            [mxSession validRoomDirectDiscussionFor:userId
-                                         completion:^(MXRoom * _Nullable room) {
-                if (room) {
-                    // open it
-                    Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerCreated;
-                    [self showRoom:room.roomId andEventId:nil withMatrixSession:mxSession];
-
-                    if (completion)
-                    {
-                        completion();
-                    }
-                } else {
-                    [self createDirectChatWithUserId:userId completion:completion];
+            MXRoom *directRoom = [mxSession directJoinedRoomWithUserId:userId];
+            
+            // if the room exists
+            if (directRoom)
+            {
+                // open it
+                Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerCreated;
+                [self showRoom:directRoom.roomId andEventId:nil withMatrixSession:mxSession];
+                
+                if (completion)
+                {
+                    completion();
                 }
-            }];
+            }
+            else
+            {
+                [self showNewDirectChat:userId withMatrixSession:mxSession completion:completion];
+            }
         }
         else if (completion)
         {
@@ -3389,26 +3276,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     }
 }
 
-#pragma mark - Matrix Groups handling
-
-- (void)showGroup:(MXGroup*)group withMatrixSession:(MXSession*)mxSession presentationParamters:(ScreenPresentationParameters*)presentationParameters
-{
-    void(^showGroup)(void) = ^{
-        // Select group to display its details (dispatch this action in order to let TabBarController end its refresh)
-        [self.masterTabBarController selectGroup:group inMatrixSession:mxSession presentationParameters:presentationParameters];
-    };
-
-    if (presentationParameters.restoreInitialDisplay)
-    {
-        [self restoreInitialDisplay:^{
-            showGroup();
-        }];
-    }
-    else
-    {
-        showGroup();
-    }
-}
+#pragma mark - VoIP
 
 - (void)promptForStunServerFallback
 {
@@ -3948,11 +3816,11 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         return;
     }
 
-    [mxSession.crypto.keyVerificationManager transactions:^(NSArray<MXKeyVerificationTransaction *> * _Nonnull transactions) {
+    [mxSession.crypto.keyVerificationManager transactions:^(NSArray<id<MXKeyVerificationTransaction>> * _Nonnull transactions) {
 
         MXLogDebug(@"[AppDelegate][MXKeyVerification] checkPendingIncomingKeyVerificationsInSession: transactions: %@", transactions);
 
-        for (MXKeyVerificationTransaction *transaction in transactions)
+        for (id<MXKeyVerificationTransaction> transaction in transactions)
         {
             if (transaction.isIncoming)
             {
@@ -3976,7 +3844,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     }
 }
 
-- (BOOL)presentIncomingKeyVerificationRequest:(MXKeyVerificationRequest*)incomingKeyVerificationRequest
+- (BOOL)presentIncomingKeyVerificationRequest:(id<MXKeyVerificationRequest>)incomingKeyVerificationRequest
                                     inSession:(MXSession*)session
 {
     BOOL presented = NO;
@@ -4122,7 +3990,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
     NSDictionary *userInfo = notification.userInfo;
     
-    MXKeyVerificationRequest *keyVerificationRequest = userInfo[MXKeyVerificationManagerNotificationRequestKey];
+    id<MXKeyVerificationRequest> keyVerificationRequest = userInfo[MXKeyVerificationManagerNotificationRequestKey];
     
     if ([keyVerificationRequest isKindOfClass:MXKeyVerificationByDMRequest.class])
     {
@@ -4149,17 +4017,16 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             }];
         }
     }
-    else if ([keyVerificationRequest isKindOfClass:MXKeyVerificationByToDeviceRequest.class])
+    else if (keyVerificationRequest.transport == MXKeyVerificationTransportToDevice)
     {
-        MXKeyVerificationByToDeviceRequest *keyVerificationByToDeviceRequest = (MXKeyVerificationByToDeviceRequest*)keyVerificationRequest;
         
-        if (!keyVerificationByToDeviceRequest.isFromMyDevice
-            && keyVerificationByToDeviceRequest.state == MXKeyVerificationRequestStatePending)
+        if (!keyVerificationRequest.isFromMyDevice
+            && keyVerificationRequest.state == MXKeyVerificationRequestStatePending)
         {
-            if (keyVerificationByToDeviceRequest.isFromMyUser)
+            if (keyVerificationRequest.isFromMyUser)
             {
                 // Self verification
-                MXLogDebug(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: Self verification from %@", keyVerificationByToDeviceRequest.otherDevice);
+                MXLogDebug(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: Self verification from %@", keyVerificationRequest.otherDevice);
                 
                 if (!self.handleSelfVerificationRequest)
                 {
@@ -4167,7 +4034,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                     return;
                 }
                       
-                NSString *myUserId = keyVerificationByToDeviceRequest.otherUser;
+                NSString *myUserId = keyVerificationRequest.otherUser;
                 MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:myUserId];
                 if (account)
                 {
@@ -4181,10 +4048,10 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             {
                 // Device verification from other user
                 // This happens when they or our user do not have cross-signing enabled
-                MXLogDebug(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: Device verification from other user %@:%@", keyVerificationByToDeviceRequest.otherUser, keyVerificationByToDeviceRequest.otherDevice);
+                MXLogDebug(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: Device verification from other user %@:%@", keyVerificationRequest.otherUser, keyVerificationRequest.otherDevice);
                 
-                NSString *myUserId = keyVerificationByToDeviceRequest.to;
-                NSString *userId = keyVerificationByToDeviceRequest.otherUser;
+                NSString *myUserId = ((MXKeyVerificationByToDeviceRequest*)keyVerificationRequest).to;
+                NSString *userId = keyVerificationRequest.otherUser;
                 MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:myUserId];
                 if (account)
                 {
@@ -4193,11 +4060,18 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                     
                     [self presentNewKeyVerificationRequestAlertForSession:session senderName:user.displayname senderId:user.userId request:keyVerificationRequest];
                 }
+                else
+                {
+                    NSDictionary *details = @{
+                        @"request_id": keyVerificationRequest.requestId ?: @"unknown"
+                    };
+                    MXLogErrorDetails(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: No account available", details);
+                }
             }
         }
         else
         {
-            MXLogDebug(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification. Bad request state: %@", keyVerificationByToDeviceRequest);
+            MXLogDebug(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification. Bad request state: %@", keyVerificationRequest);
         }
     }
 }
@@ -4205,7 +4079,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 - (void)presentNewKeyVerificationRequestAlertForSession:(MXSession*)session
                                              senderName:(NSString*)senderName
                                                senderId:(NSString*)senderId
-                                                request:(MXKeyVerificationRequest*)keyVerificationRequest
+                                                request:(id<MXKeyVerificationRequest>)keyVerificationRequest
 {
     if (keyVerificationRequest.state != MXKeyVerificationRequestStatePending)
     {
@@ -4567,16 +4441,24 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 - (void)setupUserDefaults
 {
-    // Register "Riot-Defaults.plist" default values
-    NSString* userDefaults = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UserDefaults"];
-    NSString *defaultsPathFromApp = [[NSBundle mainBundle] pathForResource:userDefaults ofType:@"plist"];
-    NSMutableDictionary *defaults = [[NSDictionary dictionaryWithContentsOfFile:defaultsPathFromApp] mutableCopy];
-    
-    //  add pusher ids, as they don't belong to plist anymore
-    defaults[@"pushKitAppIdProd"] = BuildSettings.pushKitAppIdProd;
-    defaults[@"pushKitAppIdDev"] = BuildSettings.pushKitAppIdDev;
-    defaults[@"pusherAppIdProd"] = BuildSettings.pusherAppIdProd;
-    defaults[@"pusherAppIdDev"] = BuildSettings.pusherAppIdDev;
+    // Register MatrixKit defaults.
+    NSDictionary *defaults = @{
+        @"enableBotCreation": @(BuildSettings.enableBotCreation),
+        @"maxAllowedMediaCacheSize": @(BuildSettings.maxAllowedMediaCacheSize),
+        @"presenceColorForOfflineUser": @(BuildSettings.presenceColorForOfflineUser),
+        @"presenceColorForOnlineUser": @(BuildSettings.presenceColorForOnlineUser),
+        @"presenceColorForUnavailableUser": @(BuildSettings.presenceColorForUnavailableUser),
+        @"showAllEventsInRoomHistory": @(BuildSettings.showAllEventsInRoomHistory),
+        @"showLeftMembersInRoomMemberList": @(BuildSettings.showLeftMembersInRoomMemberList),
+        @"showRedactionsInRoomHistory": @(BuildSettings.showRedactionsInRoomHistory),
+        @"showUnsupportedEventsInRoomHistory": @(BuildSettings.showUnsupportedEventsInRoomHistory),
+        @"sortRoomMembersUsingLastSeenTime": @(BuildSettings.syncLocalContacts),
+        @"syncLocalContacts": @(BuildSettings.syncLocalContacts),
+        @"pushKitAppIdProd": BuildSettings.pushKitAppIdProd,
+        @"pushKitAppIdDev": BuildSettings.pushKitAppIdDev,
+        @"pusherAppIdProd": BuildSettings.pusherAppIdProd,
+        @"pusherAppIdDev": BuildSettings.pusherAppIdDev
+    };
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
     
@@ -4590,6 +4472,12 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     if (!RiotSettings.shared.isShowDecryptedContentInNotificationsHasBeenSetOnce)
     {
         RiotSettings.shared.showDecryptedContentInNotifications = BuildSettings.decryptNotificationsByDefault;
+    }
+    
+    // Need to set `showAllRoomsInHomeSpace` to `true` for the new App Layout
+    if (BuildSettings.newAppLayoutEnabled)
+    {
+        RiotSettings.shared.showAllRoomsInHomeSpace = YES;
     }
 }
 
@@ -4672,8 +4560,14 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 {
     if (dueToTooManyErrors)
     {
-        [self showAlertWithTitle:nil message:[VectorL10n pinProtectionKickUserAlertMessage]];
-        [self logoutWithConfirmation:NO completion:nil];
+        [coordinatorBridgePresenter dismissWithMainAppWindow:self.window];
+        self.setPinCoordinatorBridgePresenter = nil;
+        [self logoutWithConfirmation:NO completion:^(BOOL isLoggedOut) {
+            if (isLoggedOut)
+            {
+                [self showAlertWithTitle:nil message:[VectorL10n pinProtectionKickUserAlertMessage]];
+            }
+        }];
     }
     else
     {

@@ -14,20 +14,10 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
-class TimelinePollUITests: XCTestCase {
-    
-    private var app: XCUIApplication!
-    
-    override func setUp() {
-        continueAfterFailure = false
-                
-        app = XCUIApplication()
-        app.launch()
-    }
-    
+class TimelinePollUITests: MockScreenTestCase {
     func testOpenDisclosedPoll() {
         app.goToScreenWithIdentifier(MockTimelinePollScreenState.openDisclosed.title)
         

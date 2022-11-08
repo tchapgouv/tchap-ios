@@ -128,6 +128,7 @@ class ContactsPickerViewModel: NSObject, ContactsPickerViewModelProtocol {
         contactsViewController.showSearch(true)
         // Tchap: Replace string by removing user ID
         contactsViewController.searchBar.placeholder = VectorL10n.roomParticipantsInviteAnotherUserWithoutId
+        contactsViewController.searchBar.resignFirstResponder()
         
         // Apply the search pattern if any
         if currentSearchText != nil {
@@ -225,7 +226,7 @@ extension ContactsPickerViewModel: ContactsTableViewControllerDelegate {
                 case .success:
                     self.coordinatorDelegate?.contactsPickerViewModelDidEndInvite(self)
                 case .failure:
-                    MXLog.error("[ContactsPickerViewModel] Failed to invite \(participantId) due to error; \(response.error ?? "nil")")
+                    MXLog.error("[ContactsPickerViewModel] Failed to invite participant", context: response.error)
                     self.coordinatorDelegate?.contactsPickerViewModel(self, inviteFailedWithError: response.error)
                 }
             }
@@ -256,7 +257,7 @@ extension ContactsPickerViewModel: ContactsTableViewControllerDelegate {
                     case .success:
                         self.coordinatorDelegate?.contactsPickerViewModelDidEndInvite(self)
                     case .failure:
-                        MXLog.error("[ContactsPickerViewModel] Failed to invite \(participantId) by email due to error; \(response.error ?? "nil")")
+                        MXLog.error("[ContactsPickerViewModel] Failed to invite participant by email", context: response.error)
                         
                         if let error = response.error as NSError?, error.domain == kMXRestClientErrorDomain, error.code == MXRestClientErrorMissingIdentityServer {
                             self.coordinatorDelegate?.contactsPickerViewModel(self, inviteFailedWithError: nil)
@@ -274,7 +275,7 @@ extension ContactsPickerViewModel: ContactsTableViewControllerDelegate {
                     case .success:
                         self.coordinatorDelegate?.contactsPickerViewModelDidEndInvite(self)
                     case .failure:
-                        MXLog.error("[ContactsPickerViewModel] Failed to invite \(participantId) due to error; \(response.error ?? "nil")")
+                        MXLog.error("[ContactsPickerViewModel] Failed to invite participant", context: response.error)
                         self.coordinatorDelegate?.contactsPickerViewModel(self, inviteFailedWithError: response.error)
                     }
                 }

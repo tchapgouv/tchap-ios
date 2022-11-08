@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,10 +32,18 @@ enum AuthenticationForgotPasswordViewModelResult {
 // MARK: View
 
 struct AuthenticationForgotPasswordViewState: BindableState {
+    /// The homeserver that the user is using to reset their password.
+    let homeserver: AuthenticationHomeserverViewData
     /// An email has been sent and the app is waiting for the user to tap the link.
     var hasSentEmail = false
     /// View state that can be bound to from SwiftUI.
     var bindings: AuthenticationForgotPasswordBindings
+    
+    /// The message shown in the header while asking for an email address to be entered.
+    var formHeaderMessage: String {
+        // Tchap: Replace URL by app name.
+        VectorL10n.authenticationForgotPasswordInputMessage(BuildSettings.bundleDisplayName/*homeserver.address*/)
+    }
     
     /// Whether the email address is valid and the user can continue.
     var hasInvalidAddress: Bool {
@@ -68,4 +76,7 @@ enum AuthenticationForgotPasswordErrorType: Hashable {
     case mxError(String)
     /// An unknown error occurred.
     case unknown
+    // Tchap: Add unauthorizedThirdPartyID
+    /// Unauthorized third party ID.
+    case unauthorizedThirdPartyID
 }

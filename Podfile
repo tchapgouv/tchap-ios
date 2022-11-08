@@ -16,7 +16,7 @@ use_frameworks!
 # - `{ :specHash => {sdk spec hash}` to depend on specific pod options (:git => …, :podspec => …) for MatrixSDK repo. Used by Fastfile during CI
 #
 # Warning: our internal tooling depends on the name of this variable name, so be sure not to change it
-$matrixSDKVersion = '= 0.23.10'
+$matrixSDKVersion = '= 0.24.0'
 # $matrixSDKVersion = :local
 # $matrixSDKVersion = { :branch => 'develop'}
 # $matrixSDKVersion = { :specHash => { git: 'https://git.io/fork123', branch: 'fix' } }
@@ -53,7 +53,7 @@ end
 
 def import_MatrixKit_pods
   pod 'libPhoneNumber-iOS', '~> 0.9.13'  
-  pod 'DTCoreText', '~> 1.6.25'
+  pod 'DTCoreText', '1.6.26'
   #pod 'DTCoreText/Extension', '~> 1.6.25'
   pod 'Down', '~> 0.11.0'
 end
@@ -88,6 +88,7 @@ abstract_target 'TchapPods' do
 
   # PostHog for analytics
   pod 'PostHog', '~> 1.4.4'
+  pod 'Sentry', '~> 7.15.0'
   pod 'AnalyticsEvents', :git => 'https://github.com/matrix-org/matrix-analytics-events.git', :branch => 'release/swift', :inhibit_warnings => false
   # pod 'AnalyticsEvents', :path => '../matrix-analytics-events/AnalyticsEvents.podspec'
 
@@ -172,5 +173,14 @@ post_install do |installer|
       config.build_settings['WARNING_CFLAGS'] ||= ['$(inherited)','-Wno-nullability-completeness']
       config.build_settings['OTHER_SWIFT_FLAGS'] ||= ['$(inherited)', '-Xcc', '-Wno-nullability-completeness']
     end
+
+    # Fix Xcode 14 resource bundle signing issues
+    # https://github.com/CocoaPods/CocoaPods/issues/11402#issuecomment-1259231655
+    if target.respond_to?(:product_type) and target.product_type == "com.apple.product-type.bundle"
+      target.build_configurations.each do |config|
+        config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
+      end
+    end
+
   end
 end

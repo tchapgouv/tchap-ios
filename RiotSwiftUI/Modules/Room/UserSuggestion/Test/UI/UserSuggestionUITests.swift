@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,21 +14,14 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
-class UserSuggestionUITests: MockScreenTest {
-    
-    override class var screenType: MockScreenState.Type {
-        return MockUserSuggestionScreenState.self
-    }
-
-    override class func createTest() -> MockScreenTest {
-        return UserSuggestionUITests(selector: #selector(verifyUserSuggestionScreen))
-    }
-    
-    func verifyUserSuggestionScreen() throws {
-        XCTAssert(app.tables.firstMatch.exists)
+class UserSuggestionUITests: MockScreenTestCase {
+    func testUserSuggestionScreen() throws {
+        app.goToScreenWithIdentifier(MockUserSuggestionScreenState.multipleResults.title)
+        
+        XCTAssert(app.tables.firstMatch.waitForExistence(timeout: 1))
         
         let firstButton = app.tables.firstMatch.buttons.firstMatch
         _ = firstButton.waitForExistence(timeout: 10)

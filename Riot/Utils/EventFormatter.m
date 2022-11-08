@@ -105,7 +105,9 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         // If we cannot create attributed string, but the message is nevertheless meant for display, show generic error
         // instead of a missing message on a timeline.
         if ([self shouldDisplayEvent:event]) {
-            MXLogError(@"[EventFormatter]: Missing attributed string for message event: %@", event.eventId);
+            MXLogErrorDetails(@"[EventFormatter]: Missing attributed string for message event", @{
+                @"event_id": event.eventId ?: @"unknown"
+            });
             string = [[NSAttributedString alloc] initWithString:[VectorL10n noticeErrorUnformattableEvent] attributes:@{
                 NSFontAttributeName: [self encryptedMessagesTextFont]
             }];
@@ -459,8 +461,8 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     {
         calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
         
-        // Use the secondary bg color to set the background color in the default CSS.
-        NSUInteger bgColor = [MXKTools rgbValueWithColor:ThemeService.shared.theme.headerBackgroundColor];
+        // Use the selected bg color to set the code block background color in the default CSS.
+        NSUInteger bgColor = [MXKTools rgbValueWithColor:ThemeService.shared.theme.selectedBackgroundColor];
         self.defaultCSS = [NSString stringWithFormat:@" \
                            pre,code { \
                            background-color: #%06lX; \

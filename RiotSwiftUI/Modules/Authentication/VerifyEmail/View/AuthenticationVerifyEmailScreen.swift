@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct AuthenticationVerifyEmailScreen: View {
-
     // MARK: - Properties
     
     // MARK: Private
@@ -31,6 +30,7 @@ struct AuthenticationVerifyEmailScreen: View {
     // MARK: Views
     
     var body: some View {
+        // Tchap: Remove cancel button
         GeometryReader { geometry in
             VStack {
                 ScrollView {
@@ -46,7 +46,7 @@ struct AuthenticationVerifyEmailScreen: View {
             }
         }
         .background(background.ignoresSafeArea())
-        .toolbar { toolbar }
+//        .toolbar { toolbar }
         .alert(item: $viewModel.alertInfo) { $0.alert }
         .accentColor(theme.colors.accent)
     }

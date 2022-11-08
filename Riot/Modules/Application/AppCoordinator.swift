@@ -93,6 +93,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         super.init()
         
         setupFlexDebuggerOnWindow(window)
+        update(with: ThemeService.shared().theme)
     }
     
     // MARK: - Public methods
@@ -113,9 +114,23 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
             self.addSideMenu()
         }
         
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.appDelegateNetworkStatusDidChange, object: nil, queue: OperationQueue.main) { [weak self] notification in
+            guard let self = self else { return }
+
+            if AppDelegate.theDelegate().isOffline {
+                self.splitViewCoordinator?.showAppStateIndicator(with: VectorL10n.networkOfflineTitle, icon: UIImage(systemName: "wifi.slash"))
+            } else {
+                self.splitViewCoordinator?.hideAppStateIndicator()
+            }
+        }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.newAppLayoutToggleDidChange(notification:)), name: RiotSettings.newAppLayoutBetaToggleDidChange, object: nil)
+        
         // NOTE: When split view is shown there can be no Matrix sessions ready. Keep this behavior or use a loading screen before showing the split view.
         self.showSplitView()
         MXLog.debug("[AppCoordinator] Showed split view")
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.themeDidChange), name: Notification.Name.themeServiceDidChangeTheme, object: nil)
     }
     
     func open(url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
@@ -148,6 +163,18 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         }
     }
         
+    // MARK: - Theme management
+    
+    @objc private func themeDidChange() {
+        update(with: ThemeService.shared().theme)
+    }
+    
+    private func update(with theme: Theme) {
+        for window in UIApplication.shared.windows {
+            window.overrideUserInterfaceStyle = ThemeService.shared().theme.userInterfaceStyle
+        }
+    }
+    
     // MARK: - Private methods
     private func setupLogger() {
         UILog.configure(logger: MatrixSDKLogger.self)
@@ -169,6 +196,12 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
             .eraseToAnyPublisher()
 
         ThemePublisher.shared.republish(themeIdPublisher: themeIdPublisher)
+    }
+    
+    @objc private func newAppLayoutToggleDidChange(notification: Notification) {
+        if BuildSettings.enableSideMenu {
+            self.addSideMenu()
+        }
     }
     
     private func excludeAllItemsFromBackup() {

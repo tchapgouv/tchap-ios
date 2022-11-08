@@ -16,11 +16,9 @@
 
 import SwiftUI
 
-typealias AuthenticationVerifyMsisdnViewModelType = StateStoreViewModel<AuthenticationVerifyMsisdnViewState,
-                                                                       Never,
-                                                                       AuthenticationVerifyMsisdnViewAction>
-class AuthenticationVerifyMsisdnViewModel: AuthenticationVerifyMsisdnViewModelType, AuthenticationVerifyMsisdnViewModelProtocol {
+typealias AuthenticationVerifyMsisdnViewModelType = StateStoreViewModel<AuthenticationVerifyMsisdnViewState, AuthenticationVerifyMsisdnViewAction>
 
+class AuthenticationVerifyMsisdnViewModel: AuthenticationVerifyMsisdnViewModelType, AuthenticationVerifyMsisdnViewModelProtocol {
     // MARK: - Properties
 
     // MARK: Private
@@ -31,8 +29,9 @@ class AuthenticationVerifyMsisdnViewModel: AuthenticationVerifyMsisdnViewModelTy
 
     // MARK: - Setup
 
-    init(phoneNumber: String = "", otp: String = "") {
-        let viewState = AuthenticationVerifyMsisdnViewState(bindings: AuthenticationVerifyMsisdnBindings(phoneNumber: phoneNumber, otp: otp))
+    init(homeserver: AuthenticationHomeserverViewData, phoneNumber: String = "", otp: String = "") {
+        let viewState = AuthenticationVerifyMsisdnViewState(homeserver: .mockMatrixDotOrg,
+                                                            bindings: AuthenticationVerifyMsisdnBindings(phoneNumber: phoneNumber, otp: otp))
         super.init(initialViewState: viewState)
     }
 

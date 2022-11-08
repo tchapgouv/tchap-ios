@@ -18,7 +18,6 @@
 #import "MasterTabBarController.h"
 
 #import "RecentsDataSource.h"
-//#import "GroupsDataSource.h"
 
 
 #import "MXRoom+Riot.h"
@@ -46,9 +45,6 @@
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
     
-    // The groups data source
-//    GroupsDataSource *groupsDataSource;
-    
     // Custom title view of the navigation bar
     MainTitleView *titleView;
     
@@ -58,6 +54,7 @@
 @property(nonatomic,getter=isHidden) BOOL hidden;
 
 @property (nonatomic, readwrite) OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter;
+@property (nonatomic) AllChatsOnboardingCoordinatorBridgePresenter *allChatsOnboardingCoordinatorBridgePresenter;
 
 // Tell whether the onboarding screen is preparing.
 @property (nonatomic, readwrite) BOOL isOnboardingCoordinatorPreparing;
@@ -68,6 +65,7 @@
 @end
 
 @implementation MasterTabBarController
+@synthesize onboardingCoordinatorBridgePresenter, selectedRoomId, selectedEventId, selectedRoomSession, selectedRoomPreviewData, selectedContact, isOnboardingInProgress;
 
 #pragma mark - Properties override
 
@@ -92,11 +90,6 @@
     return (RoomsViewController*)[self viewControllerForClass:RoomsViewController.class];
 }
 
-//- (GroupsViewController *)groupsViewController
-//{
-//    return (GroupsViewController*)[self viewControllerForClass:GroupsViewController.class];
-//}
-
 #pragma mark - Life cycle
 
 - (void)viewDidLoad
@@ -112,7 +105,7 @@
     [self vc_removeBackTitle];
     
     [self setupTitleView];
-    self.titleLabelText = [VectorL10n titleHome];
+    titleView.titleLabel.text = [VectorL10n allChatsTitle];
     
     childViewControllers = [NSMutableArray array];
     
@@ -163,6 +156,8 @@
         }];
         [self userInterfaceThemeDidChange];
     }
+    
+    self.tabBar.hidden = BuildSettings.newAppLayoutEnabled;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -220,6 +215,11 @@
         
         // Tchap: Not the same mecanism
 //        [[AppDelegate theDelegate] checkAppVersion];
+        
+        if (BuildSettings.newAppLayoutEnabled && !RiotSettings.shared.allChatsOnboardingHasBeenDisplayed)
+        {
+            [self showAllChatsOnboardingScreen];
+        }
     }
 }
 
@@ -330,7 +330,7 @@
         
         // Restore the right delegate of the shared recent data source.
         id<MXKDataSourceDelegate> recentsDataSourceDelegate = self.roomsViewController;//self.homeViewController;
-        RecentsDataSourceMode recentsDataSourceMode = RecentsDataSourceModeRooms;
+        RecentsDataSourceMode recentsDataSourceMode = RecentsDataSourceModeRooms;//self.homeViewController.recentsDataSourceMode
 
         NSInteger tabItemTag = self.tabBar.items[self.selectedIndex].tag;
 
@@ -355,11 +355,6 @@
                 break;
         }
         [recentsDataSource setDelegate:recentsDataSourceDelegate andRecentsDataSourceMode:recentsDataSourceMode];
-        
-        // Init the recents data source
-//        groupsDataSource = [[GroupsDataSource alloc] initWithMatrixSession:mainSession];
-//        [groupsDataSource finalizeInitialization];
-//        [self.groupsViewController displayList:groupsDataSource];
         
         // Check whether there are others sessions
         NSArray<MXSession*>* mxSessions = self.mxSessions;
@@ -417,8 +412,6 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMatrixSessionStateDidChange:) name:kMXSessionStateDidChangeNotification object:nil];
     }
     [mxSessionArray addObject:mxSession];
-    
-    // @TODO: handle multi sessions for groups
 }
 
 - (void)removeMatrixSession:(MXSession *)mxSession
@@ -447,13 +440,29 @@
     }
     
     [mxSessionArray removeObject:mxSession];
-    
-    // @TODO: handle multi sessions for groups
 }
 
 - (void)onMatrixSessionStateDidChange:(NSNotification *)notif
 {
     [self refreshTabBarBadges];
+}
+
+- (void)showAllChatsOnboardingScreen
+{
+    self.allChatsOnboardingCoordinatorBridgePresenter = [AllChatsOnboardingCoordinatorBridgePresenter new];
+    MXWeakify(self);
+    self.allChatsOnboardingCoordinatorBridgePresenter.completion = ^{
+        RiotSettings.shared.allChatsOnboardingHasBeenDisplayed = YES;
+        
+        MXStrongifyAndReturnIfNil(self);
+        
+        MXWeakify(self);
+        [self.allChatsOnboardingCoordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+            MXStrongifyAndReturnIfNil(self);
+            self.allChatsOnboardingCoordinatorBridgePresenter = nil;
+        }];
+    };
+    [self.allChatsOnboardingCoordinatorBridgePresenter presentFrom:self animated:YES];
 }
 
 // TODO: Manage the onboarding coordinator at the AppCoordinator level
@@ -525,9 +534,9 @@
 {
     [self releaseSelectedItem];
     
-    _selectedRoomId = paramaters.roomId;
-    _selectedEventId = paramaters.eventId;
-    _selectedRoomSession = paramaters.mxSession;
+    selectedRoomId = paramaters.roomId;
+    selectedEventId = paramaters.eventId;
+    selectedRoomSession = paramaters.mxSession;
     
     [self.masterTabBarDelegate masterTabBarController:self didSelectRoomWithParameters:paramaters completion:completion];
     
@@ -540,9 +549,9 @@
     
     RoomPreviewData *roomPreviewData = parameters.previewData;
     
-    _selectedRoomPreviewData = roomPreviewData;
-    _selectedRoomId = roomPreviewData.roomId;
-    _selectedRoomSession = roomPreviewData.mxSession;
+    selectedRoomPreviewData = roomPreviewData;
+    selectedRoomId = roomPreviewData.roomId;
+    selectedRoomSession = roomPreviewData.mxSession;
     
     [self.masterTabBarDelegate masterTabBarController:self didSelectRoomPreviewWithParameters:parameters completion:completion];
     
@@ -560,43 +569,21 @@
 {
     [self releaseSelectedItem];
     
-    _selectedContact = contact;
+    selectedContact = contact;
     
     [self.masterTabBarDelegate masterTabBarController:self didSelectContact:contact withPresentationParameters:presentationParameters];
     
     [self refreshSelectedControllerSelectedCellIfNeeded];
 }
 
-- (void)selectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession
-{
-    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES stackAboveVisibleViews:NO];
-    
-    [self selectGroup:group inMatrixSession:matrixSession presentationParameters:presentationParameters];
-}
-
-- (void)selectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession presentationParameters:(ScreenPresentationParameters*)presentationParameters
-{
-    [self releaseSelectedItem];
-    
-    _selectedGroup = group;
-    _selectedGroupSession = matrixSession;
-    
-    [self.masterTabBarDelegate masterTabBarController:self didSelectGroup:group inMatrixSession:matrixSession presentationParameters:presentationParameters];
-    
-    [self refreshSelectedControllerSelectedCellIfNeeded];
-}
-
 - (void)releaseSelectedItem
 {
-    _selectedRoomId = nil;
-    _selectedEventId = nil;
-    _selectedRoomSession = nil;
-    _selectedRoomPreviewData = nil;
+    selectedRoomId = nil;
+    selectedEventId = nil;
+    selectedRoomSession = nil;
+    selectedRoomPreviewData = nil;
     
-    _selectedContact = nil;
-    
-    _selectedGroup = nil;
-    _selectedGroupSession = nil;        
+    selectedContact = nil;
 }
 
 - (NSUInteger)missedDiscussionsCount
@@ -650,20 +637,26 @@
 {
     if (roomParentId) {
         NSString *parentName = [mxSession roomSummaryWithRoomId:roomParentId].displayname;
-        NSMutableArray<NSString *> *breadcrumbs = [[NSMutableArray alloc] initWithObjects:parentName, nil];
-
-        MXSpace *firstRootAncestor = roomParentId ? [mxSession.spaceService firstRootAncestorForRoomWithId:roomParentId] : nil;
-        NSString *rootName = nil;
-        if (firstRootAncestor)
+        if (!BuildSettings.newAppLayoutEnabled)
         {
-            rootName = [mxSession roomSummaryWithRoomId:firstRootAncestor.spaceId].displayname;
-            [breadcrumbs insertObject:rootName atIndex:0];
+            NSMutableArray<NSString *> *breadcrumbs = [[NSMutableArray alloc] initWithObjects:parentName, nil];
+
+            MXSpace *firstRootAncestor = roomParentId ? [mxSession.spaceService firstRootAncestorForRoomWithId:roomParentId] : nil;
+            NSString *rootName = nil;
+            if (firstRootAncestor)
+            {
+                rootName = [mxSession roomSummaryWithRoomId:firstRootAncestor.spaceId].displayname;
+                [breadcrumbs insertObject:rootName atIndex:0];
+            }
+            titleView.breadcrumbView.breadcrumbs = breadcrumbs;
         }
-        titleView.breadcrumbView.breadcrumbs = breadcrumbs;
     }
     else
     {
-        titleView.breadcrumbView.breadcrumbs = @[];
+        if (!BuildSettings.newAppLayoutEnabled)
+        {
+            titleView.breadcrumbView.breadcrumbs = @[];
+        }
     }
     
     recentsDataSource.currentSpace = [mxSession.spaceService getSpaceWithId:roomParentId];
@@ -672,6 +665,8 @@
 
 - (void)updateSideMenuNotifcationIcon
 {
+    if (BuildSettings.newAppLayoutEnabled) { return; }
+    
     BOOL displayNotification = NO;
     
     for (MXRoomSummary *summary in recentsDataSource.mxSession.spaceService.rootSpaceSummaries) {
@@ -702,8 +697,11 @@
 
 -(void)setupTitleView
 {
-    titleView = [MainTitleView new];
-    self.navigationItem.titleView = titleView;
+    if (!BuildSettings.newAppLayoutEnabled)
+    {
+        titleView = [MainTitleView new];
+        self.navigationItem.titleView = titleView;
+    }
 }
 
 -(void)setTitleLabelText:(NSString *)text

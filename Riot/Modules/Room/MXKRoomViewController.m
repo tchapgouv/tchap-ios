@@ -221,6 +221,11 @@
 {
     [super viewDidLoad];
     
+    if (BuildSettings.newAppLayoutEnabled)
+    {
+        [self vc_setLargeTitleDisplayMode: UINavigationItemLargeTitleDisplayModeNever];
+    }
+    
     // Check whether the view controller has been pushed via storyboard
     if (!_bubblesTableView)
     {
@@ -291,6 +296,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    [self.navigationController setToolbarHidden:YES animated:NO];
     
     // Observe server sync process at room data source level too
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMatrixSessionChange) name:kMXKRoomDataSourceSyncStatusChanged object:nil];
@@ -308,7 +315,9 @@
     }
     
     // Finalize view controller appearance
-    [self updateViewControllerAppearanceOnRoomDataSourceState];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self updateViewControllerAppearanceOnRoomDataSourceState];
+    });
     
     // no need to reload the tableview at this stage
     // IOS is going to load it after calling this method
@@ -349,7 +358,7 @@
     {
         // Retrieve the potential message partially typed during last room display.
         // Note: We have to wait for viewDidAppear before updating growingTextView (viewWillAppear is too early)
-        inputToolbarView.textMessage = roomDataSource.partialTextMessage;
+        inputToolbarView.attributedTextMessage = roomDataSource.partialAttributedTextMessage;
     }
     
     if (!hasAppearedOnce)
@@ -488,7 +497,7 @@
     if (!keyboardView)
     {
         // Check whether the first responder is the input tool bar text composer
-        keyboardView = inputToolbarView.inputAccessoryView.superview;
+        keyboardView = inputToolbarView.inputAccessoryViewForKeyboard.superview;
     }
     
     // Report the keyboard view in order to track keyboard frame changes
@@ -1258,7 +1267,7 @@
     customEventDetailsViewClass = eventDetailsViewClass;
 }
 
-- (BOOL)isIRCStyleCommand:(NSString*)string
+- (BOOL)sendAsIRCStyleCommandIfPossible:(NSString*)string
 {
     // Check whether the provided text may be an IRC-style command
     if ([string hasPrefix:@"/"] == NO || [string hasPrefix:@"//"] == YES)
@@ -1436,6 +1445,12 @@
             // Display cmd usage in text input as placeholder
             cmdUsage = @"Usage: /topic <topic>";
         }
+    }
+    else if ([string hasPrefix:kMXKSlashCmdDiscardSession])
+    {
+        [roomDataSource.mxSession.crypto discardOutboundGroupSessionForRoomWithRoomId:roomDataSource.roomId onComplete:^{
+            MXLogDebug(@"[MXKRoomVC] Manually discarded outbound group session");
+        }];
     }
     else
     {
@@ -3344,7 +3359,7 @@
     if (_saveProgressTextInput && roomDataSource)
     {
         // Store the potential message partially typed in text input
-        roomDataSource.partialTextMessage = inputToolbarView.textMessage;
+        roomDataSource.partialAttributedTextMessage = inputToolbarView.attributedTextMessage;
     }
     
     [self handleTypingState:typing];
@@ -3383,7 +3398,7 @@
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView sendTextMessage:(NSString*)textMessage
 {
     // Handle potential IRC commands in typed string
-    if ([self isIRCStyleCommand:textMessage] == NO)
+    if ([self sendAsIRCStyleCommandIfPossible:textMessage] == NO)
     {
         // Send text message in the current room
         [self sendTextMessage:textMessage];

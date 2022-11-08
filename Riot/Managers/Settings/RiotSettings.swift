@@ -80,6 +80,10 @@ final class RiotSettings: NSObject {
         return RiotSettings.defaults.object(forKey: UserDefaultsKeys.notificationsShowDecryptedContent) != nil
     }
     
+    /// Indicate if notifications should be shown whilst the app is in the foreground.
+    @UserDefault(key: "showInAppNotifications", defaultValue: true, storage: defaults)
+    var showInAppNotifications
+    
     /// Indicate if encrypted messages content should be displayed in notifications.
     @UserDefault(key: UserDefaultsKeys.notificationsShowDecryptedContent, defaultValue: false, storage: defaults)
     var showDecryptedContentInNotifications
@@ -171,8 +175,20 @@ final class RiotSettings: NSObject {
     
     /// Indicates if live location sharing is enabled
     @UserDefault(key: UserDefaultsKeys.enableLiveLocationSharing, defaultValue: false, storage: defaults)
-    var enableLiveLocationSharing
-    
+    var enableLiveLocationSharing {
+        didSet {
+            NotificationCenter.default.post(name: RiotSettings.didUpdateLiveLocationSharingActivation, object: self)
+        }
+    }
+
+    /// Flag indicating if the new session manager is enabled
+    @UserDefault(key: "enableNewSessionManager", defaultValue: false, storage: defaults)
+    var enableNewSessionManager
+
+    /// Flag indicating if the new client information feature is enabled
+    @UserDefault(key: "enableClientInformationFeature", defaultValue: false, storage: defaults)
+    var enableClientInformationFeature
+
     // MARK: Calls
     
     /// Indicate if `allowStunServerFallback` settings has been set once.
@@ -296,9 +312,6 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "homeScreenShowRoomsTab", defaultValue: BuildSettings.homeScreenShowRoomsTab, storage: defaults)
     var homeScreenShowRoomsTab
     
-    @UserDefault(key: "homeScreenShowCommunitiesTab", defaultValue: BuildSettings.homeScreenShowCommunitiesTab, storage: defaults)
-    var homeScreenShowCommunitiesTab
-    
     // MARK: General Settings
     
     @UserDefault(key: "settingsScreenShowChangePassword", defaultValue: BuildSettings.settingsScreenShowChangePassword, storage: defaults)
@@ -351,9 +364,6 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "roomSettingsScreenShowAddressSettings", defaultValue: BuildSettings.roomSettingsScreenShowAddressSettings, storage: defaults)
     var roomSettingsScreenShowAddressSettings
     
-    @UserDefault(key: "roomSettingsScreenShowFlairSettings", defaultValue: BuildSettings.roomSettingsScreenShowFlairSettings, storage: defaults)
-    var roomSettingsScreenShowFlairSettings
-    
     @UserDefault(key: "roomSettingsScreenShowAdvancedSettings", defaultValue: BuildSettings.roomSettingsScreenShowAdvancedSettings, storage: defaults)
     var roomSettingsScreenShowAdvancedSettings
     
@@ -391,4 +401,16 @@ final class RiotSettings: NSObject {
     /// Number of spaces previously tracked by the `AnalyticsSpaceTracker` instance.
     @UserDefault(key: "lastNumberOfTrackedSpaces", defaultValue: nil, storage: defaults)
     var lastNumberOfTrackedSpaces: Int?
+    
+    // MARK: - All Chats Onboarding
+    
+    @UserDefault(key: "allChatsOnboardingHasBeenDisplayed", defaultValue: false, storage: defaults)
+    var allChatsOnboardingHasBeenDisplayed
+    
+}
+
+// MARK: - RiotSettings notification constants
+extension RiotSettings {
+    public static let didUpdateLiveLocationSharingActivation = Notification.Name("RiotSettingsDidUpdateLiveLocationSharingActivation")
+    public static let newAppLayoutBetaToggleDidChange = Notification.Name("RiotSettingsNewAppLayoutBetaToggleDidChange")
 }

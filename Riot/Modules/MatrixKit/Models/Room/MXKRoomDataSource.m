@@ -87,11 +87,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
      The listener to receipts events in the room.
      */
     id receiptsListener;
-    
-    /**
-     The listener to the related groups state events in the room.
-     */
-    id relatedGroupsListener;
 
     /**
      The listener to reactions changed in the room.
@@ -213,9 +208,9 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
 @implementation MXKRoomDataSource
 
-+ (void)loadRoomDataSourceWithRoomId:(NSString*)roomId andMatrixSession:(MXSession*)mxSession onComplete:(void (^)(id roomDataSource))onComplete
++ (void)loadRoomDataSourceWithRoomId:(NSString*)roomId threadId:(NSString*)threadId andMatrixSession:(MXSession*)mxSession onComplete:(void (^)(id roomDataSource))onComplete
 {
-    MXKRoomDataSource *roomDataSource = [[self alloc] initWithRoomId:roomId andMatrixSession:mxSession];
+    MXKRoomDataSource *roomDataSource = [[self alloc] initWithRoomId:roomId andMatrixSession:mxSession threadId:threadId];
     [self ensureSessionStateForDataSource:roomDataSource initialEventId:nil andMatrixSession:mxSession onComplete:onComplete];
 }
 
@@ -289,7 +284,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     }
 }
 
-- (instancetype)initWithRoomId:(NSString *)roomId andMatrixSession:(MXSession *)matrixSession
+- (instancetype)initWithRoomId:(NSString *)roomId andMatrixSession:(MXSession *)matrixSession threadId:(NSString *)threadId
 {
     self = [super initWithMatrixSession:matrixSession];
     if (self)
@@ -297,6 +292,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         MXLogVerbose(@"[MXKRoomDataSource][%p] initWithRoomId: %@", self, roomId);
         
         _roomId = roomId;
+        _threadId = threadId;
         _secondaryRoomEventTypes = @[
             kMXEventTypeStringCallInvite,
             kMXEventTypeStringCallCandidates,
@@ -317,8 +313,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         bubbles = [NSMutableArray array];
         eventsToProcess = [NSMutableArray array];
         eventIdToBubbleMap = [NSMutableDictionary dictionary];
-        
-        externalRelatedGroups = [NSMutableDictionary dictionary];
         
         _filterMessagesWithURL = NO;
         
@@ -375,7 +369,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
 - (instancetype)initWithRoomId:(NSString*)roomId initialEventId:(NSString*)initialEventId2 threadId:(NSString*)threadId andMatrixSession:(MXSession*)mxSession
 {
-    self = [self initWithRoomId:roomId andMatrixSession:mxSession];
+    self = [self initWithRoomId:roomId andMatrixSession:mxSession threadId:threadId];
     if (self)
     {
         if (initialEventId2)
@@ -383,7 +377,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             initialEventId = initialEventId2;
             _isLive = NO;
         }
-        _threadId = threadId;
     }
 
     return self;
@@ -471,8 +464,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
 - (void)resetNotifying:(BOOL)notify
 {
-    [externalRelatedGroups removeAllObjects];
-    
     if (roomDidFlushDataNotificationObserver)
     {
         [[NSNotificationCenter defaultCenter] removeObserver:roomDidFlushDataNotificationObserver];
@@ -515,9 +506,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         
         [_timeline removeListener:receiptsListener];
         receiptsListener = nil;
-        
-        [_timeline removeListener:relatedGroupsListener];
-        relatedGroupsListener = nil;
     }
     
     if (_secondaryRoom && secondaryLiveEventsListener)
@@ -565,6 +553,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         }
         
         self.room = nil;
+        self.thread = nil;
         self.secondaryRoom = nil;
     }
     
@@ -596,13 +585,11 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
 - (void)destroy
 {
-    MXLogDebug(@"[MXKRoomDataSource][%p] Destroy - room id: %@", self, _roomId);
+    MXLogDebug(@"[MXKRoomDataSource][%p] Destroy - room id: %@ - thread id: %@", self, _roomId, _threadId);
     
     [self unregisterScanManagerNotifications];
     [self unregisterReactionsChangeListener];
     [self unregisterEventEditsListener];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionDidUpdatePublicisedGroupsForUsersNotification object:self.mxSession];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXEventDidChangeSentStateNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXEventDidDecryptNotification object:nil];
@@ -637,8 +624,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
     [_timeline destroy];
     [_secondaryTimeline destroy];
-    
-    externalRelatedGroups = nil;
     
     [super destroy];
 }
@@ -824,52 +809,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             [self setState:MXKDataSourceStateFailed];
         }
     }
-    
-    if (_room && MXSessionStateRunning == self.mxSession.state)
-    {
-        // Flair handling: observe the update in the publicised groups by users when the flair is enabled in the room.
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionDidUpdatePublicisedGroupsForUsersNotification object:self.mxSession];
-        [self.room state:^(MXRoomState *roomState) {
-            if (roomState.relatedGroups.count)
-            {
-                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didMXSessionUpdatePublicisedGroupsForUsers:) name:kMXSessionDidUpdatePublicisedGroupsForUsersNotification object:self.mxSession];
-
-                // Get a fresh profile for all the related groups. Trigger a table refresh when all requests are done.
-                __block NSUInteger count = roomState.relatedGroups.count;
-                for (NSString *groupId in roomState.relatedGroups)
-                {
-                    MXGroup *group = [self.mxSession groupWithGroupId:groupId];
-                    if (!group)
-                    {
-                        // Create a group instance for the groups that the current user did not join.
-                        group = [[MXGroup alloc] initWithGroupId:groupId];
-                        [self->externalRelatedGroups setObject:group forKey:groupId];
-                    }
-
-                    // Refresh the group profile from server.
-                    [self.mxSession updateGroupProfile:group success:^{
-
-                        if (self.delegate && !(--count))
-                        {
-                            // All the requests have been done.
-                            [self.delegate dataSource:self didCellChange:nil];
-                        }
-
-                    } failure:^(NSError *error) {
-
-                        MXLogDebug(@"[MXKRoomDataSource][%p] group profile update failed %@", self, groupId);
-
-                        if (self.delegate && !(--count))
-                        {
-                            // All the requests have been done.
-                            [self.delegate dataSource:self didCellChange:nil];
-                        }
-
-                    }];
-                }
-            }
-        }];
-    }
 }
 
 - (void)initializeTimelineForThread
@@ -980,16 +919,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     return attachments;
 }
 
-- (NSString *)partialTextMessage
-{
-    return _room.partialTextMessage;
-}
-
-- (void)setPartialTextMessage:(NSString *)partialTextMessage
-{
-    _room.partialTextMessage = partialTextMessage;
-}
-
 - (NSAttributedString *)partialAttributedTextMessage
 {
     return _room.partialAttributedTextMessage;
@@ -1008,7 +937,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         [_timeline removeListener:liveEventsListener];
         [_timeline removeListener:redactionListener];
         [_timeline removeListener:receiptsListener];
-        [_timeline removeListener:relatedGroupsListener];
     }
 
     // Listen to live events only for live timeline
@@ -1069,16 +997,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             {
                 // Handle this read receipt
                 [self didReceiveReceiptEvent:event roomState:roomState];
-            }
-        }];
-        
-        // Flair handling: register a listener for the related groups state event in this room.
-        relatedGroupsListener = [_timeline listenToEventsOfTypes:@[kMXEventTypeStringRoomRelatedGroups] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
-            
-            if (MXTimelineDirectionForwards == direction)
-            {
-                // The flair settings have been updated: flush the current bubble data and rebuild them.
-                [self reload];
             }
         }];
     }
@@ -2693,32 +2611,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     }
 }
 
-- (void)didMXSessionUpdatePublicisedGroupsForUsers:(NSNotification *)notif
-{
-    // Retrieved the list of the concerned users
-    NSArray<NSString*> *userIds = notif.userInfo[kMXSessionNotificationUserIdsArrayKey];
-    if (userIds.count)
-    {
-        // Check whether at least one listed user is a room member.
-        for (NSString* userId in userIds)
-        {
-            MXRoomMember * roomMember = [self.roomState.members memberWithUserId:userId];
-            if (roomMember)
-            {
-                // Inform the delegate to refresh the bubble display
-                // We dispatch here this action in order to let each bubble data update their sender flair.
-                if (self.delegate)
-                {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.delegate dataSource:self didCellChange:nil];
-                    });
-                }
-                break;
-            }
-        }
-    }
-}
-
 - (void)eventDidChangeSentState:(NSNotification *)notif
 {
     MXEvent *event = notif.object;
@@ -2947,11 +2839,14 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
 - (void)setState:(MXKDataSourceState)newState
 {
-    self->state = newState;
-    
-    if (self.delegate && [self.delegate respondsToSelector:@selector(dataSource:didStateChange:)])
+    if (self->state != newState)
     {
-        [self.delegate dataSource:self didStateChange:self->state];
+        self->state = newState;
+
+        if (self.delegate && [self.delegate respondsToSelector:@selector(dataSource:didStateChange:)])
+        {
+            [self.delegate dataSource:self didStateChange:self->state];
+        }
     }
 }
 
@@ -3991,34 +3886,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     }
     
     return cell;
-}
-
-#pragma mark - Groups
-
-- (MXGroup *)groupWithGroupId:(NSString*)groupId
-{
-    MXGroup *group = [self.mxSession groupWithGroupId:groupId];
-    if (!group)
-    {
-        // Check whether an instance has been already created.
-        group = [externalRelatedGroups objectForKey:groupId];
-    }
-        
-    if (!group)
-    {
-        // Create a new group instance.
-        group = [[MXGroup alloc] initWithGroupId:groupId];
-        [externalRelatedGroups setObject:group forKey:groupId];
-        
-        // Retrieve at least the group profile
-        [self.mxSession updateGroupProfile:group success:nil failure:^(NSError *error) {
-            
-            MXLogDebug(@"[MXKRoomDataSource][%p] groupWithGroupId: group profile update failed %@", self, groupId);
-            
-        }];
-    }
-    
-    return group;
 }
 
 #pragma mark - MXScanManager notifications

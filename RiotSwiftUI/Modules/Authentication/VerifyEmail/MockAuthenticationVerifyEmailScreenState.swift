@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,6 +26,7 @@ enum MockAuthenticationVerifyEmailScreenState: MockScreenState, CaseIterable {
     case emptyAddress
     case enteredAddress
     case hasSentEmail
+    case toggleTermsAndConditions // Tchap: Add Terms and Conditions.
     
     /// The associated screen
     var screenType: Any.Type {
@@ -33,16 +34,22 @@ enum MockAuthenticationVerifyEmailScreenState: MockScreenState, CaseIterable {
     }
     
     /// Generate the view struct for the screen state.
-    var screenView: ([Any], AnyView)  {
+    var screenView: ([Any], AnyView) {
         let viewModel: AuthenticationVerifyEmailViewModel
+        // Tchap: No homeserver
         switch self {
         case .emptyAddress:
-            viewModel = AuthenticationVerifyEmailViewModel(emailAddress: "")
+            viewModel = AuthenticationVerifyEmailViewModel(/*homeserver: .mockMatrixDotOrg,
+                                                           */emailAddress: "")
         case .enteredAddress:
-            viewModel = AuthenticationVerifyEmailViewModel(emailAddress: "test@example.com")
+            viewModel = AuthenticationVerifyEmailViewModel(/*homeserver: .mockMatrixDotOrg,
+                                                           */emailAddress: "test@example.com")
         case .hasSentEmail:
-            viewModel = AuthenticationVerifyEmailViewModel(emailAddress: "test@example.com")
+            viewModel = AuthenticationVerifyEmailViewModel(/*homeserver: .mockMatrixDotOrg,
+                                                           */emailAddress: "test@example.com")
             Task { await viewModel.updateForSentEmail() }
+        case .toggleTermsAndConditions: // Tchap: Add Terms and Conditions.
+            viewModel = AuthenticationVerifyEmailViewModel(emailAddress: "test@example.com")
         }
         
         // can simulate service and viewModel actions here if needs be.

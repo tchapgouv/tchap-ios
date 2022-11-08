@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct AuthenticationTermsScreen: View {
-
     // MARK: - Properties
     
     // MARK: Private
@@ -62,7 +61,7 @@ struct AuthenticationTermsScreen: View {
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.primaryContent)
             
-            Text(VectorL10n.authenticationTermsMessage)
+            Text(viewModel.viewState.headerMessage)
                 .font(theme.fonts.body)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.secondaryContent)

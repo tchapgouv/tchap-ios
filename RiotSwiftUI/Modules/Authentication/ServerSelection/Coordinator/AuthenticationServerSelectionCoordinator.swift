@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
+import SwiftUI
 
 struct AuthenticationServerSelectionCoordinatorParameters {
     let authenticationService: AuthenticationService
@@ -31,7 +31,6 @@ enum AuthenticationServerSelectionCoordinatorResult {
 }
 
 final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -59,6 +58,7 @@ final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
         
         let homeserver = parameters.authenticationService.state.homeserver
         let viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: homeserver.displayableAddress,
+                                                               flow: parameters.authenticationService.state.flow,
                                                                hasModalPresentation: parameters.hasModalPresentation)
         let view = AuthenticationServerSelectionScreen(viewModel: viewModel.context)
         authenticationServerSelectionViewModel = viewModel
@@ -77,7 +77,7 @@ final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.authenticationServerSelectionHostingController
+        authenticationServerSelectionHostingController
     }
     
     // MARK: - Private

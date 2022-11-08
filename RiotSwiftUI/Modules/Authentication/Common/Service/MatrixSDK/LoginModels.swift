@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,7 +52,9 @@ enum LoginMode {
     var ssoIdentityProviders: [SSOIdentityProvider]? {
         switch self {
         case .sso(let ssoIdentityProviders), .ssoAndPassword(let ssoIdentityProviders):
-            return ssoIdentityProviders
+            // Provide a backup for homeservers that support SSO but don't offer any identity providers
+            // https://spec.matrix.org/latest/client-server-api/#client-login-via-sso
+            return ssoIdentityProviders.count > 0 ? ssoIdentityProviders : [SSOIdentityProvider(id: "", name: "SSO", brand: nil, iconURL: nil)]
         default:
             return nil
         }
@@ -91,4 +93,3 @@ enum LoginMode {
 struct ResetPasswordData {
     let addThreePIDSessionID: String
 }
-

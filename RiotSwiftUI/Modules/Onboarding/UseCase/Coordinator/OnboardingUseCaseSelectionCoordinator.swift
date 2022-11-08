@@ -14,11 +14,10 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
+import SwiftUI
 
 final class OnboardingUseCaseSelectionCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -50,6 +49,7 @@ final class OnboardingUseCaseSelectionCoordinator: Coordinator, Presentable {
     }
     
     // MARK: - Public
+
     func start() {
         MXLog.debug("[OnboardingUseCaseSelectionCoordinator] did start.")
         onboardingUseCaseViewModel.completion = { [weak self] result in
@@ -57,15 +57,13 @@ final class OnboardingUseCaseSelectionCoordinator: Coordinator, Presentable {
             MXLog.debug("[OnboardingUseCaseSelectionCoordinator] OnboardingUseCaseViewModel did complete with result: \(result).")
             
             // Show a loading indicator which can be dismissed externally by calling `stop`.
-            if result != .customServer {
-                self.startLoading()
-            }
+            self.startLoading()
             self.completion?(result)
         }
     }
     
     func toPresentable() -> UIViewController {
-        return self.onboardingUseCaseHostingController
+        onboardingUseCaseHostingController
     }
     
     /// Stops any ongoing activities in the coordinator.

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -68,6 +68,8 @@ enum AuthenticationChoosePasswordViewAction {
 enum AuthenticationChoosePasswordErrorType: Hashable {
     /// An error response from the homeserver.
     case mxError(String)
+    /// The user hasn't tapped the link in the verification email.
+    case emailNotVerified
     /// An unknown error occurred.
     case unknown
 }

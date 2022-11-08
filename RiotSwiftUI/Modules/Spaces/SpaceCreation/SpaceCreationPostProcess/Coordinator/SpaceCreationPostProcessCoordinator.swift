@@ -17,11 +17,10 @@
  */
 
 import Foundation
-import UIKit
 import SwiftUI
+import UIKit
 
 final class SpaceCreationPostProcessCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -40,7 +39,7 @@ final class SpaceCreationPostProcessCoordinator: Coordinator, Presentable {
     
     init(parameters: SpaceCreationPostProcessCoordinatorParameters) {
         self.parameters = parameters
-        let viewModel = SpaceCreationPostProcessViewModel.makeSpaceCreationPostProcessViewModel(spaceCreationPostProcessService: SpaceCreationPostProcessService(session: parameters.session, creationParams: parameters.creationParams))
+        let viewModel = SpaceCreationPostProcessViewModel.makeSpaceCreationPostProcessViewModel(spaceCreationPostProcessService: SpaceCreationPostProcessService(session: parameters.session, parentSpaceId: parameters.parentSpaceId, creationParams: parameters.creationParams))
         let view = SpaceCreationPostProcess(viewModel: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
         spaceCreationPostProcessViewModel = viewModel
@@ -50,6 +49,7 @@ final class SpaceCreationPostProcessCoordinator: Coordinator, Presentable {
     }
     
     // MARK: - Public
+
     func start() {
         MXLog.debug("[SpaceCreationPostProcessCoordinator] did start.")
         spaceCreationPostProcessViewModel.completion = { [weak self] result in
@@ -65,6 +65,6 @@ final class SpaceCreationPostProcessCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.spaceCreationPostProcessHostingController
+        spaceCreationPostProcessHostingController
     }
 }

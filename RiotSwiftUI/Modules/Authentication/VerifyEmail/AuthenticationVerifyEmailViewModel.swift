@@ -16,11 +16,9 @@
 
 import SwiftUI
 
-typealias AuthenticationVerifyEmailViewModelType = StateStoreViewModel<AuthenticationVerifyEmailViewState,
-                                                                       Never,
-                                                                       AuthenticationVerifyEmailViewAction>
-class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType, AuthenticationVerifyEmailViewModelProtocol {
+typealias AuthenticationVerifyEmailViewModelType = StateStoreViewModel<AuthenticationVerifyEmailViewState, AuthenticationVerifyEmailViewAction>
 
+class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType, AuthenticationVerifyEmailViewModelProtocol {
     // MARK: - Properties
 
     // MARK: Private
@@ -31,8 +29,12 @@ class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType
 
     // MARK: - Setup
 
-    init(emailAddress: String = "") {
-        let viewState = AuthenticationVerifyEmailViewState(bindings: AuthenticationVerifyEmailBindings(emailAddress: emailAddress))
+    // Tchap: Remove homeserver from parameters list
+    init(/*homeserver: AuthenticationHomeserverViewData,*/
+         emailAddress: String = "",
+         password: String = "") {
+        let viewState = AuthenticationVerifyEmailViewState(/*homeserver: homeserver,
+                                                           */bindings: AuthenticationVerifyEmailBindings(emailAddress: emailAddress, password: password))
         super.init(initialViewState: viewState)
     }
 
@@ -48,6 +50,12 @@ class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType
             Task { await callback?(.cancel) }
         case .goBack:
             Task { await callback?(.goBack) }
+        case .prepareAccountCreation: // Tchap: Add prepareAccountCreation specific case
+            Task { await callback?(.prepareAccountCreation(state.bindings.emailAddress, state.bindings.password)) }
+        case .toggleTermsAndConditions: // Tchap: Add Terms and Conditions.
+            Task { await toggleTermsAndConditions() }
+        case .showTermsAndConditions: // Tchap: Add Terms and Conditions.
+            Task { await callback?(.showTermsAndConditions) }
         }
     }
     
@@ -67,6 +75,24 @@ class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType
                                                  message: message)
         case .unknown:
             state.bindings.alertInfo = AlertInfo(id: type)
+        case .invalidHomeserver:
+            state.bindings.alertInfo = AlertInfo(id: type,
+                                                 title: VectorL10n.error,
+                                                 message: VectorL10n.authenticationServerSelectionGenericError)
+        case .registrationDisabled:
+            state.bindings.alertInfo = AlertInfo(id: type,
+                                                 title: VectorL10n.error,
+                                                 message: VectorL10n.loginErrorRegistrationIsNotSupported)
+        case .unauthorizedThirdPartyID:
+            state.bindings.alertInfo = AlertInfo(id: type,
+                                                 title: VectorL10n.error,
+                                                 message: TchapL10n.authenticationErrorUnauthorizedEmail)
         }
+    }
+    
+    // Tchap: Add Terms and Conditions.
+    /// Toggle the value for Terms and Conditions agreement.
+    @MainActor private func toggleTermsAndConditions() {
+        state.bindings.userAgreeWithTermsAndConditions = !state.bindings.userAgreeWithTermsAndConditions
     }
 }

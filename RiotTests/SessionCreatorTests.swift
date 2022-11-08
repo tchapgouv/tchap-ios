@@ -15,11 +15,11 @@
 //
 
 import XCTest
-@testable import Riot
+@testable import Element
 
 class SessionCreatorTests: XCTestCase {
 
-    func testIdentityServer() throws {
+    func testIdentityServer() async throws {
         let sessionCreator = SessionCreator(withAccountManager: .mock)
 
         let mockIS = "mock_identity_server"
@@ -29,7 +29,7 @@ class SessionCreatorTests: XCTestCase {
                                         accessToken: "mock_access_token")
         let client = MXRestClient(credentials: credentials)
         client.identityServer = mockIS
-        let session = sessionCreator.createSession(credentials: credentials, client: client, removeOtherAccounts: false)
+        let session = await sessionCreator.createSession(credentials: credentials, client: client, removeOtherAccounts: false)
         
         XCTAssertEqual(credentials.identityServer, mockIS)
         XCTAssertEqual(session.credentials.identityServer, mockIS)

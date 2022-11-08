@@ -14,9 +14,9 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
 import MatrixSDK
+import SwiftUI
 
 struct AuthenticationLoginCoordinatorParameters {
     let navigationRouter: NavigationRouterType
@@ -47,7 +47,6 @@ enum AuthenticationLoginCoordinatorResult: CustomStringConvertible {
 }
 
 final class AuthenticationLoginCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -72,6 +71,9 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
     /// The wizard used to handle the login flow. Will only be `nil` if there is a misconfiguration.
     private var loginWizard: LoginWizard? { parameters.authenticationService.loginWizard }
     
+    // Tchap: Add thirdPartyIDPlatformInfoResolver
+    private let thirdPartyIDPlatformInfoResolver: ThirdPartyIDPlatformInfoResolverType
+    
     // MARK: Public
 
     // Must be used only internally
@@ -93,9 +95,15 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
         authenticationLoginHostingController.enableNavigationBarScrollEdgeAppearance = true
         
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: authenticationLoginHostingController)
+        
+        // Tchap: Configure thirdPartyIDPlatformInfoResolver
+        let identityServerURLs = IdentityServersURLGetter(currentIdentityServerURL: nil).identityServerUrls
+        self.thirdPartyIDPlatformInfoResolver = ThirdPartyIDPlatformInfoResolver(identityServerUrls: identityServerURLs,
+                                                                                 serverPrefixURL: BuildSettings.serverUrlPrefix)
     }
     
     // MARK: - Public
+
     func start() {
         MXLog.debug("[AuthenticationLoginCoordinator] did start.")
         Task { await setupViewModel() }
@@ -174,7 +182,8 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
     /// Processes an error to either update the flow or display it to the user.
     @MainActor private func handleError(_ error: Error) {
         if let mxError = MXError(nsError: error as NSError) {
-            authenticationLoginViewModel.displayError(.mxError(mxError.error))
+            let message = mxError.authenticationErrorMessage()
+            authenticationLoginViewModel.displayError(.mxError(message))
             return
         }
         
@@ -186,6 +195,8 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
                 #warning("Reset the flow")
             case .missingMXRestClient:
                 #warning("Forget the soft logout session")
+            case .unauthorizedThirdPartyID: // Tchap: Add unauthorizedThirdPartyID
+                authenticationLoginViewModel.displayError(.unauthorizedThirdPartyID)
             }
             return
         }
@@ -194,24 +205,42 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
     }
     
     @MainActor private func parseUsername(_ username: String) {
-        guard MXTools.isMatrixUserIdentifier(username) else { return }
-        let domain = username.split(separator: ":")[1]
-        let homeserverAddress = HomeserverAddress.sanitized(String(domain))
+        // Tchap: Use e-mail address instead of a Matrix username.
+        guard MXTools.isEmailAddress(username) else { return }
         
         startLoading(isInteractionBlocking: false)
         
-        currentTask = Task { [weak self] in
-            do {
-                try await authenticationService.startFlow(.login, for: homeserverAddress)
-                
-                guard !Task.isCancelled else { return }
-                
-                updateViewModel()
-                self?.stopLoading()
-            } catch {
-                self?.stopLoading()
-                self?.handleError(error)
+        // Tchap: Update the flow to get the right HS
+        thirdPartyIDPlatformInfoResolver.resolvePlatformInformation(address: username, medium: kMX3PIDMediumEmail) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case .authorizedThirdPartyID(info: let thirdPartyIDPlatformInfo):
+                self.currentTask = Task { [weak self] in
+                    guard let self = self else { return }
+                    
+                    do {
+                        try await self.authenticationService.startFlow(.login, for: thirdPartyIDPlatformInfo.homeServer)
+                        
+                        guard !Task.isCancelled else { return }
+                        
+                        self.updateViewModel()
+                        self.stopLoading()
+                    } catch {
+                        self.stopLoading()
+                        self.handleError(error)
+                    }
+                }
+            case .unauthorizedThirdPartyID:
+                MXLog.error("[AuthenticationLoginCoordinator] ParseUsername unauthorized error.")
+                self.stopLoading()
+                self.handleError(AuthenticationError.unauthorizedThirdPartyID)
             }
+        } failure: { error in
+            guard let error = error else { return }
+            MXLog.error("[AuthenticationLoginCoordinator] ParseUsername error", context: error)
+            self.stopLoading()
+            self.handleError(error)
         }
     }
     
@@ -260,7 +289,8 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
         let modalRouter = NavigationRouter()
 
         let parameters = AuthenticationForgotPasswordCoordinatorParameters(navigationRouter: modalRouter,
-                                                                           loginWizard: loginWizard)
+                                                                           loginWizard: loginWizard,
+                                                                           homeserver: parameters.authenticationService.state.homeserver)
         let coordinator = AuthenticationForgotPasswordCoordinator(parameters: parameters)
         coordinator.callback = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }

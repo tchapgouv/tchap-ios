@@ -223,7 +223,7 @@ final class BuildSettings: NSObject {
     static let allowInviteExernalUsers: Bool = true
     
     // MARK: - Side Menu
-    static let enableSideMenu: Bool = true
+    static let enableSideMenu: Bool = true && !newAppLayoutEnabled
     static let sideMenuShowInviteFriends: Bool = true
     
     /// Whether to read the `io.element.functional_members` state event and exclude any service members when computing a room's name and avatar.
@@ -337,7 +337,6 @@ final class BuildSettings: NSObject {
     static let roomSettingsScreenAllowChangingAccessSettings: Bool = false
     static let roomSettingsScreenAllowChangingHistorySettings: Bool = false
     static let roomSettingsScreenShowAddressSettings: Bool = false
-    static let roomSettingsScreenShowFlairSettings: Bool = false
     static let roomSettingsScreenShowAdvancedSettings: Bool = false
     static let roomSettingsScreenAdvancedShowEncryptToVerifiedOption: Bool = false
     static let roomSettingsScreenShowNotificationsV2: Bool = false
@@ -375,6 +374,7 @@ final class BuildSettings: NSObject {
     
     // MARK: - Onboarding
     static let onboardingShowAccountPersonalization = false
+    static let onboardingEnableNewAuthenticationFlow = true
     
     // MARK: - Unified Search
     static let unifiedSearchScreenShowPublicDirectory = true
@@ -387,36 +387,28 @@ final class BuildSettings: NSObject {
     
     // MARK: - Polls
     
-    static var pollsEnabled: Bool {
-        guard #available(iOS 14, *) else {
-            return false
-        }
-        
-        return false//true : Currently disabled in Tchap.
-    }
+    static let pollsEnabled = false//true : Currently disabled in Tchap.
     
     // MARK: - Location Sharing
     
-    static let tileServerMapStyleURL = URL(string: "")!
+    /// Overwritten by the home server's .well-known configuration (if any exists)
+    static let defaultTileServerMapStyleURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=")!
     
-    static var locationSharingEnabled: Bool {
-        guard #available(iOS 14, *) else {
-            return false
-        }
-        
-        return false//true : Currently disabled in Tchap.
-    }
+    static let locationSharingEnabled = false // Currently disabled in Tchap.
+
+    // MARK: - MXKAppSettings
+    static let enableBotCreation: Bool = false
+    static let maxAllowedMediaCacheSize: Int = 1073741824
+    static let presenceColorForOfflineUser: Int = 15020851
+    static let presenceColorForOnlineUser: Int = 3401011
+    static let presenceColorForUnavailableUser: Int = 15066368
+    static let showAllEventsInRoomHistory: Bool = false
+    static let showLeftMembersInRoomMemberList: Bool = false
+    static let showRedactionsInRoomHistory: Bool = true
+    static let showUnsupportedEventsInRoomHistory: Bool = false
+    static let sortRoomMembersUsingLastSeenTime: Bool = true
+    static let syncLocalContacts: Bool = false
     
-    static var liveLocationSharingEnabled: Bool {
-        guard #available(iOS 14, *) else {
-            return false
-        }
-        
-        guard self.locationSharingEnabled else {
-            return false
-        }
-        
-        // Do not enable live location sharing atm
-        return false
-    }
+    // MARK: - New App Layout
+    static let newAppLayoutEnabled = false
 }

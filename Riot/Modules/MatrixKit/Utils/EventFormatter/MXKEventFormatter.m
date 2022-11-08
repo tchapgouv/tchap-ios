@@ -1022,21 +1022,6 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
             }
             break;
         }
-        case MXEventTypeRoomRelatedGroups:
-        {
-            NSArray *groups;
-            MXJSONModelSetArray(groups, event.content[@"groups"]);
-            if (groups)
-            {
-                displayText = [VectorL10n noticeRoomRelatedGroups:[groups componentsJoinedByString:@", "]];
-                // Append redacted info if any
-                if (redactedInfo)
-                {
-                    displayText = [NSString stringWithFormat:@"%@\n %@", displayText, redactedInfo];
-                }
-            }
-            break;
-        }
         case MXEventTypeRoomEncrypted:
         {
             // Is redacted?
@@ -1356,9 +1341,22 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
                     }
                     else if ([msgtype isEqualToString:kMXMessageTypeFile])
                     {
-                        body = body? body : [VectorL10n noticeFileAttachment];
                         // Check attachment validity
-                        if (![self isSupportedAttachment:event])
+                        if ([self isSupportedAttachment:event])
+                        {
+                            body = body? body : [VectorL10n noticeFileAttachment];
+                            
+                            NSDictionary *fileInfo = contentToUse[@"info"];
+                            if (fileInfo)
+                            {
+                                NSNumber *fileSize = fileInfo[@"size"];
+                                if (fileSize)
+                                {
+                                    body = [NSString stringWithFormat:@"%@ (%@)", body, [MXTools fileSizeToString: fileSize.longValue]];
+                                }
+                            }
+                        }
+                        else
                         {
                             MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported attachment %@", event.description);
                             body = [VectorL10n noticeInvalidAttachment];
@@ -1848,11 +1846,28 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
         }
         else
         {
-            MXJSONModelSetString(repliedEventContent, repliedEvent.content[@"formatted_body"]);
+            MXReplyEventParser *parser = [[MXReplyEventParser alloc] init];
+            MXReplyEventParts *parts = [parser parse:repliedEvent];
+            MXJSONModelSetString(repliedEventContent, parts.formattedBodyParts.replyText)
+            if (!repliedEventContent)
+            {
+                MXJSONModelSetString(repliedEventContent, parts.bodyParts.replyText)
+            }
+            if (!repliedEventContent)
+            {
+                MXJSONModelSetString(repliedEventContent, repliedEvent.content[@"formatted_body"]);
+            }
             if (!repliedEventContent)
             {
                 MXJSONModelSetString(repliedEventContent, repliedEvent.content[kMXMessageBodyKey]);
             }
+        }
+
+        // No message content in a non-redacted event. Formatter should use fallback.
+        if (!repliedEventContent)
+        {
+            MXLogWarning(@"[MXKEventFormatter] Unable to retrieve content from replied event %@", repliedEvent.description)
+            return nil;
         }
     }
 
@@ -1886,7 +1901,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
     }
     else
     {
-        MXLogDebug(@"[MXKEventFormatter] Unable to build reply event %@", event.description)
+        MXLogWarning(@"[MXKEventFormatter] Unable to build reply event %@", event.description)
     }
 
     return html;
@@ -2060,12 +2075,6 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
     if (_treatMatrixEventIdAsLink)
     {
         enabledMatrixIdsBitMask |= MXKTOOLS_EVENT_IDENTIFIER_BITWISE;
-    }
-    
-    // If enabled, make group id clickable
-    if (_treatMatrixGroupIdAsLink)
-    {
-        enabledMatrixIdsBitMask |= MXKTOOLS_GROUP_IDENTIFIER_BITWISE;
     }
 
     [MXKTools createLinksInMutableAttributedString:mutableAttributedString forEnabledMatrixIds:enabledMatrixIdsBitMask];

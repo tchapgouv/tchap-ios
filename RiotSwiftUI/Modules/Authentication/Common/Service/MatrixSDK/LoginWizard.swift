@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
 //
 
 import Foundation
+import libPhoneNumber_iOS
 
 /// Set of methods to be able to login to an existing account on a homeserver.
 ///
@@ -39,13 +40,8 @@ class LoginWizard {
         self.client = client
         self.sessionCreator = sessionCreator
         
-        self.state = State()
+        state = State()
     }
-    
-//    /// Get some information about a matrixId: displayName and avatar url
-//    func profileInfo(for matrixID: String) async -> LoginProfileInfo {
-//
-//    }
     
     /// Login to the homeserver.
     /// - Parameters:
@@ -67,6 +63,13 @@ class LoginWizard {
                                                  password: password,
                                                  deviceDisplayName: initialDeviceName,
                                                  deviceID: deviceID)
+        } else if let number = try? NBPhoneNumberUtil.sharedInstance().parse(login, defaultRegion: nil),
+                  NBPhoneNumberUtil.sharedInstance().isValidNumber(number) {
+            let msisdn = login.replacingOccurrences(of: "+", with: "")
+            parameters = LoginPasswordParameters(id: .thirdParty(medium: .msisdn, address: msisdn),
+                                                 password: password,
+                                                 deviceDisplayName: initialDeviceName,
+                                                 deviceID: deviceID)
         } else {
             parameters = LoginPasswordParameters(id: .user(login),
                                                  password: password,
@@ -75,9 +78,9 @@ class LoginWizard {
         }
         
         let credentials = try await client.login(parameters: parameters)
-        return sessionCreator.createSession(credentials: credentials,
-                                            client: client,
-                                            removeOtherAccounts: removeOtherAccounts)
+        return await sessionCreator.createSession(credentials: credentials,
+                                                  client: client,
+                                                  removeOtherAccounts: removeOtherAccounts)
     }
 
     /// Exchange a login token to an access token.
@@ -88,16 +91,10 @@ class LoginWizard {
     func login(with token: String, removeOtherAccounts: Bool = false) async throws -> MXSession {
         let parameters = LoginTokenParameters(token: token)
         let credentials = try await client.login(parameters: parameters)
-        return sessionCreator.createSession(credentials: credentials,
-                                            client: client,
-                                            removeOtherAccounts: removeOtherAccounts)
+        return await sessionCreator.createSession(credentials: credentials,
+                                                  client: client,
+                                                  removeOtherAccounts: removeOtherAccounts)
     }
-    
-//    /// Login to the homeserver by sending a custom JsonDict.
-//    /// The data should contain at least one entry `type` with a String value.
-//    func loginCustom(data: Codable) async -> MXSession {
-//
-//    }
 
     /// Ask the homeserver to reset the user password. The password will not be
     /// reset until `resetPasswordMailConfirmed` is successfully called.

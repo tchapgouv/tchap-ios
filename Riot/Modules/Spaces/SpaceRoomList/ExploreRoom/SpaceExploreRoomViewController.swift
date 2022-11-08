@@ -235,7 +235,7 @@ final class SpaceExploreRoomViewController: UIViewController {
     
     // MARK: - UISearchBarDelegate
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    override func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         self.viewModel.process(viewAction: .searchChanged(searchText))
     }
 }

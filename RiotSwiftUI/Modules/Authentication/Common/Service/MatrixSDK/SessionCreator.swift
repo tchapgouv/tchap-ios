@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,18 +23,19 @@ protocol SessionCreatorProtocol {
     ///   - client: The client that completed the authentication.
     ///   - removeOtherAccounts: Flag to remove other accounts than the account specified with the `credentials.userId`.
     /// - Returns: A new `MXSession` for the account.
+    @MainActor
     func createSession(credentials: MXCredentials, client: AuthenticationRestClient, removeOtherAccounts: Bool) -> MXSession
 }
 
 /// A struct that provides common functionality to create a new session.
 struct SessionCreator: SessionCreatorProtocol {
-
     private let accountManager: MXKAccountManager
 
     init(withAccountManager accountManager: MXKAccountManager = .shared()) {
         self.accountManager = accountManager
     }
 
+    @MainActor
     func createSession(credentials: MXCredentials, client: AuthenticationRestClient, removeOtherAccounts: Bool) -> MXSession {
         // Use identity server provided in the client
         if credentials.identityServer == nil {
@@ -42,7 +43,7 @@ struct SessionCreator: SessionCreatorProtocol {
         }
 
         if removeOtherAccounts {
-            let otherAccounts = accountManager.accounts.filter({ $0.mxCredentials.userId != credentials.userId })
+            let otherAccounts = accountManager.accounts.filter { $0.mxCredentials.userId != credentials.userId }
             for account in otherAccounts {
                 accountManager.removeAccount(account, completion: nil)
             }

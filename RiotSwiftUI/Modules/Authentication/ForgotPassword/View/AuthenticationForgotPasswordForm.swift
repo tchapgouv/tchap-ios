@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import SwiftUI
 
 /// The form shown to enter an email address.
 struct AuthenticationForgotPasswordForm: View {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -55,7 +54,7 @@ struct AuthenticationForgotPasswordForm: View {
                 .foregroundColor(theme.colors.primaryContent)
                 .accessibilityIdentifier("titleLabel")
             
-            Text(VectorL10n.authenticationForgotPasswordInputMessage)
+            Text(viewModel.viewState.formHeaderMessage)
                 .font(theme.fonts.body)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.secondaryContent)

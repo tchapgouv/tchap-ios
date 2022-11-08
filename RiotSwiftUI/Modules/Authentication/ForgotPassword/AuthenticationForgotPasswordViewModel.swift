@@ -16,11 +16,9 @@
 
 import SwiftUI
 
-typealias AuthenticationForgotPasswordViewModelType = StateStoreViewModel<AuthenticationForgotPasswordViewState,
-                                                                       Never,
-                                                                       AuthenticationForgotPasswordViewAction>
-class AuthenticationForgotPasswordViewModel: AuthenticationForgotPasswordViewModelType, AuthenticationForgotPasswordViewModelProtocol {
+typealias AuthenticationForgotPasswordViewModelType = StateStoreViewModel<AuthenticationForgotPasswordViewState, AuthenticationForgotPasswordViewAction>
 
+class AuthenticationForgotPasswordViewModel: AuthenticationForgotPasswordViewModelType, AuthenticationForgotPasswordViewModelProtocol {
     // MARK: - Properties
 
     // MARK: Private
@@ -31,8 +29,9 @@ class AuthenticationForgotPasswordViewModel: AuthenticationForgotPasswordViewMod
 
     // MARK: - Setup
 
-    init(emailAddress: String = "") {
-        let viewState = AuthenticationForgotPasswordViewState(bindings: AuthenticationForgotPasswordBindings(emailAddress: emailAddress))
+    init(homeserver: AuthenticationHomeserverViewData, emailAddress: String = "") {
+        let viewState = AuthenticationForgotPasswordViewState(homeserver: homeserver,
+                                                              bindings: AuthenticationForgotPasswordBindings(emailAddress: emailAddress))
         super.init(initialViewState: viewState)
     }
 
@@ -69,6 +68,10 @@ class AuthenticationForgotPasswordViewModel: AuthenticationForgotPasswordViewMod
                                                  message: message)
         case .unknown:
             state.bindings.alertInfo = AlertInfo(id: type)
+        case .unauthorizedThirdPartyID:
+            state.bindings.alertInfo = AlertInfo(id: type,
+                                                 title: VectorL10n.error,
+                                                 message: TchapL10n.authenticationErrorUnauthorizedEmail)
         }
     }
 }

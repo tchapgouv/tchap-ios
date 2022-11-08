@@ -16,24 +16,9 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
-class SpaceCreationPostProcessUITests: MockScreenTest {
-
-    override class var screenType: MockScreenState.Type {
-        return MockSpaceCreationPostProcessScreenState.self
-    }
-
-    override class func createTest() -> MockScreenTest {
-        return SpaceCreationPostProcessUITests(selector: #selector(verifySpaceCreationPostProcessScreen))
-    }
-
-    func verifySpaceCreationPostProcessScreen() throws {
-        guard let screenState = screenState as? MockSpaceCreationPostProcessScreenState else { fatalError("no screen") }
-    }
-
-    func verifyTasksList() {
-    }
-
+class SpaceCreationPostProcessUITests: MockScreenTestCase {
+    // No tests have been implemented
 }

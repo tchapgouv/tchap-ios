@@ -184,7 +184,7 @@ static NSTimeInterval const roomSummaryChangeThrottlerDelay = .5;
                 self.suggestedRooms = childrenSummary.childInfos;
             }
         } failure:^(NSError * _Nonnull error) {
-            MXLogError(@"[MXKSessionRecentsDataSource] getSpaceChildrenForSpaceWithId failed with error: %@", error);
+//            MXLogError(@"[MXKSessionRecentsDataSource] getSpaceChildrenForSpaceWithId failed with error: %@", error);
         }];
     }
 }

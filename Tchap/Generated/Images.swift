@@ -61,8 +61,6 @@ internal class Asset_tchap: NSObject {
   }
   @objcMembers
   @objc(AssetSharedImages_tchap) internal class SharedImages: NSObject {
-    internal static let forumAvatarIcon = ImageAsset(name: "forum_avatar_icon")
-    internal static let privateAvatarIcon = ImageAsset(name: "private_avatar_icon")
   }
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct AuthenticationServerSelectionScreen: View {
-
     // MARK: - Properties
     
     // MARK: Private
@@ -37,7 +36,7 @@ struct AuthenticationServerSelectionScreen: View {
     // MARK: Views
     
     var body: some View {
-        GeometryReader { geometry in
+        GeometryReader { _ in
             ScrollView {
                 VStack(spacing: 0) {
                     header
@@ -62,15 +61,17 @@ struct AuthenticationServerSelectionScreen: View {
             OnboardingIconImage(image: Asset.Images.authenticationServerSelectionIcon)
                 .padding(.bottom, 8)
             
-            Text(VectorL10n.authenticationServerSelectionTitle)
+            Text(viewModel.viewState.headerTitle)
                 .font(theme.fonts.title2B)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.primaryContent)
+                .accessibilityIdentifier("headerTitle")
             
-            Text(VectorL10n.authenticationServerSelectionMessage)
+            Text(viewModel.viewState.headerMessage)
                 .font(theme.fonts.body)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.secondaryContent)
+                .accessibilityIdentifier("headerMessage")
         }
     }
     
@@ -85,11 +86,13 @@ struct AuthenticationServerSelectionScreen: View {
                     textField
                 }
                 
-                Text(viewModel.viewState.footerMessage)
-                    .font(theme.fonts.footnote)
-                    .foregroundColor(textFieldFooterColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .accessibilityIdentifier("textFieldFooter")
+                if let errorMessage = viewModel.viewState.footerErrorMessage {
+                    Text(errorMessage)
+                        .font(theme.fonts.footnote)
+                        .foregroundColor(textFieldFooterColor)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .accessibilityIdentifier("textFieldFooter")
+                }
             }
             
             Button(action: submit) {

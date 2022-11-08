@@ -21,7 +21,7 @@ platform :ios do
 
   before_all do
     # Ensure used Xcode version
-    xcversion(version: "~> 13.4")
+    xcversion(version: "~> 14.1")
   end
 
   #### Public ####
@@ -103,16 +103,16 @@ platform :ios do
     xcodegen(spec: "project.yml")
     cocoapods
 
-    # run_tests(
-    #   workspace: "Tchap.xcworkspace",
-    #   scheme: "RiotSwiftUI",
-    #   code_coverage: true,
-    #   # Test result configuration
-    #   result_bundle: true,
-    #   output_directory: "./build/test",
-    #   output_files: "riot.swiftui.unit.test.html,riot.swiftui.unit.test.report.junit.xml",
-    #   open_report: !is_ci?
-    # )
+#    run_tests(
+#      workspace: "Riot.xcworkspace",
+#      scheme: "RiotSwiftUI",
+#      code_coverage: true,
+#      # Test result configuration
+#      result_bundle: true,
+#      output_directory: "./build/test",
+#      output_files: "riot.swiftui.unit.test.html,riot.swiftui.unit.test.report.junit.xml",
+#      open_report: !is_ci?
+#    )
 
     run_tests(
       workspace: "Tchap.xcworkspace",
@@ -142,13 +142,22 @@ platform :ios do
     run_tests(
       workspace: "Tchap.xcworkspace",
       scheme: "TchapSwiftUITests",
-      device: "iPhone 13",
+      device: "iPhone 14",
       code_coverage: true,
       # Test result configuration
       result_bundle: true,
       output_directory: "./build/test",
       output_files: "riot.swiftui.ui.test.html,riot.swiftui.ui.test.report.junit.xml",
       open_report: !is_ci?
+    )
+
+    slather(
+      cobertura_xml: true,
+      output_directory: "./build/test",
+      workspace: "Riot.xcworkspace",
+      proj: "Riot.xcodeproj",
+      scheme: "RiotSwiftUITests",
+      binary_basename: "RiotSwiftUI",
     )
   end
 
@@ -193,7 +202,7 @@ platform :ios do
     
     # Clear derived data
     clear_derived_data(derived_data_path: ENV["DERIVED_DATA_PATH"])
-
+    
     # Setup project provisioning profiles
     download_provisioning_profiles(adhoc: adhoc)
     disable_automatic_code_signing
@@ -392,6 +401,21 @@ platform :ios do
     UI.command_output("Content of modified Podfile:\n" + podfile_content)
   end
 
+  desc "Upload dsym files to Sentry to symbolicate crashes"
+#  private_lane :upload_dsyms_to_sentry do
+#    UI.user_error!("'SENTRY_AUTH_TOKEN' environment variable should be set to use this lane") unless !ENV["SENTRY_AUTH_TOKEN"].to_s.empty?
+#
+#    dsym_path = "#{ENV["BUILD_OUTPUT_DIRECTORY"]}/#{ENV["IPA_NAME"]}.app.dSYM.zip"
+#
+#    sentry_upload_dif(
+#      auth_token: ENV["SENTRY_AUTH_TOKEN"],
+#      org_slug: 'element',
+#      project_slug: 'element-ios',
+#      url: 'https://sentry.tools.element.io/',
+#      path: dsym_path,
+#    )
+#  end
+
   # git_branch can return an empty screen with some CI tools (like GH actions) 
   # The CI build script needs to define MX_GIT_BRANCH with the right branch.
   def mx_git_branch
@@ -414,21 +438,21 @@ platform :ios do
   end
 end
 
-  # Update an arbitrary file by applying some RegExp replacements to its content
-  #
-  # @param [String] file The path to the file that needs replacing
-  # @param [Hash<RegExp, String>] replacements A list of replacements to apply
-  #
-  def update_file_content(file, replacements)
-    content = File.read(file)
-    replacements.each do |pattern, replacement|
-      content.gsub!(pattern, replacement)
-    end
-    File.write(file, content)
+# Update an arbitrary file by applying some RegExp replacements to its content
+#
+# @param [String] file The path to the file that needs replacing
+# @param [Hash<RegExp, String>] replacements A list of replacements to apply
+#
+def update_file_content(file, replacements)
+  content = File.read(file)
+  replacements.each do |pattern, replacement|
+    content.gsub!(pattern, replacement)
   end
+  File.write(file, content)
+end
 
-  # Generates a new build number based on timestamp
-  def generate_build_number()
-    require 'date'
-    return DateTime.now.strftime("%Y%m%d%H%M%S")
-  end
+# Generates a new build number based on timestamp
+def generate_build_number()
+  require 'date'
+  return DateTime.now.strftime("%Y%m%d%H%M%S")
+end

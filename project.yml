@@ -38,8 +38,6 @@ include:
   - path: RiotShareExtension/target.yml
   - path: RiotNSE/target.yml
   - path: TchapTests/target.yml
-  - path: Btchap/target.yml
-  - path: DevTchap/target.yml
   - path: DesignKit/target.yml
   - path: RiotSwiftUI/target.yml
   - path: RiotSwiftUI/targetUnitTests.yml
@@ -56,3 +54,9 @@ packages:
     url: https://github.com/apple/swift-collections
     minVersion: 1.0.2
     maxVersion: 2.0.0
+  SwiftOGG:
+    url: https://github.com/vector-im/swift-ogg
+    branch: main
+  DeviceKit:
+    url: https://github.com/devicekit/DeviceKit
+    majorVersion: 4.7.0

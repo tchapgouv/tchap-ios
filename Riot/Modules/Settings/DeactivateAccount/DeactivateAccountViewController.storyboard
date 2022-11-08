@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="IHf-2R-Nmh">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="IHf-2R-Nmh">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OSw-nj-Wdk">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r6I-6D-FLD">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="641"/>
@@ -55,7 +53,7 @@ Message visibility in Matrix is similar to email. Our forgetting your messages m
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7fz-Dy-5pc">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7fz-Dy-5pc">
                                                 <rect key="frame" x="83.5" y="586" width="208" height="30"/>
                                                 <color key="backgroundColor" red="0.028153735480000001" green="0.82494870580000002" blue="0.051896891280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="AuthenticationVCLoginButton"/>
@@ -102,6 +100,7 @@ Message visibility in Matrix is similar to email. Our forgetting your messages m
                                 </constraints>
                             </scrollView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="HwH-O8-jKY"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="HwH-O8-jKY" firstAttribute="top" secondItem="OSw-nj-Wdk" secondAttribute="top" id="0VJ-Ig-2ed"/>
@@ -109,7 +108,6 @@ Message visibility in Matrix is similar to email. Our forgetting your messages m
                             <constraint firstItem="HwH-O8-jKY" firstAttribute="trailing" secondItem="OSw-nj-Wdk" secondAttribute="trailing" id="slf-Q8-PKr"/>
                             <constraint firstItem="HwH-O8-jKY" firstAttribute="bottom" secondItem="OSw-nj-Wdk" secondAttribute="bottom" id="vr6-Pc-AP8"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="HwH-O8-jKY"/>
                     </view>
                     <connections>
                         <outlet property="deactivateAcccountButton" destination="7fz-Dy-5pc" id="DMS-cL-nZT"/>

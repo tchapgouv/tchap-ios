@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import SwiftUI
 
 /// The form shown to enter an email address.
 struct AuthenticationVerifyEmailForm: View {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -26,6 +25,7 @@ struct AuthenticationVerifyEmailForm: View {
     @Environment(\.theme) private var theme
     
     @State private var isEditingTextField = false
+    @State private var isPasswordFocused = false
     
     // MARK: Public
     
@@ -46,38 +46,77 @@ struct AuthenticationVerifyEmailForm: View {
     /// The title, message and icon at the top of the screen.
     var header: some View {
         VStack(spacing: 8) {
-            OnboardingIconImage(image: Asset.Images.authenticationEmailIcon)
+            // Tchap: Replace onboarding icon
+            OnboardingIconImage(image: Asset.Images.onboardingCongratulationsIcon)
                 .padding(.bottom, 8)
             
-            Text(VectorL10n.authenticationVerifyEmailInputTitle)
+            // Tchap: Add registration title
+            Text(VectorL10n.authenticationRegistrationTitle)
                 .font(theme.fonts.title2B)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.primaryContent)
-                .accessibilityIdentifier("titleLabel")
-            
-            Text(VectorL10n.authenticationVerifyEmailInputMessage)
-                .font(theme.fonts.body)
-                .multilineTextAlignment(.center)
-                .foregroundColor(theme.colors.secondaryContent)
-                .accessibilityIdentifier("messageLabel")
+
+            // Tchap: Hide other header fields
+//            Text(VectorL10n.authenticationVerifyEmailInputTitle)
+//                .font(theme.fonts.title2B)
+//                .multilineTextAlignment(.center)
+//                .foregroundColor(theme.colors.primaryContent)
+//                .accessibilityIdentifier("titleLabel")
+//
+//            Text(viewModel.viewState.formHeaderMessage)
+//                .font(theme.fonts.body)
+//                .multilineTextAlignment(.center)
+//                .foregroundColor(theme.colors.secondaryContent)
+//                .accessibilityIdentifier("messageLabel")
         }
     }
     
     /// The text field and submit button where the user enters an email address.
     var mainContent: some View {
         VStack(alignment: .leading, spacing: 12) {
-            if #available(iOS 15.0, *) {
+            // Tchap: Remove the ability to submit just with the e-mail field content
+//            if #available(iOS 15.0, *) {
+//                textField
+//                    .onSubmit(submit)
+//            } else {
                 textField
-                    .onSubmit(submit)
-            } else {
-                textField
-            }
+//            }
             
+            // Tchap: Add password management
+            RoundedBorderTextField(title: nil,
+                                   placeHolder: VectorL10n.authPasswordPlaceholder,
+                                   text: $viewModel.password,
+                                           footerText: VectorL10n.authenticationRegistrationPasswordFooter,
+                                   isError: viewModel.viewState.hasEditedPassword && viewModel.viewState.isPasswordInvalid,
+                                   isFirstResponder: isEditingTextField,//isPasswordFocused,
+                                   configuration: UIKitTextInputConfiguration(returnKeyType: .done,
+                                                                              isSecureTextEntry: true),
+                                   onEditingChanged: nil,//passwordEditingChanged,
+                                   onCommit: submit)
+            .accessibilityIdentifier("passwordTextField")
+            
+            // Tchap: Add Terms and Conditions buttons
+            HStack(alignment: .center, spacing: 8) {
+                Toggle(TchapL10n.registrationTermsLabelFormat(TchapL10n.registrationTermsLabelLink), isOn: $viewModel.userAgreeWithTermsAndConditions)
+                    .toggleStyle(AuthenticationTermsToggleStyle())
+                    .accessibilityIdentifier("termsAndConditionsToggle")
+                
+                TACText
+                    .foregroundColor(theme.colors.secondaryContent)
+                    .onTapGesture {
+                        viewModel.send(viewAction: .showTermsAndConditions)
+                    }
+            }
+            .padding(.bottom, 16)
+            .onTapGesture(perform: toggleTermsAndConditions)
+            
+            // Tchap: Update condition for activation
             Button(action: submit) {
                 Text(VectorL10n.next)
             }
             .buttonStyle(PrimaryActionButtonStyle())
-            .disabled(viewModel.viewState.hasInvalidAddress)
+            .disabled(!viewModel.viewState.canSubmit)
+//            .disabled(viewModel.viewState.hasInvalidAddress)
             .accessibilityIdentifier("nextButton")
         }
     }
@@ -94,9 +133,20 @@ struct AuthenticationVerifyEmailForm: View {
         .accessibilityIdentifier("addressTextField")
     }
     
-    /// Sends the `send` view action so long as a valid email address has been input.
+    // Tchap: Prepare the account creation when email and pwd are ready
     func submit() {
         guard !viewModel.viewState.hasInvalidAddress else { return }
-        viewModel.send(viewAction: .send)
+        viewModel.send(viewAction: .prepareAccountCreation)
+    }
+    
+    // Tchap: Add the Terms and Conditions button.
+    /// Sends the `toggleTermsAndConditions` view action.
+    func toggleTermsAndConditions() {
+        viewModel.send(viewAction: .toggleTermsAndConditions)
+    }
+    
+    // Tchap: Build Terms and Conditions text.
+    var TACText: some View {
+        return Text(TchapL10n.registrationTermsLabelFormat("")) + Text(TchapL10n.registrationTermsLabelLink).underline(true)
     }
 }

@@ -14,9 +14,9 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
-class RoomUpgradeUITests: MockScreenTest {
+class RoomUpgradeUITests: MockScreenTestCase {
     // Tests to be implemented.
 }

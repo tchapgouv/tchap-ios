@@ -31,6 +31,9 @@ targets:
     platform: iOS
     type: app-extension
 
+    dependencies:
+    - package: DeviceKit
+
     configFiles:
       Debug: Debug.xcconfig
       Release: Release.xcconfig
@@ -47,6 +50,7 @@ targets:
     - path: ../Riot/Categories/String.swift
     - path: ../Riot/Categories/UIColor.swift
     - path: ../Riot/Categories/UISearchBar.swift
+    - path: ../Riot/Categories/UITextView.swift
     - path: ../Riot/Categories/UIView.swift
     - path: ../Riot/Generated/Vector_Strings.swift
     - path: ../Riot/Managers/AppInfo/

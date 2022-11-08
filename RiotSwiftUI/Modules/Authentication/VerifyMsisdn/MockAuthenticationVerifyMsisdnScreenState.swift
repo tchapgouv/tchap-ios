@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,18 +34,23 @@ enum MockAuthenticationVerifyMsisdnScreenState: MockScreenState, CaseIterable {
     }
     
     /// Generate the view struct for the screen state.
-    var screenView: ([Any], AnyView)  {
+    var screenView: ([Any], AnyView) {
         let viewModel: AuthenticationVerifyMsisdnViewModel
         switch self {
         case .emptyPhoneNumber:
-            viewModel = AuthenticationVerifyMsisdnViewModel(phoneNumber: "")
+            viewModel = AuthenticationVerifyMsisdnViewModel(homeserver: .mockMatrixDotOrg,
+                                                            phoneNumber: "")
         case .enteredPhoneNumber:
-            viewModel = AuthenticationVerifyMsisdnViewModel(phoneNumber: "+44 XXXXXXXXX")
+            viewModel = AuthenticationVerifyMsisdnViewModel(homeserver: .mockMatrixDotOrg,
+                                                            phoneNumber: "+44 XXXXXXXXX")
         case .hasSentSMS:
-            viewModel = AuthenticationVerifyMsisdnViewModel(phoneNumber: "+44 XXXXXXXXX")
+            viewModel = AuthenticationVerifyMsisdnViewModel(homeserver: .mockMatrixDotOrg,
+                                                            phoneNumber: "+44 XXXXXXXXX")
             Task { await viewModel.updateForSentSMS() }
         case .enteredOTP:
-            viewModel = AuthenticationVerifyMsisdnViewModel(phoneNumber: "+44 XXXXXXXXX", otp: "123456")
+            viewModel = AuthenticationVerifyMsisdnViewModel(homeserver: .mockMatrixDotOrg,
+                                                            phoneNumber: "+44 XXXXXXXXX",
+                                                            otp: "123456")
             Task { await viewModel.updateForSentSMS() }
         }
         

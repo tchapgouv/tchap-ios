@@ -49,7 +49,7 @@ final class AppVersionCheckerTests: XCTestCase {
         
         let appVersionChecker = AppVersionChecker(clientConfigurationService: clientConfigurationService, appVersionCheckerStore: appVersionCheckerStore)
         
-        let appVersion = AppVersion(bundleShortVersion: "1.0.19", bundleVersion: "1")
+        let appVersion = Tchap.AppVersion(bundleShortVersion: "1.0.19", bundleVersion: "1")
         
         appVersionChecker.checkAppVersion(appVersion) { (appVersionCheckerResult) in
             if case .upToDate = appVersionCheckerResult {
@@ -71,7 +71,7 @@ final class AppVersionCheckerTests: XCTestCase {
         
         let appVersionChecker = AppVersionChecker(clientConfigurationService: clientConfigurationService, appVersionCheckerStore: appVersionCheckerStore)
         
-        let appVersion = AppVersion(bundleShortVersion: "1.0.18", bundleVersion: "1")
+        let appVersion = Tchap.AppVersion(bundleShortVersion: "1.0.18", bundleVersion: "1")
         
         appVersionChecker.checkAppVersion(appVersion) { (appVersionCheckerResult) in
             if case let .shouldUpdate(versionInfo: versionInfo) = appVersionCheckerResult {
@@ -100,7 +100,7 @@ final class AppVersionCheckerTests: XCTestCase {
         
         let appVersionChecker = AppVersionChecker(clientConfigurationService: clientConfigurationService, appVersionCheckerStore: appVersionCheckerStore)
         
-        let appVersion = AppVersion(bundleShortVersion: "1.0.16", bundleVersion: "1")
+        let appVersion = Tchap.AppVersion(bundleShortVersion: "1.0.16", bundleVersion: "1")
         
         appVersionChecker.checkAppVersion(appVersion) { (appVersionCheckerResult) in
             if case let .shouldUpdate(versionInfo: versionInfo) = appVersionCheckerResult {
@@ -129,7 +129,7 @@ final class AppVersionCheckerTests: XCTestCase {
         
         let appVersionChecker = AppVersionChecker(clientConfigurationService: clientConfigurationService, appVersionCheckerStore: appVersionCheckerStore)
         
-        let appVersion = AppVersion(bundleShortVersion: "1.0.10", bundleVersion: "1")
+        let appVersion = Tchap.AppVersion(bundleShortVersion: "1.0.10", bundleVersion: "1")
         
         appVersionChecker.checkAppVersion(appVersion) { (appVersionCheckerResult) in
             if case let .shouldUpdate(versionInfo: versionInfo) = appVersionCheckerResult {

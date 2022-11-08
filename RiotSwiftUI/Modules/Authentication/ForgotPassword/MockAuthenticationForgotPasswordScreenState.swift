@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,15 +33,18 @@ enum MockAuthenticationForgotPasswordScreenState: MockScreenState, CaseIterable 
     }
     
     /// Generate the view struct for the screen state.
-    var screenView: ([Any], AnyView)  {
+    var screenView: ([Any], AnyView) {
         let viewModel: AuthenticationForgotPasswordViewModel
         switch self {
         case .emptyAddress:
-            viewModel = AuthenticationForgotPasswordViewModel(emailAddress: "")
+            viewModel = AuthenticationForgotPasswordViewModel(homeserver: .mockMatrixDotOrg,
+                                                              emailAddress: "")
         case .enteredAddress:
-            viewModel = AuthenticationForgotPasswordViewModel(emailAddress: "test@example.com")
+            viewModel = AuthenticationForgotPasswordViewModel(homeserver: .mockMatrixDotOrg,
+                                                              emailAddress: "test@example.com")
         case .hasSentEmail:
-            viewModel = AuthenticationForgotPasswordViewModel(emailAddress: "test@example.com")
+            viewModel = AuthenticationForgotPasswordViewModel(homeserver: .mockMatrixDotOrg,
+                                                              emailAddress: "test@example.com")
             Task { await viewModel.updateForSentEmail() }
         }
         

@@ -14,16 +14,17 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
 import libPhoneNumber_iOS
+import SwiftUI
 
 struct AuthenticationVerifyMsisdnCoordinatorParameters {
     let registrationWizard: RegistrationWizard
+    /// The homeserver that is requesting MSISDN verification.
+    let homeserver: AuthenticationState.Homeserver
 }
 
 final class AuthenticationVerifyMsisdnCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -55,7 +56,7 @@ final class AuthenticationVerifyMsisdnCoordinator: Coordinator, Presentable {
     @MainActor init(parameters: AuthenticationVerifyMsisdnCoordinatorParameters) {
         self.parameters = parameters
         
-        let viewModel = AuthenticationVerifyMsisdnViewModel()
+        let viewModel = AuthenticationVerifyMsisdnViewModel(homeserver: parameters.homeserver.viewData)
         let view = AuthenticationVerifyMsisdnScreen(viewModel: viewModel.context)
         authenticationVerifyMsisdnViewModel = viewModel
         authenticationVerifyMsisdnHostingController = VectorHostingController(rootView: view)
@@ -73,7 +74,7 @@ final class AuthenticationVerifyMsisdnCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.authenticationVerifyMsisdnHostingController
+        authenticationVerifyMsisdnHostingController
     }
     
     // MARK: - Private
@@ -172,7 +173,6 @@ final class AuthenticationVerifyMsisdnCoordinator: Coordinator, Presentable {
                 self?.stopLoading()
                 self?.handleError(error)
             }
-
         }
     }
     
@@ -204,7 +204,8 @@ final class AuthenticationVerifyMsisdnCoordinator: Coordinator, Presentable {
     /// Processes an error to either update the flow or display it to the user.
     @MainActor private func handleError(_ error: Error) {
         if let mxError = MXError(nsError: error as NSError) {
-            authenticationVerifyMsisdnViewModel.displayError(.mxError(mxError.error))
+            let message = mxError.authenticationErrorMessage()
+            authenticationVerifyMsisdnViewModel.displayError(.mxError(message))
             return
         }
 

@@ -16,12 +16,9 @@
 
 import SwiftUI
 
-typealias AuthenticationLoginViewModelType = StateStoreViewModel<AuthenticationLoginViewState,
-                                                                 Never,
-                                                                 AuthenticationLoginViewAction>
+typealias AuthenticationLoginViewModelType = StateStoreViewModel<AuthenticationLoginViewState, AuthenticationLoginViewAction>
 
 class AuthenticationLoginViewModel: AuthenticationLoginViewModelType, AuthenticationLoginViewModelProtocol {
-
     // MARK: - Properties
 
     // MARK: Public
@@ -52,7 +49,7 @@ class AuthenticationLoginViewModel: AuthenticationLoginViewModelType, Authentica
         case .fallback:
             Task { await callback?(.fallback) }
         case .continueWithSSO(let provider):
-            Task { await callback?(.continueWithSSO(provider))}
+            Task { await callback?(.continueWithSSO(provider)) }
         }
     }
     
@@ -77,6 +74,10 @@ class AuthenticationLoginViewModel: AuthenticationLoginViewModelType, Authentica
                                                  message: VectorL10n.authenticationServerSelectionGenericError)
         case .unknown:
             state.bindings.alertInfo = AlertInfo(id: type)
+        case .unauthorizedThirdPartyID:
+            state.bindings.alertInfo = AlertInfo(id: type,
+                                                 title: VectorL10n.error,
+                                                 message: TchapL10n.authenticationErrorUnauthorizedEmail)
         }
     }
 }

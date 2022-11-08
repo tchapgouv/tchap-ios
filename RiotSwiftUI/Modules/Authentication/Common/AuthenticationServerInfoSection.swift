@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import SwiftUI
 /// A view that shows information about the chosen homeserver,
 /// along with an edit button to pick a different one.
 struct AuthenticationServerInfoSection: View {
-    
     // MARK: - Private
     
     @Environment(\.theme) private var theme
@@ -27,30 +26,25 @@ struct AuthenticationServerInfoSection: View {
     // MARK: - Public
     
     let address: String
-    let showMatrixDotOrgInfo: Bool
+    let flow: AuthenticationFlow
     let editAction: () -> Void
+    
+    var title: String {
+        flow == .login ? VectorL10n.authenticationServerInfoTitleLogin : VectorL10n.authenticationServerInfoTitle
+    }
     
     // MARK: - Views
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(VectorL10n.authenticationServerInfoTitle)
+            Text(title)
                 .font(theme.fonts.subheadline)
                 .foregroundColor(theme.colors.secondaryContent)
             
             HStack {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(address)
-                        .font(theme.fonts.body)
-                        .foregroundColor(theme.colors.primaryContent)
-                    
-                    if showMatrixDotOrgInfo {
-                        Text(VectorL10n.authenticationServerInfoMatrixDescription)
-                            .font(theme.fonts.caption1)
-                            .foregroundColor(theme.colors.tertiaryContent)
-                            .accessibilityIdentifier("serverDescriptionText")
-                    }
-                }
+                Text(address)
+                    .font(theme.fonts.body)
+                    .foregroundColor(theme.colors.primaryContent)
                 
                 Spacer()
                 

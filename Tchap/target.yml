@@ -1,14 +1,14 @@
 name: Tchap
 
-schemes:
-  Tchap:
+schemeTemplates:
+  BaseScheme:
     analyze:
       config: Debug
     archive:
       config: Release
     build:
       targets:
-        Tchap:
+        ${scheme_name}:
         - running
         - testing
         - profiling
@@ -25,8 +25,21 @@ schemes:
       targets:
       - TchapTests
 
-targets:
+schemes:
   Tchap:
+    templates:
+      - BaseScheme
+
+  Btchap:
+    templates:
+      - BaseScheme
+
+  DevTchap:
+    templates:
+      - BaseScheme
+
+targetTemplates:
+  BaseTarget:
     type: application
     platform: iOS
 
@@ -35,10 +48,8 @@ targets:
     - target: RiotNSE
     - target: DesignKit
     - target: CommonKit
-
-    configFiles:
-      Debug: SupportingFiles/App-Debug.xcconfig
-      Release: SupportingFiles/App-Release.xcconfig
+    - package: OrderedCollections
+    - package: DeviceKit
 
     preBuildScripts:
     - name: 🛠 Environment
@@ -55,21 +66,53 @@ targets:
       script: "\"${PODS_ROOT}/SwiftGen/bin/swiftgen\" config run --config \"Tools/SwiftGen/swiftgen-config.yml\"\n"
 
     sources:
-    - path: ../Tchap/Config
     - path: ../Config/AppConfiguration.swift
     - path: ../Config/Project.xcconfig
     - path: ../Config/Project-Warnings.xcconfig
     - path: ../Config/AppIdentifiers.xcconfig
     - path: ../Config/CommonConfiguration.swift
     - path: ../Config/Configurable.swift
-    - path: .
+    - path: ../Tchap
       excludes:
+        - "target.yml"
+        - "Assets/TchapSharedImages.xcassets"
+        - "Config/BuildSettings.swift"
+        - "Generated/InfoPlist.swift"
+        - "Generated/TchapDefaults.swift"
+        - "Managers/AppVersion/AppVersion.swift"
+        - "Managers/UniversalLink"
+        - "Modules/Application"
+        - "Modules/Common/ActivityIndicator"
+        - "Modules/Home/HomeCoordinator.swift"
+        - "Modules/Home/HomeCoordinatorType.swift"
+        - "Modules/Room/DiscussionDetailsCoordinator.swift"
+        - "Modules/Room/RoomCoordinator.swift"
+        - "Modules/Room/RoomDetailsCoordinator.swift"
+        - "Modules/Room/RoomDetailsCoordinatorType.swift"
+        - "Modules/Room/RoomViewController.*"
+        - "Modules/Room/EmojiPicker/Data/EmojiMart/EmojiJSONStore.swift"
+        - "Modules/Room/Members/Detail/RoomMemberDetailsViewController.xib"
+        - "Modules/Room/Members/Detail/Views/RoomMemberTitleView.*"
+        - "Modules/Room/Settings/RoomSettingsViewController.*"
+        - "Modules/Room/Views/BubbleCells"
+        - "Modules/Room/Views/InputToolbar/RoomInputToolbarView.*"
+        - "Modules/Room/Views/Preview"
+        - "Modules/Room/Views/Title/RoomTitleView.*"
+        - "Modules/Rooms"
+        - "Modules/Settings/SettingsViewController.*"
+        - "Routers"
+        - "SupportingFiles/Info.plist"
         - "Tools"
         - "**/*.strings" # Exclude all strings files
+        - "**/*.cer"
+    - path: ../Tchap/Generated/Images_Riot.swift
+    - path: ../Tchap/Modules/Application/VersionUpdate
+    - path: ../Tchap/Modules/Room/Views/BubbleCells/Antivirus
+
 
     # Add separately localizable files
-    - path: Assets/Localizations/fr.lproj/Tchap.strings
-    - path: Assets/Localizations/fr.lproj/Tchap.stringsdict
+    - path: ../Tchap/Assets/Localizations/fr.lproj/Tchap.strings
+    - path: ../Tchap/Assets/Localizations/fr.lproj/Tchap.stringsdict
     
     # Riot
     - path: ../Riot/Assets/apple_emojis_data.json
@@ -81,9 +124,6 @@ targets:
     - path: ../Riot/Assets/Sounds
     - path: ../Riot/Assets/third_party_licenses.html
     - path: ../Riot/Categories
-      excludes:
-        - "MXHTTPClient+Async.swift"
-        - "MXRestClient+Async.swift"
     - path: ../Riot/Coordinators
     - path: ../Riot/Generated/UntranslatedStrings.swift
     - path: ../Riot/Generated/Vector_Strings.swift
@@ -116,8 +156,9 @@ targets:
     - path: ../Riot/Model/WellKnown
     - path: ../Riot/Modules/Analytics
     - path: ../Riot/Modules/Application
-    - path: ../Riot/Modules/Authentication/SSO
-    - path: ../Riot/Modules/Authentication/Views
+    - path: ../Riot/Modules/Authentication
+      excludes:
+        - "Legacy"
     - path: ../Riot/Modules/BadgeLabel
     - path: ../Riot/Modules/BugReport/BugReportViewController.h
     - path: ../Riot/Modules/BugReport/BugReportViewController.m
@@ -157,9 +198,8 @@ targets:
     - path: ../Riot/Modules/Common/UserIndicators
     - path: ../Riot/Modules/Common/Views
     - path: ../Riot/Modules/Common/WebViewController
-    - path: ../Riot/Modules/Communities/DataSources
-    - path: ../Riot/Modules/Communities/Views
     - path: ../Riot/Modules/Contacts
+    - path: ../Riot/Modules/ContextMenu
     - path: ../Riot/Modules/CreateRoom
     - path: ../Riot/Modules/CrossSigning
     - path: ../Riot/Modules/DeepLink
@@ -167,7 +207,11 @@ targets:
     - path: ../Riot/Modules/EncryptionInfo/EncryptionInfoView.h
     - path: ../Riot/Modules/EncryptionInfo/EncryptionInfoView.m
     - path: ../Riot/Modules/Favorites
+    - path: ../Riot/Modules/Home/AllChats
     - path: ../Riot/Modules/Home/Fallback
+    - path: ../Riot/Modules/Home/HomeViewController.h
+    - path: ../Riot/Modules/Home/HomeViewController.m
+    - path: ../Riot/Modules/Home/VersionCheck
     - path: ../Riot/Modules/Home/Views
     - path: ../Riot/Modules/GDPR
     - path: ../Riot/Modules/GlobalSearch/Files/CellData/FilesSearchCellData.h
@@ -189,18 +233,16 @@ targets:
     - path: ../Riot/Modules/Reauthentication
     - path: ../Riot/Modules/Room
       excludes:
-        - "DataSources/ThreadDataSource.swift"
         - "Location"
         - "RoomViewController+LocationSharing.swift"
+        - "TimelineCells/LocationView"
         - "TimelineCells/Styles/Plain/Cells/Location"
         - "TimelineCells/Styles/Plain/Cells/Poll"
         - "TimelineCells/Styles/Bubble/Cells/Location"
         - "TimelineCells/Styles/Bubble/Cells/Poll"
-        - "TimelineDecorations/Threads"
         - "Views/BubbleCells/KeyVerification/SizingViewHeight.swift"
         - "Views/BubbleCells/Location"
         - "Views/BubbleCells/Poll"
-        - "Views/Title/Thread"
     - path: ../Riot/Modules/RoomKeyRequest/RoomKeyRequestViewController.h
     - path: ../Riot/Modules/RoomKeyRequest/RoomKeyRequestViewController.m
     - path: ../Riot/Modules/Rooms
@@ -211,9 +253,11 @@ targets:
     - path: ../Riot/Modules/Settings
     - path: ../Riot/Modules/SideMenu
     - path: ../Riot/Modules/SlidingModal
+    - path: ../Riot/Modules/Spaces
     - path: ../Riot/Modules/SplitView
     - path: ../Riot/Modules/StartChat
     - path: ../Riot/Modules/TabBar
+    - path: ../Riot/Modules/Threads
     - path: ../Riot/Modules/User/Avatar
     - path: ../Riot/Modules/UserDevices/UsersDevicesViewController.h
     - path: ../Riot/Modules/UserDevices/UsersDevicesViewController.m
@@ -225,15 +269,13 @@ targets:
     - path: ../Riot/Utils
 
     # Riot SwiftUI
+    - path: ../RiotSwiftUI/Extensions
     - path: ../RiotSwiftUI/Modules
       # Riot will provide it's own LocaleProviderType so exclude.
       excludes:
       - "**/Test/**"
-      - "Authentication/**/Coordinator/**"
-      - "Authentication/Common/Service/MatrixSDK"
-      - "Authentication/Registration"
-      - "Authentication/ServerSelection"
       - "Common/Locale/LocaleProvider.swift"
+      - "LocationSharing"
       - "Room/LiveLocationSharingViewer"
       - "Room/LocationSharing"
       - "Room/StaticLocationSharingViewer"
@@ -274,3 +316,47 @@ targets:
       buildPhase: resources
     - path: ../Riot/Modules/UserDevices/Views/DeviceTableViewCell.xib
       buildPhase: resources
+
+targets:
+  Tchap:
+    templates: 
+      - BaseTarget
+
+    configFiles:
+      Debug: ../Tchap/SupportingFiles/App-Debug.xcconfig
+      Release: ../Tchap/SupportingFiles/App-Release.xcconfig
+
+    sources:
+    - path: ../Tchap/Assets
+      excludes:
+        - "**/*.strings" # Exclude all strings files
+    - path: ../Tchap/Config
+    - path: ../Tchap/Generated
+
+  Btchap:
+    templates: 
+      - BaseTarget
+
+    configFiles:
+      Debug: ../Btchap/SupportingFiles/Btchap-App-Debug.xcconfig
+      Release: ../Btchap/SupportingFiles/Btchap-App-Release.xcconfig
+
+    sources:
+    - path: ../Btchap
+      excludes:
+        - "**/*.strings" # Exclude all strings files
+        - "SupportingFiles/Info.plist"
+
+  DevTchap:
+    templates: 
+      - BaseTarget
+
+    configFiles:
+      Debug: ../DevTchap/SupportingFiles/DevTchap-App-Debug.xcconfig
+      Release: ../DevTchap/SupportingFiles/DevTchap-App-Release.xcconfig
+
+    sources:
+    - path: ../DevTchap
+      excludes:
+        - "**/*.strings" # Exclude all strings files
+        - "SupportingFiles/Info.plist"

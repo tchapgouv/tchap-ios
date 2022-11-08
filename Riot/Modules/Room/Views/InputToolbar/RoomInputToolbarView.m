@@ -30,7 +30,7 @@ static const NSTimeInterval kActionMenuAttachButtonAnimationDuration = .4;
 static const NSTimeInterval kActionMenuContentAlphaAnimationDuration = .2;
 static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 
-@interface RoomInputToolbarView() <UITextViewDelegate, RoomInputToolbarTextViewDelegate>
+@interface RoomInputToolbarView() <UITextViewDelegate, RoomInputToolbarTextViewDelegate, RoomInputToolbarViewProtocol>
 
 @property (nonatomic, weak) IBOutlet UIView *mainToolbarView;
 
@@ -80,22 +80,28 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     [self updateUIWithAttributedTextMessage:nil animated:NO];
     
     self.textView.toolbarDelegate = self;
-    
-    // Add an accessory view to the text view in order to retrieve keyboard view.
-    inputAccessoryView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.textView.inputAccessoryView = inputAccessoryView;
+
+    inputAccessoryViewForKeyboard = [[UIView alloc] initWithFrame:CGRectZero];
+    self.textView.inputAccessoryView = inputAccessoryViewForKeyboard;
 }
 
 - (void)setVoiceMessageToolbarView:(UIView *)voiceMessageToolbarView
 {
-    _voiceMessageToolbarView = voiceMessageToolbarView;
-    self.voiceMessageToolbarView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:self.voiceMessageToolbarView];
+    if (voiceMessageToolbarView) {
+        _voiceMessageToolbarView = voiceMessageToolbarView;
+        self.voiceMessageToolbarView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self addSubview:self.voiceMessageToolbarView];
 
-    [NSLayoutConstraint activateConstraints:@[[self.mainToolbarView.topAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.topAnchor],
-                                              [self.mainToolbarView.leftAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.leftAnchor],
-                                              [self.mainToolbarView.bottomAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.bottomAnchor],
-                                              [self.mainToolbarView.rightAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.rightAnchor]]];
+        [NSLayoutConstraint activateConstraints:@[[self.mainToolbarView.topAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.topAnchor],
+                                                  [self.mainToolbarView.leftAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.leftAnchor],
+                                                  [self.mainToolbarView.bottomAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.bottomAnchor],
+                                                  [self.mainToolbarView.rightAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.rightAnchor]]];
+    }
+    else
+    {
+        [self.voiceMessageToolbarView removeFromSuperview];
+        _voiceMessageToolbarView = nil;
+    }
 }
 
 #pragma mark - Override MXKView
@@ -174,6 +180,13 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     }
 
     self.textView.attributedText = attributedTextMessage;
+
+    if (@available(iOS 15.0, *)) {
+        // Fixes an iOS 16 issue where attachment are not drawn properly by
+        // forcing the layoutManager to redraw the glyphs at all NSAttachment positions.
+        [self.textView vc_invalidateTextAttachmentsDisplay];
+    }
+
     [self updateUIWithAttributedTextMessage:attributedTextMessage animated:YES];
     [self textViewDidChange:self.textView];
 }
@@ -243,6 +256,10 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
             updatedHeight += kContextBarHeight;
             self.textView.maxHeight -= kContextBarHeight;
             break;
+        case RoomInputToolbarViewSendModeCreateDM:
+            buttonImage = AssetImages_tchap.sendIcon.image;
+            self.inputContextViewHeightConstraint.constant = 0;
+            break;
         default:
             buttonImage = AssetImages_tchap.sendIcon.image;
 
@@ -299,6 +316,10 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
             case RoomInputToolbarViewSendModeReply:
                 placeholder = [VectorL10n roomMessageReplyToShortPlaceholder];
                 break;
+                
+            case RoomInputToolbarViewSendModeCreateDM:
+                placeholder = [VectorL10n roomFirstMessagePlaceholder];
+                break;
 
             default:
                 placeholder = [VectorL10n roomMessageShortPlaceholder];
@@ -328,6 +349,10 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
                     placeholder = [VectorL10n roomMessageReplyToPlaceholder];
                     break;
 
+                case RoomInputToolbarViewSendModeCreateDM:
+                    placeholder = [VectorL10n roomFirstMessagePlaceholder];
+                    break;
+                    
                 default:
                     placeholder = [VectorL10n roomMessagePlaceholder];
                     break;
@@ -516,6 +541,12 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
         
         self.voiceMessageToolbarView.alpha = attributedTextMessage.length ? 0.0f : 1.0;
     }];
+}
+
+#pragma mark - RoomInputToolbarViewProtocol
+
+- (CGFloat)toolbarHeight {
+    return self.mainToolbarHeightConstraint.constant;
 }
 
 @end

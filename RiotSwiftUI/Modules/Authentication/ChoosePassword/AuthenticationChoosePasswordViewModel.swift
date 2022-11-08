@@ -16,11 +16,9 @@
 
 import SwiftUI
 
-typealias AuthenticationChoosePasswordViewModelType = StateStoreViewModel<AuthenticationChoosePasswordViewState,
-                                                                       Never,
-                                                                       AuthenticationChoosePasswordViewAction>
-class AuthenticationChoosePasswordViewModel: AuthenticationChoosePasswordViewModelType, AuthenticationChoosePasswordViewModelProtocol {
+typealias AuthenticationChoosePasswordViewModelType = StateStoreViewModel<AuthenticationChoosePasswordViewState, AuthenticationChoosePasswordViewAction>
 
+class AuthenticationChoosePasswordViewModel: AuthenticationChoosePasswordViewModelType, AuthenticationChoosePasswordViewModelProtocol {
     // MARK: - Properties
 
     // MARK: Private
@@ -31,7 +29,8 @@ class AuthenticationChoosePasswordViewModel: AuthenticationChoosePasswordViewMod
 
     // MARK: - Setup
 
-    init(password: String = "", signoutAllDevices: Bool = false) {
+    // Tchap: Update default signoutAllDevices value
+    init(password: String = "", signoutAllDevices: Bool = true) {
         let viewState = AuthenticationChoosePasswordViewState(bindings: AuthenticationChoosePasswordBindings(password: password, signoutAllDevices: signoutAllDevices))
         super.init(initialViewState: viewState)
     }
@@ -55,6 +54,10 @@ class AuthenticationChoosePasswordViewModel: AuthenticationChoosePasswordViewMod
             state.bindings.alertInfo = AlertInfo(id: type,
                                                  title: VectorL10n.error,
                                                  message: message)
+        case .emailNotVerified:
+            state.bindings.alertInfo = AlertInfo(id: type,
+                                                 title: VectorL10n.authenticationChoosePasswordNotVerifiedTitle,
+                                                 message: VectorL10n.authenticationChoosePasswordNotVerifiedMessage)
         case .unknown:
             state.bindings.alertInfo = AlertInfo(id: type)
         }

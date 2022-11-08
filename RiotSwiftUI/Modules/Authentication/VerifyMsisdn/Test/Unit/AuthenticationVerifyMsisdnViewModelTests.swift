@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,12 +19,11 @@ import XCTest
 @testable import RiotSwiftUI
 
 class AuthenticationVerifyMsisdnViewModelTests: XCTestCase {
-
     var viewModel: AuthenticationVerifyMsisdnViewModelProtocol!
     var context: AuthenticationVerifyMsisdnViewModelType.Context!
     
     override func setUpWithError() throws {
-        viewModel = AuthenticationVerifyMsisdnViewModel()
+        viewModel = AuthenticationVerifyMsisdnViewModel(homeserver: .mockMatrixDotOrg)
         context = viewModel.context
     }
 

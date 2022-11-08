@@ -45,7 +45,8 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         parameters.router
     }
     /// A strong ref to the legacy authVC as we need to init early to preload its view.
-    private let legacyAuthenticationCoordinator: LegacyAuthenticationCoordinator
+    // Tchap: Disable legacy authentication
+//    private let legacyAuthenticationCoordinator: LegacyAuthenticationCoordinator
     /// The currently active authentication coordinator, otherwise `nil`.
     private weak var authenticationCoordinator: AuthenticationCoordinatorProtocol?
     
@@ -84,9 +85,10 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         self.parameters = parameters
         
         // Preload the legacy authVC (it is *really* slow to load in realtime)
-        let params = LegacyAuthenticationCoordinatorParameters(navigationRouter: parameters.router,
-                                                               canPresentAdditionalScreens: false)
-        legacyAuthenticationCoordinator = LegacyAuthenticationCoordinator(parameters: params)
+        // Tchap: Disable legacy authentication
+//        let params = LegacyAuthenticationCoordinatorParameters(navigationRouter: parameters.router,
+//                                                               canPresentAdditionalScreens: false)
+//        legacyAuthenticationCoordinator = LegacyAuthenticationCoordinator(parameters: params)
 
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: parameters.router.toPresentable())
         
@@ -156,11 +158,14 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         splashScreenResult = result
         
         // Set the auth type early on the legacy auth to allow network requests to finish during display of the use case screen.
-        legacyAuthenticationCoordinator.update(authenticationFlow: result.flow)
+        // Tchap: Disable legacy authentication
+//        legacyAuthenticationCoordinator.update(authenticationFlow: result.flow)
         
         switch result {
         case .register:
-            showUseCaseSelectionScreen()
+            // Tchap: Bypass usecase selection screen
+//            showUseCaseSelectionScreen()
+            
         case .login:
             if BuildSettings.onboardingEnableNewAuthenticationFlow {
                 beginAuthentication(with: .login, onStart: coordinator.stop)
@@ -205,11 +210,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
             return
         }
         
-        if result == .customServer {
-            beginAuthentication(with: .selectServerForRegistration, onStart: coordinator.stop)
-        } else {
-            beginAuthentication(with: .registration, onStart: coordinator.stop)
-        }
+        beginAuthentication(with: .registration, onStart: coordinator.stop)
     }
     
     // MARK: - Authentication
@@ -249,38 +250,37 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     private func showLegacyAuthenticationScreen(forceAsRootModule: Bool = false) {
         MXLog.debug("[OnboardingCoordinator] showLegacyAuthenticationScreen")
         
-        let coordinator = legacyAuthenticationCoordinator
-        coordinator.callback = { [weak self, weak coordinator] result in
-            guard let self = self, let coordinator = coordinator else { return }
-            
-            switch result {
-            case .didLogin(let session, let authenticationFlow, let authenticationType):
-                self.authenticationCoordinator(coordinator, didLoginWith: session, and: authenticationFlow, using: authenticationType)
-            case .didComplete:
-                self.authenticationCoordinatorDidComplete(coordinator)
-            case .clearAllData:
-                self.showClearAllDataConfirmation()
-            case .didStart, .cancel:
-                // These results are only sent by the new flow.
-                break
-            }
-        }
-
-        coordinator.customServerFieldsVisible = useCaseResult == .customServer
-
-        authenticationCoordinator = coordinator
-        
-        coordinator.start()
-        add(childCoordinator: coordinator)
-
-        if navigationRouter.modules.isEmpty || forceAsRootModule {
-            navigationRouter.setRootModule(coordinator, popCompletion: nil)
-        } else {
-            navigationRouter.push(coordinator, animated: true) { [weak self] in
-                self?.remove(childCoordinator: coordinator)
-            }
-        }
-        stopLoading()
+        // Tchap: Disable legacy authentication
+//        let coordinator = legacyAuthenticationCoordinator
+//        coordinator.callback = { [weak self, weak coordinator] result in
+//            guard let self = self, let coordinator = coordinator else { return }
+//
+//            switch result {
+//            case .didLogin(let session, let authenticationFlow, let authenticationType):
+//                self.authenticationCoordinator(coordinator, didLoginWith: session, and: authenticationFlow, using: authenticationType)
+//            case .didComplete:
+//                self.authenticationCoordinatorDidComplete(coordinator)
+//            case .clearAllData:
+//                self.showClearAllDataConfirmation()
+//            case .didStart, .cancel:
+//                // These results are only sent by the new flow.
+//                break
+//            }
+//        }
+//
+//        authenticationCoordinator = coordinator
+//
+//        coordinator.start()
+//        add(childCoordinator: coordinator)
+//
+//        if navigationRouter.modules.isEmpty || forceAsRootModule {
+//            navigationRouter.setRootModule(coordinator, popCompletion: nil)
+//        } else {
+//            navigationRouter.push(coordinator, animated: true) { [weak self] in
+//                self?.remove(childCoordinator: coordinator)
+//            }
+//        }
+//        stopLoading()
     }
     
     /// Cancels the registration flow, returning to the Use Case screen.
@@ -312,8 +312,11 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         if authenticationFlow == .register,
            let userId = session.credentials.userId,
            let userSession = UserSessionsService.shared.userSession(withUserId: userId) {
+            // Skip personalisation when a generic SSO provider was used in case it already included the same steps.
+            let shouldShowPersonalization = BuildSettings.onboardingShowAccountPersonalization && authenticationType.analyticsType != .SSO
+            
             // If personalisation is to be shown, check that the homeserver supports it otherwise show the congratulations screen
-            if BuildSettings.onboardingShowAccountPersonalization {
+            if shouldShowPersonalization {
                 checkHomeserverCapabilities(for: userSession)
                 return
             } else {
@@ -572,6 +575,9 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         trackSignup()
         
         completion?()
+        
+        // Reset the authentication service back to using matrix.org
+        authenticationService.reset(useDefaultServer: true)
     }
     
     /// Sends a signup event to the Analytics class if onboarding has completed via the register flow.
@@ -630,7 +636,7 @@ extension OnboardingSplashScreenViewModelResult {
 
 extension OnboardingUseCaseViewModelResult {
     /// The result converted into the type stored in the user session.
-    var userSessionPropertyValue: UserSessionProperties.UseCase? {
+    var userSessionPropertyValue: UserSessionProperties.UseCase {
         switch self {
         case .personalMessaging:
             return .personalMessaging
@@ -640,8 +646,6 @@ extension OnboardingUseCaseViewModelResult {
             return .communityMessaging
         case .skipped:
             return .skipped
-        case .customServer:
-            return nil
         }
     }
 }

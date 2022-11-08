@@ -63,7 +63,7 @@ class RegistrationWizard {
         self.client = client
         self.sessionCreator = sessionCreator
         
-        self.state = State()
+        state = State()
     }
     
     /// Call this method to get the possible registration flow of the current homeserver.
@@ -164,7 +164,7 @@ class RegistrationWizard {
     /// Send the code received by SMS to validate a msisdn.
     /// If the code is correct, the registration request will be executed to validate the msisdn.
     func handleValidateThreePID(code: String) async throws -> RegistrationResult {
-        return try await validateThreePid(code: code)
+        try await validateThreePid(code: code)
     }
 
     /// Useful to poll the homeserver when waiting for the email to be validated by the user.
@@ -197,7 +197,6 @@ class RegistrationWizard {
             throw RegistrationError.missingThreePIDURL
         }
         
-        
         let validationBody = ThreePIDValidationCodeBody(clientSecret: state.clientSecret,
                                                         sessionID: threePIDData.registrationResponse.sessionID,
                                                         code: code)
@@ -222,9 +221,14 @@ class RegistrationWizard {
             throw RegistrationError.createAccountNotCalled
         }
         
+        let nextLink = buildNextLink(webAppBaseStringURL: client.homeserver,
+                                     clientSecret: state.clientSecret,
+                                     sessionId: session)
+        
         let response = try await client.requestTokenDuringRegistration(for: threePID,
                                                                        clientSecret: state.clientSecret,
-                                                                       sendAttempt: state.sendAttempt)
+                                                                       sendAttempt: state.sendAttempt,
+                                                                       nextLink: nextLink)
         
         state.sendAttempt += 1
         
@@ -251,11 +255,29 @@ class RegistrationWizard {
         }
     }
     
+    // Tchap: Add build next link for users whom killed the app before clicking to the e-mail link.
+    private func buildNextLink(webAppBaseStringURL: String,
+                               clientSecret: String,
+                               sessionId: String) -> String? {
+        
+        let percentEncode: ((String) -> String?) = { stringToEncode in
+            stringToEncode.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        }
+        
+        guard let webAppBaseStringURLEncoded = percentEncode(webAppBaseStringURL),
+            let clientSecretURLEncoded = percentEncode(clientSecret),
+            let sessionIdURLEncoded = percentEncode(sessionId) else {
+                return nil
+        }
+        
+        return "\(webAppBaseStringURLEncoded)/#/register?client_secret=\(clientSecretURLEncoded)&session_id=\(sessionIdURLEncoded)"
+    }
+    
     private func performRegistrationRequest(parameters: RegistrationParameters, isCreatingAccount: Bool = false) async throws -> RegistrationResult {
         do {
             let response = try await client.register(parameters: parameters)
             let credentials = MXCredentials(loginResponse: response, andDefaultCredentials: client.credentials)
-            return .success(sessionCreator.createSession(credentials: credentials, client: client, removeOtherAccounts: false))
+            return await .success(sessionCreator.createSession(credentials: credentials, client: client, removeOtherAccounts: false))
         } catch {
             let nsError = error as NSError
             
@@ -268,17 +290,17 @@ class RegistrationWizard {
             let flowResult = authenticationSession.flowResult
             
             if isCreatingAccount || isRegistrationStarted {
-                return try await handleMandatoryDummyStage(flowResult: flowResult)
+                return try await handleDummyStage(flowResult: flowResult)
             }
             
             return .flowResponse(flowResult)
         }
     }
     
-    /// Checks for a mandatory dummy stage and handles it automatically when possible.
-    private func handleMandatoryDummyStage(flowResult: FlowResult) async throws -> RegistrationResult {
+    /// Checks for a dummy stage and handles it automatically when possible.
+    private func handleDummyStage(flowResult: FlowResult) async throws -> RegistrationResult {
         // If the dummy stage is mandatory, do the dummy stage now
-        guard flowResult.missingStages.contains(where: { $0.isDummy && $0.isMandatory }) else { return .flowResponse(flowResult) }
+        guard flowResult.missingStages.contains(where: \.isDummy) else { return .flowResponse(flowResult) }
         return try await dummy()
     }
     

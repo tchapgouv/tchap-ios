@@ -952,7 +952,7 @@
 "settings_discovery_three_pid_details_cancel_email_validation_action" = "Zrušiť overenie e-mailu";
 "settings_discovery_three_pid_details_title_phone_number" = "Spravovať telefónne číslo";
 "settings_key_backup_button_restore" = "Obnoviť zo zálohy";
-"settings_deactivate_my_account" = "Deaktivovať účet";
+"settings_deactivate_my_account" = "Deaktivovať účet natrvalo";
 "settings_add_3pid_password_title_msidsn" = "Pridať telefónne číslo";
 "settings_add_3pid_password_title_email" = "Pridať emailovú adresu";
 "settings_term_conditions" = "Podmienky používania";
@@ -1749,13 +1749,13 @@
 "search_filter_placeholder" = "Filter";
 "onboarding_use_case_existing_server_button" = "Pripojiť sa k serveru";
 "onboarding_use_case_existing_server_message" = "Chcete sa pripojiť k existujúcemu serveru?";
-"onboarding_use_case_skip_button" = "preskočiť túto otázku";
+"onboarding_use_case_skip_button" = "Preskočiť túto otázku";
 /* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
-"onboarding_use_case_not_sure_yet" = "Ešte si nie ste istí? Môžete %@";
+"onboarding_use_case_not_sure_yet" = "Ešte si nie ste istí? %@";
 "onboarding_use_case_community_messaging" = "Komunity";
 "onboarding_use_case_work_messaging" = "Tímy";
 "onboarding_use_case_personal_messaging" = "Priatelia a rodina";
-"onboarding_use_case_message" = "Pomôžeme vám nadviazať kontakty.";
+"onboarding_use_case_message" = "Pomôžeme vám nadviazať kontakty";
 "onboarding_use_case_title" = "S kým budete komunikovať najčastejšie?";
 "room_message_editing" = "Úprava";
 
@@ -2451,10 +2451,10 @@
 "threads_notice_title" = "Vlákna už nie sú experimentálne 🎉";
 "room_participants_invite_prompt_to_msg" = "Ste si istí, že chcete pozvať používateľa %@ do %@?";
 "onboarding_celebration_button" = "Poďme na to";
-"onboarding_celebration_message" = "Vaše nastavenia boli uložené.";
-"onboarding_celebration_title" = "Všetko je pripravené!";
+"onboarding_celebration_message" = "Kedykoľvek prejdite do nastavení a aktualizujte svoj profil";
+"onboarding_celebration_title" = "Vyzerá to dobre!";
 "onboarding_avatar_accessibility_label" = "Profilový obrázok";
-"onboarding_avatar_message" = "Toto môžete kedykoľvek zmeniť.";
+"onboarding_avatar_message" = "Je čas priradiť k menu aj tvár";
 "onboarding_avatar_title" = "Pridať profilový obrázok";
 "onboarding_display_name_max_length" = "Vaše zobrazované meno musí mať menej ako 256 znakov";
 "onboarding_display_name_hint" = "Neskôr to môžete zmeniť";
@@ -2465,7 +2465,7 @@
 "onboarding_personalization_save" = "Uložiť a pokračovať";
 "onboarding_congratulations_personalize_button" = "Prispôsobiť profil";
 /* The placeholder string contains the user's matrix ID */
-"onboarding_congratulations_message" = "Váš účet %@ bol vytvorený.";
+"onboarding_congratulations_message" = "Váš účet %@ bol vytvorený";
 "onboarding_congratulations_title" = "Gratulujeme!";
 "saving" = "Ukladanie";
 
@@ -2481,7 +2481,7 @@
 "room_access_settings_screen_upgrade_alert_message_no_param" = "Každý, kto sa nachádza v nadradenom priestore, bude môcť túto miestnosť nájsť a pripojiť sa k nej - nie je potrebné každého ručne pozývať. V nastaveniach miestnosti to budete môcť kedykoľvek zmeniť.";
 "ssl_fingerprint_hash" = "Odtlačok (%@):";
 "notice_ended_video_call" = "%@ ukončil/a hovor";
-"location_sharing_live_list_item_stop_sharing_action" = "Zastaviť zdieľanie";
+"location_sharing_live_list_item_stop_sharing_action" = "Zastaviť";
 "location_sharing_live_list_item_current_user_display_name" = "Vy";
 "location_sharing_live_list_item_last_update_invalid" = "Posledná aktualizácia neznáma";
 "location_sharing_live_list_item_last_update" = "Aktualizované pred %@";
@@ -2527,3 +2527,186 @@
 "location_sharing_allow_background_location_title" = "Povoliť prístup";
 "settings_labs_enable_live_location_sharing" = "Zdieľanie polohy v reálnom čase - zdieľanie aktuálnej polohy (v aktívnom vývoji a polohy dočasne pretrvávajú v histórii miestnosti)";
 "settings_ui_show_redactions_in_room_history" = "Zobrazovať náhrady za odstránené správy";
+
+// MARK: Reactions
+
+"room_event_action_reaction_more" = "%@ viac";
+"leave_space_selection_no_rooms" = "Nevybrať žiadne miestnosti";
+"leave_space_selection_all_rooms" = "Vybrať všetky miestnosti";
+"leave_space_selection_title" = "VYBRAŤ MIESTNOSTI";
+"leave_space_and_more_rooms" = "Opustiť priestor a %@ miestností";
+"leave_space_and_one_room" = "Opustiť priestor a 1 miestnosť";
+
+// Mark: Leave space
+
+"leave_space_action" = "Opustiť priestor";
+"spaces_feature_not_available" = "Táto funkcia tu nie je k dispozícii. Zatiaľ to môžete urobiť pomocou %@ na vašom počítači.";
+"home_context_menu_mark_as_read" = "Označiť ako prečítané";
+"settings_timeline" = "ČASOVÁ OS";
+"room_accessibility_record_voice_message_hint" = "Ak chcete nahrávať, dvakrát ťuknite a podržte.";
+"room_accessibility_record_voice_message" = "Nahrať hlasovú správu";
+"location_sharing_live_lab_promotion_activation" = "Povoliť zdieľanie polohy v reálnom čase";
+"location_sharing_live_lab_promotion_text" = "Upozornenie: ide o funkciu laboratórií, ktorá používa dočasnú implementáciu, ktorá umožňuje, aby bola história vášho zdieľaného miesta trvalo viditeľná pre ostatných ľudí v miestnosti.";
+"location_sharing_live_lab_promotion_title" = "Zdieľanie polohy v reálnom čase";
+"location_sharing_map_credits_title" = "© Autorské práva";
+"room_info_back_button_title" = "Informácie o miestnosti";
+"network_offline_message" = "Ste v režime offline, skontrolujte svoje pripojenie.";
+"network_offline_title" = "Ste offline";
+"message_reply_to_sender_sent_their_live_location" = "Poloha v reálnom čase.";
+"password_validation_error_contain_symbol" = "Obsahuje symbol.";
+"password_validation_error_contain_number" = "Obsahuje číslo.";
+"password_validation_error_contain_uppercase_letter" = "Obsahuje veľké písmeno.";
+"password_validation_error_contain_lowercase_letter" = "Obsahuje malé písmeno.";
+/* The placeholder will show a number */
+"password_validation_error_max_length" = "Neprekračuje %d znakov.";
+/* The placeholder will show a number */
+"password_validation_error_min_length" = "Minimálne %d znakov.";
+"password_validation_error_header" = "Zadané heslo nespĺňa nižšie uvedené kritériá:";
+
+// MARK: Password Validation
+"password_validation_info_header" = "Vaše heslo by malo spĺňať nasledujúce kritériá:";
+"authentication_recaptcha_title" = "Ste človek?";
+"authentication_terms_policy_url_error" = "Vybranú zásadu sa nepodarilo nájsť. Skúste to prosím neskôr.";
+"authentication_terms_message" = "Prečítajte si prosím podmienky a zásady %@";
+"authentication_terms_title" = "Zásady ochrany osobných údajov";
+"authentication_verify_msisdn_invalid_phone_number" = "Neplatné telefónne číslo";
+"authentication_verify_msisdn_waiting_button" = "Znovu odoslať kód";
+/* The placeholder will show the phone number that was entered. */
+"authentication_verify_msisdn_waiting_message" = "Kód bol odoslaný na %@";
+"authentication_verify_msisdn_waiting_title" = "Overte svoje telefónne číslo";
+"authentication_verify_msisdn_otp_text_field_placeholder" = "Potvrdzovací kód";
+"authentication_verify_msisdn_text_field_placeholder" = "Telefónne číslo";
+"authentication_verify_msisdn_input_message" = "%@ potrebuje overiť vaše konto";
+"authentication_verify_msisdn_input_title" = "Zadajte svoje telefónne číslo";
+"authentication_choose_password_submit_button" = "Znovu nastaviť heslo";
+"authentication_choose_password_signout_all_devices" = "Odhlásiť sa zo všetkých zariadení";
+"authentication_choose_password_text_field_placeholder" = "Nové heslo";
+"authentication_choose_password_input_message" = "Uistite sa, že má 8 alebo viac znakov";
+"authentication_choose_password_input_title" = "Vyberte si nové heslo";
+"authentication_forgot_password_waiting_button" = "Opätovne odoslať e-mail";
+/* The placeholder will show the email address that was entered. */
+"authentication_forgot_password_waiting_message" = "Postupujte podľa pokynov zaslaných na adresu %@";
+"authentication_forgot_password_waiting_title" = "Skontrolujte si e-mail.";
+"authentication_forgot_password_text_field_placeholder" = "Email";
+"authentication_forgot_password_input_message" = "%@ vám pošle overovací odkaz";
+"authentication_forgot_password_input_title" = "Zadajte svoj email";
+"authentication_verify_email_waiting_button" = "Opätovne odoslať e-mail";
+"authentication_verify_email_waiting_hint" = "Nedostali ste e-mail?";
+/* The placeholder will show the email address that was entered. */
+"authentication_verify_email_waiting_message" = "Postupujte podľa pokynov zaslaných na adresu %@";
+"authentication_verify_email_waiting_title" = "Overte svoj e-mail.";
+"authentication_verify_email_text_field_placeholder" = "Email";
+"authentication_verify_email_input_message" = "%@ potrebuje overiť vaše konto";
+"authentication_verify_email_input_title" = "Zadajte svoj email";
+"authentication_cancel_flow_confirmation_message" = "Váš účet ešte nie je vytvorený. Zastaviť proces registrácie?";
+"authentication_server_selection_generic_error" = "Nie je možné nájsť server na tejto adrese URL, skontrolujte, či je správna.";
+"authentication_server_selection_server_url" = "URL adresa domovského servera";
+"authentication_server_selection_register_message" = "Aká je adresa vášho servera? Je to ako domov pre všetky vaše údaje";
+"authentication_server_selection_register_title" = "Vyberte svoj domovský server";
+"authentication_server_selection_login_message" = "Aká je adresa vášho servera?";
+"authentication_server_selection_login_title" = "Pripojenie k domovskému serveru";
+"authentication_server_info_title" = "Kde budú vaše konverzácie prebiehať";
+"authentication_login_forgot_password" = "Zabudnuté heslo";
+"authentication_login_username" = "Meno používateľa / E-mail / Telefón";
+"authentication_login_title" = "Vitajte späť!";
+"authentication_registration_password_footer" = "Musí obsahovať 8 alebo viac znakov";
+/* The placeholder will show the full Matrix ID that has been entered. */
+"authentication_registration_username_footer_available" = "Ostatní vás môžu objaviť %@";
+"authentication_registration_username_footer" = "Toto neskôr nemôžete zmeniť";
+"authentication_registration_username" = "Meno používateľa";
+
+// MARK: Authentication
+"authentication_registration_title" = "Vytvorte si účet";
+"authentication_server_info_title_login" = "Kde vaše rozhovory žijú";
+"location_sharing_invalid_power_level_message" = "Musíte mať príslušné oprávnenia na zdieľanie polôh v reálnom čase v tejto miestnosti.";
+"location_sharing_invalid_power_level_title" = "Nemáte oprávnenie na zdieľanie polohy v reálnom čase";
+"authentication_choose_password_not_verified_message" = "Skontrolujte si doručenú poštu";
+"authentication_choose_password_not_verified_title" = "E-mail nie je overený";
+"location_sharing_map_loading_error" = "Nie je možné načítať mapu\nTento domovský server nemusí byť nakonfigurovaný na zobrazovanie máp";
+
+// Mark: - Space Selector
+
+"space_selector_title" = "Moje priestory";
+"all_chats_edit_menu_space_settings" = "Nastavenia priestoru";
+"all_chats_edit_menu_leave_space" = "Opustiť %@";
+"all_chats_user_menu_settings" = "Používateľské nastavenia";
+"room_recents_recently_viewed_section" = "Nedávno zobrazené";
+"all_chats_all_filter" = "Všetky";
+"all_chats_edit_layout_alphabetical_order" = "Zoradiť A-Z";
+"all_chats_edit_layout_activity_order" = "Zoradiť podľa aktivity";
+"all_chats_edit_layout_show_filters" = "Zobraziť filtre";
+"all_chats_edit_layout_show_recents" = "Zobraziť posledné";
+"all_chats_edit_layout_sorting_options_title" = "Zoradiť správy podľa";
+"all_chats_edit_layout_pin_spaces_title" = "Pripnite svoje priestory";
+"all_chats_edit_layout_add_filters_message" = "Automaticky filtrujte svoje správy do kategórií podľa vlastného výberu";
+"all_chats_edit_layout_add_filters_title" = "Filtrujte svoje správy";
+"all_chats_edit_layout_add_section_message" = "Pripnite sekcie na domovskú obrazovku, aby ste k nim mali ľahký prístup";
+"all_chats_edit_layout_add_section_title" = "Pridať sekciu na domovskú stránku";
+"all_chats_edit_layout_unreads" = "Neprečítané";
+"all_chats_edit_layout_recents" = "Nedávne";
+"all_chats_edit_layout" = "Predvoľby rozmiestnenia";
+"all_chats_section_title" = "Konverzácie";
+
+// Mark: - All Chats
+
+"all_chats_title" = "Všetky konverzácie";
+"spaces_subspace_creation_visibility_message" = "Vytvorený priestor bude zaradený do %@.";
+"spaces_subspace_creation_visibility_title" = "Aký typ podpriestoru chcete vytvoriť?";
+"spaces_create_subspace_title" = "Vytvoriť podpriestor";
+"spaces_add_subspace_title" = "Vytvoriť priestor v rámci %@";
+
+// MARK: User sessions management
+
+"user_sessions_overview_title" = "Relácie";
+"space_invite_nav_title" = "Pozvánka do priestoru";
+"space_detail_nav_title" = "Podrobnosti o priestore";
+"space_selector_create_space" = "Vytvoriť priestor";
+"space_selector_empty_view_information" = "Priestory slúžia na zoskupovanie miestností a osôb. Vytvorte si priestor a začnite.";
+"space_selector_empty_view_title" = "Zatiaľ žiadne priestory.";
+"room_invites_empty_view_information" = "Tu sa zobrazia vaše pozvánky.";
+
+// Mark: - Room invites
+
+"room_invites_empty_view_title" = "Nič nové.";
+"all_chats_onboarding_try_it" = "Vyskúšajte si to";
+"all_chats_onboarding_title" = "Čo je nové";
+"all_chats_onboarding_page_message3" = "Ťuknite na svoj profil a dajte nám vedieť, čo si myslíte.";
+"all_chats_onboarding_page_title3" = "Poskytnite spätnú väzbu";
+"all_chats_onboarding_page_title2" = "Prístup k priestorom";
+"all_chats_onboarding_page_message2" = "Získajte prístup k svojim priestorom (vľavo dole) rýchlejšie a jednoduchšie ako kedykoľvek predtým.";
+"all_chats_onboarding_page_message1" = "Pre zjednodušenie vašej aplikácie Element, sú teraz karty voliteľné. Spravujte ich pomocou ponuky vpravo hore.";
+"all_chats_onboarding_page_title1" = "Vitajte v novom zobrazení!";
+"all_chats_nothing_found_placeholder_message" = "Skúste upraviť svoje hľadanie.";
+"all_chats_nothing_found_placeholder_title" = "Nič sa nenašlo.";
+"all_chats_empty_unreads_placeholder_message" = "Tu sa zobrazia neprečítané správy, ak nejaké máte.";
+"all_chats_empty_list_placeholder_title" = "Všetko ste už stihli.";
+"all_chats_empty_view_information" = "Kompletná zabezpečená aplikácia na komunikáciu pre tímy, priateľov a organizácie. Začnite konverzáciu alebo sa pridajte k existujúcej miestnosti.";
+"all_chats_empty_space_information" = "Priestory sú novým spôsobom zoskupovania miestností a ľudí. Pomocou tlačidla vpravo dole môžete pridať existujúcu miestnosť alebo vytvoriť novú.";
+"all_chats_empty_view_title" = "%@\nvyzerá trochu prázdne.";
+"spaces_explore_rooms_format" = "Preskúmať %@";
+
+// User sessions management
+"user_sessions_settings" = "Spravovať relácie";
+"invite_to" = "Pozvať do %@";
+"device_name_web" = "%@ Web";
+"device_name_unknown" = "Neznámy klient";
+"device_name_mobile" = "%@ Mobil";
+"device_name_desktop" = "%@ Stolný počítač";
+"user_session_item_details" = "%@ · Posledná aktivita %@";
+
+// First item is client name and second item is session display name
+"user_session_name" = "%@: %@";
+"user_session_unverified_additional_info" = "Overte svoju aktuálnu reláciu pre vylepšené bezpečné zasielanie správ.";
+"user_session_verified_additional_info" = "Vaša aktuálna relácia je pripravená na bezpečné zasielanie správ.";
+"user_session_learn_more" = "Zistiť viac";
+"user_session_view_details" = "Zobraziť podrobnosti";
+"user_session_verify_action" = "Overiť reláciu";
+"user_session_unverified_short" = "Neoverené";
+"user_session_verified_short" = "Overené";
+"user_session_unverified" = "Neoverená relácia";
+"user_session_verified" = "Overená relácia";
+"user_sessions_overview_current_session_section_title" = "AKTUÁLNA RELÁCIA";
+"user_sessions_overview_other_sessions_section_info" = "V záujme čo najlepšieho zabezpečenia overte svoje relácie a odhláste sa z každej relácie, ktorú už nepoznáte alebo nepoužívate.";
+"user_sessions_overview_other_sessions_section_title" = "OSTATNÉ RELÁCIE";
+"settings_labs_enable_new_app_layout" = "Nové usporiadanie aplikácie";
+"room_first_message_placeholder" = "Pošlite svoju prvú správu…";

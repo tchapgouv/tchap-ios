@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import SwiftUI
 import WebKit
 
 struct AuthenticationRecaptchaWebView: UIViewRepresentable {
-    
     // MARK: - Properties
     
     // MARK: Public
@@ -84,7 +83,7 @@ struct AuthenticationRecaptchaWebView: UIViewRepresentable {
         var completion: ((String) -> Void)?
         
         init(isLoading: Binding<Bool>) {
-            self._isLoading = isLoading
+            _isLoading = isLoading
         }
         
         /// Generates the HTML page to show for the given `siteKey` and `theme`.
@@ -92,7 +91,7 @@ struct AuthenticationRecaptchaWebView: UIViewRepresentable {
             """
             <html>
             <head>
-            <meta name='viewport' content='initial-scale=1.0' />
+            <meta name='viewport' content='initial-scale=1.0, user-scalable=no' />
             <style>@media (prefers-color-scheme: dark) { body { background-color: #15191E; } }</style>
             <script type="text/javascript">
             var verifyCallback = function(response) {
@@ -134,4 +133,3 @@ struct AuthenticationRecaptchaWebView: UIViewRepresentable {
         }
     }
 }
-
