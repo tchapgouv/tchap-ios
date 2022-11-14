@@ -520,7 +520,8 @@ class AllChatsViewController: HomeViewController {
         spacesButton.accessibilityLabel = VectorL10n.spaceSelectorTitle
         
         self.toolbar.items = [
-            spacesButton,
+            // Tchap: Hide space button
+            /*spacesButton,*/
             UIBarButtonItem.flexibleSpace(),
             UIBarButtonItem(image: Asset.Images.allChatsEditIcon.image, menu: menu)
         ]
