@@ -145,8 +145,7 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     }
     
     func releaseSelectedItems() {
-        // Tchap: All chats view controller is part of the new app layout (not used in Tchap for the moment).
-//        self.allChatsViewController.releaseSelectedItem()
+        self.allChatsViewController.releaseSelectedItem()
     }
     
     func popToHome(animated: Bool, completion: (() -> Void)?) {
