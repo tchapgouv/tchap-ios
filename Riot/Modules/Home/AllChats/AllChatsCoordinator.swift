@@ -586,12 +586,14 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     // MARK: Sign out process
     
     private func signOut() {
-        guard let keyBackup = currentMatrixSession?.crypto.backup else {
-            return
-        }
+        // Tchap: Tchap does not support keyBackup at this time. So force the keyBackup let creation to present the signOut alert.
+        let keyBackup = currentMatrixSession?.crypto.backup
+//        guard let keyBackup = currentMatrixSession?.crypto.backup else {
+//            return
+//        }
         
-        signOutAlertPresenter.present(for: keyBackup.state,
-                                      areThereKeysToBackup: keyBackup.hasKeysToBackup,
+        signOutAlertPresenter.present(for: keyBackup?.state ?? MXKeyBackupStateUnknown,
+                                      areThereKeysToBackup: keyBackup?.hasKeysToBackup ?? false,
                                       from: self.allChatsViewController,
                                       sourceView: avatarMenuButton,
                                       animated: true)
