@@ -30,7 +30,7 @@ class AllChatsLayoutSettings: NSObject, NSCoding {
     let sorting: AllChatsLayoutSortingType
     
     init(sections: AllChatsLayoutSectionType = [],
-         filters: AllChatsLayoutFilterType = [],
+         filters: AllChatsLayoutFilterType = [.all, .people, .rooms, .favourites, .unreads],// Tchap: Enable filters by default
          sorting: AllChatsLayoutSortingType = .activity) {
         self.sections = sections
         self.filters = filters
