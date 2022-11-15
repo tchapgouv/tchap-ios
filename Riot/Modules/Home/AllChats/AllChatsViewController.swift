@@ -105,6 +105,8 @@ class AllChatsViewController: HomeViewController {
     
     // Reference to the current onboarding flow. It is always nil unless the flow is being presented.
     private(set) var onboardingCoordinatorBridgePresenter: OnboardingCoordinatorBridgePresenter?
+    // Tchap: Use welcomeCoordinator instead of onboardingCoordinator
+    private(set) var welcomeCoordinatorBridgePresenter: WelcomeCoordinatorBridgePresenter?
     
     // Tell whether the onboarding screen is preparing.
     private(set) var isOnboardingInProgress: Bool = false
@@ -161,13 +163,13 @@ class AllChatsViewController: HomeViewController {
         // Check whether we're not logged in
         let authIsShown: Bool
         if MXKAccountManager.shared().accounts.isEmpty {
-//            showOnboardingFlow()
+            showOnboardingFlow()
             authIsShown = true
         } else {
             // Display a login screen if the account is soft logout
             // Note: We support only one account
             if let account = MXKAccountManager.shared().accounts.first, account.isSoftLogout {
-//                showSoftLogoutOnboardingFlow(with: account.mxCredentials)
+                showSoftLogoutOnboardingFlow(with: account.mxCredentials)
                 authIsShown = true
             } else {
                 authIsShown = false
@@ -181,7 +183,8 @@ class AllChatsViewController: HomeViewController {
         AppDelegate.theDelegate().checkAppVersion()
 
         if BuildSettings.newAppLayoutEnabled && !RiotSettings.shared.allChatsOnboardingHasBeenDisplayed {
-            self.showAllChatsOnboardingScreen()
+            // Tchap: Not the same onboarding flow.
+//            self.showAllChatsOnboardingScreen()
         }
     }
     
@@ -875,7 +878,8 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
         // This method can be called after the user chooses to clear their data as the MXSession
         // is opened to call logout from. So we only set the credentials when authentication isn't
         // in progress to prevent a second soft logout screen being shown.
-        guard /*self.onboardingCoordinatorBridgePresenter == nil && */!self.isOnboardingCoordinatorPreparing else {
+        // Tchap: Use WelcomeCoordinatorBridgePresenter instead of OnboardingCoordinatorBridgePresenter
+        guard self.welcomeCoordinatorBridgePresenter == nil && !self.isOnboardingCoordinatorPreparing else {
             return
         }
 
@@ -1037,7 +1041,8 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
 
     private func showOnboardingFlowAndResetSessionFlags(_ resetSessionFlags: Bool) {
         // Check whether an authentication screen is not already shown or preparing
-        guard /*self.onboardingCoordinatorBridgePresenter == nil && */!self.isOnboardingCoordinatorPreparing else {
+        // Tchap: Use WelcomeCoordinatorBridgePresenter instead of OnboardingCoordinatorBridgePresenter
+        guard self.welcomeCoordinatorBridgePresenter == nil && !self.isOnboardingCoordinatorPreparing else {
             return
         }
 
@@ -1062,6 +1067,23 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
     private func presentOnboardingFlow() {
         MXLog.debug("[AllChatsViewController] presentOnboardingFlow")
 
+        // Tchap: Use WelcomeCoordinatorBridgePresenter instead of OnboardingCoordinatorBridgePresenter
+        let welcomeCoordinatorBridgePresenter = WelcomeCoordinatorBridgePresenter()
+        welcomeCoordinatorBridgePresenter.completion = { [weak self] in
+            guard let self = self else { return }
+            
+            self.welcomeCoordinatorBridgePresenter?.dismiss(animated: true, completion: {
+                self.welcomeCoordinatorBridgePresenter = nil
+            })
+
+            self.isOnboardingInProgress = false   // Must be set before calling didCompleteAuthentication
+            self.allChatsDelegate?.allChatsViewControllerDidCompleteAuthentication(self)
+        }
+
+        welcomeCoordinatorBridgePresenter.present(from: self, animated: true)
+        self.welcomeCoordinatorBridgePresenter = welcomeCoordinatorBridgePresenter
+
+        
 //        let onboardingCoordinatorBridgePresenter = OnboardingCoordinatorBridgePresenter()
 //        onboardingCoordinatorBridgePresenter.completion = { [weak self] in
 //            guard let self = self else { return }
@@ -1076,7 +1098,7 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
 //
 //        onboardingCoordinatorBridgePresenter.present(from: self, animated: true)
 //        self.onboardingCoordinatorBridgePresenter = onboardingCoordinatorBridgePresenter
-//        self.isOnboardingCoordinatorPreparing = false
+        self.isOnboardingCoordinatorPreparing = false
     }
 
     private func refreshSelectedControllerSelectedCellIfNeeded() {
