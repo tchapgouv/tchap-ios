@@ -24,6 +24,9 @@ protocol AllChatsViewControllerDelegate: AnyObject {
     func allChatsViewController(_ allChatsViewController: AllChatsViewController, didSelectRoomWithParameters roomNavigationParameters: RoomNavigationParameters, completion: @escaping () -> Void)
     func allChatsViewController(_ allChatsViewController: AllChatsViewController, didSelectRoomPreviewWithParameters roomPreviewNavigationParameters: RoomPreviewNavigationParameters, completion: (() -> Void)?)
     func allChatsViewController(_ allChatsViewController: AllChatsViewController, didSelectContact contact: MXKContact, with presentationParameters: ScreenPresentationParameters)
+    // Tchap: Add methods to use Tchap specific flows.
+    func allChatsViewControllerShouldOpenRoomCreation(_ allChatsViewController: AllChatsViewController)
+    func allChatsViewControllerShouldOpenRoomList(_ allChatsViewController: AllChatsViewController)
 }
 
 class AllChatsViewController: HomeViewController {
@@ -747,6 +750,14 @@ extension AllChatsViewController: AllChatsEditActionProviderDelegate {
         }
     }
     
+    // Tchap: Override methods to use Tchap specific flows.
+    override func joinARoom() {
+        self.allChatsDelegate?.allChatsViewControllerShouldOpenRoomList(self)
+    }
+    
+    override func createNewRoom() {
+        self.allChatsDelegate?.allChatsViewControllerShouldOpenRoomCreation(self)
+    }
 }
 
 // MARK: - AllChatsSpaceActionProviderDelegate

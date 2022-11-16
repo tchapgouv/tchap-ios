@@ -785,6 +785,35 @@ extension AllChatsCoordinator: AllChatsViewControllerDelegate {
     func allChatsViewController(_ allChatsViewController: AllChatsViewController, didSelectContact contact: MXKContact, with presentationParameters: ScreenPresentationParameters) {
         self.showContactDetails(with: contact, presentationParameters: presentationParameters)
     }
+    
+    func allChatsViewControllerShouldOpenRoomCreation(_ allChatsViewController: AllChatsViewController) {
+        guard let session = self.currentMatrixSession else { return }
+
+        let roomCreationCoordinator = RoomCreationCoordinator(session: session)
+        roomCreationCoordinator.delegate = self
+        roomCreationCoordinator.start()
+        
+        self.navigationRouter.present(roomCreationCoordinator, animated: true)
+        
+        self.add(childCoordinator: roomCreationCoordinator)
+
+    }
+    
+    func allChatsViewControllerShouldOpenRoomList(_ allChatsViewController: AllChatsViewController) {
+        guard let session = self.currentMatrixSession else { return }
+        
+        let publicRoomServers = BuildSettings.publicRoomsDirectoryServers
+        let publicRoomService = PublicRoomService(homeServersStringURL: publicRoomServers,
+                                                  session: session)
+        let dataSource = PublicRoomsDataSource(session: session,
+                                               publicRoomService: publicRoomService)
+        let publicRoomsViewController = PublicRoomsViewController.instantiate(dataSource: dataSource)
+        publicRoomsViewController.delegate = self
+        let router = NavigationRouter(navigationController: RiotNavigationController())
+        router.setRootModule(publicRoomsViewController.toPresentable())
+        self.navigationRouter.present(router, animated: true)
+
+    }
 }
 
 // MARK: - RoomCoordinatorDelegate
@@ -828,5 +857,48 @@ extension AllChatsCoordinator: RoomCoordinatorDelegate {
     
     func roomCoordinatorDidCancelNewDirectChat(_ coordinator: RoomCoordinatorProtocol) {
         self.navigationRouter.popModule(animated: true)
+    }
+}
+
+// Tchap: Add delegates for Room creation, Public Rooms
+// MARK: - PublicRoomsViewControllerDelegate
+extension AllChatsCoordinator: PublicRoomsViewControllerDelegate {
+    func publicRoomsViewController(_ publicRoomsViewController: PublicRoomsViewController,
+                                   didSelect publicRoom: MXPublicRoom) {
+        publicRoomsViewController.navigationController?.dismiss(animated: true,
+                                                                completion: { [weak self] in
+            guard let self = self,
+                  let roomID = publicRoom.roomId else {
+                return
+            }
+            
+            if let room: MXRoom = self.currentMatrixSession?.room(withRoomId: roomID),
+               room.summary.membership == .join {
+                self.showRoom(withId: roomID)
+            } else if let previewData = RoomPreviewData(publicRoom: publicRoom, andSession: self.currentMatrixSession) {
+                // Try to preview the unknown room.
+                self.showRoomPreview(with: previewData)
+            } else {
+                // This case should never happen.
+                MXLog.failure("[AllChatsCoordinator] publicRoomsViewController didSelect publicRoom failure !")
+            }
+        })
+    }
+}
+
+// MARK: - RoomCreationCoordinatorDelegate
+extension AllChatsCoordinator: RoomCreationCoordinatorDelegate {
+    func roomCreationCoordinatorDidCancel(_ coordinator: RoomCreationCoordinatorType) {
+        self.navigationRouter.dismissModule(animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
+    }
+    
+    func roomCreationCoordinator(_ coordinator: RoomCreationCoordinatorType,
+                                 didCreateRoomWithID roomID: String) {
+        self.navigationRouter.dismissModule(animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+            self?.showRoom(withId: roomID)
+        }
     }
 }
