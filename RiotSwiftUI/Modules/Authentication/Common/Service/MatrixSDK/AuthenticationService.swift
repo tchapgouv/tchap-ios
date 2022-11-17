@@ -273,6 +273,8 @@ class AuthenticationService: NSObject {
         
         if let identityServerURL = identityServerURL {
             client.identityServer = identityServerURL.absoluteString
+        } else { // Tchap: Add default IS if no IS is set. TODO: Configure the wellKnown request on Tchap server.
+            client.identityServer = homeserverAddress
         }
         
         let loginFlow = try await getLoginFlowResult(client: client)
