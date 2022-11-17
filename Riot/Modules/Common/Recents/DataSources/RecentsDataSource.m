@@ -152,11 +152,31 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 }
 - (NSArray<id<MXRoomSummaryProtocol>> *)breadcrumbsRoomCellDataArray
 {
-    return self.recentsListService.breadcrumbsRoomListData.rooms;
+    // Tchap: Hide the rooms created to invite some non-tchap contact by email.
+    NSMutableArray<id<MXRoomSummaryProtocol>> *rooms = [NSMutableArray new];
+    for (MXRoom *room in self.recentsListService.breadcrumbsRoomListData.rooms)
+    {
+        if (room.isDirect && [MXTools isEmailAddress:room.directUserId])
+        {
+            continue;
+        }
+        [rooms addObject:room];
+    }
+    return rooms;
 }
 - (NSArray<id<MXRoomSummaryProtocol>> *)allChatsRoomCellDataArray
 {
-    return self.recentsListService.allChatsRoomListData.rooms;
+    // Tchap: Hide the rooms created to invite some non-tchap contact by email.
+    NSMutableArray<id<MXRoomSummaryProtocol>> *rooms = [NSMutableArray new];
+    for (MXRoom *room in self.recentsListService.allChatsRoomListData.rooms)
+    {
+        if (room.isDirect && [MXTools isEmailAddress:room.directUserId])
+        {
+            continue;
+        }
+        [rooms addObject:room];
+    }
+    return rooms;
 }
 
 - (NSInteger)totalVisibleItemCount
