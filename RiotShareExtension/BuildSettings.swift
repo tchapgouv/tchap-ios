@@ -403,6 +403,7 @@ final class BuildSettings: NSObject {
     
     // MARK: - Onboarding
     static let onboardingShowAccountPersonalization = false
+    static let onboardingEnableNewAuthenticationFlow = true
     
     // MARK: - Unified Search
     static let unifiedSearchScreenShowPublicDirectory = true
