@@ -229,6 +229,7 @@ targetTemplates:
     - path: ../Riot/Modules/MatrixKit
     - path: ../Riot/Modules/MediaPicker
     - path: ../Riot/Modules/MediaPickerV2
+    - path: ../Riot/Modules/Onboarding
     - path: ../Riot/Modules/People
     - path: ../Riot/Modules/Pills
     - path: ../Riot/Modules/PublicRoomList

@@ -255,24 +255,27 @@ class AuthenticationService: NSObject {
                 identityServerURL = baseURL
             }
         }
-        
-        let client = clientType.init(homeServer: homeserverURL, unrecognizedCertificateHandler: { [weak self] certificate in
+
+        // Tchap: Don't allow unrecognized certificates !
+        let client = clientType.init(homeServer: homeserverURL, unrecognizedCertificateHandler: nil) /*{ [weak self] certificate in
             guard let self = self else { return false }
-            
+
             var isTrusted = false
             let semaphore = DispatchSemaphore(value: 0)
-            
+
             self.delegate?.authenticationService(self, needsPromptFor: certificate) { didTrust in
                 isTrusted = didTrust
                 semaphore.signal()
             }
-            
+
             semaphore.wait()
             return isTrusted
-        })
+        })*/
         
         if let identityServerURL = identityServerURL {
             client.identityServer = identityServerURL.absoluteString
+        } else { // Tchap: Add default IS if no IS is set. TODO: Configure the wellKnown request on Tchap server.
+            client.identityServer = homeserverAddress
         }
         
         let loginFlow = try await getLoginFlowResult(client: client)
