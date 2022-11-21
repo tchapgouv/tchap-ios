@@ -186,7 +186,7 @@ class AllChatsViewController: HomeViewController {
         AppDelegate.theDelegate().checkAppVersion()
 
         if BuildSettings.newAppLayoutEnabled && !RiotSettings.shared.allChatsOnboardingHasBeenDisplayed {
-            // Tchap: Not the same onboarding flow.
+            // Tchap: Disable new layout tutorials. Wait for an updated tutorials before show it.
 //            self.showAllChatsOnboardingScreen()
         }
     }
