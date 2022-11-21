@@ -178,24 +178,23 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         case .allChats:
             let pinMissed = RiotSettings.shared.pinRoomsWithMissedNotificationsOnHome
             let pinUnread = RiotSettings.shared.pinRoomsWithUnreadMessagesOnHome
-            // Tchap: New layout currently disabled in Tchap
-//            switch AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.sorting {
-//            case .alphabetical:
-//                return MXRoomListDataSortOptions(invitesFirst: false,
-//                                                 sentStatus: false,
-//                                                 lastEventDate: false,
-//                                                 favoriteTag: false,
-//                                                 suggested: false,
-//                                                 alphabetical: true,
-//                                                 missedNotificationsFirst: false,
-//                                                 unreadMessagesFirst: false)
-//            case .activity:
-//                return MXRoomListDataSortOptions(missedNotificationsFirst: pinMissed,
-//                                                 unreadMessagesFirst: pinUnread)
-//            @unknown default:
+            switch AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.sorting {
+            case .alphabetical:
+                return MXRoomListDataSortOptions(invitesFirst: false,
+                                                 sentStatus: false,
+                                                 lastEventDate: false,
+                                                 favoriteTag: false,
+                                                 suggested: false,
+                                                 alphabetical: true,
+                                                 missedNotificationsFirst: false,
+                                                 unreadMessagesFirst: false)
+            case .activity:
                 return MXRoomListDataSortOptions(missedNotificationsFirst: pinMissed,
                                                  unreadMessagesFirst: pinUnread)
-//            }
+            @unknown default:
+                return MXRoomListDataSortOptions(missedNotificationsFirst: pinMissed,
+                                                 unreadMessagesFirst: pinUnread)
+            }
         default:
             return MXRoomListDataSortOptions(missedNotificationsFirst: false,
                                              unreadMessagesFirst: false)

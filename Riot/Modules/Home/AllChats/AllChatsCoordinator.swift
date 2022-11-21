@@ -80,6 +80,10 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     
     private var indicators = [UserIndicator]()
     private var signOutAlertPresenter = SignOutAlertPresenter()
+    // Tchap: Add invite service for user invitation
+    private var inviteService: InviteServiceType?
+    private var errorPresenter: ErrorPresenter?
+    private weak var currentAlertController: UIAlertController?
     
     // MARK: Public
 
@@ -133,6 +137,8 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
 //            let versionCheckCoordinator = createVersionCheckCoordinator(withRootViewController: allChatsViewController, bannerPresentrer: allChatsViewController)
 //            versionCheckCoordinator.start()
 //            self.add(childCoordinator: versionCheckCoordinator)
+            
+            self.errorPresenter = AlertErrorPresenter(viewControllerPresenter: self.navigationRouter.toPresentable())
         }
         
         self.allChatsViewController?.switchSpace(withId: spaceId)
@@ -145,8 +151,7 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     }
     
     func releaseSelectedItems() {
-        // Tchap: All chats view controller is part of the new app layout (not used in Tchap for the moment).
-//        self.allChatsViewController.releaseSelectedItem()
+        self.allChatsViewController.releaseSelectedItem()
     }
     
     func popToHome(animated: Bool, completion: (() -> Void)?) {
@@ -350,7 +355,8 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         
         var subMenuActions: [UIAction] = []
         if BuildSettings.sideMenuShowInviteFriends {
-            subMenuActions.append(UIAction(title: VectorL10n.sideMenuActionInviteFriends, image: UIImage(systemName: "square.and.arrow.up.fill")) { [weak self] action in
+            // Tchap: Fix title for invite button.
+            subMenuActions.append(UIAction(title: TchapL10n.sideMenuActionInviteFriends, image: UIImage(systemName: "square.and.arrow.up.fill")) { [weak self] action in
                 guard let self = self else { return }
                 self.showInviteFriends(from: self.avatarMenuButton)
             })
@@ -587,12 +593,14 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     // MARK: Sign out process
     
     private func signOut() {
-        guard let keyBackup = currentMatrixSession?.crypto.backup else {
-            return
-        }
+        // Tchap: Tchap does not support keyBackup at this time. So force the keyBackup let creation to present the signOut alert.
+        let keyBackup = currentMatrixSession?.crypto.backup
+//        guard let keyBackup = currentMatrixSession?.crypto.backup else {
+//            return
+//        }
         
-        signOutAlertPresenter.present(for: keyBackup.state,
-                                      areThereKeysToBackup: keyBackup.hasKeysToBackup,
+        signOutAlertPresenter.present(for: keyBackup?.state ?? MXKeyBackupStateUnknown,
+                                      areThereKeysToBackup: keyBackup?.hasKeysToBackup ?? false,
                                       from: self.allChatsViewController,
                                       sourceView: avatarMenuButton,
                                       animated: true)
@@ -680,10 +688,15 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
 //    }
     
     private func showInviteFriends(from sourceView: UIView?) {
-        let myUserId = self.parameters.userSessionsService.mainUserSession?.userId ?? ""
-        
-        let inviteFriendsPresenter = InviteFriendsPresenter()
-        inviteFriendsPresenter.present(for: myUserId, from: self.navigationRouter.toPresentable(), sourceView: sourceView, animated: true)
+        // Tchap: Use Tchap specific mechanism.
+        promptUserToFillAnEmailToInvite { [weak self] email in
+            self?.sendEmailInvite(to: email)
+        }
+                
+//        let myUserId = self.parameters.userSessionsService.mainUserSession?.userId ?? ""
+//
+//        let inviteFriendsPresenter = InviteFriendsPresenter()
+//        inviteFriendsPresenter.present(for: myUserId, from: self.navigationRouter.toPresentable(), sourceView: sourceView, animated: true)
     }
     
     private func showBugReport() {
@@ -784,6 +797,35 @@ extension AllChatsCoordinator: AllChatsViewControllerDelegate {
     func allChatsViewController(_ allChatsViewController: AllChatsViewController, didSelectContact contact: MXKContact, with presentationParameters: ScreenPresentationParameters) {
         self.showContactDetails(with: contact, presentationParameters: presentationParameters)
     }
+    
+    func allChatsViewControllerShouldOpenRoomCreation(_ allChatsViewController: AllChatsViewController) {
+        guard let session = self.currentMatrixSession else { return }
+
+        let roomCreationCoordinator = RoomCreationCoordinator(session: session)
+        roomCreationCoordinator.delegate = self
+        roomCreationCoordinator.start()
+        
+        self.navigationRouter.present(roomCreationCoordinator, animated: true)
+        
+        self.add(childCoordinator: roomCreationCoordinator)
+
+    }
+    
+    func allChatsViewControllerShouldOpenRoomList(_ allChatsViewController: AllChatsViewController) {
+        guard let session = self.currentMatrixSession else { return }
+        
+        let publicRoomServers = BuildSettings.publicRoomsDirectoryServers
+        let publicRoomService = PublicRoomService(homeServersStringURL: publicRoomServers,
+                                                  session: session)
+        let dataSource = PublicRoomsDataSource(session: session,
+                                               publicRoomService: publicRoomService)
+        let publicRoomsViewController = PublicRoomsViewController.instantiate(dataSource: dataSource)
+        publicRoomsViewController.delegate = self
+        let router = NavigationRouter(navigationController: RiotNavigationController())
+        router.setRootModule(publicRoomsViewController.toPresentable())
+        self.navigationRouter.present(router, animated: true)
+
+    }
 }
 
 // MARK: - RoomCoordinatorDelegate
@@ -827,5 +869,174 @@ extension AllChatsCoordinator: RoomCoordinatorDelegate {
     
     func roomCoordinatorDidCancelNewDirectChat(_ coordinator: RoomCoordinatorProtocol) {
         self.navigationRouter.popModule(animated: true)
+    }
+}
+
+// Tchap: Add delegates for Room creation, Public Rooms
+// MARK: - PublicRoomsViewControllerDelegate
+extension AllChatsCoordinator: PublicRoomsViewControllerDelegate {
+    func publicRoomsViewController(_ publicRoomsViewController: PublicRoomsViewController,
+                                   didSelect publicRoom: MXPublicRoom) {
+        publicRoomsViewController.navigationController?.dismiss(animated: true,
+                                                                completion: { [weak self] in
+            guard let self = self,
+                  let roomID = publicRoom.roomId else {
+                return
+            }
+            
+            if let room: MXRoom = self.currentMatrixSession?.room(withRoomId: roomID),
+               room.summary.membership == .join {
+                self.showRoom(withId: roomID)
+            } else if let previewData = RoomPreviewData(publicRoom: publicRoom, andSession: self.currentMatrixSession) {
+                // Try to preview the unknown room.
+                self.showRoomPreview(with: previewData)
+            } else {
+                // This case should never happen.
+                MXLog.failure("[AllChatsCoordinator] publicRoomsViewController didSelect publicRoom failure !")
+            }
+        })
+    }
+}
+
+// MARK: - RoomCreationCoordinatorDelegate
+extension AllChatsCoordinator: RoomCreationCoordinatorDelegate {
+    func roomCreationCoordinatorDidCancel(_ coordinator: RoomCreationCoordinatorType) {
+        self.navigationRouter.dismissModule(animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
+    }
+    
+    func roomCreationCoordinator(_ coordinator: RoomCreationCoordinatorType,
+                                 didCreateRoomWithID roomID: String) {
+        self.navigationRouter.dismissModule(animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+            self?.showRoom(withId: roomID)
+        }
+    }
+}
+
+// Tchap: Manage e-mail invitation
+extension AllChatsCoordinator {
+    private func promptUserToFillAnEmailToInvite(completion: @escaping ((String) -> Void)) {
+        currentAlertController?.dismiss(animated: false)
+        
+        let alertController = UIAlertController(title: TchapL10n.contactsInviteByEmailTitle,
+                                                message: TchapL10n.contactsInviteByEmailMessage,
+                                                preferredStyle: .alert)
+        
+        // Add textField
+        alertController.addTextField(configurationHandler: { textField in
+            textField.isSecureTextEntry = false
+            textField.placeholder = nil
+            textField.keyboardType = .emailAddress
+        })
+        
+        // Cancel action
+        let cancelAction = UIAlertAction(title: VectorL10n.cancel,
+                                         style: .cancel) { [weak self] _ in
+            self?.currentAlertController = nil
+        }
+        alertController.addAction(cancelAction)
+        
+        // Invite action
+        let inviteAction = UIAlertAction(title: VectorL10n.invite,
+                                         style: .default) { [weak self] _ in
+            guard let currentAlertController = self?.currentAlertController,
+                  let email = currentAlertController.textFields?.first?.text?.lowercased() else {
+                return // FIXME: Verify if dismiss should be needed in this case
+            }
+            
+            self?.currentAlertController = nil
+            
+            if MXTools.isEmailAddress(email) {
+                completion(email)
+            } else {
+                self?.currentAlertController?.dismiss(animated: false)
+                let errorAlertController = UIAlertController(title: TchapL10n.authenticationErrorInvalidEmail,
+                                                             message: nil,
+                                                             preferredStyle: .alert)
+                let okAction = UIAlertAction(title: VectorL10n.ok,
+                                             style: .default) { [weak self] _ in
+                    self?.currentAlertController = nil
+                }
+                errorAlertController.addAction(okAction)
+                errorAlertController.mxk_setAccessibilityIdentifier("ContactsVCInviteByEmailError")
+                self?.currentAlertController = errorAlertController
+                self?.navigationRouter.toPresentable().present(errorAlertController, animated: true)
+            }
+        }
+        alertController.addAction(inviteAction)
+        alertController.mxk_setAccessibilityIdentifier("ContactsVCInviteByEmailDialog")
+
+        self.currentAlertController = alertController
+        
+        self.navigationRouter.toPresentable().present(alertController, animated: true)
+    }
+    
+    private func sendEmailInvite(to email: String) {
+        guard let session = self.currentMatrixSession else { return }
+        if self.inviteService == nil {
+            self.inviteService = InviteService(session: session)
+        }
+        guard let inviteService = self.inviteService else { return }
+        
+        self.activityIndicatorPresenter.presentActivityIndicator(on: self.navigationRouter.toPresentable().view, animated: true)
+        inviteService.sendEmailInvite(to: email) { [weak self] (response) in
+            guard let sself = self else {
+                return
+            }
+            
+            sself.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+            switch response {
+            case .success(let result):
+                var message: String
+                var discoveredUserID: String?
+                switch result {
+                case .inviteHasBeenSent(roomID: _):
+                    message = TchapL10n.inviteSendingSucceeded
+                case .inviteAlreadySent(roomID: _):
+                    message = TchapL10n.inviteAlreadySentByEmail(email)
+                case .inviteIgnoredForDiscoveredUser(userID: let userID):
+                    discoveredUserID = userID
+                    message = TchapL10n.inviteNotSentForDiscoveredUser
+                case .inviteIgnoredForUnauthorizedEmail:
+                    message = TchapL10n.inviteNotSentForUnauthorizedEmail(email)
+                }
+                
+                sself.currentAlertController?.dismiss(animated: false)
+                
+                let alert = UIAlertController(title: TchapL10n.inviteInformationTitle, message: message, preferredStyle: .alert)
+                
+                let okTitle = VectorL10n.ok
+                let okAction = UIAlertAction(title: okTitle, style: .default, handler: { action in
+                    if let userID = discoveredUserID {
+                        // Open the discussion
+                        AppDelegate.theDelegate().startDirectChat(withUserId: userID, completion: nil)
+                    }
+                })
+                alert.addAction(okAction)
+                sself.currentAlertController = alert
+                
+                sself.navigationRouter.toPresentable().present(alert, animated: true, completion: nil)
+            case .failure(let error):
+                let errorPresentable = sself.inviteErrorPresentable(from: error)
+                sself.errorPresenter?.present(errorPresentable: errorPresentable, animated: true)
+            }
+        }
+    }
+    
+    private func inviteErrorPresentable(from error: Error) -> ErrorPresentable {
+        let errorTitle = TchapL10n.inviteSendingFailedTitle
+        let errorMessage: String
+        
+        let nsError = error as NSError
+        
+        if let message = nsError.userInfo[NSLocalizedDescriptionKey] as? String {
+            errorMessage = message
+        } else {
+            errorMessage = TchapL10n.errorMessageDefault
+        }
+        
+        return ErrorPresentableImpl(title: errorTitle, message: errorMessage)
     }
 }
