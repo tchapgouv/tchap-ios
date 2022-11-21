@@ -1,3 +1,14 @@
+## Changes in 2.2.1 (2022-11-21)
+
+✨ Features
+
+- [Home] Use the new AppLayout from Element ([#685](https://github.com/tchapgouv/tchap-ios/issues/685))
+
+🐛 Bugfixes
+
+- Add missing Identity Server at Login ([#687](https://github.com/tchapgouv/tchap-ios/issues/687))
+
+
 ## Changes in 2.2.0 (2022-11-08)
 
 🙌 Improvements
