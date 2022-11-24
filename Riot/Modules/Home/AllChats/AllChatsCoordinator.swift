@@ -494,6 +494,27 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
                       completion: completion)
     }
     
+    // Tchap: Update room preview for Tchap.
+    private func showRoomPreview(with publicRoom: MXPublicRoom) {
+        guard let session = self.currentMatrixSession else { return }
+        
+        let roomPreviewCoordinator = RoomPreviewCoordinator(session: session, publicRoom: publicRoom)
+        self.showRoomPreview(with: roomPreviewCoordinator)
+    }
+    
+    // Tchap: Update room preview for Tchap.
+    private func showRoomPreview(with coordinator: RoomPreviewCoordinator) {
+        let roomPreviewCoordinator = coordinator
+        roomPreviewCoordinator.start()
+        roomPreviewCoordinator.delegate = self
+        
+        self.add(childCoordinator: roomPreviewCoordinator)
+        
+        self.showSplitViewDetails(with: roomPreviewCoordinator, stackedOnSplitViewDetail: false) { [weak self] in
+            self?.remove(childCoordinator: roomPreviewCoordinator)
+        }
+    }
+    
     private func showRoom(with parameters: RoomCoordinatorParameters,
                           stackOnSplitViewDetail: Bool = false,
                           completion: (() -> Void)? = nil) {
@@ -887,12 +908,9 @@ extension AllChatsCoordinator: PublicRoomsViewControllerDelegate {
             if let room: MXRoom = self.currentMatrixSession?.room(withRoomId: roomID),
                room.summary.membership == .join {
                 self.showRoom(withId: roomID)
-            } else if let previewData = RoomPreviewData(publicRoom: publicRoom, andSession: self.currentMatrixSession) {
-                // Try to preview the unknown room.
-                self.showRoomPreview(with: previewData)
             } else {
-                // This case should never happen.
-                MXLog.failure("[AllChatsCoordinator] publicRoomsViewController didSelect publicRoom failure !")
+                // Try to preview the unknown room.
+                self.showRoomPreview(with: publicRoom)
             }
         })
     }
@@ -1038,5 +1056,20 @@ extension AllChatsCoordinator {
         }
         
         return ErrorPresentableImpl(title: errorTitle, message: errorMessage)
+    }
+}
+
+// Tchap: Add delegate for Room Preview
+// MARK: - RoomPreviewCoordinatorDelegate
+extension AllChatsCoordinator: RoomPreviewCoordinatorDelegate {
+    func roomPreviewCoordinatorDidCancel(_ coordinator: RoomPreviewCoordinatorType) {
+        self.navigationRouter.popModule(animated: true)
+    }
+    
+    func roomPreviewCoordinator(_ coordinator: RoomPreviewCoordinatorType,
+                                didJoinRoomWithId roomID: String,
+                                onEventId eventId: String?) {
+        self.navigationRouter.popModule(animated: true)
+        self.showRoom(withId: roomID, eventId: eventId)
     }
 }
