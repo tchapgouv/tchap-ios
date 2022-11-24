@@ -85,7 +85,7 @@
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
-    self.showParticipantCustomAccessoryView = YES;
+    self.showParticipantCustomAccessoryView = NO;
     self.showInviteUserFab = YES;
 }
 
