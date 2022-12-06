@@ -367,11 +367,12 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         })
         
         actions.append(UIMenu(title: "", options: .displayInline, children: subMenuActions))
-        actions.append(UIMenu(title: "", options: .displayInline, children: [
-            UIAction(title: VectorL10n.settingsSignOut, image: UIImage(systemName: "rectangle.portrait.and.arrow.right.fill"), attributes: .destructive) { [weak self] action in
-                self?.signOut()
-            }
-        ]))
+        // Tchap: Hide Disconnect button
+//        actions.append(UIMenu(title: "", options: .displayInline, children: [
+//            UIAction(title: VectorL10n.settingsSignOut, image: UIImage(systemName: "rectangle.portrait.and.arrow.right.fill"), attributes: .destructive) { [weak self] action in
+//                self?.signOut()
+//            }
+//        ]))
 
         let menu = UIMenu(options: .displayInline, children: actions)
         

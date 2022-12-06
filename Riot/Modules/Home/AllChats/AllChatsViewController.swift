@@ -529,7 +529,8 @@ class AllChatsViewController: HomeViewController {
             // Tchap: Hide space button
             /*spacesButton,*/
             UIBarButtonItem.flexibleSpace(),
-            UIBarButtonItem(image: Asset.Images.allChatsEditIcon.image, menu: menu)
+            // Tchap: Update icon
+            UIBarButtonItem(image: Asset_tchap.Images.homePlus.image, menu: menu)
         ]
     }
     
