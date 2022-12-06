@@ -23,6 +23,7 @@ internal class Asset_tchap: NSObject {
     internal static let notificationsOff = ImageAsset(name: "notificationsOff")
     internal static let pin = ImageAsset(name: "pin")
     internal static let unpin = ImageAsset(name: "unpin")
+    internal static let homePlus = ImageAsset(name: "home_plus")
     internal static let iconPageFavoris = ImageAsset(name: "icon_page_favoris")
     internal static let closeBanner = ImageAsset(name: "close_banner")
     internal static let importFilesButton = ImageAsset(name: "import_files_button")
