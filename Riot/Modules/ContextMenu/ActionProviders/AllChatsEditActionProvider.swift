@@ -58,6 +58,13 @@ class AllChatsEditActionProvider {
             if rootSpaceCount > 0 {
                 createActions.insert(self.createSpaceAction, at: 0)
             }
+            
+            // Tchap: Add external account management
+            if let userID = UserSessionsService.shared.mainUserSession?.userId,
+               UserService.isExternalUser(for: userID) {
+                return UIMenu(title: "", children: [self.exploreRoomsAction])
+            }
+
             return UIMenu(title: "", children: [
                 self.exploreRoomsAction,
                 UIMenu(title: "", options: .displayInline, children: createActions)
