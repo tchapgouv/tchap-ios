@@ -1,3 +1,18 @@
+## Changes in 2.2.2 (2022-12-07)
+
+🙌 Improvements
+
+- [Home] Replace "Tous mes chats" screen title by "Accueil" ([#696](https://github.com/tchapgouv/tchap-ios/issues/696))
+- [Home] Tchap customizations ([#699](https://github.com/tchapgouv/tchap-ios/issues/699))
+
+🐛 Bugfixes
+
+- Fix room preview for new AppLayout ([#689](https://github.com/tchapgouv/tchap-ios/pull/689))
+- Fix truncated User Power Level in RoomParticipantsViewController ([#690](https://github.com/tchapgouv/tchap-ios/pull/690))
+- Fix wrong accent color in Dark Mode ([#693](https://github.com/tchapgouv/tchap-ios/issues/693))
+- [AppLayout] Manage Invited users restrictions ([#701](https://github.com/tchapgouv/tchap-ios/issues/701))
+
+
 ## Changes in 2.2.1 (2022-11-21)
 
 ✨ Features
