@@ -285,6 +285,8 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         }
         
         self.addMatrixSessionToAllChatsController(userSession.matrixSession)
+        // Tchap: Add external account management
+        self.createLeftButtonItem(for: allChatsViewController)
     }
     
     @objc private func userSessionsServiceWillRemoveUserSession(_ notification: Notification) {
@@ -355,11 +357,14 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         
         var subMenuActions: [UIAction] = []
         if BuildSettings.sideMenuShowInviteFriends {
-            // Tchap: Fix title for invite button.
-            subMenuActions.append(UIAction(title: TchapL10n.sideMenuActionInviteFriends, image: UIImage(systemName: "square.and.arrow.up.fill")) { [weak self] action in
-                guard let self = self else { return }
-                self.showInviteFriends(from: self.avatarMenuButton)
-            })
+            // Tchap: Fix title for invite button, and manage invite users
+            if let userID = UserSessionsService.shared.mainUserSession?.userId,
+                !UserService.isExternalUser(for: userID) {
+                subMenuActions.append(UIAction(title: TchapL10n.sideMenuActionInviteFriends, image: UIImage(systemName: "square.and.arrow.up.fill")) { [weak self] action in
+                    guard let self = self else { return }
+                    self.showInviteFriends(from: self.avatarMenuButton)
+                })
+            }
         }
 
         subMenuActions.append(UIAction(title: VectorL10n.sideMenuActionFeedback, image: UIImage(systemName: "questionmark.circle")) { [weak self] action in
@@ -367,11 +372,12 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         })
         
         actions.append(UIMenu(title: "", options: .displayInline, children: subMenuActions))
-        actions.append(UIMenu(title: "", options: .displayInline, children: [
-            UIAction(title: VectorL10n.settingsSignOut, image: UIImage(systemName: "rectangle.portrait.and.arrow.right.fill"), attributes: .destructive) { [weak self] action in
-                self?.signOut()
-            }
-        ]))
+        // Tchap: Hide Disconnect button
+//        actions.append(UIMenu(title: "", options: .displayInline, children: [
+//            UIAction(title: VectorL10n.settingsSignOut, image: UIImage(systemName: "rectangle.portrait.and.arrow.right.fill"), attributes: .destructive) { [weak self] action in
+//                self?.signOut()
+//            }
+//        ]))
 
         let menu = UIMenu(options: .displayInline, children: actions)
         
@@ -492,6 +498,27 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         self.showRoom(with: roomCoordinatorParameters,
                       stackOnSplitViewDetail: roomPreviewNavigationParameters.presentationParameters.stackAboveVisibleViews,
                       completion: completion)
+    }
+    
+    // Tchap: Update room preview for Tchap.
+    private func showRoomPreview(with publicRoom: MXPublicRoom) {
+        guard let session = self.currentMatrixSession else { return }
+        
+        let roomPreviewCoordinator = RoomPreviewCoordinator(session: session, publicRoom: publicRoom)
+        self.showRoomPreview(with: roomPreviewCoordinator)
+    }
+    
+    // Tchap: Update room preview for Tchap.
+    private func showRoomPreview(with coordinator: RoomPreviewCoordinator) {
+        let roomPreviewCoordinator = coordinator
+        roomPreviewCoordinator.start()
+        roomPreviewCoordinator.delegate = self
+        
+        self.add(childCoordinator: roomPreviewCoordinator)
+        
+        self.showSplitViewDetails(with: roomPreviewCoordinator, stackedOnSplitViewDetail: false) { [weak self] in
+            self?.remove(childCoordinator: roomPreviewCoordinator)
+        }
     }
     
     private func showRoom(with parameters: RoomCoordinatorParameters,
@@ -887,12 +914,9 @@ extension AllChatsCoordinator: PublicRoomsViewControllerDelegate {
             if let room: MXRoom = self.currentMatrixSession?.room(withRoomId: roomID),
                room.summary.membership == .join {
                 self.showRoom(withId: roomID)
-            } else if let previewData = RoomPreviewData(publicRoom: publicRoom, andSession: self.currentMatrixSession) {
-                // Try to preview the unknown room.
-                self.showRoomPreview(with: previewData)
             } else {
-                // This case should never happen.
-                MXLog.failure("[AllChatsCoordinator] publicRoomsViewController didSelect publicRoom failure !")
+                // Try to preview the unknown room.
+                self.showRoomPreview(with: publicRoom)
             }
         })
     }
@@ -1038,5 +1062,20 @@ extension AllChatsCoordinator {
         }
         
         return ErrorPresentableImpl(title: errorTitle, message: errorMessage)
+    }
+}
+
+// Tchap: Add delegate for Room Preview
+// MARK: - RoomPreviewCoordinatorDelegate
+extension AllChatsCoordinator: RoomPreviewCoordinatorDelegate {
+    func roomPreviewCoordinatorDidCancel(_ coordinator: RoomPreviewCoordinatorType) {
+        self.navigationRouter.popModule(animated: true)
+    }
+    
+    func roomPreviewCoordinator(_ coordinator: RoomPreviewCoordinatorType,
+                                didJoinRoomWithId roomID: String,
+                                onEventId eventId: String?) {
+        self.navigationRouter.popModule(animated: true)
+        self.showRoom(withId: roomID, eventId: eventId)
     }
 }
