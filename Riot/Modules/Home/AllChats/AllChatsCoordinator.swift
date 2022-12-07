@@ -285,6 +285,8 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         }
         
         self.addMatrixSessionToAllChatsController(userSession.matrixSession)
+        // Tchap: Add external account management
+        self.createLeftButtonItem(for: allChatsViewController)
     }
     
     @objc private func userSessionsServiceWillRemoveUserSession(_ notification: Notification) {
@@ -355,11 +357,14 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         
         var subMenuActions: [UIAction] = []
         if BuildSettings.sideMenuShowInviteFriends {
-            // Tchap: Fix title for invite button.
-            subMenuActions.append(UIAction(title: TchapL10n.sideMenuActionInviteFriends, image: UIImage(systemName: "square.and.arrow.up.fill")) { [weak self] action in
-                guard let self = self else { return }
-                self.showInviteFriends(from: self.avatarMenuButton)
-            })
+            // Tchap: Fix title for invite button, and manage invite users
+            if let userID = UserSessionsService.shared.mainUserSession?.userId,
+                !UserService.isExternalUser(for: userID) {
+                subMenuActions.append(UIAction(title: TchapL10n.sideMenuActionInviteFriends, image: UIImage(systemName: "square.and.arrow.up.fill")) { [weak self] action in
+                    guard let self = self else { return }
+                    self.showInviteFriends(from: self.avatarMenuButton)
+                })
+            }
         }
 
         subMenuActions.append(UIAction(title: VectorL10n.sideMenuActionFeedback, image: UIImage(systemName: "questionmark.circle")) { [weak self] action in
