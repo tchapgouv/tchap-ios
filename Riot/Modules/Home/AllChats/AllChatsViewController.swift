@@ -533,13 +533,20 @@ class AllChatsViewController: HomeViewController {
         let spacesButton = UIBarButtonItem(image: Asset.Images.allChatsSpacesIcon.image, style: .done, target: self, action: #selector(self.showSpaceSelectorAction(sender: )))
         spacesButton.accessibilityLabel = VectorL10n.spaceSelectorTitle
         
-        self.toolbar.items = [
+        var toolbarItems = [
             // Tchap: Hide space button
             /*spacesButton,*/
             UIBarButtonItem.flexibleSpace(),
             // Tchap: Update icon
             UIBarButtonItem(image: Asset_tchap.Images.homePlus.image, menu: menu)
         ]
+        
+        if let userID = UserSessionsService.shared.mainUserSession?.userId,
+           !UserService.isExternalUser(for: userID) {
+            self.toolbar.items = toolbarItems
+        } else {
+            self.toolbar.items = nil
+        }
     }
     
     private func showCreateSpace(parentSpaceId: String?) {
