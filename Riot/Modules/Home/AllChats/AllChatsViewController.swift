@@ -156,8 +156,6 @@ class AllChatsViewController: HomeViewController {
 
         NotificationCenter.default.addObserver(self, selector: #selector(self.spaceListDidChange), name: MXSpaceService.didInitialise, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.spaceListDidChange), name: MXSpaceService.didBuildSpaceGraph, object: nil)
-        // Tchap: Register user sessions service notifications to manage external users restrictions.
-        registerUserSessionsServiceNotifications()
         
         set(tableHeadeView: self.bannerView)
     }
@@ -202,12 +200,6 @@ class AllChatsViewController: HomeViewController {
         }
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        // Tchap: Unregister user sessions service notifications to manage external users restrictions.
-        unregisterUserSessionsServiceNotifications()
-    }
-    
     // MARK: - Public
     
     func switchSpace(withId spaceId: String?) {
@@ -246,6 +238,9 @@ class AllChatsViewController: HomeViewController {
         } else {
             initDataSource()
         }
+        
+        // Tchap: Force update UI to manage external users restrictions (useful after login).
+        updateUI()
     }
     
     override func removeMatrixSession(_ mxSession: MXSession!) {
@@ -533,13 +528,20 @@ class AllChatsViewController: HomeViewController {
         let spacesButton = UIBarButtonItem(image: Asset.Images.allChatsSpacesIcon.image, style: .done, target: self, action: #selector(self.showSpaceSelectorAction(sender: )))
         spacesButton.accessibilityLabel = VectorL10n.spaceSelectorTitle
         
-        self.toolbar.items = [
+        var toolbarItems = [
             // Tchap: Hide space button
             /*spacesButton,*/
             UIBarButtonItem.flexibleSpace(),
             // Tchap: Update icon
             UIBarButtonItem(image: Asset_tchap.Images.homePlus.image, menu: menu)
         ]
+        
+        if let userID = UserSessionsService.shared.mainUserSession?.userId,
+           !UserService.isExternalUser(for: userID) {
+            self.toolbar.items = toolbarItems
+        } else {
+            self.toolbar.items = nil
+        }
     }
     
     private func showCreateSpace(parentSpaceId: String?) {
@@ -672,23 +674,6 @@ class AllChatsViewController: HomeViewController {
         
         allChatsOnboardingCoordinatorBridgePresenter.present(from: self, animated: true)
         self.allChatsOnboardingCoordinatorBridgePresenter = allChatsOnboardingCoordinatorBridgePresenter
-    }
-    
-    // Tchap: Register and unregister sessions service notifications to manage external users restrictions.
-    private func registerUserSessionsServiceNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(didUpdateUserSession), name: UserSessionsService.didAddUserSession, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(didUpdateUserSession), name: UserSessionsService.willRemoveUserSession, object: nil)
-    }
-    
-    private func unregisterUserSessionsServiceNotifications() {
-        NotificationCenter.default.removeObserver(self, name: UserSessionsService.didAddUserSession, object: nil)
-        
-        NotificationCenter.default.removeObserver(self, name: UserSessionsService.willRemoveUserSession, object: nil)
-    }
-    
-    @objc private func didUpdateUserSession() {
-        updateUI()
     }
 }
 
