@@ -31,16 +31,11 @@
 @class UniversalLinkParameters;
 @protocol RoomViewControllerDelegate;
 @class RoomDisplayConfiguration;
-<<<<<<< HEAD
 // Tchap: Disable Threads
-//@class ThreadsCoordinatorBridgePresenter;
 // Tchap: Disable Live location sharing
+//@class ThreadsCoordinatorBridgePresenter;
 //@class LiveLocationSharingBannerView;
-=======
-@class ThreadsCoordinatorBridgePresenter;
-@class LiveLocationSharingBannerView;
 @class VoiceBroadcastService;
->>>>>>> v1.9.14
 
 NS_ASSUME_NONNULL_BEGIN
 

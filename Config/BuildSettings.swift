@@ -413,15 +413,11 @@ final class BuildSettings: NSObject {
     /// Overwritten by the home server's .well-known configuration (if any exists)
     static let defaultTileServerMapStyleURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=")!
     
-<<<<<<< HEAD
     static let locationSharingEnabled = false // Currently disabled in Tchap.
-=======
-    static let locationSharingEnabled = true
     
     // MARK: - Voice Broadcast
     static let voiceBroadcastChunkLength: Int = 120
     static let voiceBroadcastMaxLength: UInt = 14400 // 240min.
->>>>>>> v1.9.14
 
     // MARK: - MXKAppSettings
     static let enableBotCreation: Bool = false
@@ -437,10 +433,7 @@ final class BuildSettings: NSObject {
     static let syncLocalContacts: Bool = false
     
     // MARK: - New App Layout
-<<<<<<< HEAD
     static let newAppLayoutEnabled = false
-=======
-    static let newAppLayoutEnabled = true
 
     // MARK: - QR Login
     
@@ -455,5 +448,4 @@ final class BuildSettings: NSObject {
     
     // MARK: - Alerts
     static let showUnverifiedSessionsAlert = true
->>>>>>> v1.9.14
 }

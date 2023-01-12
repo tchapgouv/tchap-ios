@@ -42,9 +42,13 @@ struct VoiceMessageAudioConverter {
     
     static func convertToMPEG4AAC(sourceURL: URL, destinationURL: URL, completion: @escaping (Result<Void, VoiceMessageAudioConverterError>) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
-<<<<<<< HEAD
 //            do {
-//                try OGGConverter.convertOpusOGGToM4aFile(src: sourceURL, dest: destinationURL)
+//                if sourceURL.pathExtension == "mp4" {
+//                    try FileManager.default.copyItem(atPath: sourceURL.path, toPath: destinationURL.path)
+//                } else {
+//                    try OGGConverter.convertOpusOGGToM4aFile(src: sourceURL, dest: destinationURL)
+//                }
+//                
 //                DispatchQueue.main.async {
 //                    completion(.success(()))
 //                }
@@ -53,23 +57,6 @@ struct VoiceMessageAudioConverter {
 //                    completion(.failure(.conversionFailed(error)))
 //                }
 //            }
-=======
-            do {
-                if sourceURL.pathExtension == "mp4" {
-                    try FileManager.default.copyItem(atPath: sourceURL.path, toPath: destinationURL.path)
-                } else {
-                    try OGGConverter.convertOpusOGGToM4aFile(src: sourceURL, dest: destinationURL)
-                }
-                
-                DispatchQueue.main.async {
-                    completion(.success(()))
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    completion(.failure(.conversionFailed(error)))
-                }
-            }
->>>>>>> v1.9.14
         }
     }
     

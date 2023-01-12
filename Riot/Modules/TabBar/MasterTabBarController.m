@@ -210,17 +210,8 @@
             [childViewControllers removeAllObjects];
         }
         
-<<<<<<< HEAD
         // Tchap: Not the same mecanism
 //        [[AppDelegate theDelegate] checkAppVersion];
-        
-        if (BuildSettings.newAppLayoutEnabled && !RiotSettings.shared.allChatsOnboardingHasBeenDisplayed)
-        {
-            [self showAllChatsOnboardingScreen];
-        }
-=======
-        [[AppDelegate theDelegate] checkAppVersion];
->>>>>>> v1.9.14
     }
 }
 

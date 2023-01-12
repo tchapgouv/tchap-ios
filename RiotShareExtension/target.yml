@@ -88,7 +88,7 @@ targets:
       excludes:
         - "**/*.md" # excludes all files with the .md extension
     - path: ../Riot/Modules/Room/TimelineCells/Styles/RoomTimelineStyleIdentifier.swift
-<<<<<<< HEAD
+    - path: ../Riot/Modules/VoiceBroadcast/VoiceBroadcastSDK/VoiceBroadcastSettings.swift
 
 
     # Tchap
@@ -104,6 +104,3 @@ targets:
     - path: ../Tchap/Managers/DisplayName
     - path: ../Tchap/Model
     - path: ../Tchap/Utils
-=======
-    - path: ../Riot/Modules/VoiceBroadcast/VoiceBroadcastSDK/VoiceBroadcastSettings.swift
->>>>>>> v1.9.14

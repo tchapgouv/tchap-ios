@@ -70,14 +70,10 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     }
     
     private var indicators = [UserIndicator]()
-<<<<<<< HEAD
-    private var signOutAlertPresenter = SignOutAlertPresenter()
     // Tchap: Add invite service for user invitation
     private var inviteService: InviteServiceType?
     private var errorPresenter: ErrorPresenter?
     private weak var currentAlertController: UIAlertController?
-=======
->>>>>>> v1.9.14
     
     // MARK: Public
 
@@ -168,7 +164,7 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
                 // Release the current selected item (room/contact/...).
                 self.masterTabBarController.releaseSelectedItem()
                 
-                // Select home tab
+                // Tchap: Select people tab (Home is disabled)
                 self.masterTabBarController.selectTab(at: .people)
                 
                 completion?()
@@ -205,7 +201,7 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
             }
         } else {
             // Tab bar controller is already visible
-            // Select the Home tab
+            // Tchap: Select the People tab (Home is disabled)
             masterTabBarController.selectTab(at: .people)
             completion?()
         }
@@ -338,7 +334,8 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         roomsViewController.userIndicatorStore = UserIndicatorStore(presenter: indicatorPresenter)
         return roomsViewController
     }
-    
+
+// Tchap: no unified search    
 //    private func createUnifiedSearchController() -> UnifiedSearchViewController {
 //
 //        let viewController: UnifiedSearchViewController = UnifiedSearchViewController.instantiate()
@@ -751,17 +748,11 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     }
     
     @objc private func sessionDidSync(_ notification: Notification) {
-<<<<<<< HEAD
 //        if let session = notification.object as? MXSession {
 //            showCoachMessageIfNeeded(with: session)
 //        }
         
         updateAvatarButtonItem()
-=======
-        if let session = notification.object as? MXSession {
-            showCoachMessageIfNeeded(with: session)
-        }
->>>>>>> v1.9.14
     }
     
     // MARK: Navigation bar items management
@@ -796,7 +787,6 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         viewController.navigationItem.rightBarButtonItem = searchBarButtonItem
     }
     
-<<<<<<< HEAD
     private func createAvatarButtonItem(for viewController: UIViewController) {
         var actions: [UIMenuElement] = []
         
@@ -866,11 +856,11 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
             return
         }
         
-        signOutAlertPresenter.present(for: keyBackup.state,
-                                      areThereKeysToBackup: keyBackup.hasKeysToBackup,
-                                      from: self.masterTabBarController,
-                                      sourceView: nil,
-                                      animated: true)
+//        signOutAlertPresenter.present(for: keyBackup.state,
+//                                      areThereKeysToBackup: keyBackup.hasKeysToBackup,
+//                                      from: self.masterTabBarController,
+//                                      sourceView: nil,
+//                                      animated: true)
     }
     
     // MARK: - SecureBackupSetupCoordinatorBridgePresenter
@@ -947,18 +937,11 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         self.crossSigningSetupCoordinatorBridgePresenter = crossSigningSetupCoordinatorBridgePresenter
     }
 
-=======
->>>>>>> v1.9.14
     // MARK: Coach Message
     
 //    private var windowOverlay: WindowOverlayPresenter?
 
-<<<<<<< HEAD
 //    func showCoachMessageIfNeeded(with session: MXSession) {
-//        guard !BuildSettings.newAppLayoutEnabled else {
-//            // Showing coach message makes no sense with the new App Layout
-//            return
-//        }
 //        
 //        if !RiotSettings.shared.slideMenuRoomsCoachMessageHasBeenDisplayed {
 //            let isAuthenticated = MXKAccountManager.shared().activeAccounts.first != nil || MXKAccountManager.shared().accounts.first?.isSoftLogout == false
@@ -1021,21 +1004,6 @@ extension TabBarCoordinator {
                 let okAction = UIAlertAction(title: VectorL10n.ok,
                                              style: .default) { [weak self] _ in
                     self?.currentAlertController = nil
-=======
-    func showCoachMessageIfNeeded(with session: MXSession) {
-        if !RiotSettings.shared.slideMenuRoomsCoachMessageHasBeenDisplayed {
-            let isAuthenticated = MXKAccountManager.shared().activeAccounts.first != nil || MXKAccountManager.shared().accounts.first?.isSoftLogout == false
-
-        if isAuthenticated, let spaceService = session.spaceService, masterTabBarController.presentedViewController == nil, navigationRouter.modules.count == 1 {
-                if spaceService.isInitialised && !spaceService.rootSpaceSummaries.isEmpty {
-                    RiotSettings.shared.slideMenuRoomsCoachMessageHasBeenDisplayed = true
-                    windowOverlay = WindowOverlayPresenter()
-                    let coachMarkView = CoachMarkView.instantiate(
-                        text: VectorL10n.sideMenuCoachMessage,
-                        from: CoachMarkView.TopLeftPosition,
-                        markPosition: .topLeft)
-                    windowOverlay?.show(coachMarkView, duration: 4.0)
->>>>>>> v1.9.14
                 }
                 errorAlertController.addAction(okAction)
                 errorAlertController.mxk_setAccessibilityIdentifier("ContactsVCInviteByEmailError")
@@ -1229,7 +1197,6 @@ extension TabBarCoordinator: UIGestureRecognizerDelegate {
         }
     }
 }
-<<<<<<< HEAD
 
 extension TabBarCoordinator: SignOutAlertPresenterDelegate {
     
@@ -1358,5 +1325,3 @@ extension TabBarCoordinator: RoomPreviewCoordinatorDelegate {
         self.showRoom(withId: roomID, eventId: eventId)
     }
 }
-=======
->>>>>>> v1.9.14

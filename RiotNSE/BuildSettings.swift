@@ -251,6 +251,8 @@ final class BuildSettings: NSObject {
     
     static let allowInviteExernalUsers: Bool = true
     
+    static let allowBackgroundAudioMessagePlayback: Bool = true
+
     // MARK: - Side Menu
     static let enableSideMenu: Bool = true && !newAppLayoutEnabled
     static let sideMenuShowInviteFriends: Bool = true
@@ -425,6 +427,10 @@ final class BuildSettings: NSObject {
     
     static let locationSharingEnabled = false // Currently disabled in Tchap.
 
+    // MARK: - Voice Broadcast
+    static let voiceBroadcastChunkLength: Int = 120
+    static let voiceBroadcastMaxLength: UInt = 14400 // 240min.
+
     // MARK: - MXKAppSettings
     static let enableBotCreation: Bool = false
     static let maxAllowedMediaCacheSize: Int = 1073741824
@@ -440,4 +446,18 @@ final class BuildSettings: NSObject {
     
     // MARK: - New App Layout
     static let newAppLayoutEnabled = true
+    
+    // MARK: - QR Login
+    
+    /// Flag indicating whether the QR login enabled from login screen
+    static let qrLoginEnabledFromNotAuthenticated = true
+    /// Flag indicating whether the QR login enabled from Device Manager screen
+    static let qrLoginEnabledFromAuthenticated = false
+    /// Flag indicating whether displaying QRs enabled for the QR login screens
+    static let qrLoginEnableDisplayingQRs = false
+    
+    static let rendezvousServerBaseURL = URL(string: "https://rendezvous.lab.element.dev/")!
+
+    // MARK: - Alerts
+    static let showUnverifiedSessionsAlert = true
 }

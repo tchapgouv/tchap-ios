@@ -30,31 +30,31 @@ extension MXError {
         case kMXErrCodeStringNotJSON:
             message = VectorL10n.loginErrorBadJson
         case kMXErrCodeStringLimitExceeded:
-            message = VectorL10n.loginErrorLimitExceeded
+            message = TchapL10n.authenticationErrorLimitExceeded // Tchap
         case kMXErrCodeStringUserInUse:
             message = VectorL10n.loginErrorUserInUse
         case kMXErrCodeStringLoginEmailURLNotYet:
             message = VectorL10n.loginErrorLoginEmailNotYet
         case kMXErrCodeStringThreePIDInUse:
-            message = VectorL10n.authEmailInUse
+            message = TchapL10n.authenticationErrorEmailInUse // Tchap
         case kMXErrCodeStringPasswordTooShort:
-            message = VectorL10n.passwordPolicyTooShortPwdError
+            message = TchapL10n.passwordPolicyTooShortPwdError // Tchap
         case kMXErrCodeStringPasswordNoDigit:
-            message = VectorL10n.passwordPolicyWeakPwdError
+            message = TchapL10n.passwordPolicyWeakPwdError // Tchap
         case kMXErrCodeStringPasswordNoLowercase:
-            message = VectorL10n.passwordPolicyWeakPwdError
+            message = TchapL10n.passwordPolicyWeakPwdError // Tchap
         case kMXErrCodeStringPasswordNoUppercase:
-            message = VectorL10n.passwordPolicyWeakPwdError
+            message = TchapL10n.passwordPolicyWeakPwdError // Tchap
         case kMXErrCodeStringPasswordNoSymbol:
-            message = VectorL10n.passwordPolicyWeakPwdError
+            message = TchapL10n.passwordPolicyWeakPwdError // Tchap
         case kMXErrCodeStringWeakPassword:
-            message = VectorL10n.passwordPolicyWeakPwdError
+            message = TchapL10n.passwordPolicyWeakPwdError // Tchap
         case kMXErrCodeStringPasswordInDictionary:
-            message = VectorL10n.passwordPolicyPwdInDictError
+            message = TchapL10n.passwordPolicyPwdInDictError // Tchap
         default:
             message = self.error
         }
-        
+
         return message
     }
 }

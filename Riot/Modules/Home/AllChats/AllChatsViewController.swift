@@ -888,13 +888,7 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
               viewIfLoaded?.window != nil else {
             return
         }
-<<<<<<< HEAD
-
-        reviewSessionAlertHasBeenDisplayed = true
-
-=======
         
->>>>>>> v1.9.14
         // Force verification if required by the HS configuration
         guard !session.vc_homeserverConfiguration().encryption.isSecureBackupRequired else {
             MXLog.debug("[AllChatsViewController] presentVerifyCurrentSessionAlertIfNeededWithSession: Force verification of the device")
@@ -918,18 +912,7 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
         }
 
         let devices = mainSession.crypto.devices(forUser: mainSession.myUserId).values
-<<<<<<< HEAD
-        var userHasOneUnverifiedDevice = false
-        for device in devices {
-            if !device.trustLevel.isCrossSigningVerified {
-                userHasOneUnverifiedDevice = true
-                break
-            }
-        }
-
-=======
         let userHasOneUnverifiedDevice = devices.contains(where: {!$0.trustLevel.isCrossSigningVerified})
->>>>>>> v1.9.14
         if userHasOneUnverifiedDevice {
             presentReviewUnverifiedSessionsAlert(with: session)
         }
@@ -1042,13 +1025,7 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
 
     private func presentVerifyCurrentSessionAlert(with session: MXSession) {
         MXLog.debug("[AllChatsViewController] presentVerifyCurrentSessionAlertWithSession")
-<<<<<<< HEAD
-
-        currentAlert?.dismiss(animated: true, completion: nil)
-
-=======
         
->>>>>>> v1.9.14
         let alert = UIAlertController(title: VectorL10n.keyVerificationSelfVerifyCurrentSessionAlertTitle,
                                       message: VectorL10n.keyVerificationSelfVerifyCurrentSessionAlertMessage,
                                       preferredStyle: .alert)
@@ -1072,17 +1049,9 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
 
     private func presentReviewUnverifiedSessionsAlert(with session: MXSession) {
         MXLog.debug("[AllChatsViewController] presentReviewUnverifiedSessionsAlert")
-<<<<<<< HEAD
-
-        currentAlert?.dismiss(animated: true, completion: nil)
-
-        let alert = UIAlertController(title: VectorL10n.keyVerificationSelfVerifyUnverifiedSessionsAlertTitle,
-                                      message: VectorL10n.keyVerificationSelfVerifyUnverifiedSessionsAlertMessage,
-=======
         
         let alert = UIAlertController(title: VectorL10n.keyVerificationAlertTitle,
                                       message: VectorL10n.keyVerificationAlertBody,
->>>>>>> v1.9.14
                                       preferredStyle: .alert)
 
         alert.addAction(UIAlertAction(title: VectorL10n.keyVerificationSelfVerifyUnverifiedSessionsAlertValidateAction,
@@ -1090,17 +1059,9 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
                                       handler: { action in
             self.showSettingsSecurityScreen(with: session)
         }))
-<<<<<<< HEAD
-
-        alert.addAction(UIAlertAction(title: VectorL10n.later, style: .cancel))
-
-        alert.addAction(UIAlertAction(title: VectorL10n.doNotAskAgain, style: .destructive, handler: { action in
-            RiotSettings.shared.hideReviewSessionsAlert = true
-=======
         
         alert.addAction(UIAlertAction(title: VectorL10n.later, style: .cancel, handler: { [weak self] _ in
             self?.reviewSessionAlertSnoozeController.snooze()
->>>>>>> v1.9.14
         }))
 
         present(alert, animated: true)

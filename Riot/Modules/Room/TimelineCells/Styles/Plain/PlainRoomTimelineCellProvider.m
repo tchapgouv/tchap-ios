@@ -117,13 +117,11 @@
     
     [self registerFileWithoutThumbnailCellsForTableView:tableView];
     
-<<<<<<< HEAD
     [self registerAntivirusCellsForTableView:tableView];
-=======
+
     [self registerVoiceBroadcastCellsForTableView:tableView];
 
     [self registerVoiceBroadcastRecorderCellsForTableView:tableView];
->>>>>>> v1.9.14
     
     [tableView registerClass:RoomEmptyBubbleCell.class forCellReuseIdentifier:RoomEmptyBubbleCell.defaultReuseIdentifier];
     
@@ -361,16 +359,14 @@
     NSDictionary *locationCellsMapping = [self locationCellsMapping];
     [cellClasses addEntriesFromDictionary:locationCellsMapping];
     
-<<<<<<< HEAD
     NSDictionary *antivirusCellsMapping = [self antivirusCellsMapping];
     [cellClasses addEntriesFromDictionary:antivirusCellsMapping];
-=======
+
     NSDictionary *voiceBroadcastPlaybackCellsMapping = [self voiceBroadcastPlaybackCellsMapping];
     [cellClasses addEntriesFromDictionary:voiceBroadcastPlaybackCellsMapping];
     
     NSDictionary *voiceBroadcastRecorderCellsMapping = [self voiceBroadcastRecorderCellsMapping];
     [cellClasses addEntriesFromDictionary:voiceBroadcastRecorderCellsMapping];
->>>>>>> v1.9.14
         
     NSDictionary *othersCells = @{
         @(RoomTimelineCellIdentifierEmpty) : RoomEmptyBubbleCell.class,
@@ -594,14 +590,15 @@
     };
 }
 
-<<<<<<< HEAD
 - (NSDictionary<NSNumber*, Class>*)antivirusCellsMapping
 {
     return @{
         @(RoomTimelineCellIdentifierAttachmentAntivirusScanStatusWithPaginationTitle) : RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.class,
         @(RoomTimelineCellIdentifierAttachmentAntivirusScanStatusWithoutSenderInfo) : RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.class,
         @(RoomTimelineCellIdentifierAttachmentAntivirusScanStatus) : RoomAttachmentAntivirusScanStatusBubbleCell.class
-=======
+    };
+}
+
 - (NSDictionary<NSNumber*, Class>*)voiceBroadcastPlaybackCellsMapping
 {
     return @{
@@ -623,7 +620,6 @@
         @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorder) : VoiceBroadcastRecorderPlainBubbleCell.class,
         @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorderWithoutSenderInfo) : VoiceBroadcastRecorderWithoutSenderInfoPlainCell.class,
         @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorderWithPaginationTitle) : VoiceBroadcastRecorderWithPaginationTitlePlainCell.class
->>>>>>> v1.9.14
     };
 }
 

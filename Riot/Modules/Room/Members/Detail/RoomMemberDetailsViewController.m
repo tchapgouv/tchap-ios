@@ -440,13 +440,9 @@
 
 - (void)startUserVerification
 {
-<<<<<<< HEAD
-//    [[AppDelegate theDelegate] presentUserVerificationForRoomMember:self.mxRoomMember session:self.mainSession];
-=======
-    [[AppDelegate theDelegate] presentUserVerificationForRoomMember:self.mxRoomMember session:self.mainSession completion:^{
-        [self refreshUserEncryptionTrustLevel];
-    }];
->>>>>>> v1.9.14
+//    [[AppDelegate theDelegate] presentUserVerificationForRoomMember:self.mxRoomMember session:self.mainSession completion:^{
+//        [self refreshUserEncryptionTrustLevel];
+//    }];
 }
 
 - (void)presentUserVerification
@@ -833,52 +829,53 @@
         NSNumber *actionNumber = securityActionsArray[indexPath.row];
         
         // Tchap: Hide security content cells.
-/*        if (actionNumber.unsignedIntegerValue == MXKRoomMemberDetailsActionSecurity)
-        {
-            MXKTableViewCell *securityStatusCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
-            
-            NSString *statusText;
-            
-            switch (self.encryptionTrustLevel) {
-                case UserEncryptionTrustLevelTrusted:
-                    statusText = [VectorL10n roomParticipantsActionSecurityStatusVerified];
-                    break;
-                case UserEncryptionTrustLevelNotVerified:
-                case UserEncryptionTrustLevelNoCrossSigning:
-                {
-                    if (self.isRoomMemberCurrentUser)
-                    {
-                        statusText = [VectorL10n roomParticipantsActionSecurityStatusCompleteSecurity];
-                    }
-                    else
-                    {
-                        statusText = [VectorL10n roomParticipantsActionSecurityStatusVerify];
-                    }
-                }
-                    break;
-                case UserEncryptionTrustLevelWarning:
-                    statusText = [VectorL10n roomParticipantsActionSecurityStatusWarning];
-                    break;
-                default:
-                    statusText = [VectorL10n roomParticipantsActionSecurityStatusLoading];
-                    break;
-            }
-            
-            securityStatusCell.imageView.image = [EncryptionTrustLevelBadgeImageHelper userBadgeImageFor:self.encryptionTrustLevel];
-            
-            securityStatusCell.textLabel.numberOfLines = 1;
-            securityStatusCell.textLabel.font = [UIFont systemFontOfSize:16.0];
-            securityStatusCell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
-            securityStatusCell.textLabel.text = statusText;
-            
-            securityStatusCell.backgroundColor = ThemeService.shared.theme.backgroundColor;
-            securityStatusCell.contentView.backgroundColor = [UIColor clearColor];
-            securityStatusCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            [securityStatusCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
-            
-            cell = securityStatusCell;
-        }
-        else */if (actionNumber.unsignedIntegerValue == MXKRoomMemberDetailsActionSecurityInformation)
+//        if (actionNumber.unsignedIntegerValue == MXKRoomMemberDetailsActionSecurity)
+//        {
+//            MXKTableViewCell *securityStatusCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
+//            
+//            NSString *statusText;
+//            
+//            switch (self.encryptionTrustLevel) {
+//                case UserEncryptionTrustLevelTrusted:
+//                    statusText = [VectorL10n roomParticipantsActionSecurityStatusVerified];
+//                    break;
+//                case UserEncryptionTrustLevelNotVerified:
+//                case UserEncryptionTrustLevelNoCrossSigning:
+//                {
+//                    if (self.isRoomMemberCurrentUser)
+//                    {
+//                        statusText = [VectorL10n roomParticipantsActionSecurityStatusCompleteSecurity];
+//                    }
+//                    else
+//                    {
+//                        statusText = [VectorL10n roomParticipantsActionSecurityStatusVerify];
+//                    }
+//               }
+//                    break;
+//                case UserEncryptionTrustLevelWarning:
+//                    statusText = [VectorL10n roomParticipantsActionSecurityStatusWarning];
+//                    break;
+//                default:
+//                    statusText = [VectorL10n roomParticipantsActionSecurityStatusLoading];
+//                    break;
+//            }
+//            
+//            securityStatusCell.imageView.image = [EncryptionTrustLevelBadgeImageHelper userBadgeImageFor:self.encryptionTrustLevel];
+//            
+//            securityStatusCell.textLabel.numberOfLines = 1;
+//            securityStatusCell.textLabel.font = [UIFont systemFontOfSize:16.0];
+//            securityStatusCell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+//            securityStatusCell.textLabel.text = statusText;
+//            
+//            securityStatusCell.backgroundColor = ThemeService.shared.theme.backgroundColor;
+//            securityStatusCell.contentView.backgroundColor = [UIColor clearColor];
+//            securityStatusCell.selectionStyle = UITableViewCellSelectionStyleNone;
+//            [securityStatusCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
+//            
+//            cell = securityStatusCell;
+//        }
+//        else 
+        if (actionNumber.unsignedIntegerValue == MXKRoomMemberDetailsActionSecurityInformation)
         {
             MXKTableViewCell *encryptionInfoCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
             
@@ -1054,25 +1051,26 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
     // Tchap: Disable security cells interactions.
-/*    if (indexPath.section == securityIndex)
-    {
-        if (self.encryptionTrustLevel == UserEncryptionTrustLevelNotVerified)
-        {
-            if (self.isRoomMemberCurrentUser)
-            {
-                [self presentCompleteSecurity];
-            }
-            else
-            {
-                [self startUserVerification];
-            }
-        }
-        else
-        {
-            [self presentUserVerification];
-        }
-    }
-    else */if (indexPath.section == directChatsIndex)
+//    if (indexPath.section == securityIndex)
+//    {
+//        if (self.encryptionTrustLevel == UserEncryptionTrustLevelNotVerified)
+//        {
+//            if (self.isRoomMemberCurrentUser)
+//            {
+//                [self presentCompleteSecurity];
+//            }
+//            else
+//            {
+//                [self startUserVerification];
+//            }
+//        }
+//        else
+//        {
+//            [self presentUserVerification];
+//        }
+//    }
+//    else 
+    if (indexPath.section == directChatsIndex)
     {
         if (indexPath.row < directChatsArray.count)
         {
