@@ -117,7 +117,13 @@
     
     [self registerFileWithoutThumbnailCellsForTableView:tableView];
     
+<<<<<<< HEAD
     [self registerAntivirusCellsForTableView:tableView];
+=======
+    [self registerVoiceBroadcastCellsForTableView:tableView];
+
+    [self registerVoiceBroadcastRecorderCellsForTableView:tableView];
+>>>>>>> v1.9.14
     
     [tableView registerClass:RoomEmptyBubbleCell.class forCellReuseIdentifier:RoomEmptyBubbleCell.defaultReuseIdentifier];
     
@@ -283,6 +289,20 @@
     [tableView registerClass:FileWithoutThumbnailWithPaginationTitlePlainCell.class forCellReuseIdentifier:FileWithoutThumbnailWithPaginationTitlePlainCell.defaultReuseIdentifier];
 }
 
+- (void)registerVoiceBroadcastCellsForTableView:(UITableView*)tableView
+{
+    [tableView registerClass:VoiceBroadcastPlaybackPlainBubbleCell.class forCellReuseIdentifier:VoiceBroadcastPlaybackPlainBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceBroadcastPlaybackWithoutSenderInfoPlainCell.class forCellReuseIdentifier:VoiceBroadcastPlaybackWithoutSenderInfoPlainCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceBroadcastPlaybackWithPaginationTitlePlainCell.class forCellReuseIdentifier:VoiceBroadcastPlaybackWithPaginationTitlePlainCell.defaultReuseIdentifier];
+}
+
+- (void)registerVoiceBroadcastRecorderCellsForTableView:(UITableView*)tableView
+{
+    [tableView registerClass:VoiceBroadcastRecorderPlainBubbleCell.class forCellReuseIdentifier:VoiceBroadcastRecorderPlainBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceBroadcastRecorderWithoutSenderInfoPlainCell.class forCellReuseIdentifier:VoiceBroadcastRecorderWithoutSenderInfoPlainCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceBroadcastRecorderWithPaginationTitlePlainCell.class forCellReuseIdentifier:VoiceBroadcastRecorderWithPaginationTitlePlainCell.defaultReuseIdentifier];
+}
+
 #pragma mark Cell class association
 
 - (NSDictionary<NSNumber*, Class>*)buildCellClasses
@@ -341,8 +361,16 @@
     NSDictionary *locationCellsMapping = [self locationCellsMapping];
     [cellClasses addEntriesFromDictionary:locationCellsMapping];
     
+<<<<<<< HEAD
     NSDictionary *antivirusCellsMapping = [self antivirusCellsMapping];
     [cellClasses addEntriesFromDictionary:antivirusCellsMapping];
+=======
+    NSDictionary *voiceBroadcastPlaybackCellsMapping = [self voiceBroadcastPlaybackCellsMapping];
+    [cellClasses addEntriesFromDictionary:voiceBroadcastPlaybackCellsMapping];
+    
+    NSDictionary *voiceBroadcastRecorderCellsMapping = [self voiceBroadcastRecorderCellsMapping];
+    [cellClasses addEntriesFromDictionary:voiceBroadcastRecorderCellsMapping];
+>>>>>>> v1.9.14
         
     NSDictionary *othersCells = @{
         @(RoomTimelineCellIdentifierEmpty) : RoomEmptyBubbleCell.class,
@@ -566,12 +594,36 @@
     };
 }
 
+<<<<<<< HEAD
 - (NSDictionary<NSNumber*, Class>*)antivirusCellsMapping
 {
     return @{
         @(RoomTimelineCellIdentifierAttachmentAntivirusScanStatusWithPaginationTitle) : RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.class,
         @(RoomTimelineCellIdentifierAttachmentAntivirusScanStatusWithoutSenderInfo) : RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.class,
         @(RoomTimelineCellIdentifierAttachmentAntivirusScanStatus) : RoomAttachmentAntivirusScanStatusBubbleCell.class
+=======
+- (NSDictionary<NSNumber*, Class>*)voiceBroadcastPlaybackCellsMapping
+{
+    return @{
+        // Incoming
+        @(RoomTimelineCellIdentifierIncomingVoiceBroadcastPlayback) : VoiceBroadcastPlaybackPlainBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingVoiceBroadcastPlaybackWithoutSenderInfo) : VoiceBroadcastPlaybackWithoutSenderInfoPlainCell.class,
+        @(RoomTimelineCellIdentifierIncomingVoiceBroadcastPlaybackWithPaginationTitle) : VoiceBroadcastPlaybackWithPaginationTitlePlainCell.class,
+        // Outoing
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastPlayback) : VoiceBroadcastPlaybackPlainBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastPlaybackWithoutSenderInfo) : VoiceBroadcastPlaybackWithoutSenderInfoPlainCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastPlaybackWithPaginationTitle) : VoiceBroadcastPlaybackWithPaginationTitlePlainCell.class
+    };
+}
+
+- (NSDictionary<NSNumber*, Class>*)voiceBroadcastRecorderCellsMapping
+{
+    return @{
+        // Outoing
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorder) : VoiceBroadcastRecorderPlainBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorderWithoutSenderInfo) : VoiceBroadcastRecorderWithoutSenderInfoPlainCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorderWithPaginationTitle) : VoiceBroadcastRecorderWithPaginationTitlePlainCell.class
+>>>>>>> v1.9.14
     };
 }
 

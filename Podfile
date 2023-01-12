@@ -16,7 +16,7 @@ use_frameworks!
 # - `{ :specHash => {sdk spec hash}` to depend on specific pod options (:git => …, :podspec => …) for MatrixSDK repo. Used by Fastfile during CI
 #
 # Warning: our internal tooling depends on the name of this variable name, so be sure not to change it
-$matrixSDKVersion = '= 0.24.0'
+$matrixSDKVersion = '= 0.24.6'
 # $matrixSDKVersion = :local
 # $matrixSDKVersion = { :branch => 'develop'}
 # $matrixSDKVersion = { :specHash => { git: 'https://git.io/fork123', branch: 'fix' } }
@@ -61,20 +61,49 @@ end
 def import_SwiftUI_pods
     pod 'Introspect', '~> 0.1'
     pod 'DSBottomSheet', '~> 0.3'
+    pod 'ZXingObjC', '~> 3.6.5'
 end
 
+<<<<<<< HEAD
 def import_Common_pods
+=======
+abstract_target 'RiotPods' do
+
+  pod 'GBDeviceInfo', '~> 7.1.0'
+  pod 'Reusable', '~> 4.1'
+  pod 'KeychainAccess', '~> 4.2.2'
+  pod 'WeakDictionary', '~> 2.0'
+
+  # PostHog for analytics
+  pod 'PostHog', '~> 1.4.4'
+  pod 'Sentry', '~> 7.15.0'
+  pod 'AnalyticsEvents', :git => 'https://github.com/matrix-org/matrix-analytics-events.git', :branch => 'release/swift', :inhibit_warnings => false
+  # pod 'AnalyticsEvents', :path => '../matrix-analytics-events/AnalyticsEvents.podspec'
+
+  pod 'OLMKit'
+  pod 'zxcvbn-ios'
+
+  # Tools
+  pod 'SwiftGen'
+  pod 'SwiftLint'
+  pod 'SwiftFormat/CLI'
+
+  target "Riot" do
+    import_MatrixSDK
+    import_MatrixKit_pods
+
+    import_SwiftUI_pods
+
+>>>>>>> v1.9.14
     pod 'UICollectionViewRightAlignedLayout', '~> 0.0.3'
     pod 'UICollectionViewLeftAlignedLayout', '~> 1.0.2'
     pod 'KTCenterFlowLayout', '~> 1.3.1'
-    pod 'ZXingObjC', '~> 3.6.5'
     pod 'FlowCommoniOS', '~> 1.12.0'
     pod 'ReadMoreTextView', '~> 3.0.1'
     pod 'SwiftBase32', '~> 0.9.0'
     pod 'SwiftJWT', '~> 3.6.200'
     pod 'SideMenu', '~> 6.5'
     pod 'DSWaveformImage', '~> 6.1.1'
-    pod 'ffmpeg-kit-ios-audio', '4.5.1'
     
     pod 'FLEX', '~> 4.5.0', :configurations => ['Debug'], :inhibit_warnings => true
 end

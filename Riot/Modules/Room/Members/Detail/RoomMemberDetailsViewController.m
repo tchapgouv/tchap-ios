@@ -440,7 +440,13 @@
 
 - (void)startUserVerification
 {
+<<<<<<< HEAD
 //    [[AppDelegate theDelegate] presentUserVerificationForRoomMember:self.mxRoomMember session:self.mainSession];
+=======
+    [[AppDelegate theDelegate] presentUserVerificationForRoomMember:self.mxRoomMember session:self.mainSession completion:^{
+        [self refreshUserEncryptionTrustLevel];
+    }];
+>>>>>>> v1.9.14
 }
 
 - (void)presentUserVerification
@@ -1339,6 +1345,7 @@
 
 - (void)keyVerificationCoordinatorBridgePresenterDelegateDidComplete:(KeyVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
 {
+    [self refreshUserEncryptionTrustLevel];
     [self dismissKeyVerificationCoordinatorBridgePresenter];
 }
 

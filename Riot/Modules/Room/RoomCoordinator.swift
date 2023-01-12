@@ -92,8 +92,14 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         
         self.roomViewController.parentSpaceId = parameters.parentSpaceId
 
+<<<<<<< HEAD
         // Tchap: Disable Polls
 //        TimelinePollProvider.shared.session = parameters.session
+=======
+        TimelinePollProvider.shared.session = parameters.session
+        VoiceBroadcastPlaybackProvider.shared.session = parameters.session
+        VoiceBroadcastRecorderProvider.shared.session = parameters.session
+>>>>>>> v1.9.14
         
         super.init()
     }

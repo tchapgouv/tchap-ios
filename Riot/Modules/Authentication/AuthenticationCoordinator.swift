@@ -336,6 +336,9 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
             password = loginPassword
             authenticationType = .password
             onSessionCreated(session: session, flow: .login)
+        case .loggedInWithQRCode(let session, let securityCompleted):
+            authenticationType = .other
+            onSessionCreated(session: session, flow: .login, securityCompleted: securityCompleted)
         case .fallback:
             showFallback(for: .login)
         }
@@ -522,8 +525,14 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     }
     
     /// Handles the creation of a new session following on from a successful authentication.
-    @MainActor private func onSessionCreated(session: MXSession, flow: AuthenticationFlow) {
+    @MainActor private func onSessionCreated(session: MXSession, flow: AuthenticationFlow, securityCompleted: Bool = false) {
         self.session = session
+        
+        guard !securityCompleted else {
+            callback?(.didLogin(session: session, authenticationFlow: flow, authenticationType: authenticationType ?? .other))
+            callback?(.didComplete)
+            return
+        }
         
         if canPresentAdditionalScreens {
             showLoadingAnimation()
@@ -604,7 +613,8 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     /// Replace the contents of the navigation router with a loading animation.
     private func showLoadingAnimation() {
-        let loadingViewController = LaunchLoadingViewController()
+        let syncProgress: MXSessionSyncProgress? = MXSDKOptions.sharedInstance().enableSyncProgress ? session?.syncProgress : nil
+        let loadingViewController = LaunchLoadingViewController(syncProgress: syncProgress)
         loadingViewController.modalPresentationStyle = .fullScreen
         
         // Replace the navigation stack with the loading animation
@@ -749,8 +759,8 @@ extension AuthenticationCoordinator: AuthenticationServiceDelegate {
 // MARK: - KeyVerificationCoordinatorDelegate
 extension AuthenticationCoordinator: KeyVerificationCoordinatorDelegate {
     func keyVerificationCoordinatorDidComplete(_ coordinator: KeyVerificationCoordinatorType, otherUserId: String, otherDeviceId: String) {
-        if let crypto = session?.crypto,
-           !crypto.backup.hasPrivateKeyInCryptoStore || !crypto.backup.enabled {
+        if let crypto = session?.crypto as? MXLegacyCrypto, let backup = crypto.backup,
+           !backup.hasPrivateKeyInCryptoStore || !backup.enabled {
             MXLog.debug("[AuthenticationCoordinator][MXKeyVerification] requestAllPrivateKeys: Request key backup private keys")
             crypto.setOutgoingKeyRequestsEnabled(true, onComplete: nil)
         }
@@ -801,5 +811,4 @@ extension AuthenticationCoordinator: AuthFallBackViewControllerDelegate {
     func authFallBackViewControllerDidClose(_ authFallBackViewController: AuthFallBackViewController) {
         dismissFallback()
     }
-
 }

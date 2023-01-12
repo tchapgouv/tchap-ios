@@ -34,7 +34,12 @@ targets:
     platform: iOS
     dependencies:
     - target: DesignKit
+<<<<<<< HEAD
 #    - package: Mapbox
+=======
+    - package: Mapbox
+    - package: WysiwygComposer
+>>>>>>> v1.9.14
     sources:
     - path: .
       excludes:
@@ -59,9 +64,12 @@ targets:
     - path: ../Riot/Categories/UISearchBar.swift
     - path: ../Riot/Categories/UIView.swift
     - path: ../Riot/Categories/UIApplication.swift
+    - path: ../Riot/Categories/Codable.swift
     - path: ../Riot/Assets/en.lproj/Vector.strings
     - path: ../Riot/Modules/Analytics/AnalyticsScreen.swift
     - path: ../Riot/Modules/LocationSharing/LocationAuthorizationStatus.swift
+    - path: ../Riot/Modules/QRCode/QRCodeGenerator.swift
+    - path: ../Riot/Modules/VoiceBroadcast/VoiceBroadcastSDK/VoiceBroadcastInfoState.swift
     - path: ../Riot/Assets/en.lproj/Untranslated.strings
       buildPhase: resources
     - path: ../Riot/Assets/Images.xcassets
@@ -77,10 +85,4 @@ targets:
     - name: 🧹 SwiftFormat
       runOnlyWhenInstalling: false
       shell: /bin/sh
-      script: |
-        export PATH="$PATH:/opt/homebrew/bin"
-        if which swiftformat >/dev/null; then
-          swiftformat --lint --lenient "$PROJECT_DIR"
-        else
-          echo "warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat"
-        fi
+      script: "\"${PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat\" --lint --lenient \"$PROJECT_DIR\"\n"

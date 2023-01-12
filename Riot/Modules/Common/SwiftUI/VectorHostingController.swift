@@ -16,6 +16,7 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 /**
  UIHostingController that applies some app-level specific configuration
@@ -24,8 +25,9 @@ import SwiftUI
 class VectorHostingController: UIHostingController<AnyView> {
     
     // MARK: Private
-    
+
     private var theme: Theme
+    private var heightSubject = CurrentValueSubject<CGFloat, Never>(0)
     
     // MARK: Public
 
@@ -40,19 +42,20 @@ class VectorHostingController: UIHostingController<AnyView> {
     var enableNavigationBarScrollEdgeAppearance = false
     /// When non-nil, the style will be applied to the status bar.
     var statusBarStyle: UIStatusBarStyle?
-
-    private let forceZeroSafeAreaInsets: Bool
+    /// Whether or not to publish when the height of the view changes.
+    var publishHeightChanges: Bool = false
+    /// The publisher to subscribe to if `publishHeightChanges` is enabled.
+    var heightPublisher: AnyPublisher<CGFloat, Never> {
+        return heightSubject.eraseToAnyPublisher()
+    }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         statusBarStyle ?? super.preferredStatusBarStyle
     }
     /// Initializer
     /// - Parameter rootView: Root view for the controller.
-    /// - Parameter forceZeroSafeAreaInsets: Whether to force-set the hosting view's safe area insets to zero. Useful when the view is used as part of a table view.
-    init<Content>(rootView: Content,
-                  forceZeroSafeAreaInsets: Bool = false) where Content: View {
+    init<Content>(rootView: Content) where Content: View {
         self.theme = ThemeService.shared().theme
-        self.forceZeroSafeAreaInsets = forceZeroSafeAreaInsets
         super.init(rootView: AnyView(rootView.vectorContent()))
     }
     
@@ -104,21 +107,9 @@ class VectorHostingController: UIHostingController<AnyView> {
         if #available(iOS 15.0, *) {
             self.view.invalidateIntrinsicContentSize()
         }
-    }
-
-    override func viewSafeAreaInsetsDidChange() {
-        super.viewSafeAreaInsetsDidChange()
-
-        guard forceZeroSafeAreaInsets else {
-            return
-        }
-
-        let counterSafeAreaInsets = UIEdgeInsets(top: -view.safeAreaInsets.top,
-                                                 left: -view.safeAreaInsets.left,
-                                                 bottom: -view.safeAreaInsets.bottom,
-                                                 right: -view.safeAreaInsets.right)
-        if additionalSafeAreaInsets != counterSafeAreaInsets, counterSafeAreaInsets != .zero {
-            additionalSafeAreaInsets = counterSafeAreaInsets
+        if publishHeightChanges {
+            let height = sizeThatFits(in: CGSize(width: self.view.frame.width, height: UIView.layoutFittingExpandedSize.height)).height
+            heightSubject.send(height)
         }
     }
     

@@ -30,9 +30,10 @@ class AppConfiguration: CommonConfiguration {
         // Tchap: Disable CallKit.
         MXKAppSettings.standard()?.isCallKitEnabled = false
         
-        // Get modular widget events in rooms histories
+        // Get additional events (modular widget, voice broadcast...)
         MXKAppSettings.standard()?.addSupportedEventTypes([kWidgetMatrixEventTypeString,
-                                                           kWidgetModularEventTypeString])
+                                                           kWidgetModularEventTypeString,
+                                                           VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType])
         
         // Tchap: remove some state events from the rooms histories: creation, the history access, encryption, join rules
         MXKAppSettings.standard()?.removeSupportedEventTypes([kMXEventTypeStringRoomHistoryVisibility,

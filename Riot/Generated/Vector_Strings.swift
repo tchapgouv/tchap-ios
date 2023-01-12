@@ -739,6 +739,110 @@ public class VectorL10n: NSObject {
   public static var authenticationLoginUsername: String { 
     return VectorL10n.tr("Vector", "authentication_login_username") 
   }
+  /// Sign in with QR code
+  public static var authenticationLoginWithQr: String { 
+    return VectorL10n.tr("Vector", "authentication_login_with_qr") 
+  }
+  /// Please ensure that you know the origin of this code. By linking devices, you will provide someone with full access to your account.
+  public static var authenticationQrLoginConfirmAlert: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_confirm_alert") 
+  }
+  /// Confirm that the code below matches with your other device:
+  public static var authenticationQrLoginConfirmSubtitle: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_confirm_subtitle") 
+  }
+  /// Secure connection established
+  public static var authenticationQrLoginConfirmTitle: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_confirm_title") 
+  }
+  /// Open Element on your other device
+  public static var authenticationQrLoginDisplayStep1: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_display_step1") 
+  }
+  /// Select ‘Sign in with QR code’
+  public static var authenticationQrLoginDisplayStep2: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_display_step2") 
+  }
+  /// Scan the QR code below with your device that’s signed out.
+  public static var authenticationQrLoginDisplaySubtitle: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_display_subtitle") 
+  }
+  /// Link a device
+  public static var authenticationQrLoginDisplayTitle: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_display_title") 
+  }
+  /// QR code is invalid.
+  public static var authenticationQrLoginFailureInvalidQr: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_failure_invalid_qr") 
+  }
+  /// The request was denied on the other device.
+  public static var authenticationQrLoginFailureRequestDenied: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_failure_request_denied") 
+  }
+  /// The linking wasn’t completed in the required time.
+  public static var authenticationQrLoginFailureRequestTimedOut: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_failure_request_timed_out") 
+  }
+  /// Try again
+  public static var authenticationQrLoginFailureRetry: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_failure_retry") 
+  }
+  /// Linking failed
+  public static var authenticationQrLoginFailureTitle: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_failure_title") 
+  }
+  /// Connecting to device
+  public static var authenticationQrLoginLoadingConnectingDevice: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_loading_connecting_device") 
+  }
+  /// You are now signed in on your other device.
+  public static var authenticationQrLoginLoadingSignedIn: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_loading_signed_in") 
+  }
+  /// Waiting for device to sign in.
+  public static var authenticationQrLoginLoadingWaitingSignin: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_loading_waiting_signin") 
+  }
+  /// Position the QR code in the square below
+  public static var authenticationQrLoginScanSubtitle: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_scan_subtitle") 
+  }
+  /// Scan QR code
+  public static var authenticationQrLoginScanTitle: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_scan_title") 
+  }
+  /// Show QR code on this device
+  public static var authenticationQrLoginStartDisplayQr: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_start_display_qr") 
+  }
+  /// Need an alternative method?
+  public static var authenticationQrLoginStartNeedAlternative: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_start_need_alternative") 
+  }
+  /// Open Element on your other device
+  public static var authenticationQrLoginStartStep1: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_start_step1") 
+  }
+  /// Go to Settings -> Security & Privacy
+  public static var authenticationQrLoginStartStep2: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_start_step2") 
+  }
+  /// Select ‘Link a device’
+  public static var authenticationQrLoginStartStep3: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_start_step3") 
+  }
+  /// Select ‘Show QR code on this device’
+  public static var authenticationQrLoginStartStep4: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_start_step4") 
+  }
+  /// Use the camera on this device to scan the QR code shown on your other device:
+  public static var authenticationQrLoginStartSubtitle: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_start_subtitle") 
+  }
+  /// Scan QR code
+  public static var authenticationQrLoginStartTitle: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_start_title") 
+  }
   /// Are you a human?
   public static var authenticationRecaptchaTitle: String { 
     return VectorL10n.tr("Vector", "authentication_recaptcha_title") 
@@ -1419,6 +1523,10 @@ public class VectorL10n: NSObject {
   public static var delete: String { 
     return VectorL10n.tr("Vector", "delete") 
   }
+  /// Deselect All
+  public static var deselectAll: String { 
+    return VectorL10n.tr("Vector", "deselect_all") 
+  }
   /// This operation requires additional authentication.\nTo continue, please enter your password.
   public static var deviceDetailsDeletePromptMessage: String { 
     return VectorL10n.tr("Vector", "device_details_delete_prompt_message") 
@@ -1470,6 +1578,22 @@ public class VectorL10n: NSObject {
   /// %@ Web
   public static func deviceNameWeb(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "device_name_web", p1)
+  }
+  /// Desktop
+  public static var deviceTypeNameDesktop: String { 
+    return VectorL10n.tr("Vector", "device_type_name_desktop") 
+  }
+  /// Mobile
+  public static var deviceTypeNameMobile: String { 
+    return VectorL10n.tr("Vector", "device_type_name_mobile") 
+  }
+  /// Unknown
+  public static var deviceTypeNameUnknown: String { 
+    return VectorL10n.tr("Vector", "device_type_name_unknown") 
+  }
+  /// Web
+  public static var deviceTypeNameWeb: String { 
+    return VectorL10n.tr("Vector", "device_type_name_web") 
   }
   /// The other party cancelled the verification.
   public static var deviceVerificationCancelled: String { 
@@ -2799,6 +2923,14 @@ public class VectorL10n: NSObject {
   public static var keyBackupSetupTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_title") 
   }
+  /// Review to ensure your account is safe.
+  public static var keyVerificationAlertBody: String { 
+    return VectorL10n.tr("Vector", "key_verification_alert_body") 
+  }
+  /// You have unverified sessions
+  public static var keyVerificationAlertTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_alert_title") 
+  }
   /// You need to bootstrap cross-signing first.
   public static var keyVerificationBootstrapNotSetupMessage: String { 
     return VectorL10n.tr("Vector", "key_verification_bootstrap_not_setup_message") 
@@ -2882,14 +3014,6 @@ public class VectorL10n: NSObject {
   /// Verify
   public static var keyVerificationSelfVerifyCurrentSessionAlertValidateAction: String { 
     return VectorL10n.tr("Vector", "key_verification_self_verify_current_session_alert_validate_action") 
-  }
-  /// Verify all your sessions to ensure your account & messages are safe.
-  public static var keyVerificationSelfVerifyUnverifiedSessionsAlertMessage: String { 
-    return VectorL10n.tr("Vector", "key_verification_self_verify_unverified_sessions_alert_message") 
-  }
-  /// Review where you're logged in
-  public static var keyVerificationSelfVerifyUnverifiedSessionsAlertTitle: String { 
-    return VectorL10n.tr("Vector", "key_verification_self_verify_unverified_sessions_alert_title") 
   }
   /// Review
   public static var keyVerificationSelfVerifyUnverifiedSessionsAlertValidateAction: String { 
@@ -3054,6 +3178,18 @@ public class VectorL10n: NSObject {
   /// Later
   public static var later: String { 
     return VectorL10n.tr("Vector", "later") 
+  }
+  /// Processing data\n%@ %%
+  public static func launchLoadingProcessingResponse(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "launch_loading_processing_response", p1)
+  }
+  /// Syncing with the server
+  public static var launchLoadingServerSyncing: String { 
+    return VectorL10n.tr("Vector", "launch_loading_server_syncing") 
+  }
+  /// Syncing with the server\n(%@ attempt)
+  public static func launchLoadingServerSyncingNthAttempt(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "launch_loading_server_syncing_nth_attempt", p1)
   }
   /// Leave
   public static var leave: String { 
@@ -3499,13 +3635,33 @@ public class VectorL10n: NSObject {
   public static var manageSessionName: String { 
     return VectorL10n.tr("Vector", "manage_session_name") 
   }
+  /// Custom session names can help you recognize your devices more easily.
+  public static var manageSessionNameHint: String { 
+    return VectorL10n.tr("Vector", "manage_session_name_hint") 
+  }
+  /// Please be aware that session names are also visible to people you communicate with. %@
+  public static func manageSessionNameInfo(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "manage_session_name_info", p1)
+  }
+  /// Learn more
+  public static var manageSessionNameInfoLink: String { 
+    return VectorL10n.tr("Vector", "manage_session_name_info_link") 
+  }
   /// Not trusted
   public static var manageSessionNotTrusted: String { 
     return VectorL10n.tr("Vector", "manage_session_not_trusted") 
   }
+  /// Rename session
+  public static var manageSessionRename: String { 
+    return VectorL10n.tr("Vector", "manage_session_rename") 
+  }
   /// Sign out of this session
   public static var manageSessionSignOut: String { 
     return VectorL10n.tr("Vector", "manage_session_sign_out") 
+  }
+  /// Sign out of all other sessions
+  public static var manageSessionSignOutOtherSessions: String { 
+    return VectorL10n.tr("Vector", "manage_session_sign_out_other_sessions") 
   }
   /// Manage session
   public static var manageSessionTitle: String { 
@@ -4446,6 +4602,18 @@ public class VectorL10n: NSObject {
   /// or
   public static var or: String { 
     return VectorL10n.tr("Vector", "or") 
+  }
+  /// This password has been found in a dictionary, and is not allowed.
+  public static var passwordPolicyPwdInDictError: String { 
+    return VectorL10n.tr("Vector", "password_policy_pwd_in_dict_error") 
+  }
+  /// Too short password
+  public static var passwordPolicyTooShortPwdError: String { 
+    return VectorL10n.tr("Vector", "password_policy_too_short_pwd_error") 
+  }
+  /// This password is too weak. It must contain at least 8 characters, with at least one character of each type: uppercase, lowercase, digit and special character.
+  public static var passwordPolicyWeakPwdError: String { 
+    return VectorL10n.tr("Vector", "password_policy_weak_pwd_error") 
   }
   /// Contain a lower-case letter.
   public static var passwordValidationErrorContainLowercaseLetter: String { 
@@ -7403,9 +7571,17 @@ public class VectorL10n: NSObject {
   public static var settingsLabsEnableRingingForGroupCalls: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_ringing_for_group_calls") 
   }
-  /// Threaded messaging
+  /// Threaded messages
   public static var settingsLabsEnableThreads: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_threads") 
+  }
+  /// Voice broadcast (under active development)
+  public static var settingsLabsEnableVoiceBroadcast: String { 
+    return VectorL10n.tr("Vector", "settings_labs_enable_voice_broadcast") 
+  }
+  /// Try out the rich text editor
+  public static var settingsLabsEnableWysiwygComposer: String { 
+    return VectorL10n.tr("Vector", "settings_labs_enable_wysiwyg_composer") 
   }
   /// Polls
   public static var settingsLabsEnabledPolls: String { 
@@ -7762,6 +7938,14 @@ public class VectorL10n: NSObject {
   /// Left panel
   public static var sideMenuRevealActionAccessibilityLabel: String { 
     return VectorL10n.tr("Vector", "side_menu_reveal_action_accessibility_label") 
+  }
+  /// Sign out
+  public static var signOut: String { 
+    return VectorL10n.tr("Vector", "sign_out") 
+  }
+  /// Are you sure you want to sign out?
+  public static var signOutConfirmationMessage: String { 
+    return VectorL10n.tr("Vector", "sign_out_confirmation_message") 
   }
   /// Sign out
   public static var signOutExistingKeyBackupAlertSignOutAction: String { 
@@ -8491,6 +8675,90 @@ public class VectorL10n: NSObject {
   public static var userIdTitle: String { 
     return VectorL10n.tr("Vector", "user_id_title") 
   }
+  /// Inactive for 90+ days
+  public static var userInactiveSessionItem: String { 
+    return VectorL10n.tr("Vector", "user_inactive_session_item") 
+  }
+  /// Inactive for 90+ days (%@)
+  public static func userInactiveSessionItemWithDate(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "user_inactive_session_item_with_date", p1)
+  }
+  /// Clear filter
+  public static var userOtherSessionClearFilter: String { 
+    return VectorL10n.tr("Vector", "user_other_session_clear_filter") 
+  }
+  /// Your current session
+  public static var userOtherSessionCurrentSessionDetails: String { 
+    return VectorL10n.tr("Vector", "user_other_session_current_session_details") 
+  }
+  /// Filter
+  public static var userOtherSessionFilter: String { 
+    return VectorL10n.tr("Vector", "user_other_session_filter") 
+  }
+  /// All sessions
+  public static var userOtherSessionFilterMenuAll: String { 
+    return VectorL10n.tr("Vector", "user_other_session_filter_menu_all") 
+  }
+  /// Inactive
+  public static var userOtherSessionFilterMenuInactive: String { 
+    return VectorL10n.tr("Vector", "user_other_session_filter_menu_inactive") 
+  }
+  /// Unverified
+  public static var userOtherSessionFilterMenuUnverified: String { 
+    return VectorL10n.tr("Vector", "user_other_session_filter_menu_unverified") 
+  }
+  /// Verified
+  public static var userOtherSessionFilterMenuVerified: String { 
+    return VectorL10n.tr("Vector", "user_other_session_filter_menu_verified") 
+  }
+  /// Select sessions
+  public static var userOtherSessionMenuSelectSessions: String { 
+    return VectorL10n.tr("Vector", "user_other_session_menu_select_sessions") 
+  }
+  /// Sign out of %@ sessions
+  public static func userOtherSessionMenuSignOutSessions(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "user_other_session_menu_sign_out_sessions", p1)
+  }
+  /// No inactive sessions found.
+  public static var userOtherSessionNoInactiveSessions: String { 
+    return VectorL10n.tr("Vector", "user_other_session_no_inactive_sessions") 
+  }
+  /// No unverified sessions found.
+  public static var userOtherSessionNoUnverifiedSessions: String { 
+    return VectorL10n.tr("Vector", "user_other_session_no_unverified_sessions") 
+  }
+  /// No verified sessions found.
+  public static var userOtherSessionNoVerifiedSessions: String { 
+    return VectorL10n.tr("Vector", "user_other_session_no_verified_sessions") 
+  }
+  /// This session doesn’t support encryption and thus can't be verified.
+  public static var userOtherSessionPermanentlyUnverifiedAdditionalInfo: String { 
+    return VectorL10n.tr("Vector", "user_other_session_permanently_unverified_additional_info") 
+  }
+  /// Security recommendation
+  public static var userOtherSessionSecurityRecommendationTitle: String { 
+    return VectorL10n.tr("Vector", "user_other_session_security_recommendation_title") 
+  }
+  /// %@ selected
+  public static func userOtherSessionSelectedCount(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "user_other_session_selected_count", p1)
+  }
+  /// Verify or sign out from this session for best security and reliability.
+  public static var userOtherSessionUnverifiedAdditionalInfo: String { 
+    return VectorL10n.tr("Vector", "user_other_session_unverified_additional_info") 
+  }
+  /// Verify your sessions for enhanced secure messaging or sign out from those you don’t recognize or use anymore.
+  public static var userOtherSessionUnverifiedSessionsHeaderSubtitle: String { 
+    return VectorL10n.tr("Vector", "user_other_session_unverified_sessions_header_subtitle") 
+  }
+  /// This session is ready for secure messaging.
+  public static var userOtherSessionVerifiedAdditionalInfo: String { 
+    return VectorL10n.tr("Vector", "user_other_session_verified_additional_info") 
+  }
+  /// For best security, sign out from any session that you don’t recognize or use anymore.
+  public static var userOtherSessionVerifiedSessionsHeaderSubtitle: String { 
+    return VectorL10n.tr("Vector", "user_other_session_verified_sessions_header_subtitle") 
+  }
   /// Name
   public static var userSessionDetailsApplicationName: String { 
     return VectorL10n.tr("Vector", "user_session_details_application_name") 
@@ -8531,6 +8799,10 @@ public class VectorL10n: NSObject {
   public static var userSessionDetailsDeviceSectionHeader: String { 
     return VectorL10n.tr("Vector", "user_session_details_device_section_header") 
   }
+  /// Last activity
+  public static var userSessionDetailsLastActivity: String { 
+    return VectorL10n.tr("Vector", "user_session_details_last_activity") 
+  }
   /// Session ID
   public static var userSessionDetailsSessionId: String { 
     return VectorL10n.tr("Vector", "user_session_details_session_id") 
@@ -8551,9 +8823,25 @@ public class VectorL10n: NSObject {
   public static var userSessionDetailsTitle: String { 
     return VectorL10n.tr("Vector", "user_session_details_title") 
   }
-  /// %@ · Last activity %@
+  /// Got it
+  public static var userSessionGotIt: String { 
+    return VectorL10n.tr("Vector", "user_session_got_it") 
+  }
+  /// Inactive sessions are sessions you have not used in some time, but they continue to receive encryption keys.\n\nRemoving inactive sessions improves security and performance, and makes it easier for you to identify if a new session is suspicious.
+  public static var userSessionInactiveSessionDescription: String { 
+    return VectorL10n.tr("Vector", "user_session_inactive_session_description") 
+  }
+  /// Inactive sessions
+  public static var userSessionInactiveSessionTitle: String { 
+    return VectorL10n.tr("Vector", "user_session_inactive_session_title") 
+  }
+  /// %1$@ · %2$@
   public static func userSessionItemDetails(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "user_session_item_details", p1, p2)
+  }
+  /// Last activity %@
+  public static func userSessionItemDetailsLastActivity(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "user_session_item_details_last_activity", p1)
   }
   /// Learn more
   public static var userSessionLearnMore: String { 
@@ -8575,6 +8863,10 @@ public class VectorL10n: NSObject {
   public static var userSessionOverviewSessionTitle: String { 
     return VectorL10n.tr("Vector", "user_session_overview_session_title") 
   }
+  /// This session doesn't support encryption, so it can't be verified.\n\nYou won't be able to participate in rooms where encryption is enabled when using this session.\n\nFor best security and privacy, it is recommended to use Matrix clients that support encryption.
+  public static var userSessionPermanentlyUnverifiedSessionDescription: String { 
+    return VectorL10n.tr("Vector", "user_session_permanently_unverified_session_description") 
+  }
   /// Push notifications
   public static var userSessionPushNotifications: String { 
     return VectorL10n.tr("Vector", "user_session_push_notifications") 
@@ -8582,6 +8874,14 @@ public class VectorL10n: NSObject {
   /// When turned on, this session will receive push notifications.
   public static var userSessionPushNotificationsMessage: String { 
     return VectorL10n.tr("Vector", "user_session_push_notifications_message") 
+  }
+  /// Other users in direct messages and rooms that you join are able to view a full list of your sessions.\n\nThis provides them with confidence that they are really speaking to you, but it also means they can see the session name you enter here.
+  public static var userSessionRenameSessionDescription: String { 
+    return VectorL10n.tr("Vector", "user_session_rename_session_description") 
+  }
+  /// Renaming sessions
+  public static var userSessionRenameSessionTitle: String { 
+    return VectorL10n.tr("Vector", "user_session_rename_session_title") 
   }
   /// Unverified session
   public static var userSessionUnverified: String { 
@@ -8591,9 +8891,29 @@ public class VectorL10n: NSObject {
   public static var userSessionUnverifiedAdditionalInfo: String { 
     return VectorL10n.tr("Vector", "user_session_unverified_additional_info") 
   }
+  /// Unverified sessions are sessions that have logged in with your credentials but not been cross-verified.\n\nYou should make especially certain that you recognise these sessions as they could represent an unauthorised use of your account.
+  public static var userSessionUnverifiedSessionDescription: String { 
+    return VectorL10n.tr("Vector", "user_session_unverified_session_description") 
+  }
+  /// Unverified session
+  public static var userSessionUnverifiedSessionTitle: String { 
+    return VectorL10n.tr("Vector", "user_session_unverified_session_title") 
+  }
   /// Unverified
   public static var userSessionUnverifiedShort: String { 
     return VectorL10n.tr("Vector", "user_session_unverified_short") 
+  }
+  /// Unknown verification status
+  public static var userSessionVerificationUnknown: String { 
+    return VectorL10n.tr("Vector", "user_session_verification_unknown") 
+  }
+  /// Verify your current session to reveal this session's verification status.
+  public static var userSessionVerificationUnknownAdditionalInfo: String { 
+    return VectorL10n.tr("Vector", "user_session_verification_unknown_additional_info") 
+  }
+  /// Unknown
+  public static var userSessionVerificationUnknownShort: String { 
+    return VectorL10n.tr("Vector", "user_session_verification_unknown_short") 
   }
   /// Verified session
   public static var userSessionVerified: String { 
@@ -8602,6 +8922,14 @@ public class VectorL10n: NSObject {
   /// Your current session is ready for secure messaging.
   public static var userSessionVerifiedAdditionalInfo: String { 
     return VectorL10n.tr("Vector", "user_session_verified_additional_info") 
+  }
+  /// Verified sessions are anywhere you are using Element after entering your passphrase or confirming your identity with another verified session.\n\nThis means that you have all the keys needed to unlock your encrypted messages and confirm to other users that you trust this session.
+  public static var userSessionVerifiedSessionDescription: String { 
+    return VectorL10n.tr("Vector", "user_session_verified_session_description") 
+  }
+  /// Verified sessions
+  public static var userSessionVerifiedSessionTitle: String { 
+    return VectorL10n.tr("Vector", "user_session_verified_session_title") 
   }
   /// Verified
   public static var userSessionVerifiedShort: String { 
@@ -8615,9 +8943,21 @@ public class VectorL10n: NSObject {
   public static var userSessionViewDetails: String { 
     return VectorL10n.tr("Vector", "user_session_view_details") 
   }
+  /// %@ iOS
+  public static func userSessionsDefaultSessionDisplayName(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "user_sessions_default_session_display_name", p1)
+  }
+  /// Hide IP address
+  public static var userSessionsHideLocationInfo: String { 
+    return VectorL10n.tr("Vector", "user_sessions_hide_location_info") 
+  }
   /// Current session
   public static var userSessionsOverviewCurrentSessionSectionTitle: String { 
     return VectorL10n.tr("Vector", "user_sessions_overview_current_session_section_title") 
+  }
+  /// Link a device
+  public static var userSessionsOverviewLinkDevice: String { 
+    return VectorL10n.tr("Vector", "user_sessions_overview_link_device") 
   }
   /// For best security, verify your sessions and sign out from any session that you don’t recognize or use anymore.
   public static var userSessionsOverviewOtherSessionsSectionInfo: String { 
@@ -8658,6 +8998,10 @@ public class VectorL10n: NSObject {
   /// Manage sessions
   public static var userSessionsSettings: String { 
     return VectorL10n.tr("Vector", "user_sessions_settings") 
+  }
+  /// Show IP address
+  public static var userSessionsShowLocationInfo: String { 
+    return VectorL10n.tr("Vector", "user_sessions_show_location_info") 
   }
   /// View all (%d)
   public static func userSessionsViewAllAction(_ p1: Int) -> String {
@@ -8811,6 +9155,54 @@ public class VectorL10n: NSObject {
   public static var voice: String { 
     return VectorL10n.tr("Vector", "voice") 
   }
+  /// You are already recording a voice broadcast. Please end your current voice broadcast to start a new one.
+  public static var voiceBroadcastAlreadyInProgressMessage: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_already_in_progress_message") 
+  }
+  /// Someone else is already recording a voice broadcast. Wait for their voice broadcast to end to start a new one.
+  public static var voiceBroadcastBlockedBySomeoneElseMessage: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_blocked_by_someone_else_message") 
+  }
+  /// Buffering...
+  public static var voiceBroadcastBuffering: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_buffering") 
+  }
+  /// Live
+  public static var voiceBroadcastLive: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_live") 
+  }
+  /// You don't have the required permissions to start a voice broadcast in this room. Contact a room administrator to upgrade your permissions.
+  public static var voiceBroadcastPermissionDeniedMessage: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_permission_denied_message") 
+  }
+  /// Unable to play this voice broadcast.
+  public static var voiceBroadcastPlaybackLoadingError: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_playback_loading_error") 
+  }
+  /// Yes, stop
+  public static var voiceBroadcastStopAlertAgreeButton: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_stop_alert_agree_button") 
+  }
+  /// Are you sure you want to stop your live broadcast? This will end the broadcast, and the full recording will be available in the room.
+  public static var voiceBroadcastStopAlertDescription: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_stop_alert_description") 
+  }
+  /// Stop live broadcasting?
+  public static var voiceBroadcastStopAlertTitle: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_stop_alert_title") 
+  }
+  /// Voice broadcast
+  public static var voiceBroadcastTile: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_tile") 
+  }
+  /// %@ left
+  public static func voiceBroadcastTimeLeft(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "voice_broadcast_time_left", p1)
+  }
+  /// Can't start a new voice broadcast
+  public static var voiceBroadcastUnauthorizedTitle: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_unauthorized_title") 
+  }
   /// Voice message
   public static var voiceMessageLockScreenPlaceholder: String { 
     return VectorL10n.tr("Vector", "voice_message_lock_screen_placeholder") 
@@ -8922,6 +9314,54 @@ public class VectorL10n: NSObject {
   /// Add some now?
   public static var widgetStickerPickerNoStickerpacksAlertAddNow: String { 
     return VectorL10n.tr("Vector", "widget_sticker_picker_no_stickerpacks_alert_add_now") 
+  }
+  /// Apply bold format
+  public static var wysiwygComposerFormatActionBold: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_bold") 
+  }
+  /// Apply italic format
+  public static var wysiwygComposerFormatActionItalic: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_italic") 
+  }
+  /// Apply underline format
+  public static var wysiwygComposerFormatActionStrikethrough: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_strikethrough") 
+  }
+  /// Apply strikethrough format
+  public static var wysiwygComposerFormatActionUnderline: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_underline") 
+  }
+  /// Attachments
+  public static var wysiwygComposerStartActionAttachments: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_start_action_attachments") 
+  }
+  /// Camera
+  public static var wysiwygComposerStartActionCamera: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_start_action_camera") 
+  }
+  /// Location
+  public static var wysiwygComposerStartActionLocation: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_start_action_location") 
+  }
+  /// Photo Library
+  public static var wysiwygComposerStartActionMediaPicker: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_start_action_media_picker") 
+  }
+  /// Polls
+  public static var wysiwygComposerStartActionPolls: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_start_action_polls") 
+  }
+  /// Stickers
+  public static var wysiwygComposerStartActionStickers: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_start_action_stickers") 
+  }
+  /// Text Formatting
+  public static var wysiwygComposerStartActionTextFormatting: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_start_action_text_formatting") 
+  }
+  /// Voice broadcast
+  public static var wysiwygComposerStartActionVoiceBroadcast: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_start_action_voice_broadcast") 
   }
   /// Yes
   public static var yes: String { 

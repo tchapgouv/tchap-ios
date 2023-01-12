@@ -27,9 +27,10 @@ class UserSessionsOverviewUITests: MockScreenTestCase {
     
     func testCurrentSessionVerified() {
         app.goToScreenWithIdentifier(MockUserSessionsOverviewScreenState.currentSessionVerified.title)
-        
         XCTAssertFalse(app.buttons["userSessionCardVerifyButton"].exists)
         XCTAssertTrue(app.staticTexts["userSessionCardViewDetails"].exists)
+        app.buttons["MoreOptionsMenu"].tap()
+        XCTAssertTrue(app.buttons["Sign out of all other sessions"].exists)
     }
     
     func testOnlyUnverifiedSessions() {
@@ -51,5 +52,21 @@ class UserSessionsOverviewUITests: MockScreenTestCase {
         
         XCTAssertFalse(app.staticTexts["userSessionsOverviewSecurityRecommendationsSection"].exists)
         XCTAssertFalse(app.staticTexts["userSessionsOverviewOtherSection"].exists)
+        app.buttons["MoreOptionsMenu"].tap()
+        XCTAssertFalse(app.buttons["Sign out of all other sessions"].exists)
+    }
+    
+    func testWhenMoreThan5OtherSessionsThenViewAllButtonVisible() {
+        app.goToScreenWithIdentifier(MockUserSessionsOverviewScreenState.currentSessionUnverified.title)
+        app.swipeUp()
+
+        XCTAssertTrue(app.buttons["ViewAllButton"].exists)
+    }
+    
+    func testWhenLessThan5OtherSessionsThenViewAllButtonHidden() {
+        app.goToScreenWithIdentifier(MockUserSessionsOverviewScreenState.onlyUnverifiedSessions.title)
+        app.swipeUp()
+
+        XCTAssertFalse(app.buttons["ViewAllButton"].exists)
     }
 }

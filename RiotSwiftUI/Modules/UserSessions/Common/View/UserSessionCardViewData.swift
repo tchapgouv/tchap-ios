@@ -14,7 +14,8 @@
 // limitations under the License.
 //
 
-import Foundation
+import DesignKit
+import SwiftUI
 
 /// View data for UserSessionCardView
 struct UserSessionCardViewData {
@@ -26,37 +27,98 @@ struct UserSessionCardViewData {
     
     let sessionName: String
     
-    let isVerified: Bool
+    /// The verification state used to render the card with.
+    let verificationState: UserSessionInfo.VerificationState
     
     let lastActivityDateString: String?
     
-    let lastSeenIPInfo: String?
+    var lastActivityIcon: String?
+    
+    let lastSeenIP: String?
+    let lastSeenIPLocation: String?
     
     let deviceAvatarViewData: DeviceAvatarViewData
     
-    /// Indicate if the current user session is shown and to adpat the layout
+    /// Indicate if the current user session is shown and to adapt the layout
     let isCurrentSessionDisplayMode: Bool
+    
+    /// The name of the shield image to show the verification status.
+    var verificationStatusImageName: String {
+        switch verificationState {
+        case .verified:
+            return Asset.Images.userSessionVerified.name
+        case .unverified, .permanentlyUnverified:
+            return Asset.Images.userSessionUnverified.name
+        case .unknown:
+            return Asset.Images.userSessionVerificationUnknown.name
+        }
+    }
+    
+    /// The text to show alongside the verification shield image.
+    var verificationStatusText: String {
+        switch verificationState {
+        case .verified:
+            return VectorL10n.userSessionVerified
+        case .unverified, .permanentlyUnverified:
+            return VectorL10n.userSessionUnverified
+        case .unknown:
+            return VectorL10n.userSessionVerificationUnknown
+        }
+    }
+    
+    /// A key path to the theme colour to use for the verification status text.
+    var verificationStatusColor: KeyPath<ColorSwiftUI, Color> {
+        switch verificationState {
+        case .verified:
+            return \.accent
+        case .unverified, .permanentlyUnverified:
+            return \.alert
+        case .unknown:
+            return \.secondaryContent
+        }
+    }
+    
+    /// Further information to be shown to explain the verification state to the user.
+    var verificationStatusAdditionalInfoText: String {
+        switch verificationState {
+        case .verified:
+            return isCurrentSessionDisplayMode ? VectorL10n.userSessionVerifiedAdditionalInfo : VectorL10n.userOtherSessionVerifiedAdditionalInfo + " %@"
+        case .unverified:
+            return isCurrentSessionDisplayMode ? VectorL10n.userSessionUnverifiedAdditionalInfo : VectorL10n.userOtherSessionUnverifiedAdditionalInfo + " %@"
+        case .permanentlyUnverified:
+            return isCurrentSessionDisplayMode ? VectorL10n.userOtherSessionPermanentlyUnverifiedAdditionalInfo : VectorL10n.userOtherSessionPermanentlyUnverifiedAdditionalInfo + " %@"
+        case .unknown:
+            return VectorL10n.userSessionVerificationUnknownAdditionalInfo
+        }
+    }
     
     init(sessionId: String,
          sessionDisplayName: String?,
          deviceType: DeviceType,
-         isVerified: Bool,
+         verificationState: UserSessionInfo.VerificationState,
          lastActivityTimestamp: TimeInterval?,
          lastSeenIP: String?,
-         isCurrentSessionDisplayMode: Bool = false) {
+         lastSeenIPLocation: String?,
+         isCurrentSessionDisplayMode: Bool = false,
+         isActive: Bool) {
         self.sessionId = sessionId
         sessionName = UserSessionNameFormatter.sessionName(deviceType: deviceType, sessionDisplayName: sessionDisplayName)
-        self.isVerified = isVerified
+        self.verificationState = verificationState
         
         var lastActivityDateString: String?
-        
         if let lastActivityTimestamp = lastActivityTimestamp {
-            lastActivityDateString = UserSessionLastActivityFormatter.lastActivityDateString(from: lastActivityTimestamp)
+            if isActive {
+                lastActivityDateString = UserSessionLastActivityFormatter.lastActivityDateString(from: lastActivityTimestamp)
+            } else {
+                let dateString = InactiveUserSessionLastActivityFormatter.lastActivityDateString(from: lastActivityTimestamp)
+                lastActivityDateString = VectorL10n.userInactiveSessionItemWithDate(dateString)
+                lastActivityIcon = Asset.Images.userSessionListItemInactiveSession.name
+            }
         }
-        
         self.lastActivityDateString = lastActivityDateString
-        lastSeenIPInfo = lastSeenIP
-        deviceAvatarViewData = DeviceAvatarViewData(deviceType: deviceType, isVerified: nil)
+        self.lastSeenIP = lastSeenIP
+        self.lastSeenIPLocation = lastSeenIPLocation
+        deviceAvatarViewData = DeviceAvatarViewData(deviceType: deviceType, verificationState: verificationState)
         
         self.isCurrentSessionDisplayMode = isCurrentSessionDisplayMode
     }
@@ -67,9 +129,11 @@ extension UserSessionCardViewData {
         self.init(sessionId: sessionInfo.id,
                   sessionDisplayName: sessionInfo.name,
                   deviceType: sessionInfo.deviceType,
-                  isVerified: sessionInfo.isVerified,
+                  verificationState: sessionInfo.verificationState,
                   lastActivityTimestamp: sessionInfo.lastSeenTimestamp,
                   lastSeenIP: sessionInfo.lastSeenIP,
-                  isCurrentSessionDisplayMode: sessionInfo.isCurrent)
+                  lastSeenIPLocation: sessionInfo.lastSeenIPLocation,
+                  isCurrentSessionDisplayMode: sessionInfo.isCurrent,
+                  isActive: sessionInfo.isActive)
     }
 }

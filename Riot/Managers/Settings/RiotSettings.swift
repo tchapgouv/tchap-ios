@@ -32,6 +32,7 @@ final class RiotSettings: NSObject {
         static let showAllRoomsInHomeSpace = "showAllRoomsInHomeSpace"
         static let enableUISIAutoReporting = "enableUISIAutoReporting"
         static let enableLiveLocationSharing = "enableLiveLocationSharing"
+        static let showIPAddressesInSessionsManager = "showIPAddressesInSessionsManager"
     }
     
     static let shared = RiotSettings()
@@ -169,6 +170,10 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "enableThreads", defaultValue: false, storage: defaults)
     var enableThreads
     
+    /// Indicates if threads should be forced enabled in the timeline.
+    @UserDefault(key: "forceThreadsEnabled", defaultValue: true, storage: defaults)
+    var forceThreadsEnabled
+
     /// Indicates if auto reporting of decryption errors is enabled
     @UserDefault(key: UserDefaultsKeys.enableUISIAutoReporting, defaultValue: BuildSettings.cryptoUISIAutoReportingEnabled, storage: defaults)
     var enableUISIAutoReporting
@@ -189,6 +194,21 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "enableClientInformationFeature", defaultValue: false, storage: defaults)
     var enableClientInformationFeature
 
+    /// Flag indicating if the wysiwyg composer feature is enabled
+    @UserDefault(key: "enableWysiwygComposer", defaultValue: false, storage: defaults)
+    var enableWysiwygComposer
+
+    @UserDefault(key: "enableWysiwygTextFormatting", defaultValue: true, storage: defaults)
+    var enableWysiwygTextFormatting
+    
+    /// Flag indicating if the IP addresses should be shown in the new device manager
+    @UserDefault(key: UserDefaultsKeys.showIPAddressesInSessionsManager, defaultValue: false, storage: defaults)
+    var showIPAddressesInSessionsManager
+    
+    /// Flag indicating if the voice broadcast feature is enabled
+    @UserDefault(key: "enableVoiceBroadcast", defaultValue: false, storage: defaults)
+    var enableVoiceBroadcast
+
     // MARK: Calls
     
     /// Indicate if `allowStunServerFallback` settings has been set once.
@@ -203,9 +223,6 @@ final class RiotSettings: NSObject {
     
     @UserDefault(key: "hideVerifyThisSessionAlert", defaultValue: false, storage: defaults)
     var hideVerifyThisSessionAlert
-    
-    @UserDefault(key: "hideReviewSessionsAlert", defaultValue: false, storage: defaults)
-    var hideReviewSessionsAlert
     
     @UserDefault(key: "matrixApps", defaultValue: false, storage: defaults)
     var matrixApps
@@ -412,5 +429,4 @@ final class RiotSettings: NSObject {
 // MARK: - RiotSettings notification constants
 extension RiotSettings {
     public static let didUpdateLiveLocationSharingActivation = Notification.Name("RiotSettingsDidUpdateLiveLocationSharingActivation")
-    public static let newAppLayoutBetaToggleDidChange = Notification.Name("RiotSettingsNewAppLayoutBetaToggleDidChange")
 }

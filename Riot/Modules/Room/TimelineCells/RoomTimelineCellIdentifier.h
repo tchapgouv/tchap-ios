@@ -168,11 +168,29 @@ typedef NS_ENUM(NSUInteger, RoomTimelineCellIdentifier) {
     RoomTimelineCellIdentifierOutgoingLocationWithoutSenderInfo,
     RoomTimelineCellIdentifierOutgoingLocationWithPaginationTitle,
     
+<<<<<<< HEAD
     // - Antivirus
     RoomTimelineCellIdentifierAttachmentAntivirusScanStatusWithPaginationTitle,
     RoomTimelineCellIdentifierAttachmentAntivirusScanStatusWithoutSenderInfo,
     RoomTimelineCellIdentifierAttachmentAntivirusScanStatus,
 
+=======
+    // - Voice broadcast
+    // -- Incoming
+    RoomTimelineCellIdentifierIncomingVoiceBroadcastPlayback,
+    RoomTimelineCellIdentifierIncomingVoiceBroadcastPlaybackWithoutSenderInfo,
+    RoomTimelineCellIdentifierIncomingVoiceBroadcastPlaybackWithPaginationTitle,
+    // -- Outgoing
+    RoomTimelineCellIdentifierOutgoingVoiceBroadcastPlayback,
+    RoomTimelineCellIdentifierOutgoingVoiceBroadcastPlaybackWithoutSenderInfo,
+    RoomTimelineCellIdentifierOutgoingVoiceBroadcastPlaybackWithPaginationTitle,
+    
+    // - Voice broadcast recorder
+    RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorder,
+    RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorderWithoutSenderInfo,
+    RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorderWithPaginationTitle,
+    
+>>>>>>> v1.9.14
     // - Others
     RoomTimelineCellIdentifierEmpty,
     RoomTimelineCellIdentifierSelectedSticker,

@@ -22,7 +22,8 @@ struct DeviceAvatarView: View {
     @Environment(\.theme) var theme: ThemeSwiftUI
     
     var viewData: DeviceAvatarViewData
-        
+    var isSelected: Bool
+
     var avatarSize: CGFloat = 40
     var badgeSize: CGFloat = 24
     
@@ -31,21 +32,21 @@ struct DeviceAvatarView: View {
             // Device image
             VStack(alignment: .center) {
                 viewData.deviceType.image
+                    .renderingMode(isSelected ? .template : .original)
+                    .foregroundColor(isSelected ? theme.colors.background : nil)
             }
             .padding()
             .frame(maxWidth: CGFloat(avatarSize), maxHeight: CGFloat(avatarSize))
-            .background(theme.colors.system)
+            .background(isSelected ? theme.colors.primaryContent : theme.colors.system)
             .clipShape(Circle())
             
             // Verification badge
-            if let isVerified = viewData.isVerified {
-                Image(isVerified ? Asset.Images.userSessionVerified.name : Asset.Images.userSessionUnverified.name)
-                    .frame(maxWidth: CGFloat(badgeSize), maxHeight: CGFloat(badgeSize))
-                    .shapedBorder(color: theme.colors.system, borderWidth: 1, shape: Circle())
-                    .background(theme.colors.background)
-                    .clipShape(Circle())
-                    .offset(x: 10, y: 8)
-            }
+            Image(viewData.verificationImageName)
+                .frame(maxWidth: CGFloat(badgeSize), maxHeight: CGFloat(badgeSize))
+                .shapedBorder(color: theme.colors.system, borderWidth: 1, shape: Circle())
+                .background(theme.colors.background)
+                .clipShape(Circle())
+                .offset(x: 10, y: 8)
         }
         .frame(maxWidth: CGFloat(avatarSize), maxHeight: CGFloat(avatarSize))
     }
@@ -54,20 +55,20 @@ struct DeviceAvatarView: View {
 struct DeviceAvatarViewListPreview: View {
     var viewDataList: [DeviceAvatarViewData] {
         [
-            DeviceAvatarViewData(deviceType: .desktop, isVerified: true),
-            DeviceAvatarViewData(deviceType: .web, isVerified: true),
-            DeviceAvatarViewData(deviceType: .mobile, isVerified: true),
-            DeviceAvatarViewData(deviceType: .unknown, isVerified: true)
+            DeviceAvatarViewData(deviceType: .desktop, verificationState: .verified),
+            DeviceAvatarViewData(deviceType: .web, verificationState: .verified),
+            DeviceAvatarViewData(deviceType: .mobile, verificationState: .verified),
+            DeviceAvatarViewData(deviceType: .unknown, verificationState: .verified)
         ]
     }
     
     var body: some View {
         HStack {
             VStack(alignment: .center, spacing: 20) {
-                DeviceAvatarView(viewData: DeviceAvatarViewData(deviceType: .web, isVerified: true))
-                DeviceAvatarView(viewData: DeviceAvatarViewData(deviceType: .desktop, isVerified: false))
-                DeviceAvatarView(viewData: DeviceAvatarViewData(deviceType: .mobile, isVerified: true))
-                DeviceAvatarView(viewData: DeviceAvatarViewData(deviceType: .unknown, isVerified: false))
+                DeviceAvatarView(viewData: DeviceAvatarViewData(deviceType: .web, verificationState: .verified), isSelected: false)
+                DeviceAvatarView(viewData: DeviceAvatarViewData(deviceType: .desktop, verificationState: .unverified), isSelected: false)
+                DeviceAvatarView(viewData: DeviceAvatarViewData(deviceType: .mobile, verificationState: .verified), isSelected: false)
+                DeviceAvatarView(viewData: DeviceAvatarViewData(deviceType: .unknown, verificationState: .unverified), isSelected: false)
             }
         }
     }

@@ -55,6 +55,7 @@
 
     // Hide line separators of empty cells
     self.tableView.tableFooterView = [[UIView alloc] init];
+    [self vc_setLargeTitleDisplayMode:UINavigationItemLargeTitleDisplayModeNever];
     
     // Add a top view which will be displayed in case of vertical bounce.
     CGFloat height = self.tableView.frame.size.height;

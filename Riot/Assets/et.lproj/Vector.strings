@@ -2441,7 +2441,7 @@
 "device_name_mobile" = "%@ Mobile";
 "device_name_web" = "%@ Web";
 "device_name_desktop" = "%@ Desktop";
-"user_session_item_details" = "%@ · Viimati kasutusel %@";
+"user_session_item_details" = "%@ · %@";
 
 // First item is client name and second item is session display name
 "user_session_name" = "%@: %@";
@@ -2454,8 +2454,157 @@
 "user_session_verified_short" = "Verifitseeritud";
 "user_session_unverified" = "Verifitseerimata sessioon";
 "user_session_verified" = "Verifitseeritud sessioon";
-"user_sessions_overview_current_session_section_title" = "PRAEGUNE SESSIOON";
+"user_sessions_overview_current_session_section_title" = "Praegune sessioon";
 "user_sessions_overview_other_sessions_section_info" = "Parima turvalisuse nimel verifitseeri kõik oma sessioonid ning logi välja neist, mida sa enam ei kasuta.";
-"user_sessions_overview_other_sessions_section_title" = "MUUD SESSIOONID";
+"user_sessions_overview_other_sessions_section_title" = "Muud sessioonid";
 "settings_labs_enable_new_app_layout" = "Rakenduse uus paigutus";
 "room_first_message_placeholder" = "Saada oma esimene sõnum…";
+"room_event_encryption_info_key_authenticity_not_guaranteed" = "Selle krüptitud sõnumi autentsus pole selles seadmes tagatud.";
+"user_session_overview_session_details_button_title" = "Sessiooni teave";
+"user_session_overview_session_title" = "Sessioon";
+"user_session_overview_current_session_title" = "Praegune sessioon";
+"user_session_details_application_url" = "URL";
+"user_session_details_application_version" = "Versioon";
+"user_session_details_application_name" = "Nimi";
+"user_session_details_device_os" = "Operatsioonisüsteem";
+"user_session_details_device_browser" = "Brauser";
+"user_session_details_device_model" = "Mudel";
+"user_session_details_device_ip_location" = "IP-aadressi asukoht";
+"user_session_details_device_ip_address" = "IP-aadress";
+"user_session_details_session_section_footer" = "Pika vajutusega saad kopeerida andmeid.";
+"user_session_details_session_id" = "Sessiooni tunnus";
+"user_session_details_session_name" = "Sessiooni nimi";
+"user_session_details_device_section_header" = "Seade";
+"user_session_details_application_section_header" = "Rakendus";
+"user_session_details_session_section_header" = "Sessioon";
+"user_session_details_title" = "Sessiooni teave";
+"user_session_push_notifications_message" = "Kui see valik on sisse lülitatud, siis see sessioon saab vastu võtta tõuketeavitusi.";
+"user_session_push_notifications" = "Tõuketeavitused";
+"user_sessions_view_all_action" = "Näita kõiki (%d)";
+"user_sessions_overview_security_recommendations_inactive_info" = "Logi välja sellistest vanadest sessioonidest (vanemad kui 90 päeva), mida sa enam ei kasuta.";
+"user_sessions_overview_security_recommendations_inactive_title" = "Mitteaktiivsed sessioonid";
+"user_sessions_overview_security_recommendations_unverified_info" = "Logi verifitseerimata sessioonidest välja või verifitseeri nad.";
+"user_sessions_overview_security_recommendations_unverified_title" = "Verifitseerimata sessioonid";
+"user_sessions_overview_security_recommendations_section_info" = "Kui järgid neid soovitusi, siis sa parandad oma kasutajakonto turvalisust.";
+"user_sessions_overview_security_recommendations_section_title" = "Turvalisusega seotud soovitused";
+"all_chats_user_menu_accessibility_label" = "Kasutajamenüü";
+"settings_labs_enable_new_client_info_feature" = "Sessioonide paremaks tuvastamiseks saad nüüd sessioonihalduris salvestada klientrakenduse nime, versiooni ja aadressi";
+"settings_labs_enable_new_session_manager" = "Uus sessioonihaldur";
+"authentication_qr_login_confirm_title" = "Turvaline ühendus on olemas";
+"authentication_qr_login_scan_subtitle" = "Joonda QR-kood allpool näidatud ruudu sisse";
+"authentication_qr_login_scan_title" = "Skaneeri QR-koodi";
+"authentication_qr_login_display_step2" = "Vali „Logi võrku QR-koodi abil“";
+"authentication_qr_login_display_step1" = "Ava Element oma teises seadmes";
+"authentication_qr_login_display_subtitle" = "Loe QR-koodi seadmega, kus sa oled Matrix'i võrgust välja loginud.";
+"authentication_qr_login_display_title" = "Seo teise seadmega";
+"authentication_qr_login_start_display_qr" = "Näita selles seadmes QR-koodi";
+"authentication_qr_login_start_need_alternative" = "Kas soovid kasutada mõnda muud lahendust?";
+"authentication_qr_login_start_step4" = "Vali „Näita selles seadmes QR-koodi“";
+"authentication_qr_login_start_step3" = "Vali „Seo seade“";
+"authentication_qr_login_start_step2" = "Vali menüüst Seadistused -> Turvalisus ja privaatsus";
+"authentication_qr_login_start_step1" = "Ava Element mõnes oma muus seadmes";
+"authentication_qr_login_start_subtitle" = "Kasuta selle seadme kaamerat ja logi sisse teises seadmes kuvatud QR-koodi alusel:";
+"authentication_qr_login_start_title" = "Loe QR-koodi";
+"authentication_login_with_qr" = "Logi sisse QR-koodi abil";
+"wysiwyg_composer_format_action_strikethrough" = "Kasuta allajoonitud kirja";
+"wysiwyg_composer_format_action_underline" = "Kasuta läbijoonitud kirja";
+"wysiwyg_composer_format_action_italic" = "Kasuta kaldkirja";
+
+// Formatting Actions
+"wysiwyg_composer_format_action_bold" = "Kasuta paksu kirja";
+"wysiwyg_composer_start_action_voice_broadcast" = "Ringhäälingukõne";
+"wysiwyg_composer_start_action_text_formatting" = "Tekstivorming";
+"wysiwyg_composer_start_action_camera" = "Kaamera";
+"wysiwyg_composer_start_action_location" = "Asukoht";
+"wysiwyg_composer_start_action_polls" = "Küsitlused";
+"wysiwyg_composer_start_action_attachments" = "Manused";
+"wysiwyg_composer_start_action_stickers" = "Kleepsud";
+
+
+// Mark: - WYSIWYG Composer
+
+// Send Media Actions
+"wysiwyg_composer_start_action_media_picker" = "Fotode kogu";
+"user_session_details_last_activity" = "Viimati kasutusel";
+"device_type_name_unknown" = "Tundmatu seadmetüüp";
+"device_type_name_mobile" = "Mobiiltelefon";
+"device_type_name_web" = "Veebiliides";
+"device_type_name_desktop" = "Töölauarakendus";
+"user_inactive_session_item_with_date" = "Pole olnud kasutusel üle 90 päeva (%@)";
+"user_inactive_session_item" = "Pole olnud kasutusel üle 90 päeva";
+"user_session_item_details_last_activity" = "Viimati kasutusel %@";
+"user_other_session_clear_filter" = "Eemalda filter";
+"user_other_session_no_unverified_sessions" = "Verifitseerimata sessioone ei leidu.";
+"user_other_session_no_verified_sessions" = "Verifitseeritud sessioone ei leidu.";
+"user_other_session_no_inactive_sessions" = "Ei leidu sessioone, mis pole aktiivses kasutuses.";
+"user_other_session_filter_menu_inactive" = "Pole pidevas kasutuses";
+"user_other_session_filter_menu_unverified" = "Verifitseerimata";
+"user_other_session_filter_menu_verified" = "Verifitseeritud";
+"user_other_session_filter_menu_all" = "Kõik sessioonid";
+"user_other_session_filter" = "Filtreeri";
+"user_other_session_verified_sessions_header_subtitle" = "Parima turvalisuse nimel logi välja neist sessioonidest, mida sa enam ei kasuta või ei tunne ära.";
+"user_other_session_current_session_details" = "Sinu praegune sessioon";
+"user_other_session_unverified_sessions_header_subtitle" = "Turvalise sõnumvahetuse nimel verifitseeri kõik oma sessioonid ning logi neist välja, mida sa enam ei kasuta või ei tunne enam ära.";
+"user_other_session_security_recommendation_title" = "Turvalisusega seotud soovitused";
+"user_other_session_verified_additional_info" = "See sessioon on valmis turvaliseks sõnumivahetuseks.";
+"user_other_session_unverified_additional_info" = "Parima turvalisuse ja töökindluse nimel verifitseeri see sessioon või logi ta võrgust välja.";
+"user_session_verification_unknown_additional_info" = "Selle sessiooni olekut ei saa tuvastada enne kui oled ta verifitseerinud.";
+"user_session_verification_unknown_short" = "Teadmata olek";
+"user_session_verification_unknown" = "Verifitseerimise olek on määratlemata";
+"user_sessions_overview_link_device" = "Seo teise seadmega";
+
+// MARK: User sessions management
+
+// Parameter is the application display name (e.g. "Element")
+"user_sessions_default_session_display_name" = "%@ iOS";
+"voice_broadcast_playback_loading_error" = "Selle ringhäälingukõne esitamine ei õnnestu.";
+"voice_broadcast_already_in_progress_message" = "Sa juba salvestad ringhäälingukõnet. Uue alustamiseks palun lõpeta eelmine salvestus.";
+"voice_broadcast_blocked_by_someone_else_message" = "Keegi juba salvestab ringhäälingukõnet. Uue ringhäälingukõne salvestamiseks palun oota, kuni see teine ringhäälingukõne on lõppenud.";
+"voice_broadcast_permission_denied_message" = "Sul pole piisavalt õigusi selles jututoas ringhäälingukõne algatamiseks. Õiguste lisamiseks palun võta ühendust jututoa haldajaga.";
+
+// Mark: - Voice broadcast
+"voice_broadcast_unauthorized_title" = "Uue ringhäälingukõne alustamine pole võimalik";
+"sign_out_confirmation_message" = "Kas sa oled kindel et soovid välja logida?";
+
+// MARK: Sign out warning
+
+"sign_out" = "Logi välja";
+"manage_session_rename" = "Muuda sessiooni nime";
+"manage_session_name_info_link" = "Lisateave";
+/* The placeholder will be replaces with manage_session_name_info_link */
+"manage_session_name_info" = "Palun arvesta, et sessioonide nimed on näha ka kõikidele osapooltele, kellega sa suhtled. %@";
+"manage_session_name_hint" = "Sinu enda kirjutatud sessiooninimede alusel on sul oma seadmeid lihtsam ära tunda.";
+"settings_labs_enable_voice_broadcast" = "Ringhäälingukõne (aktiivses arenduses)";
+"settings_labs_enable_wysiwyg_composer" = "Proovi vormindatud teksti alusel töötavat tekstitoimetit";
+"authentication_qr_login_failure_retry" = "Proovi uuesti";
+"authentication_qr_login_failure_request_timed_out" = "Sidumine ei lõppenud etteantud aja jooksul.";
+"authentication_qr_login_failure_request_denied" = "Teine seade lükkas päringu tagasi.";
+"authentication_qr_login_failure_invalid_qr" = "QR-kood on vigane.";
+"authentication_qr_login_failure_title" = "Seose loomine ei õnenstunud";
+"authentication_qr_login_loading_signed_in" = "Sa oled oma teises seadmes sisse loginud Matrix'i võrku.";
+"authentication_qr_login_loading_waiting_signin" = "Ootame, et teine seade logiks võrku.";
+"authentication_qr_login_loading_connecting_device" = "Loon ühendust seadmega";
+"authentication_qr_login_confirm_alert" = "Palun vaata, et sa kindlasti tead, kust see QR-kood kuvatakse. Sellisel viisil seadmete sidumisel sa annad oma kasutajakontole täiemahulise ligipääsu.";
+"authentication_qr_login_confirm_subtitle" = "Kontrolli, et järgnev kood klapib teises seadmes kuvatava koodiga:";
+"deselect_all" = "Eemalda kõik valikud";
+"user_other_session_menu_select_sessions" = "Vali sessioonid";
+"user_other_session_selected_count" = "%@ valitud";
+"user_other_session_menu_sign_out_sessions" = "Logi välja %@'st sessioonist";
+"user_sessions_hide_location_info" = "Peida IP-aadress";
+"user_sessions_show_location_info" = "Näita IP-aadressi";
+"manage_session_sign_out_other_sessions" = "Logi välja kõikidest oma muudest sessioonidest";
+"voice_broadcast_tile" = "Ringhäälingukõne";
+"voice_broadcast_live" = "Otse eetris";
+"user_session_rename_session_description" = "Teised osapooled nii otsesõnumites kui jututubades näevad sinu kõikide sessioonide loendit.\n\nSee tähendab, et nad võivad uskuda, et tegemist on tõesti sinuga. Samal ajal näevad ka siin sisestatud sessiooninime.";
+"user_session_unverified_session_description" = "Verifitseerimata sessioonid on sellised, kuhu sa oled oma kasutajanime ja salasõnaga sisse loginud, kuid mille puhul on risttunnustamine tegemata.\n\nPalun kontrolli, et need on sulle teadaolevad sessioonid. Vastasel korral võib olla tegemist sinu kasutajakonto lubamatu kasutamisega.";
+"user_session_rename_session_title" = "Sessioonide nimede muutmine";
+"user_session_inactive_session_description" = "Mitteaktiivsed sessioonid on sellised, mida sa pole mõnda aega kasutanud, aga nad saavad jätkuvalt pärida sinu krüptovõtmeid.\n\nSelliste sessioonide eemaldamine parandab jõudlust ja turvalisust ning sul on lihtsam märgata, kui loendisse tekib midagi kahtlast.";
+"user_session_inactive_session_title" = "Mitteaktiivsed sessioonid";
+"user_session_unverified_session_title" = "Verifitseerimata sessioon";
+"user_session_verified_session_description" = "Verifitseeritud sessioonideks loetakse Element'is või mõnes muus Matrix'i rakenduses selliseid sessioone, kus sa kas oled sisestanud oma salafraasi või tuvastanud end mõne teise oma verifitseeritud sessiooni abil.\n\nSee tähendab, et selles sessioonis on ka kõik vajalikud võtmed krüptitud sõnumite lugemiseks ja teistele kasutajatele kinnitamiseks, et sa usaldad seda sessiooni.";
+"user_session_verified_session_title" = "Verifitseeritud sessioonid";
+"user_session_got_it" = "Selge lugu";
+"key_verification_alert_body" = "Tagamaks, et su konto on sinu kontrolli all, vaata andmed üle.";
+
+// Unverified sessions
+"key_verification_alert_title" = "Sul on verifitseerimata sessioone";

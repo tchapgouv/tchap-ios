@@ -21,26 +21,28 @@ import XCTest
 
 class UserSessionsOverviewViewModelTests: XCTestCase {
     func testInitialStateEmpty() {
-        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: MockUserSessionsOverviewService())
+        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: MockUserSessionsOverviewService(), settingsService: MockUserSessionSettings())
         
         XCTAssertNil(viewModel.state.currentSessionViewData)
         XCTAssertTrue(viewModel.state.unverifiedSessionsViewData.isEmpty)
         XCTAssertTrue(viewModel.state.inactiveSessionsViewData.isEmpty)
         XCTAssertTrue(viewModel.state.otherSessionsViewData.isEmpty)
+        XCTAssertFalse(viewModel.state.linkDeviceButtonVisible)
     }
     
     func testLoadOnDidAppear() {
-        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: MockUserSessionsOverviewService())
+        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: MockUserSessionsOverviewService(), settingsService: MockUserSessionSettings())
         viewModel.process(viewAction: .viewAppeared)
         
         XCTAssertNotNil(viewModel.state.currentSessionViewData)
         XCTAssertFalse(viewModel.state.unverifiedSessionsViewData.isEmpty)
         XCTAssertFalse(viewModel.state.inactiveSessionsViewData.isEmpty)
         XCTAssertFalse(viewModel.state.otherSessionsViewData.isEmpty)
+        XCTAssertTrue(viewModel.state.linkDeviceButtonVisible)
     }
     
     func testSimpleActionProcessing() {
-        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: MockUserSessionsOverviewService())
+        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: MockUserSessionsOverviewService(), settingsService: MockUserSessionSettings())
         
         var result: UserSessionsOverviewViewModelResult?
         viewModel.completion = { action in
@@ -49,42 +51,45 @@ class UserSessionsOverviewViewModelTests: XCTestCase {
         
         viewModel.process(viewAction: .verifyCurrentSession)
         XCTAssertEqual(result, .verifyCurrentSession)
-            
-        viewModel.process(viewAction: .viewAllUnverifiedSessions)
-        XCTAssertEqual(result, .showAllUnverifiedSessions)
         
+        result = nil
         viewModel.process(viewAction: .viewAllInactiveSessions)
-        XCTAssertEqual(result, .showAllInactiveSessions)
-        
+        XCTAssertEqual(result, .showOtherSessions(sessionInfos: [], filter: .inactive))
+
+        result = nil
         viewModel.process(viewAction: .viewAllOtherSessions)
-        XCTAssertEqual(result, .showAllOtherSessions)
+        XCTAssertEqual(result, .showOtherSessions(sessionInfos: [], filter: .all))
+        
+        result = nil
+        viewModel.process(viewAction: .linkDevice)
+        XCTAssertEqual(result, .linkDevice)
     }
     
     func testShowSessionDetails() {
         let service = MockUserSessionsOverviewService()
         service.updateOverviewData { _ in }
         
-        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: service)
+        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: service, settingsService: MockUserSessionSettings())
         
         var result: UserSessionsOverviewViewModelResult?
         viewModel.completion = { action in
             result = action
         }
         
-        guard let currentSession = service.overviewData.currentSession else {
+        guard let currentSession = service.currentSession else {
             XCTFail("The current session should be valid at this point")
             return
         }
         
         viewModel.process(viewAction: .viewCurrentSessionDetails)
-        XCTAssertEqual(result, .showCurrentSessionOverview(session: currentSession))
+        XCTAssertEqual(result, .showCurrentSessionOverview(sessionInfo: currentSession))
         
-        guard let randomSession = service.overviewData.otherSessions.randomElement() else {
+        guard let randomSession = service.otherSessions.randomElement() else {
             XCTFail("There should be other sessions")
             return
         }
         
         viewModel.process(viewAction: .tapUserSession(randomSession.id))
-        XCTAssertEqual(result, .showUserSessionOverview(session: randomSession))
+        XCTAssertEqual(result, .showUserSessionOverview(sessionInfo: randomSession))
     }
 }

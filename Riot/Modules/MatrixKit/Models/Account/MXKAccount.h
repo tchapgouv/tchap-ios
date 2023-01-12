@@ -307,6 +307,15 @@ typedef BOOL (^MXKAccountOnCertificateChange)(MXKAccount *mxAccount, NSData *cer
 - (void)load3PIDs:(void (^)(void))success failure:(void (^)(NSError *error))failure;
 
 /**
+ Loads the pusher instance linked to this account.
+ This method must be called to refresh self.pushNotificationServiceIsActive
+
+ @param success A block object called when the operation succeeds.
+ @param failure A block object called when the operation fails.
+ */
+- (void)loadCurrentPusher:(nullable void (^)(void))success failure:(nullable void (^)(NSError *error))failure;
+
+/**
  Load the current device information for this account.
  This method must be called to refresh self.device.
  
@@ -350,11 +359,6 @@ typedef BOOL (^MXKAccountOnCertificateChange)(MXKAccount *mxAccount, NSData *cer
 - (void)resetDeviceId;
 
 #pragma mark - Sync filter
-/**
- Check if the homeserver supports room members lazy loading.
- @param completion the check result.
- */
-- (void)supportLazyLoadOfRoomMembers:(void (^)(BOOL supportLazyLoadOfRoomMembers))completion;
 
 /**
  Call this method at an appropriate time to attempt dehydrating to a new backup device

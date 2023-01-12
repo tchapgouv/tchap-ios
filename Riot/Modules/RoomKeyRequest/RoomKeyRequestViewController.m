@@ -26,16 +26,24 @@
 
     BOOL wasNewDevice;
 }
+
+@property (nonatomic, strong) MXLegacyCrypto *crypto;
+
 @end
 
 @implementation RoomKeyRequestViewController
 
-- (instancetype)initWithDeviceInfo:(MXDeviceInfo *)deviceInfo wasNewDevice:(BOOL)theWasNewDevice andMatrixSession:(MXSession *)session onComplete:(void (^)(void))onCompleteBlock
+- (instancetype)initWithDeviceInfo:(MXDeviceInfo *)deviceInfo
+                      wasNewDevice:(BOOL)theWasNewDevice
+                  andMatrixSession:(MXSession *)session
+                            crypto:(MXLegacyCrypto *)crypto
+                        onComplete:(void (^)(void))onCompleteBlock
 {
     self = [super init];
     if (self)
     {
         _mxSession = session;
+        _crypto = crypto;
         _device = deviceInfo;
         wasNewDevice = theWasNewDevice;
         onComplete = onCompleteBlock;
@@ -78,6 +86,7 @@
                                                                    [self showVerificationView];
                                                                }
                                                            }]];
+<<<<<<< HEAD
 // Tchap remove "share without verifying" option
 //        [_alertController addAction:[UIAlertAction actionWithTitle:[VectorL10n e2eRoomKeyRequestShareWithoutVerifying]
 //                                                             style:UIAlertActionStyleDefault
@@ -96,6 +105,26 @@
 //                                                                   }];
 //                                                               }
 //                                                           }]];
+=======
+
+        [_alertController addAction:[UIAlertAction actionWithTitle:[VectorL10n e2eRoomKeyRequestShareWithoutVerifying]
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {
+
+                                                               if (weakSelf)
+                                                               {
+                                                                   typeof(self) self = weakSelf;
+
+                                                                   self->_alertController = nil;
+
+                                                                   // Accept the received requests from this device
+                                                                   [self.crypto acceptAllPendingKeyRequestsFromUser:self.device.userId andDevice:self.device.deviceId onComplete:^{
+
+                                                                       self->onComplete();
+                                                                   }];
+                                                               }
+                                                           }]];
+>>>>>>> v1.9.14
 
         [_alertController addAction:[UIAlertAction actionWithTitle:[VectorL10n e2eRoomKeyRequestIgnoreRequest]
                                                              style:UIAlertActionStyleDefault
@@ -108,7 +137,7 @@
                                                                    self->_alertController = nil;
 
                                                                    // Ignore all pending requests from this device
-                                                                   [self.mxSession.crypto ignoreAllPendingKeyRequestsFromUser:self.device.userId andDevice:self.device.deviceId onComplete:^{
+                                                                   [self.crypto ignoreAllPendingKeyRequestsFromUser:self.device.userId andDevice:self.device.deviceId onComplete:^{
 
                                                                        self->onComplete();
                                                                    }];
@@ -160,14 +189,14 @@
     keyVerificationCoordinatorBridgePresenter = nil;
     
     // Check device new status
-    [self.mxSession.crypto downloadKeys:@[self.device.userId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap, NSDictionary<NSString *,MXCrossSigningInfo *> *crossSigningKeysMap) {
+    [self.crypto downloadKeys:@[self.device.userId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap, NSDictionary<NSString *,MXCrossSigningInfo *> *crossSigningKeysMap) {
         
         MXDeviceInfo *deviceInfo = [usersDevicesInfoMap objectForDevice:self.device.deviceId forUser:self.device.userId];
         if (deviceInfo && deviceInfo.trustLevel.localVerificationStatus == MXDeviceVerified)
         {
             // Accept the received requests from this device
             // As the device is now verified, all other key requests will be automatically accepted.
-            [self.mxSession.crypto acceptAllPendingKeyRequestsFromUser:self.device.userId andDevice:self.device.deviceId onComplete:^{
+            [self.crypto acceptAllPendingKeyRequestsFromUser:self.device.userId andDevice:self.device.deviceId onComplete:^{
                 
                 self->onComplete();
             }];

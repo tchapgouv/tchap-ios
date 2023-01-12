@@ -26,72 +26,53 @@ struct UserSessionCardView: View {
     var onViewDetailsAction: ((String) -> Void)?
     var onLearnMoreAction: (() -> Void)?
     
-    private var verificationStatusImageName: String {
-        viewData.isVerified ? Asset.Images.userSessionVerified.name : Asset.Images.userSessionUnverified.name
-    }
-    
-    private var verificationStatusText: String {
-        viewData.isVerified ? VectorL10n.userSessionVerified : VectorL10n.userSessionUnverified
-    }
-    
-    private var verificationStatusColor: Color {
-        viewData.isVerified ? theme.colors.accent : theme.colors.alert
-    }
-    
-    private var verificationStatusAdditionalInfoText: String {
-        viewData.isVerified ? VectorL10n.userSessionVerifiedAdditionalInfo : VectorL10n.userSessionUnverifiedAdditionalInfo
-    }
-    
     private var backgroundShape: RoundedRectangle {
         RoundedRectangle(cornerRadius: 8)
     }
     
+    let showLocationInformations: Bool
     private var showExtraInformations: Bool {
-        viewData.isCurrentSessionDisplayMode == false && (viewData.lastActivityDateString.isEmptyOrNil == false || viewData.lastSeenIPInfo.isEmptyOrNil == false)
+        viewData.isCurrentSessionDisplayMode == false && (viewData.lastActivityDateString.isEmptyOrNil == false || ipText.isEmptyOrNil == false)
     }
     
     var body: some View {
         VStack(alignment: .center, spacing: 12) {
-            DeviceAvatarView(viewData: viewData.deviceAvatarViewData)
+            DeviceAvatarView(viewData: viewData.deviceAvatarViewData, isSelected: false)
+                .accessibilityHidden(true)
             
             Text(viewData.sessionName)
                 .font(theme.fonts.headline)
                 .foregroundColor(theme.colors.primaryContent)
                 .multilineTextAlignment(.center)
             
-            HStack {
-                Image(verificationStatusImageName)
-                Text(verificationStatusText)
-                    .font(theme.fonts.subheadline)
-                    .foregroundColor(verificationStatusColor)
-                    .multilineTextAlignment(.center)
-            }
-            
-            if viewData.isCurrentSessionDisplayMode {
-                Text(verificationStatusAdditionalInfoText)
-                    .font(theme.fonts.footnote)
-                    .foregroundColor(theme.colors.secondaryContent)
-                    .multilineTextAlignment(.center)
-            } else {
-                InlineTextButton(verificationStatusAdditionalInfoText + " %@", tappableText: VectorL10n.userSessionLearnMore) {
-                    onLearnMoreAction?()
-                }
-                .font(theme.fonts.footnote)
-                .foregroundColor(theme.colors.secondaryContent)
+            Label(viewData.verificationStatusText, image: viewData.verificationStatusImageName)
+                .font(theme.fonts.subheadline)
+                .foregroundColor(theme.colors[keyPath: viewData.verificationStatusColor])
                 .multilineTextAlignment(.center)
+            
+            InlineTextButton(viewData.verificationStatusAdditionalInfoText, tappableText: VectorL10n.userSessionLearnMore, alwaysCallAction: false) {
+                onLearnMoreAction?()
             }
+            .font(theme.fonts.footnote)
+            .foregroundColor(theme.colors.secondaryContent)
+            .multilineTextAlignment(.center)
             
             if showExtraInformations {
                 VStack(spacing: 2) {
-                    if let lastActivityDateString = viewData.lastActivityDateString, lastActivityDateString.isEmpty == false {
-                        Text(lastActivityDateString)
-                            .font(theme.fonts.footnote)
-                            .foregroundColor(theme.colors.secondaryContent)
-                            .multilineTextAlignment(.center)
+                    HStack {
+                        if let lastActivityIcon = viewData.lastActivityIcon {
+                            Image(lastActivityIcon)
+                                .padding(.leading, 2)
+                        }
+                        if let lastActivityDateString = viewData.lastActivityDateString, lastActivityDateString.isEmpty == false {
+                            Text(lastActivityDateString)
+                                .font(theme.fonts.footnote)
+                                .foregroundColor(theme.colors.secondaryContent)
+                                .multilineTextAlignment(.center)
+                        }
                     }
-                    
-                    if let lastSeenIPInfo = viewData.lastSeenIPInfo, lastSeenIPInfo.isEmpty == false {
-                        Text(lastSeenIPInfo)
+                    if showLocationInformations, let ipText = ipText {
+                        Text(ipText)
                             .font(theme.fonts.footnote)
                             .foregroundColor(theme.colors.secondaryContent)
                             .multilineTextAlignment(.center)
@@ -99,7 +80,7 @@ struct UserSessionCardView: View {
                 }
             }
             
-            if viewData.isVerified == false {
+            if viewData.verificationState == .unverified {
                 Button {
                     onVerifyAction?(viewData.sessionId)
                 } label: {
@@ -130,6 +111,13 @@ struct UserSessionCardView: View {
             }
         }
     }
+    
+    private var ipText: String? {
+        guard let lastSeenIp = viewData.lastSeenIP, !lastSeenIp.isEmpty else {
+            return nil
+        }
+        return viewData.lastSeenIPLocation.map { "\(lastSeenIp) (\($0))" } ?? lastSeenIp
+    }
 }
 
 struct UserSessionCardViewPreview: View {
@@ -137,29 +125,29 @@ struct UserSessionCardViewPreview: View {
     
     let viewData: UserSessionCardViewData
 
-    init(isCurrent: Bool = false) {
+    init(isCurrent: Bool = false, verificationState: UserSessionInfo.VerificationState = .unverified) {
         let sessionInfo = UserSessionInfo(id: "alice",
-                                      name: "iOS",
-                                      deviceType: .mobile,
-                                      isVerified: false,
-                                      lastSeenIP: "10.0.0.10",
-                                      lastSeenTimestamp: nil,
-                                      applicationName: "Element iOS",
-                                      applicationVersion: "1.0.0",
-                                      applicationURL: nil,
-                                      deviceModel: nil,
-                                      deviceOS: "iOS 15.5",
-                                      lastSeenIPLocation: nil,
-                                      clientName: "Element",
-                                      clientVersion: "1.0.0",
-                                      isActive: true,
-                                      isCurrent: isCurrent)
+                                          name: "iOS",
+                                          deviceType: .mobile,
+                                          verificationState: verificationState,
+                                          lastSeenIP: "10.0.0.10",
+                                          lastSeenTimestamp: nil,
+                                          applicationName: "Element iOS",
+                                          applicationVersion: "1.0.0",
+                                          applicationURL: nil,
+                                          deviceModel: nil,
+                                          deviceOS: "iOS 15.5",
+                                          lastSeenIPLocation: nil,
+                                          clientName: "Element",
+                                          clientVersion: "1.0.0",
+                                          isActive: true,
+                                          isCurrent: isCurrent)
         viewData = UserSessionCardViewData(sessionInfo: sessionInfo)
     }
     
     var body: some View {
         VStack {
-            UserSessionCardView(viewData: viewData)
+            UserSessionCardView(viewData: viewData, showLocationInformations: true)
         }
         .frame(maxWidth: .infinity)
         .background(theme.colors.system)
@@ -174,6 +162,13 @@ struct UserSessionCardView_Previews: PreviewProvider {
             UserSessionCardViewPreview(isCurrent: true).theme(.dark).preferredColorScheme(.dark)
             UserSessionCardViewPreview().theme(.light).preferredColorScheme(.light)
             UserSessionCardViewPreview().theme(.dark).preferredColorScheme(.dark)
+            
+            UserSessionCardViewPreview(isCurrent: true, verificationState: .verified)
+                .theme(.light).preferredColorScheme(.light)
+            UserSessionCardViewPreview(verificationState: .verified)
+                .theme(.light).preferredColorScheme(.light)
+            UserSessionCardViewPreview(verificationState: .unknown)
+                .theme(.light).preferredColorScheme(.light)
         }
     }
 }

@@ -23,8 +23,8 @@ enum MockUserSessionOverviewScreenState: MockScreenState, CaseIterable {
     // A case for each state you want to represent
     // with specific, minimal associated data that will allow you
     // mock that screen.
-    case currentSession
-    case otherSession
+    case currentSession(sessionState: UserSessionInfo.VerificationState)
+    case otherSession(sessionState: UserSessionInfo.VerificationState)
     case sessionWithPushNotifications(enabled: Bool)
     case remotelyTogglingPushersNotAvailable
 
@@ -35,8 +35,11 @@ enum MockUserSessionOverviewScreenState: MockScreenState, CaseIterable {
     
     /// A list of screen state definitions
     static var allCases: [MockUserSessionOverviewScreenState] {
-        [.currentSession,
-         .otherSession,
+        [.currentSession(sessionState: .unverified),
+         .currentSession(sessionState: .verified),
+         .otherSession(sessionState: .verified),
+         .otherSession(sessionState: .unverified),
+         .otherSession(sessionState: .permanentlyUnverified),
          .sessionWithPushNotifications(enabled: true),
          .sessionWithPushNotifications(enabled: false),
          .remotelyTogglingPushersNotAvailable]
@@ -47,11 +50,11 @@ enum MockUserSessionOverviewScreenState: MockScreenState, CaseIterable {
         let session: UserSessionInfo
         let service: UserSessionOverviewServiceProtocol
         switch self {
-        case .currentSession:
+        case .currentSession(let state):
             session = UserSessionInfo(id: "alice",
                                       name: "iOS",
                                       deviceType: .mobile,
-                                      isVerified: false,
+                                      verificationState: state,
                                       lastSeenIP: "10.0.0.10",
                                       lastSeenTimestamp: nil,
                                       applicationName: "Element iOS",
@@ -65,18 +68,18 @@ enum MockUserSessionOverviewScreenState: MockScreenState, CaseIterable {
                                       isActive: true,
                                       isCurrent: true)
             service = MockUserSessionOverviewService()
-        case .otherSession:
+        case .otherSession(let state):
             session = UserSessionInfo(id: "1",
                                       name: "macOS",
                                       deviceType: .desktop,
-                                      isVerified: true,
+                                      verificationState: state,
                                       lastSeenIP: "1.0.0.1",
                                       lastSeenTimestamp: Date().timeIntervalSince1970 - 130_000,
                                       applicationName: "Element MacOS",
                                       applicationVersion: "1.0.0",
                                       applicationURL: nil,
                                       deviceModel: nil,
-                                      deviceOS: "macOS 12.5.1",
+                                      deviceOS: "macOS",
                                       lastSeenIPLocation: nil,
                                       clientName: "Electron",
                                       clientVersion: "20.1.1",
@@ -87,14 +90,14 @@ enum MockUserSessionOverviewScreenState: MockScreenState, CaseIterable {
             session = UserSessionInfo(id: "1",
                                       name: "macOS",
                                       deviceType: .desktop,
-                                      isVerified: true,
+                                      verificationState: .verified,
                                       lastSeenIP: "1.0.0.1",
                                       lastSeenTimestamp: Date().timeIntervalSince1970 - 130_000,
                                       applicationName: "Element MacOS",
                                       applicationVersion: "1.0.0",
                                       applicationURL: nil,
                                       deviceModel: nil,
-                                      deviceOS: "macOS 12.5.1",
+                                      deviceOS: "macOS",
                                       lastSeenIPLocation: nil,
                                       clientName: "My Mac",
                                       clientVersion: "1.0.0",
@@ -105,14 +108,14 @@ enum MockUserSessionOverviewScreenState: MockScreenState, CaseIterable {
             session = UserSessionInfo(id: "1",
                                       name: "macOS",
                                       deviceType: .desktop,
-                                      isVerified: true,
+                                      verificationState: .verified,
                                       lastSeenIP: "1.0.0.1",
                                       lastSeenTimestamp: Date().timeIntervalSince1970 - 130_000,
                                       applicationName: "Element MacOS",
                                       applicationVersion: "1.0.0",
                                       applicationURL: nil,
                                       deviceModel: nil,
-                                      deviceOS: "macOS 12.5.1",
+                                      deviceOS: "macOS",
                                       lastSeenIPLocation: nil,
                                       clientName: "My Mac",
                                       clientVersion: "1.0.0",
@@ -121,8 +124,23 @@ enum MockUserSessionOverviewScreenState: MockScreenState, CaseIterable {
             service = MockUserSessionOverviewService(pusherEnabled: true, remotelyTogglingPushersAvailable: false)
         }
 
-        let viewModel = UserSessionOverviewViewModel(sessionInfo: session, service: service)
+        let viewModel = UserSessionOverviewViewModel(sessionInfo: session, service: service, settingsService: MockUserSessionSettings())
         // can simulate service and viewModel actions here if needs be.
         return ([viewModel], AnyView(UserSessionOverview(viewModel: viewModel.context)))
+    }
+}
+
+extension MockUserSessionOverviewScreenState: CustomStringConvertible {
+    var description: String {
+        switch self {
+        case .currentSession(let sessionState):
+            return "currentSession\(sessionState)"
+        case .otherSession(let sessionState):
+            return "otherSession\(sessionState)"
+        case .remotelyTogglingPushersNotAvailable:
+            return "remotelyTogglingPushersNotAvailable"
+        case .sessionWithPushNotifications(let enabled):
+            return "sessionWithPushNotifications\(enabled)"
+        }
     }
 }

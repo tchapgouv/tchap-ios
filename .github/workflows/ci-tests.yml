@@ -63,5 +63,12 @@ jobs:
       - name: Unit tests
         run: bundle exec fastlane test
       
+<<<<<<< HEAD
       # - name: Upload coverage to Codecov
       #   uses: codecov/codecov-action@v3
+=======
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          flags: unittests
+>>>>>>> v1.9.14

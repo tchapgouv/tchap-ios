@@ -70,11 +70,14 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     }
     
     private var indicators = [UserIndicator]()
+<<<<<<< HEAD
     private var signOutAlertPresenter = SignOutAlertPresenter()
     // Tchap: Add invite service for user invitation
     private var inviteService: InviteServiceType?
     private var errorPresenter: ErrorPresenter?
     private weak var currentAlertController: UIAlertController?
+=======
+>>>>>>> v1.9.14
     
     // MARK: Public
 
@@ -108,8 +111,6 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
                 
         // If start has been done once do not setup view controllers again
         if self.hasStartedOnce == false {
-            signOutAlertPresenter.delegate = self
-
             let masterTabBarController = self.createMasterTabBarController()
             masterTabBarController.masterTabBarDelegate = self
             self.masterTabBarController = masterTabBarController
@@ -127,8 +128,6 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
             self.registerUserSessionsServiceNotifications()
             self.registerSessionChange()
             
-            NotificationCenter.default.addObserver(self, selector: #selector(self.newAppLayoutToggleDidChange(notification:)), name: RiotSettings.newAppLayoutBetaToggleDidChange, object: nil)
-
             self.updateMasterTabBarController(with: spaceId, forceReload: true)
         } else {
             self.updateMasterTabBarController(with: spaceId)
@@ -257,15 +256,6 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     
     // MARK: - Private methods
     
-    @objc private func newAppLayoutToggleDidChange(notification: Notification) {
-        self.masterTabBarController = nil
-        start()
-//        updateMasterTabBarController(with: self.currentSpaceId, forceReload: true)
-//        createLeftButtonItem(for: self.masterTabBarController)
-//        createRightButtonItem(for: self.masterTabBarController)
-//        popToHome(animated: true, completion: nil)
-    }
-    
     private func createMasterTabBarController() -> MasterTabBarController {
         let tabBarController = MasterTabBarController()
         
@@ -388,23 +378,21 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
 //        let homeViewController = self.createHomeViewController()
 //        viewControllers.append(homeViewController)
         
-        if !BuildSettings.newAppLayoutEnabled {
-            if RiotSettings.shared.homeScreenShowFavouritesTab {
-                let favouritesViewController = self.createFavouritesViewController()
-                viewControllers.append(favouritesViewController)
-            }
-            
-            if RiotSettings.shared.homeScreenShowPeopleTab {
-                let peopleViewController = self.createPeopleViewController()
-                viewControllers.append(peopleViewController)
-            }
-            
-            if RiotSettings.shared.homeScreenShowRoomsTab {
-                let roomsViewController = self.createRoomsViewController()
-                viewControllers.append(roomsViewController)
-            }
+        if RiotSettings.shared.homeScreenShowFavouritesTab {
+            let favouritesViewController = self.createFavouritesViewController()
+            viewControllers.append(favouritesViewController)
         }
         
+        if RiotSettings.shared.homeScreenShowPeopleTab {
+            let peopleViewController = self.createPeopleViewController()
+            viewControllers.append(peopleViewController)
+        }
+        
+        if RiotSettings.shared.homeScreenShowRoomsTab {
+            let roomsViewController = self.createRoomsViewController()
+            viewControllers.append(roomsViewController)
+        }
+
         tabBarController.updateViewControllers(viewControllers)
         
 //        if let existingVersionCheckCoordinator = self.versionCheckCoordinator {
@@ -763,11 +751,17 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     }
     
     @objc private func sessionDidSync(_ notification: Notification) {
+<<<<<<< HEAD
 //        if let session = notification.object as? MXSession {
 //            showCoachMessageIfNeeded(with: session)
 //        }
         
         updateAvatarButtonItem()
+=======
+        if let session = notification.object as? MXSession {
+            showCoachMessageIfNeeded(with: session)
+        }
+>>>>>>> v1.9.14
     }
     
     // MARK: Navigation bar items management
@@ -776,11 +770,6 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     private weak var rightMenuButton: UIButton?
     
     private func createLeftButtonItem(for viewController: UIViewController) {
-        guard !BuildSettings.newAppLayoutEnabled else {
-            createAvatarButtonItem(for: viewController)
-            return
-        }
-        
         guard BuildSettings.enableSideMenu else {
             let settingsBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.settingsIcon.image, style: .plain) { [weak self] in
                 self?.showSettings()
@@ -800,10 +789,6 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     }
 
     private func createRightButtonItem(for viewController: UIViewController) {
-        guard !BuildSettings.newAppLayoutEnabled else {
-            return
-        }
-        
         let searchBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.searchIcon.image, style: .plain) { [weak self] in
             self?.showUnifiedSearch()
         }
@@ -811,6 +796,7 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         viewController.navigationItem.rightBarButtonItem = searchBarButtonItem
     }
     
+<<<<<<< HEAD
     private func createAvatarButtonItem(for viewController: UIViewController) {
         var actions: [UIMenuElement] = []
         
@@ -961,10 +947,13 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         self.crossSigningSetupCoordinatorBridgePresenter = crossSigningSetupCoordinatorBridgePresenter
     }
 
+=======
+>>>>>>> v1.9.14
     // MARK: Coach Message
     
 //    private var windowOverlay: WindowOverlayPresenter?
 
+<<<<<<< HEAD
 //    func showCoachMessageIfNeeded(with session: MXSession) {
 //        guard !BuildSettings.newAppLayoutEnabled else {
 //            // Showing coach message makes no sense with the new App Layout
@@ -1032,6 +1021,21 @@ extension TabBarCoordinator {
                 let okAction = UIAlertAction(title: VectorL10n.ok,
                                              style: .default) { [weak self] _ in
                     self?.currentAlertController = nil
+=======
+    func showCoachMessageIfNeeded(with session: MXSession) {
+        if !RiotSettings.shared.slideMenuRoomsCoachMessageHasBeenDisplayed {
+            let isAuthenticated = MXKAccountManager.shared().activeAccounts.first != nil || MXKAccountManager.shared().accounts.first?.isSoftLogout == false
+
+        if isAuthenticated, let spaceService = session.spaceService, masterTabBarController.presentedViewController == nil, navigationRouter.modules.count == 1 {
+                if spaceService.isInitialised && !spaceService.rootSpaceSummaries.isEmpty {
+                    RiotSettings.shared.slideMenuRoomsCoachMessageHasBeenDisplayed = true
+                    windowOverlay = WindowOverlayPresenter()
+                    let coachMarkView = CoachMarkView.instantiate(
+                        text: VectorL10n.sideMenuCoachMessage,
+                        from: CoachMarkView.TopLeftPosition,
+                        markPosition: .topLeft)
+                    windowOverlay?.show(coachMarkView, duration: 4.0)
+>>>>>>> v1.9.14
                 }
                 errorAlertController.addAction(okAction)
                 errorAlertController.mxk_setAccessibilityIdentifier("ContactsVCInviteByEmailError")
@@ -1225,6 +1229,7 @@ extension TabBarCoordinator: UIGestureRecognizerDelegate {
         }
     }
 }
+<<<<<<< HEAD
 
 extension TabBarCoordinator: SignOutAlertPresenterDelegate {
     
@@ -1353,3 +1358,5 @@ extension TabBarCoordinator: RoomPreviewCoordinatorDelegate {
         self.showRoom(withId: roomID, eventId: eventId)
     }
 }
+=======
+>>>>>>> v1.9.14
