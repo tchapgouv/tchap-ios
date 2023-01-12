@@ -1501,16 +1501,11 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     
     NSString *sdkVersionInfo = [NSString stringWithFormat:@"Matrix SDK %@", MatrixSDKVersion];
     
-<<<<<<< HEAD
     NSString *olmVersionInfo = [NSString stringWithFormat:@"OLM %@", [OLMKit versionString]];    
     
     // Tchap: Hide user and homeserver infos
 //    [footerText appendFormat:@"%@\n", loggedUserInfo];
 //    [footerText appendFormat:@"%@\n", homeserverInfo];
-=======
-    [footerText appendFormat:@"%@\n", loggedUserInfo];
-    [footerText appendFormat:@"%@\n", homeserverInfo];
->>>>>>> v1.9.14
     [footerText appendFormat:@"%@\n", appVersionInfo];
     [footerText appendFormat:@"%@\n", sdkVersionInfo];
     [footerText appendFormat:@"%@", self.mainSession.crypto.version];
@@ -2990,30 +2985,18 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         }
         else if (section == SECTION_TAG_ABOUT)
         {
-<<<<<<< HEAD
             // Tchap: Hide Copyright
 //            if (row == ABOUT_COPYRIGHT_INDEX)
 //            {
 //                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationCopyrightUrlString];
-//
+//                
 //                webViewViewController.title = [VectorL10n settingsCopyright];
-//
+//                [webViewViewController vc_setLargeTitleDisplayMode:UINavigationItemLargeTitleDisplayModeNever];
+//                
 //                [self pushViewController:webViewViewController];
 //            }
-//            else
+//            else 
             if (row == ABOUT_TERM_CONDITIONS_INDEX)
-=======
-            if (row == ABOUT_COPYRIGHT_INDEX)
-            {
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationCopyrightUrlString];
-                
-                webViewViewController.title = [VectorL10n settingsCopyright];
-                [webViewViewController vc_setLargeTitleDisplayMode:UINavigationItemLargeTitleDisplayModeNever];
-                
-                [self pushViewController:webViewViewController];
-            }
-            else if (row == ABOUT_TERM_CONDITIONS_INDEX)
->>>>>>> v1.9.14
             {
                 WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationTermsConditionsUrlString];
                 
@@ -3022,27 +3005,16 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
                 
                 [self pushViewController:webViewViewController];
             }
-<<<<<<< HEAD
             // Tchap: Hide Privacy Policy
 //            else if (row == ABOUT_PRIVACY_INDEX)
 //            {
 //                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationPrivacyPolicyUrlString];
-//
+//                
 //                webViewViewController.title = [VectorL10n settingsPrivacyPolicy];
-//
+//                [webViewViewController vc_setLargeTitleDisplayMode:UINavigationItemLargeTitleDisplayModeNever];
+//                
 //                [self pushViewController:webViewViewController];
 //            }
-=======
-            else if (row == ABOUT_PRIVACY_INDEX)
-            {
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationPrivacyPolicyUrlString];
-                
-                webViewViewController.title = [VectorL10n settingsPrivacyPolicy];
-                [webViewViewController vc_setLargeTitleDisplayMode:UINavigationItemLargeTitleDisplayModeNever];
-                
-                [self pushViewController:webViewViewController];
-            }
->>>>>>> v1.9.14
             else if (row == ABOUT_THIRD_PARTY_INDEX)
             {
                 NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"third_party_licenses" ofType:@"html" inDirectory:nil];

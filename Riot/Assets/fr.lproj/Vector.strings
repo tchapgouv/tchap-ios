@@ -1060,7 +1060,6 @@
 "security_settings_crosssigning_bootstrap" = "Configurer";
 "security_settings_crosssigning_reset" = "Réinitialiser";
 "security_settings_crosssigning_complete_security" = "Compléter la sécurité";
-<<<<<<< HEAD
 "security_settings_complete_security_alert_title" = "Compléter la sécurité";
 "security_settings_complete_security_alert_message" = "Vous devriez d’abord compléter la sécurité de votre session actuelle.";
 "security_settings_coming_soon" = "Désolé, cette action n’est pas encore disponible dans Tchap-iOS. Utilisez un autre client Matrix pour le configurer. Tchap-iOS l’utilisera.";
@@ -1069,11 +1068,6 @@
 "client_web_name" = "Tchap-web";
 "client_ios_name" = "Tchap-iOS";
 "client_android_name" = "Tchap-Android";
-=======
-"security_settings_complete_security_alert_title" = "Améliorer la sécurité";
-"security_settings_complete_security_alert_message" = "Vous devriez d’abord améliorer la sécurité de la session courante.";
-"security_settings_coming_soon" = "Désolé, cette action n’est pas encore disponible dans %@ iOS. Utilisez un autre client Matrix pour le configurer. %@ iOS l’utilisera.";
->>>>>>> v1.9.14
 "device_verification_self_verify_wait_new_sign_in_title" = "Vérifier cette connexion";
 "device_verification_self_verify_wait_additional_information" = "ou un autre client Matrix qui prend en charge la signature croisée.";
 // MARK: - Device Verification
@@ -2539,35 +2533,6 @@
 // User sessions management
 "user_sessions_settings" = "Gérer les sessions";
 "invite_to" = "Inviter dans %@";
-<<<<<<< HEAD
-
-// Tchap: override some MatrixKit strings
-"attachment_e2e_keys_file_prompt" = "Ce fichier contient des clés de chiffrement exportées d'un client Tchap.\nVoulez-vous voir le contenu du fichier ou importer les clés qu'il contient ?";
-// E2E import
-"e2e_import_room_keys" = "Importer les clés du salon";
-"e2e_import_prompt" = "Ce processus permet d'importer les clés de chiffrement que vous avez précédemment exportées d'un autre client Tchap. Vous pourrez ensuite déchiffrer tous les messages que l'autre client pouvait déchiffrer.\nLe fichier d'export est protégé par une phrase secrète. Entrez la phrase secrète ci-dessous pour déchiffrer le fichier.";
-"e2e_import" = "Importer";
-"e2e_passphrase_enter" = "Entrer la phrase secrète";
-// E2E export
-"e2e_export_room_keys" = "Exporter les clés de salon";
-"e2e_export_prompt" = "Ce processus permet d'exporter vers un fichier local les clés des messages que vous avez reçu sur les salons chiffrés. Vous pourrez ensuite importer ce fichier dans un autre client Tchap, pour qu'il puisse déchiffrer aussi ces messages.\nLe fichier exporté permettra à tous ceux qui y ont accès de déchiffrer tous les messages chiffrés que vous pouvez voir, donc vous devriez le conserver dans un endroit sécurisé.";
-"e2e_export" = "Exporter";
-"e2e_passphrase_confirm" = "Confirmer la phrase secrète";
-"e2e_passphrase_empty" = "La phrase secrète ne peut pas être vide";
-"e2e_passphrase_not_match" = "Les phrases secrète doivent être identiques";
-"e2e_passphrase_create" = "Créer la phrase secrète";
-// Encryption information
-"room_event_encryption_verify_message" = "Pour valider que vous pouvez faire confiance à cet appareil, merci de vérifier que la clé que vous voyez dans les Paramètres Utilisateur de cet appareil correspond à la clé ci-dessous :\n\n    Nom de l'appareil : %@\n    Identifiant de l'appareil : %@\n    Clé de l'appareil : %@\n\nSi les clés correspondent, cliquer sur le bouton Vérifier ci-dessous.";
-"room_event_encryption_info_verify" = "Vérifier...";
-"room_event_encryption_info_unverify" = "A revérifier";
-"room_event_encryption_info_block" = "Bloquer";
-"room_event_encryption_info_unblock" = "Débloquer";
-// Contacts
-"local_contacts_access_discovery_warning" = "Afin d’afficher qui parmi vos contacts utilise déjà Tchap, nous pouvons exploiter les adresses e-mails de votre carnet d'adresse. Ces données ne seront pas mémorisées. Pour plus d'informations, veuillez consulter les Termes et Conditions disponibles dans les paramètres de l'application.";
-// Events formatter
-"notice_crypto_unable_to_decrypt" = "** Echec de déchiffrement : %@ **";
-"notice_crypto_error_unknown_inbound_session_id" = "Veuillez ouvrir Tchap sur vos autres appareils afin d'autoriser le partage de clés.";
-=======
 "user_session_unverified_additional_info" = "Vérifiez cette session pour renforcer la sécurité de votre messagerie.";
 "user_session_verified_additional_info" = "Cette session est prête pour la messagerie sécurisée.";
 "room_event_encryption_info_key_authenticity_not_guaranteed" = "L’authenticité de ce message chiffré ne peut être garantie sur cet appareil.";
@@ -2677,4 +2642,30 @@
 "manage_session_name_info" = "Gardez en tête que les noms des sessions sont aussi visibles par les personnes avec qui vous communiquez. %@";
 "manage_session_name_hint" = "Personnaliser les noms des sessions peut vous aider à reconnaître vos appareils plus facilement.";
 "settings_labs_enable_wysiwyg_composer" = "Essayez le compositeur de messages visuel";
->>>>>>> v1.9.14
+
+// Tchap: override some MatrixKit strings
+"attachment_e2e_keys_file_prompt" = "Ce fichier contient des clés de chiffrement exportées d'un client Tchap.\nVoulez-vous voir le contenu du fichier ou importer les clés qu'il contient ?";
+// E2E import
+"e2e_import_room_keys" = "Importer les clés du salon";
+"e2e_import_prompt" = "Ce processus permet d'importer les clés de chiffrement que vous avez précédemment exportées d'un autre client Tchap. Vous pourrez ensuite déchiffrer tous les messages que l'autre client pouvait déchiffrer.\nLe fichier d'export est protégé par une phrase secrète. Entrez la phrase secrète ci-dessous pour déchiffrer le fichier.";
+"e2e_import" = "Importer";
+"e2e_passphrase_enter" = "Entrer la phrase secrète";
+// E2E export
+"e2e_export_room_keys" = "Exporter les clés de salon";
+"e2e_export_prompt" = "Ce processus permet d'exporter vers un fichier local les clés des messages que vous avez reçu sur les salons chiffrés. Vous pourrez ensuite importer ce fichier dans un autre client Tchap, pour qu'il puisse déchiffrer aussi ces messages.\nLe fichier exporté permettra à tous ceux qui y ont accès de déchiffrer tous les messages chiffrés que vous pouvez voir, donc vous devriez le conserver dans un endroit sécurisé.";
+"e2e_export" = "Exporter";
+"e2e_passphrase_confirm" = "Confirmer la phrase secrète";
+"e2e_passphrase_empty" = "La phrase secrète ne peut pas être vide";
+"e2e_passphrase_not_match" = "Les phrases secrète doivent être identiques";
+"e2e_passphrase_create" = "Créer la phrase secrète";
+// Encryption information
+"room_event_encryption_verify_message" = "Pour valider que vous pouvez faire confiance à cet appareil, merci de vérifier que la clé que vous voyez dans les Paramètres Utilisateur de cet appareil correspond à la clé ci-dessous :\n\n    Nom de l'appareil : %@\n    Identifiant de l'appareil : %@\n    Clé de l'appareil : %@\n\nSi les clés correspondent, cliquer sur le bouton Vérifier ci-dessous.";
+"room_event_encryption_info_verify" = "Vérifier...";
+"room_event_encryption_info_unverify" = "A revérifier";
+"room_event_encryption_info_block" = "Bloquer";
+"room_event_encryption_info_unblock" = "Débloquer";
+// Contacts
+"local_contacts_access_discovery_warning" = "Afin d’afficher qui parmi vos contacts utilise déjà Tchap, nous pouvons exploiter les adresses e-mails de votre carnet d'adresse. Ces données ne seront pas mémorisées. Pour plus d'informations, veuillez consulter les Termes et Conditions disponibles dans les paramètres de l'application.";
+// Events formatter
+"notice_crypto_unable_to_decrypt" = "** Echec de déchiffrement : %@ **";
+"notice_crypto_error_unknown_inbound_session_id" = "Veuillez ouvrir Tchap sur vos autres appareils afin d'autoriser le partage de clés.";

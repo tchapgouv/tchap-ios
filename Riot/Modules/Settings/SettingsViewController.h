@@ -37,14 +37,12 @@
 
 + (instancetype)instantiate;
 
-<<<<<<< HEAD
+- (void)showUserSessionsFlow;
+
 /**
  The delegate for the view controller.
  */
 @property (nonatomic, weak) id<SettingsViewControllerDelegate> delegate;
 
-=======
-- (void)showUserSessionsFlow;
->>>>>>> v1.9.14
 @end
 

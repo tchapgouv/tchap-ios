@@ -40,9 +40,9 @@ PODS:
     - DTFoundation/Core
   - FLEX (4.5.0)
   - FlowCommoniOS (1.12.2)
-  - GBDeviceInfo (7.1.0):
-    - GBDeviceInfo/Core (= 7.1.0)
-  - GBDeviceInfo/Core (7.1.0)
+  - GBDeviceInfo (6.6.0):
+    - GBDeviceInfo/Core (= 6.6.0)
+  - GBDeviceInfo/Core (6.6.0)
   - GZIP (1.3.0)
   - Introspect (0.1.4)
   - JitsiMeetSDK (5.0.2)
@@ -55,9 +55,9 @@ PODS:
   - LoggerAPI (1.9.200):
     - Logging (~> 1.1)
   - Logging (1.4.0)
-  - MatrixSDK (0.24.5):
-    - MatrixSDK/Core (= 0.24.5)
-  - MatrixSDK/Core (0.24.5):
+  - MatrixSDK (0.24.6):
+    - MatrixSDK/Core (= 0.24.6)
+  - MatrixSDK/Core (0.24.6):
     - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.3.0)
     - libbase58 (~> 0.1.4)
@@ -65,12 +65,12 @@ PODS:
     - OLMKit (~> 3.2.5)
     - Realm (= 10.27.0)
     - SwiftyBeaver (= 1.9.5)
-  - MatrixSDK/CryptoSDK (0.24.5):
-    - MatrixSDKCrypto (= 0.1.5)
-  - MatrixSDK/JingleCallStack (0.24.5):
+  - MatrixSDK/CryptoSDK (0.24.6):
+    - MatrixSDKCrypto (= 0.1.6)
+  - MatrixSDK/JingleCallStack (0.24.6):
     - JitsiMeetSDK (= 5.0.2)
     - MatrixSDK/Core
-  - MatrixSDKCrypto (0.1.5)
+  - MatrixSDKCrypto (0.1.6)
   - OLMKit (3.2.12):
     - OLMKit/olmc (= 3.2.12)
     - OLMKit/olmcpp (= 3.2.12)
@@ -92,7 +92,6 @@ PODS:
   - Sentry/Core (7.15.0)
   - SideMenu (6.5.0)
   - SwiftBase32 (0.9.0)
-  - SwiftFormat/CLI (0.50.2)
   - SwiftGen (6.6.2)
   - SwiftJWT (3.6.200):
     - BlueCryptor (~> 1.0)
@@ -100,7 +99,7 @@ PODS:
     - BlueRSA (~> 1.0)
     - KituraContracts (~> 1.2)
     - LoggerAPI (~> 1.7)
-  - SwiftLint (0.49.1)
+  - SwiftLint (0.44.0)
   - SwiftyBeaver (1.9.5)
   - UICollectionViewLeftAlignedLayout (1.0.2)
   - UICollectionViewRightAlignedLayout (0.0.3)
@@ -115,21 +114,16 @@ DEPENDENCIES:
   - Down (~> 0.11.0)
   - DSBottomSheet (~> 0.3)
   - DSWaveformImage (~> 6.1.1)
-<<<<<<< HEAD
   - DTCoreText (= 1.6.26)
-  - ffmpeg-kit-ios-audio (= 4.5.1)
-=======
-  - DTCoreText (~> 1.6.25)
->>>>>>> v1.9.14
   - FLEX (~> 4.5.0)
   - FlowCommoniOS (~> 1.12.0)
-  - GBDeviceInfo (~> 7.1.0)
+  - GBDeviceInfo (~> 6.6.0)
   - Introspect (~> 0.1)
   - KeychainAccess (~> 4.2.2)
   - KTCenterFlowLayout (~> 1.3.1)
   - libPhoneNumber-iOS (~> 0.9.13)
-  - MatrixSDK (= 0.24.5)
-  - MatrixSDK/JingleCallStack (= 0.24.5)
+  - MatrixSDK (= 0.24.6)
+  - MatrixSDK/JingleCallStack (= 0.24.6)
   - OLMKit
   - PostHog (~> 1.4.4)
   - ReadMoreTextView (~> 3.0.1)
@@ -138,10 +132,9 @@ DEPENDENCIES:
   - Sentry (~> 7.15.0)
   - SideMenu (~> 6.5)
   - SwiftBase32 (~> 0.9.0)
-  - SwiftFormat/CLI
-  - SwiftGen
+  - SwiftGen (~> 6.3)
   - SwiftJWT (~> 3.6.200)
-  - SwiftLint
+  - SwiftLint (~> 0.44.0)
   - UICollectionViewLeftAlignedLayout (~> 1.0.2)
   - UICollectionViewRightAlignedLayout (~> 0.0.3)
   - WeakDictionary (~> 2.0)
@@ -183,7 +176,6 @@ SPEC REPOS:
     - Sentry
     - SideMenu
     - SwiftBase32
-    - SwiftFormat
     - SwiftGen
     - SwiftJWT
     - SwiftLint
@@ -217,7 +209,7 @@ SPEC CHECKSUMS:
   DTFoundation: a53f8cda2489208cbc71c648be177f902ee17536
   FLEX: e51461dd6f0bfb00643c262acdfea5d5d12c596b
   FlowCommoniOS: ca92071ab526dc89905495a37844fd7e78d1a7f2
-  GBDeviceInfo: 5d62fa85bdcce3ed288d83c28789adf1173e4376
+  GBDeviceInfo: ed0db16230d2fa280e1cbb39a5a7f60f6946aaec
   GZIP: 416858efbe66b41b206895ac6dfd5493200d95b3
   Introspect: b62c4dd2063072327c21d618ef2bedc3c87bc366
   JitsiMeetSDK: edcac8e2b92ee0c7f3e75bd0aefefbe9faccfc93
@@ -228,8 +220,8 @@ SPEC CHECKSUMS:
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
-  MatrixSDK: 1557b3ed0a211db43a865cfdad93f07c2be92c9e
-  MatrixSDKCrypto: dcab554bc7157cad31c01fc1137cf5acb01959a4
+  MatrixSDK: 2bd63890d709683741452de2f215cfcda840fe64
+  MatrixSDKCrypto: b9e9bced53510f063bb203ccbec919f08d8f2641
   OLMKit: da115f16582e47626616874e20f7bb92222c7a51
   PostHog: 4b6321b521569092d4ef3a02238d9435dbaeb99f
   ReadMoreTextView: 19147adf93abce6d7271e14031a00303fe28720d
@@ -239,10 +231,9 @@ SPEC CHECKSUMS:
   Sentry: 63ca44f5e0c8cea0ee5a07686b02e56104f41ef7
   SideMenu: f583187d21c5b1dd04c72002be544b555a2627a2
   SwiftBase32: 9399c25a80666dc66b51e10076bf591e3bbb8f17
-  SwiftFormat: 710117321c55c82675c0dc03055128efbb13c38f
   SwiftGen: 1366a7f71aeef49954ca5a63ba4bef6b0f24138c
   SwiftJWT: 88c412708f58c169d431d344c87bc79a87c830ae
-  SwiftLint: 32ee33ded0636d0905ef6911b2b67bbaeeedafa5
+  SwiftLint: e96c0a8c770c7ebbc4d36c55baf9096bb65c4584
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   UICollectionViewLeftAlignedLayout: 830bf6fa5bab9f9b464f62e3384f9d2e00b3c0f6
   UICollectionViewRightAlignedLayout: 823eef8c567eba4a44c21bc2ffcb0d0d5f361e2d
@@ -250,10 +241,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-<<<<<<< HEAD
-PODFILE CHECKSUM: a10575908d433baa5ed4d802cce00957e92f2ff7
-=======
-PODFILE CHECKSUM: c93b326deaf9de3916d42a49d39d737612ab1d94
->>>>>>> v1.9.14
+PODFILE CHECKSUM: 22e34168aafdd4156a0d244b4885d38d1ac473cd
 
 COCOAPODS: 1.11.3

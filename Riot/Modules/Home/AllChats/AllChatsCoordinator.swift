@@ -79,15 +79,11 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     }
     
     private var indicators = [UserIndicator]()
-<<<<<<< HEAD
-    private var signOutAlertPresenter = SignOutAlertPresenter()
+    private var signOutFlowPresenter: SignOutFlowPresenter?
     // Tchap: Add invite service for user invitation
     private var inviteService: InviteServiceType?
     private var errorPresenter: ErrorPresenter?
     private weak var currentAlertController: UIAlertController?
-=======
-    private var signOutFlowPresenter: SignOutFlowPresenter?
->>>>>>> v1.9.14
     
     // MARK: Public
 
@@ -620,51 +616,6 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     // MARK: Sign out process
     
     private func signOut() {
-<<<<<<< HEAD
-        // Tchap: Tchap does not support keyBackup at this time. So force the keyBackup let creation to present the signOut alert.
-        let keyBackup = currentMatrixSession?.crypto.backup
-//        guard let keyBackup = currentMatrixSession?.crypto.backup else {
-//            return
-//        }
-        
-        signOutAlertPresenter.present(for: keyBackup?.state ?? MXKeyBackupStateUnknown,
-                                      areThereKeysToBackup: keyBackup?.hasKeysToBackup ?? false,
-                                      from: self.allChatsViewController,
-                                      sourceView: avatarMenuButton,
-                                      animated: true)
-    }
-    
-    // MARK: - SecureBackupSetupCoordinatorBridgePresenter
-    
-    private var secureBackupSetupCoordinatorBridgePresenter: SecureBackupSetupCoordinatorBridgePresenter?
-    private var crossSigningSetupCoordinatorBridgePresenter: CrossSigningSetupCoordinatorBridgePresenter?
-
-    private func showSecureBackupSetupFromSignOutFlow() {
-        if canSetupSecureBackup {
-            setupSecureBackup2()
-        } else {
-            // Set up cross-signing first
-            setupCrossSigning(title: VectorL10n.secureKeyBackupSetupIntroTitle,
-                              message: VectorL10n.securitySettingsUserPasswordDescription) { [weak self] result in
-                switch result {
-                case .success(let isCompleted):
-                    if isCompleted {
-                        self?.setupSecureBackup2()
-                    }
-                case .failure:
-                    break
-                }
-            }
-        }
-    }
-    
-    private var canSetupSecureBackup: Bool {
-        return currentMatrixSession?.vc_canSetupSecureBackup() ?? false
-    }
-    
-    private func setupSecureBackup2() {
-=======
->>>>>>> v1.9.14
         guard let session = currentMatrixSession else {
             MXLog.warning("[AllChatsCoordinator] Unable to sign out due to missing current session.")
             return

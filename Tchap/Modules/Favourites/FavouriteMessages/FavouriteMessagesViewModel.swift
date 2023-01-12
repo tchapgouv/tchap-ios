@@ -175,8 +175,12 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
                     switch response {
                     case .success(let event):
                         //  handle encryption for this event
-                        if event.isEncrypted && event.clear == nil && self.session.decryptEvent(event, inTimeline: nil) == false {
-                            MXLog.debug("[FavouriteMessagesViewModel] processEditEvent: Fail to decrypt event: \(event.eventId ?? "")")
+                        if event.isEncrypted && event.clear == nil {
+                            self.session.decryptEvents([event], inTimeline: nil) { failedEvents in
+                                failedEvents?.forEach {
+                                    MXLog.debug("[FavouriteMessagesViewModel] processEditEvent: Fail to decrypt event: \($0.eventId ?? "")")
+                                }
+                            }
                         }
                         
                         // Check whether the user knows this room to create the room data source if it doesn't exist.

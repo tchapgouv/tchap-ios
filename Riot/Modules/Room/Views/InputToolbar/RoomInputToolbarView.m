@@ -466,8 +466,6 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     return self.mainToolbarHeightConstraint.constant;
 }
 
-<<<<<<< HEAD
-=======
 - (void)setVoiceMessageToolbarView:(UIView *)voiceMessageToolbarView
 {
     if (voiceMessageToolbarView) {
@@ -486,5 +484,4 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
         _voiceMessageToolbarView = nil;
     }
 }
->>>>>>> v1.9.14
 @end

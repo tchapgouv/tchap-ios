@@ -70,3 +70,4 @@
 #import "MXKAppSettings.h"
 #import "UniversalLink.h"
 #import "UserIndicatorCancel.h"
+#import "VoiceBroadcastInfo.h"

@@ -221,6 +221,7 @@ internal class Asset: NSObject {
     internal static let inputReplyIcon = ImageAsset(name: "input_reply_icon")
     internal static let inputTextBackground = ImageAsset(name: "input_text_background")
     internal static let saveIcon = ImageAsset(name: "save_icon")
+    internal static let sendIcon = ImageAsset(name: "send_icon")
     internal static let uploadIcon = ImageAsset(name: "upload_icon")
     internal static let uploadIconDark = ImageAsset(name: "upload_icon_dark")
     internal static let videoCall = ImageAsset(name: "video_call")

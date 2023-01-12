@@ -34,12 +34,8 @@ targets:
     platform: iOS
     dependencies:
     - target: DesignKit
-<<<<<<< HEAD
 #    - package: Mapbox
-=======
-    - package: Mapbox
     - package: WysiwygComposer
->>>>>>> v1.9.14
     sources:
     - path: .
       excludes:

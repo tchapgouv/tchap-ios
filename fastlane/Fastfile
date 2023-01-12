@@ -21,11 +21,7 @@ platform :ios do
 
   before_all do
     # Ensure used Xcode version
-<<<<<<< HEAD
     xcversion(version: "~> 14.1")
-=======
-    xcversion(version: "~> 14.0.1")
->>>>>>> v1.9.14
   end
 
   #### Public ####
@@ -144,13 +140,8 @@ platform :ios do
     cocoapods
     
     run_tests(
-<<<<<<< HEAD
       workspace: "Tchap.xcworkspace",
       scheme: "TchapSwiftUITests",
-=======
-      workspace: "Riot.xcworkspace",
-      scheme: "RiotSwiftUITests",
->>>>>>> v1.9.14
       device: "iPhone 14",
       code_coverage: true,
       # Test result configuration

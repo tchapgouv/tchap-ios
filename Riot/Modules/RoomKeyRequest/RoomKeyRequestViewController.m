@@ -86,7 +86,6 @@
                                                                    [self showVerificationView];
                                                                }
                                                            }]];
-<<<<<<< HEAD
 // Tchap remove "share without verifying" option
 //        [_alertController addAction:[UIAlertAction actionWithTitle:[VectorL10n e2eRoomKeyRequestShareWithoutVerifying]
 //                                                             style:UIAlertActionStyleDefault
@@ -99,32 +98,12 @@
 //                                                                   self->_alertController = nil;
 //
 //                                                                   // Accept the received requests from this device
-//                                                                   [self.mxSession.crypto acceptAllPendingKeyRequestsFromUser:self.device.userId andDevice:self.device.deviceId onComplete:^{
+//                                                                   [self.crypto acceptAllPendingKeyRequestsFromUser:self.device.userId andDevice:self.device.deviceId onComplete:^{
 //
 //                                                                       self->onComplete();
 //                                                                   }];
 //                                                               }
 //                                                           }]];
-=======
-
-        [_alertController addAction:[UIAlertAction actionWithTitle:[VectorL10n e2eRoomKeyRequestShareWithoutVerifying]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
-
-                                                               if (weakSelf)
-                                                               {
-                                                                   typeof(self) self = weakSelf;
-
-                                                                   self->_alertController = nil;
-
-                                                                   // Accept the received requests from this device
-                                                                   [self.crypto acceptAllPendingKeyRequestsFromUser:self.device.userId andDevice:self.device.deviceId onComplete:^{
-
-                                                                       self->onComplete();
-                                                                   }];
-                                                               }
-                                                           }]];
->>>>>>> v1.9.14
 
         [_alertController addAction:[UIAlertAction actionWithTitle:[VectorL10n e2eRoomKeyRequestIgnoreRequest]
                                                              style:UIAlertActionStyleDefault

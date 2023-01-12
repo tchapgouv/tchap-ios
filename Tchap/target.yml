@@ -50,6 +50,7 @@ targetTemplates:
     - target: CommonKit
     - package: OrderedCollections
     - package: DeviceKit
+    - package: WysiwygComposer
 
     preBuildScripts:
     - name: 🛠 Environment
@@ -235,6 +236,7 @@ targetTemplates:
     - path: ../Riot/Modules/PublicRoomList
     - path: ../Riot/Modules/QRCode
     - path: ../Riot/Modules/Reauthentication
+    - path: ../Riot/Modules/Rendezvous
     - path: ../Riot/Modules/Room
       excludes:
         - "Location"
@@ -268,6 +270,7 @@ targetTemplates:
     - path: ../Riot/Modules/UserDevices/Views/DeviceTableViewCell.h
     - path: ../Riot/Modules/UserDevices/Views/DeviceTableViewCell.m
     - path: ../Riot/Modules/UserInteractiveAuthentication
+    - path: ../Riot/Modules/VoiceBroadcast
     - path: ../Riot/PropertyWrappers
     - path: ../Riot/Routers
     - path: ../Riot/Utils
