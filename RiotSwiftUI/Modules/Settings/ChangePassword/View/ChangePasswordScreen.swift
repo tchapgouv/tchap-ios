@@ -90,10 +90,10 @@ struct ChangePasswordScreen: View {
                 .accessibilityIdentifier("newPasswordTextField2")
 
             HStack(alignment: .center, spacing: 8) {
-                Toggle(VectorL10n.authenticationChoosePasswordSignoutAllDevices, isOn: $viewModel.signoutAllDevices)
+                Toggle(TchapL10n.authenticationChoosePasswordSignoutAllDevices, isOn: $viewModel.signoutAllDevices)
                     .toggleStyle(AuthenticationTermsToggleStyle())
                     .accessibilityIdentifier("signoutAllDevicesToggle")
-                Text(VectorL10n.authenticationChoosePasswordSignoutAllDevices)
+                Text(TchapL10n.authenticationChoosePasswordSignoutAllDevices)
                     .foregroundColor(theme.colors.secondaryContent)
             }
             .onTapGesture(perform: toggleSignoutAllDevices)
