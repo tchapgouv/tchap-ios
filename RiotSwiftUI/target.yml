@@ -34,7 +34,7 @@ targets:
     platform: iOS
     dependencies:
     - target: DesignKit
-#    - package: Mapbox
+    - package: Mapbox
     - package: WysiwygComposer
     sources:
     - path: .
