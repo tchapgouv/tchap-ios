@@ -53,10 +53,20 @@ import Foundation
     
     /// Starts the flow, presenting any popups on iPad from the specified view.
     func start(sourceView: UIView?) {
-        guard let keyBackup = session.crypto?.backup else { return }
+        // Tchap: Present the SignOut alert despite the lack of keyBackup (for now).
         
-        signOutAlertPresenter.present(for: keyBackup.state,
-                                      areThereKeysToBackup: keyBackup.hasKeysToBackup,
+//        guard let keyBackup = session.crypto?.backup else { return }
+//
+//        signOutAlertPresenter.present(for: keyBackup.state,
+//                                      areThereKeysToBackup: keyBackup.hasKeysToBackup,
+//                                      from: presentingViewController,
+//                                      sourceView: sourceView ?? presentingViewController.view,
+//                                      animated: true)
+        
+        let keyBackup = session.crypto?.backup
+                
+        signOutAlertPresenter.present(for: keyBackup?.state ?? MXKeyBackupStateDisabled,
+                                      areThereKeysToBackup: keyBackup?.hasKeysToBackup ?? false,
                                       from: presentingViewController,
                                       sourceView: sourceView ?? presentingViewController.view,
                                       animated: true)
