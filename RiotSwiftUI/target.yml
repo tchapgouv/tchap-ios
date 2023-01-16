@@ -50,6 +50,7 @@ targets:
     - path: ../Riot/Categories/Bundle.swift
     - path: ../Riot/Generated/Vector_Strings.swift
     - path: ../Riot/Generated/UntranslatedStrings.swift
+    - path: ../Riot/Generated/Images.swift
     - path: ../Riot/Managers/Theme/
     - path: ../Riot/Managers/Locale/LocaleProviderType.swift
     - path: ../Config/BuildSettings.swift
