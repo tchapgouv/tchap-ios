@@ -141,7 +141,7 @@ platform :ios do
     
     run_tests(
       workspace: "Tchap.xcworkspace",
-      scheme: "TchapSwiftUITests",
+      scheme: "RiotSwiftUITests",
       device: "iPhone 14",
       code_coverage: true,
       # Test result configuration
