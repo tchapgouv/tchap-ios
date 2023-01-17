@@ -35,6 +35,8 @@ internal enum TchapL10n {
   internal static let appVersionUpdateMandatoryUpdateMessageFallback = TchapL10n.tr("Tchap", "app_version_update_mandatory_update_message_fallback", fallback: "Une nouvelle version est disponible, veuillez mettre à jour votre application.")
   /// Ouvrir l'App Store
   internal static let appVersionUpdateOpenAppStoreAction = TchapL10n.tr("Tchap", "app_version_update_open_app_store_action", fallback: "Ouvrir l'App Store")
+  /// Déconnecter mes appareils et verrouiller mes messages (en cas de piratage de votre compte ou de la perte d'un appareil)
+  internal static let authenticationChoosePasswordSignoutAllDevices = TchapL10n.tr("Tchap", "authentication_choose_password_signout_all_devices", fallback: "Déconnecter mes appareils et verrouiller mes messages (en cas de piratage de votre compte ou de la perte d'un appareil)")
   /// Cette adresse email est déjà utilisée
   internal static let authenticationErrorEmailInUse = TchapL10n.tr("Tchap", "authentication_error_email_in_use", fallback: "Cette adresse email est déjà utilisée")
   /// L'adresse email ne semble pas valide
