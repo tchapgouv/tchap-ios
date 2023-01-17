@@ -63,7 +63,7 @@ import Foundation
 //                                      sourceView: sourceView ?? presentingViewController.view,
 //                                      animated: true)
         
-        let keyBackup = session.crypto?.backup
+        let keyBackup = session.crypto?.backup // will return nil on Tchap actually
                 
         signOutAlertPresenter.present(for: keyBackup?.state ?? MXKeyBackupStateDisabled,
                                       areThereKeysToBackup: keyBackup?.hasKeysToBackup ?? false,
