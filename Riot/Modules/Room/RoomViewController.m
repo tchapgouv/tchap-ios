@@ -6745,7 +6745,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     __block UIAlertController *alert;
     
 // Tchap: Disable Cross Signing Managment.
-#ifdef SUPPORT_KEYS_BACKUP
+#ifdef CROSS_SIGNING
     // Force device verification if session has cross-signing activated and device is not yet verified
     if (self.mainSession.crypto.crossSigning && self.mainSession.crypto.crossSigning.state == MXCrossSigningStateCrossSigningExists)
     {

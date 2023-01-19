@@ -53,7 +53,7 @@ class AppConfiguration: CommonConfiguration {
         // Use UIKit BackgroundTask for handling background tasks in the SDK
         MXSDKOptions.sharedInstance().backgroundModeHandler = MXUIKitBackgroundModeHandler()
         
-        #if SUPPORT_KEYS_BACKUP
+        #if SECURE_BACKUP
         // Enable key backup on app
         MXSDKOptions.sharedInstance().enableKeyBackupWhenStartingMXCrypto = true
         #endif

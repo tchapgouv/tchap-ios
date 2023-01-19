@@ -2477,7 +2477,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                     // Stay in launching during the first server sync if the store is empty.
                     isLaunching = (mainSession.rooms.count == 0 && launchAnimationContainerView);
 // Tchap: Disable Cross Signing Managment.
-#ifdef SUPPORT_KEYS_BACKUP
+#ifdef CROSS_SIGNING
                     if (mainSession.crypto.crossSigning && mainSession.crypto.crossSigning.state == MXCrossSigningStateCrossSigningExists && [mainSession.crypto isKindOfClass:[MXLegacyCrypto class]])
                     {
                         [(MXLegacyCrypto *)mainSession.crypto setOutgoingKeyRequestsEnabled:NO onComplete:nil];
@@ -3604,7 +3604,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 - (void)checkCrossSigningForSession:(MXSession*)mxSession
 {
 // Tchap: Disable Cross Signing Managment.
-#ifdef SUPPORT_KEYS_BACKUP
+#ifdef CROSS_SIGNING
     if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive)
     {
         MXLogDebug(@"[AppDelegate] checkCrossSigningForSession called while the app is not active. Ignore it.");
@@ -4301,7 +4301,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 - (void)registerDidChangeCrossSigningKeysNotificationForSession:(MXSession*)session
 {
 // Tchap: Disable Cross Signing Managment.
-#ifdef SUPPORT_KEYS_BACKUP
+#ifdef CROSS_SIGNING
     id<MXCrossSigning> crossSigning = session.crypto.crossSigning;
     
     if (!crossSigning)
