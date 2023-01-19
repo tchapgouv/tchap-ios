@@ -1,3 +1,14 @@
+## Changes in 2.2.3 (2023-01-19)
+
+🙌 Improvements
+
+- "Forgot password" without signing out of all devices ([#706](https://github.com/tchapgouv/tchap-ios/issues/706))
+
+🐛 Bugfixes
+
+- Fix external account management ([#701](https://github.com/tchapgouv/tchap-ios/issues/701))
+
+
 ## Changes in 2.2.2 (2022-12-07)
 
 🙌 Improvements
