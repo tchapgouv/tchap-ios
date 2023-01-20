@@ -328,7 +328,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 @property (nonatomic) AnalyticsScreenTracker *screenTracker;
 
 // Tchap: Customize Password change
-#ifdef SUPPORT_KEYS_BACKUP
+#ifdef SECURE_BACKUP
 @property (nonatomic, strong) ChangePasswordAlertPresenter *changePasswordAlertPresenter;
 #endif
 @property (strong, nonatomic) ChangePasswordCoordinatorBridgePresenter *changePasswordPresenter;
@@ -4347,7 +4347,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
 - (void)promptUserBeforePasswordChange
 {
-#ifdef SUPPORT_KEYS_BACKUP
+#ifdef SECURE_BACKUP
     MXKeyBackup *keyBackup = self.mainSession.crypto.backup;
     
     [self.changePasswordAlertPresenter presentFor:keyBackup.state
