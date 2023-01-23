@@ -327,10 +327,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
 @property (nonatomic) AnalyticsScreenTracker *screenTracker;
 
-// Tchap: Customize Password change
-#ifdef SECURE_BACKUP
-@property (nonatomic, strong) ChangePasswordAlertPresenter *changePasswordAlertPresenter;
-#endif
 @property (strong, nonatomic) ChangePasswordCoordinatorBridgePresenter *changePasswordPresenter;
 
 @property (nonatomic, strong) MXKDocumentPickerPresenter *documentPickerPresenter;
@@ -4347,14 +4343,8 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
 - (void)promptUserBeforePasswordChange
 {
-#ifdef SECURE_BACKUP
-    MXKeyBackup *keyBackup = self.mainSession.crypto.backup;
-    
-    [self.changePasswordAlertPresenter presentFor:keyBackup.state
-                      areThereKeysToBackup:keyBackup.hasKeysToBackup
-                                      from:self
-                                sourceView:self.tableView
-                                  animated:YES];
+#ifndef SECURE_BACKUP
+    [self displayPasswordAlert];
 #else
     MXWeakify(self);
     [resetPwdAlertController dismissViewControllerAnimated:NO completion:nil];
@@ -4429,6 +4419,16 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         }
     }
     return message;
+}
+
+#pragma password update management
+
+- (void)displayPasswordAlert
+{
+    self.changePasswordBridgePresenter = [[ChangePasswordCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    self.changePasswordBridgePresenter.delegate = self;
+
+    [self.changePasswordBridgePresenter presentFrom:self animated:YES];
 }
 
 #pragma mark - MXKCountryPickerViewControllerDelegate
