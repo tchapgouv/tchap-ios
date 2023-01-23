@@ -327,10 +327,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
 @property (nonatomic) AnalyticsScreenTracker *screenTracker;
 
-// Tchap: Customize Password change
-#ifdef SECURE_BACKUP
-@property (nonatomic, strong) ChangePasswordAlertPresenter *changePasswordAlertPresenter;
-#endif
 @property (strong, nonatomic) ChangePasswordCoordinatorBridgePresenter *changePasswordPresenter;
 
 @property (nonatomic, strong) MXKDocumentPickerPresenter *documentPickerPresenter;
