@@ -117,48 +117,6 @@ final class UserService: NSObject, UserServiceType {
         return firstUserHostName == secondUserHostName
     }
     
-    func isAccountDeactivated(for userId: String, completion: @escaping ((MXResponse<Bool>) -> Void)) -> MXHTTPOperation? {
-        return self.getUsersInfo(for: [userId]) { (response) in
-            switch response {
-            case .success(let usersInfo):
-                if let deactivated = usersInfo[userId]?.deactivated {
-                    completion(.success(deactivated))
-                } else {
-                    completion(.failure(UserServiceError.unknown))
-                }
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-    
-    // Temporary version used in ObjectiveC.
-    func isAccountDeactivated(for userId: String, success: @escaping ((Bool) -> Void), failure: ((Error) -> Void)?) -> MXHTTPOperation? {
-        return self.isAccountDeactivated(for: userId) { (response) in
-            switch response {
-            case .success(let value):
-                success(value)
-            case .failure(let error):
-                failure?(error)
-            }
-        }
-    }
-    
-    func isAccountExpired(for userId: String, completion: @escaping ((MXResponse<Bool>) -> Void)) -> MXHTTPOperation? {
-        return self.getUsersInfo(for: [userId]) { (response) in
-            switch response {
-            case .success(let usersInfo):
-                if let expired = usersInfo[userId]?.expired {
-                    completion(.success(expired))
-                } else {
-                    completion(.failure(UserServiceError.unknown))
-                }
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-    
     /// Tells whether a Matrix identifier corresponds to an external Tchap user.
     /// Note: invalid identifier will be considered as external.
     ///
@@ -289,46 +247,6 @@ final class UserService: NSObject, UserServiceType {
             return nil
         }
         return HomeServerComponents(hostname: hostname).displayName
-    }
-    
-    // Temporary version used in ObjectiveC.
-    func getUsersInfo(for userIds: [String], success: @escaping ((Dictionary<String, UserStatusInfoType>) -> Void), failure: ((Error) -> Void)?) -> MXHTTPOperation? {
-        return self.getUsersInfo(for: userIds) { (response) in
-            switch response {
-            case .success(let value):
-                success(value)
-            case .failure(let error):
-                failure?(error)
-            }
-        }
-    }
-    
-    func getUsersInfo(for userIds: [String], completion: @escaping (Result<[String: UserStatusInfoType], Error>) -> Void) -> MXHTTPOperation? {
-        return httpClient.request(withMethod: "POST",
-                                  path: "users/info",
-                                  parameters: ["user_ids": userIds],
-                                  success: { (response: [AnyHashable: Any]?) in
-                                    MXLog.debug("[UserService] users info resquest succeeded")
-                                    guard let response = response as? [String: [String: Bool]] else {
-                                        completion(.failure(UserServiceError.unknown))
-                                        return
-                                    }
-                                    
-                                    let usersInfo = response.mapValues {
-                                        UserStatusInfo(expired: $0[Constants.userInfoKeyExpired] ?? false,
-                                                       deactivated: $0[Constants.userInfoKeyDeactivated] ?? false)
-                                    }
-                                    
-                                    completion(.success(usersInfo))
-        },
-                                  failure: { (error: Error?) in
-                                    MXLog.debug("[UserService] users info resquest failed")
-                                    if let error = error {
-                                        completion(.failure(error))
-                                    } else {
-                                        completion(.failure(UserServiceError.unknown))
-                                    }
-        })
     }
     
     // MARK: - Private

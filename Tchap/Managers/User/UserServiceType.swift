@@ -46,33 +46,6 @@ protocol UserServiceType {
     /// - Returns: true if the two Matrix IDs belong to the same host.
     func isUserId(_ firstUserId: String, onTheSameHostAs secondUserId: String) -> Bool
     
-    /// Check whether the account associated to the provided userId has been deactivated.
-    ///
-    /// - Parameters:
-    ///   - userId: The Matrix user id.
-    ///   - completion: A closure called when the operation completes. Provide the answer or an error.
-    ///
-    /// - returns: a `MXHTTPOperation` instance.
-    func isAccountDeactivated(for userId: String, completion: @escaping ((MXResponse<Bool>) -> Void)) -> MXHTTPOperation?
-    
-    /// Check whether the account associated to the provided userId has expired.
-    ///
-    /// - Parameters:
-    ///   - userId: The Matrix user id.
-    ///   - completion: A closure called when the operation completes. Provide the answer or an error.
-    ///
-    /// - returns: a `MXHTTPOperation` instance.
-    func isAccountExpired(for userId: String, completion: @escaping ((MXResponse<Bool>) -> Void)) -> MXHTTPOperation?
-
-    /// Check whether the accounts associated to the provided userIds have expired.
-    ///
-    /// - Parameters:
-    ///   - userIds: The Matrix user ids.
-    ///   - completion: A closure called when the operation completes. Provide the answer or an error.
-    ///
-    /// - returns: a `MXHTTPOperation` instance.
-    func getUsersInfo(for userIds: [String], completion: @escaping (Result<[String: UserStatusInfoType], Error>) -> Void) -> MXHTTPOperation?
-    
     /// Tells whether the Tchap registration with the provided email address is allowed.
     ///
     /// - Parameters:

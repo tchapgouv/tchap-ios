@@ -188,58 +188,6 @@
     onComplete(NO);
 }
 
-/**
- Check whether the current room is a direct chat left by the other member.
- In this case, this method will invite again the left member.
- */
-- (void)restoreDiscussionIfNeed:(MXRoom *)room completion:(void (^)(BOOL success))onComplete
-{
-    [self isDirectChatLeftByTheOther: room completion:^(BOOL isEmptyDirect) {
-        if (isEmptyDirect)
-        {
-            NSString *directUserId = room.directUserId;
-            
-            // Check whether the left member has deactivated his account
-            self.userService = [[UserService alloc] initWithSession:self.session];
-            MXHTTPOperation * operation;
-            MXWeakify(self);
-            NSLog(@"[RoomsListViewController] restoreDiscussionIfNeed: check left member %@", directUserId);
-            operation = [self.userService isAccountDeactivatedFor:directUserId success:^(BOOL isDeactivated) {
-                MXStrongifyAndReturnIfNil(self);
-                if (isDeactivated)
-                {
-                    NSLog(@"[RoomsListViewController] restoreDiscussionIfNeed: the left member has deactivated his account");
-                    onComplete(NO);
-                }
-                else
-                {
-                    // Invite again the direct user
-                    NSLog(@"[RoomsListViewController] restoreDiscussionIfNeed: invite again %@", directUserId);
-                    [room inviteUser:directUserId success:^{
-                        // Delay the completion in order to display the invite before the local echo of the new message.
-                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                            onComplete(YES);
-                        });
-                    } failure:^(NSError *error) {
-                        NSLog(@"[RoomsListViewController] restoreDiscussionIfNeed: invite failed");
-                        onComplete(NO);
-                    }];
-                }
-                self.userService = nil;
-            } failure:^(NSError *error) {
-                NSLog(@"[RoomsListViewController] restoreDiscussionIfNeed: check member status failed");
-                onComplete(NO);
-                self.userService = nil;
-            }];
-        }
-        else
-        {
-            // Nothing to do
-            onComplete(YES);
-        }
-    }];
-}
-
 - (void)showFailureAlert:(NSString *)title
 {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title.length ? title : [VectorL10n roomEventFailedToSend] message:nil preferredStyle:UIAlertControllerStyleAlert];
