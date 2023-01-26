@@ -80,8 +80,8 @@
     roomCellData = (id<MXKRecentCellDataStoring>)cellData;
     if (roomCellData)
     {
-        [self.avatarImageView vc_setRoomAvatarImageWith:roomCellData.roomSummary.spaceChildInfo.avatarUrl
-                                                 roomId:roomCellData.roomSummary.roomId
+        [self.avatarImageView vc_setRoomAvatarImageWith:roomCellData.avatarUrl
+                                                 roomId:roomCellData.roomIdentifier
                                             displayName:roomCellData.roomDisplayname
                                            mediaManager:roomCellData.roomSummary.mxSession.mediaManager];
         

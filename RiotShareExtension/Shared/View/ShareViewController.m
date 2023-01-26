@@ -129,8 +129,8 @@
             [self.titleLabel setText:[VectorL10n sendTo:@""]];
             [self.shareButton setTitle:[VectorL10n sendTo:@""] forState:UIControlStateNormal];
         } else {
-            [self.titleLabel setText:NSLocalizedStringFromTable(@"room_event_action_forward", @"Tchap", nil)];
-            [self.shareButton setTitle:NSLocalizedStringFromTable(@"room_event_action_forward", @"Tchap", nil) forState:UIControlStateNormal];
+            [self.titleLabel setText:[VectorL10n roomEventActionForward]];
+            [self.shareButton setTitle:[VectorL10n roomEventActionForward] forState:UIControlStateNormal];
         }
     }
     else
