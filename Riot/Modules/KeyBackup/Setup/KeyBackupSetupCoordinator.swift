@@ -92,7 +92,10 @@ final class KeyBackupSetupCoordinator: KeyBackupSetupCoordinatorType {
             self.createKeyBackupUsingSecureBackup(privateKey: privateKey, completion: completion)
         }
         
-        let coordinator = SecretsRecoveryCoordinator(session: self.session, recoveryMode: .passphraseOrKey, recoveryGoal: recoveryGoal, navigationRouter: self.navigationRouter, cancellable: true)
+        // Tchap : use only generated key as recovery mode
+//        let coordinator = SecretsRecoveryCoordinator(session: self.session, recoveryMode: .passphraseOrKey, recoveryGoal: recoveryGoal, navigationRouter: self.navigationRouter, cancellable: true)
+        let coordinator = SecretsRecoveryCoordinator(session: self.session, recoveryMode: .onlyKey, recoveryGoal: recoveryGoal, navigationRouter: self.navigationRouter, cancellable: true)
+         
         coordinator.delegate = self
         coordinator.start()
         self.add(childCoordinator: coordinator)

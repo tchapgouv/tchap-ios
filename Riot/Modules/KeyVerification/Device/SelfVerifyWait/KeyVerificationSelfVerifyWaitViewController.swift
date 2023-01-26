@@ -182,8 +182,9 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
             hideRecoverSecrets = false
             
             switch secretsRecoveryMode {
-            case .passphraseOrKey:
-                recoverSecretsButtonTitle = VectorL10n.deviceVerificationSelfVerifyWaitRecoverSecretsWithPassphrase
+                // Tchap : use only generated key as recovery mode
+//            case .passphraseOrKey:
+//                recoverSecretsButtonTitle = VectorL10n.deviceVerificationSelfVerifyWaitRecoverSecretsWithPassphrase
             case .onlyKey:
                 recoverSecretsButtonTitle = VectorL10n.deviceVerificationSelfVerifyWaitRecoverSecretsWithoutPassphrase
             }

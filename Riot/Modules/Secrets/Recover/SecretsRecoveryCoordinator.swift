@@ -58,8 +58,9 @@ final class SecretsRecoveryCoordinator: SecretsRecoveryCoordinatorType {
         switch self.recoveryMode {
         case .onlyKey:
             rootCoordinator = self.createRecoverFromKeyCoordinator()
-        case .passphraseOrKey:
-            rootCoordinator = self.createRecoverFromPassphraseCoordinator()
+        // Tchap : use only generated key as recovery mode
+//        case .passphraseOrKey:
+//            rootCoordinator = self.createRecoverFromPassphraseCoordinator()
         }
         
         rootCoordinator.start()
