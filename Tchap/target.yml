@@ -289,9 +289,6 @@ targetTemplates:
 
     # Share extension
     - path: ../RiotShareExtension/Shared
-    - path: ../RiotShareExtension/Sources/ShareItemProtocol.swift
-    - path: ../RiotShareExtension/Sources/ShareItemSender.h
-    - path: ../RiotShareExtension/Sources/ShareItemSender.m
     
     # Resources
     - path: ../Riot/Assets/en.lproj/InfoPlist.strings

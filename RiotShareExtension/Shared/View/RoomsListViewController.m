@@ -16,25 +16,18 @@
  */
 
 #import "RoomsListViewController.h"
-#import "NSBundle+MatrixKit.h"
+#import "RecentRoomTableViewCell.h"
+#import "ShareDataSource.h"
 #import "RecentCellData.h"
 #import "ThemeService.h"
-#import "RecentRoomTableViewCell.h"
 
 #import "GeneratedInterface-Swift.h"
 
 @interface RoomsListViewController ()
 
-@property (nonatomic) MXKPieChartHUD *hudView;
-
 // The fake search bar displayed at the top of the recents table. We switch on the actual search bar (self.recentsSearchBar)
 // when the user selects it.
 @property (nonatomic) UISearchBar *tableSearchBar;
-
-@property (nonatomic) MXSession *session;
-@property (nonatomic) MXRoom *selectedRoom;
-
-@property (nonatomic, nullable, strong) UserService *userService;
 
 @end
 
@@ -75,12 +68,8 @@
 {
     [super viewDidLoad];
     
-    [self.recentsTableView registerNib:[RecentRoomTableViewCell nib] forCellReuseIdentifier:[RecentRoomTableViewCell defaultReuseIdentifier]];
-    
-    // Enable self-sizing cells.
-    self.recentsTableView.rowHeight = UITableViewAutomaticDimension;
-    self.recentsTableView.estimatedRowHeight = 56;
     self.recentsTableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    [self.recentsTableView registerNib:[RecentRoomTableViewCell nib] forCellReuseIdentifier:[RecentRoomTableViewCell defaultReuseIdentifier]];
     
     [self configureSearchBar];
 }
@@ -89,13 +78,6 @@
 {
     // Release the room data source
     [self.dataSource destroy];
-    
-    if (self.session)
-    {
-        [self.session close];
-        self.session = nil;
-    }
-    self.selectedRoom = nil;
     
     [super destroy];
 }
@@ -147,65 +129,11 @@
     return;
 }
 
-#pragma mark - Private
-
-/**
- Check whether the current room is a direct chat left by the other member.
- */
-- (void)isDirectChatLeftByTheOther:(MXRoom *)room completion:(void (^)(BOOL isEmptyDirect))onComplete
-{
-    // In the case of a direct chat, we check if the other member has left the room.
-    NSString *directUserId = room.directUserId;
-    if (directUserId)
-    {
-        [room members:^(MXRoomMembers *roomMembers) {
-            MXRoomMember *directUserMember = [roomMembers memberWithUserId:directUserId];
-            if (directUserMember)
-            {
-                MXMembership directUserMembership = directUserMember.membership;
-                if (directUserMembership != MXMembershipJoin && directUserMembership != MXMembershipInvite)
-                {
-                    onComplete(YES);
-                }
-                else
-                {
-                    onComplete(NO);
-                }
-            }
-            else
-            {
-                NSLog(@"[RoomsListViewController] isDirectChatLeftByTheOther: the direct user has disappeared");
-                onComplete(YES);
-            }
-        } failure:^(NSError *error) {
-            NSLog(@"[RoomsListViewController] isDirectChatLeftByTheOther: cannot get all room members");
-            onComplete(NO);
-        }];
-        return;
-    }
-    
-    // This is not a direct chat
-    onComplete(NO);
-}
-
-- (void)showFailureAlert:(NSString *)title
-{
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title.length ? title : [VectorL10n roomEventFailedToSend] message:nil preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:[VectorL10n ok] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        if (self.failureBlock)
-        {
-            self.failureBlock();
-        }
-    }];
-    [alertController addAction:okAction];
-    [self presentViewController:alertController animated:YES completion:nil];
-}
-
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return UITableViewAutomaticDimension;
+    return [RecentRoomTableViewCell cellHeight];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
