@@ -59,6 +59,7 @@ import Reusable
 // MARK: - Theme
 extension RoomAttachmentAntivirusScanStatusCellContentView: Themable {
     func update(theme: Theme) {
+        self.backgroundColor = theme.roomCellIncomingBubbleBackgroundColor
         self.titleLabel.textColor = theme.textPrimaryColor
         self.fileInfoLabel.textColor = theme.textPrimaryColor
     }
