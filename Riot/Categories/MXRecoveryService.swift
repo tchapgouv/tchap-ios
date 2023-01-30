@@ -22,7 +22,10 @@ extension MXRecoveryService {
         guard self.hasRecovery() else {
             return .notAvailable
         }
-        let secretsRecoveryMode: SecretsRecoveryMode = self.usePassphrase() ? .passphraseOrKey : .onlyKey
+        // Tchap : use only generated key as recovery mode
+//        let secretsRecoveryMode: SecretsRecoveryMode = self.usePassphrase() ? .passphraseOrKey : .onlyKey
+        let secretsRecoveryMode: SecretsRecoveryMode = .onlyKey
+
         return .available(secretsRecoveryMode)
     }
 }

@@ -18,6 +18,7 @@ import Foundation
 
 @objc
 enum SecretsRecoveryMode: Int {
-    case passphraseOrKey
+    // Tchap : use only generated key as recovery mode
+//    case passphraseOrKey
     case onlyKey
 }

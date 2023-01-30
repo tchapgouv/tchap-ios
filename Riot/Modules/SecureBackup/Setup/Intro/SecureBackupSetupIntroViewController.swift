@@ -18,7 +18,6 @@ import UIKit
 
 protocol SecureBackupSetupIntroViewControllerDelegate: AnyObject {
     func secureBackupSetupIntroViewControllerDidTapUseKey(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController)
-    func secureBackupSetupIntroViewControllerDidTapUsePassphrase(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController)
     func secureBackupSetupIntroViewControllerDidCancel(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController, showSkipAlert: Bool)
     func secureBackupSetupIntroViewControllerDidTapConnectToKeyBackup(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController)
 }
@@ -34,7 +33,6 @@ final class SecureBackupSetupIntroViewController: UIViewController {
     
     @IBOutlet private weak var topSeparatorView: UIView!
     @IBOutlet private weak var secureKeyCell: SecureBackupSetupIntroCell!
-    @IBOutlet private weak var securePassphraseCell: SecureBackupSetupIntroCell!
     
     // MARK: Private
     
@@ -112,17 +110,6 @@ final class SecureBackupSetupIntroViewController: UIViewController {
             }
             self.delegate?.secureBackupSetupIntroViewControllerDidTapUseKey(self)
         }
-        
-        self.securePassphraseCell.fill(title: VectorL10n.secureKeyBackupSetupIntroUseSecurityPassphraseTitle,
-                                information: VectorL10n.secureKeyBackupSetupIntroUseSecurityPassphraseInfo,
-                                image: Asset.Images.secretsSetupPassphrase.image)
-        
-        self.securePassphraseCell.action = { [weak self] in
-            guard let self = self else {
-                return
-            }
-            self.delegate?.secureBackupSetupIntroViewControllerDidTapUsePassphrase(self)
-        }
 
         setupBackupMethods()
     }
@@ -133,10 +120,6 @@ final class SecureBackupSetupIntroViewController: UIViewController {
         // Hide setup methods that are not listed
         if !secureBackupSetupMethods.contains(.key) {
             self.secureKeyCell.isHidden = true
-        }
-
-        if !secureBackupSetupMethods.contains(.passphrase) {
-            self.securePassphraseCell.isHidden = true
         }
     }
     
@@ -166,7 +149,6 @@ final class SecureBackupSetupIntroViewController: UIViewController {
         
         self.topSeparatorView.backgroundColor = theme.lineBreakColor
         self.secureKeyCell.update(theme: theme)
-        self.securePassphraseCell.update(theme: theme)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="LSX-Vb-DIu">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="LSX-Vb-DIu">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,19 +11,19 @@
         <!--Secure Backup Setup Intro View Controller-->
         <scene sceneID="srP-wo-sRp">
             <objects>
-                <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="LSX-Vb-DIu" customClass="SecureBackupSetupIntroViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="LSX-Vb-DIu" customClass="SecureBackupSetupIntroViewController" customModule="Btchap" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="pmD-eJ-G3m">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mvC-lc-ylT">
-                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
+                                <rect key="frame" x="0.0" y="48" width="414" height="848"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fub-g4-o4o">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="391"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="263"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="79w-lw-B8z">
-                                                <rect key="frame" x="0.0" y="0.0" width="414" height="391"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="263"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Safeguard against losing access to encrypted messages &amp; data by backing up encryption keys on your server." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DZf-di-JcI">
                                                         <rect key="frame" x="20" y="30" width="374" height="54"/>
@@ -34,10 +32,10 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tul-b1-7gY">
-                                                        <rect key="frame" x="0.0" y="114" width="414" height="257"/>
+                                                        <rect key="frame" x="0.0" y="114" width="414" height="129"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Jc9-fc-Vwh">
-                                                                <rect key="frame" x="0.0" y="0.0" width="414" height="257"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="414" height="129"/>
                                                                 <subviews>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d77-sQ-Uio">
                                                                         <rect key="frame" x="0.0" y="0.0" width="414" height="1"/>
@@ -46,18 +44,11 @@
                                                                             <constraint firstAttribute="height" constant="1" id="Gwq-JQ-4Zj"/>
                                                                         </constraints>
                                                                     </view>
-                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RQF-pm-g37" customClass="SecureBackupSetupIntroCell" customModule="Riot" customModuleProvider="target">
+                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RQF-pm-g37" customClass="SecureBackupSetupIntroCell" customModule="Btchap" customModuleProvider="target">
                                                                         <rect key="frame" x="0.0" y="1" width="414" height="128"/>
                                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="128" placeholder="YES" id="dOF-Du-P3S"/>
-                                                                        </constraints>
-                                                                    </view>
-                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yps-bc-ruH" customClass="SecureBackupSetupIntroCell" customModule="Riot" customModuleProvider="target">
-                                                                        <rect key="frame" x="0.0" y="129" width="414" height="128"/>
-                                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                        <constraints>
-                                                                            <constraint firstAttribute="height" constant="128" placeholder="YES" id="Gpk-nd-3G2"/>
                                                                         </constraints>
                                                                     </view>
                                                                 </subviews>
@@ -108,6 +99,7 @@
                                 </constraints>
                             </scrollView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="JkH-9M-Qql"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="JkH-9M-Qql" firstAttribute="top" secondItem="mvC-lc-ylT" secondAttribute="top" id="5Vc-aR-jAF"/>
@@ -115,12 +107,10 @@
                             <constraint firstAttribute="bottom" secondItem="mvC-lc-ylT" secondAttribute="bottom" id="dn5-CG-87P"/>
                             <constraint firstItem="JkH-9M-Qql" firstAttribute="trailing" secondItem="mvC-lc-ylT" secondAttribute="trailing" id="xj4-xF-VEA"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="JkH-9M-Qql"/>
                     </view>
                     <connections>
                         <outlet property="informationLabel" destination="DZf-di-JcI" id="czR-MT-Ipb"/>
                         <outlet property="secureKeyCell" destination="RQF-pm-g37" id="5dK-h1-N6t"/>
-                        <outlet property="securePassphraseCell" destination="Yps-bc-ruH" id="56B-9H-MOh"/>
                         <outlet property="topSeparatorView" destination="d77-sQ-Uio" id="TPp-kq-cFq"/>
                     </connections>
                 </viewController>
