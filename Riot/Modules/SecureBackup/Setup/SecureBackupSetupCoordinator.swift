@@ -180,10 +180,6 @@ extension SecureBackupSetupCoordinator: SecureBackupSetupIntroViewControllerDele
         self.showSetupKey(passphraseOnly: false)
     }
     
-    func secureBackupSetupIntroViewControllerDidTapUsePassphrase(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController) {
-        self.showSetupPassphrase()
-    }
-    
     func secureBackupSetupIntroViewControllerDidCancel(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController, showSkipAlert: Bool) {
         self.didCancel(showSkipAlert: showSkipAlert)
     }
