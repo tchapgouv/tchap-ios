@@ -28,11 +28,6 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.ChangePasswordNewPasswordViewController>(storyboard: ChangePasswordNewPasswordViewController.self)
   }
-  internal enum FavouriteMessagesViewController: StoryboardType {
-    internal static let storyboardName = "FavouriteMessagesViewController"
-
-    internal static let initialScene = InitialSceneType<Tchap.FavouriteMessagesViewController>(storyboard: FavouriteMessagesViewController.self)
-  }
   internal enum PublicRoomsViewController: StoryboardType {
     internal static let storyboardName = "PublicRoomsViewController"
 
