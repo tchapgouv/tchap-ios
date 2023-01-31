@@ -127,12 +127,17 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
         case .verifyUser(let roomMember):
             rootCoordinator = self.createUserVerificationStartCoordinator(with: roomMember)
         case .verifyDevice(let userId, let deviceId):
-            // Tchap: self verification is not supported yet
-//            if userId ==  self.session.myUser.userId {
-//                rootCoordinator = self.createSelfVerificationCoordinator(otherDeviceId: deviceId)
-//            } else {
+            // Tchap: activate self verification only if cross-signing is activated
+#if CROSS_SIGNING
+            if userId ==  self.session.myUser.userId {
+                rootCoordinator = self.createSelfVerificationCoordinator(otherDeviceId: deviceId)
+            } else {
                 rootCoordinator = self.createDataLoadingScreenCoordinator(otherUserId: userId, otherDeviceId: deviceId)
-//            }
+            }
+#else
+            rootCoordinator = self.createDataLoadingScreenCoordinator(otherUserId: userId, otherDeviceId: deviceId)
+#endif
+            
         case .incomingRequest(let incomingKeyVerificationRequest):
             rootCoordinator = self.createDataLoadingScreenCoordinator(with: incomingKeyVerificationRequest)
         case .incomingSASTransaction(let incomingSASTransaction):
