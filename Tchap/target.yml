@@ -340,6 +340,10 @@ targets:
     templates: 
       - BaseTarget
 
+    settings:
+      CC_PREPROCESSOR_DEFINITIONS: $(inherited) SECURE_BACKUP=1 CROSS_SIGNING=1
+      OTHER_SWIFT_FLAGS: $(inherited) -D SECURE_BACKUP -D CROSS_SIGNING
+
     configFiles:
       Debug: ../Btchap/SupportingFiles/Btchap-App-Debug.xcconfig
       Release: ../Btchap/SupportingFiles/Btchap-App-Release.xcconfig
