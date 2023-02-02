@@ -63,3 +63,9 @@ plist:
       output: Btchap/Generated/InfoPlist.swift
       params:
         enumName: InfoPlist
+  - inputs: DevTchap/SupportingFiles/Info.plist
+    outputs:
+      templateName: runtime-swift4
+      output: DevTchap/Generated/InfoPlist.swift
+      params:
+        enumName: InfoPlist

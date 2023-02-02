@@ -1,0 +1,1 @@
+Customize DevTchap Info.plist to declare it doesn't use encryption that need export compliance (for TestFlight only)
