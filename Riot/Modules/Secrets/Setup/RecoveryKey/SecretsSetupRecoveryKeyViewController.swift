@@ -26,6 +26,7 @@ final class SecretsSetupRecoveryKeyViewController: UIViewController {
     
     @IBOutlet private weak var secureKeyImageView: UIImageView!
     @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private weak var instructionLabel: UILabel!
     @IBOutlet private weak var recoveryKeyLabel: UILabel!
     @IBOutlet private weak var exportButton: RoundedButton!
     @IBOutlet private weak var doneButton: RoundedButton!
@@ -124,6 +125,8 @@ final class SecretsSetupRecoveryKeyViewController: UIViewController {
         
         self.secureKeyImageView.image = Asset.Images.secretsSetupKey.image.withRenderingMode(.alwaysTemplate)
         self.informationLabel.text = VectorL10n.secretsSetupRecoveryKeyInformation
+        // Tchap: custom instruction
+        self.instructionLabel.text = TchapL10n.secretsSetupRecoveryKeyInstruction
         self.recoveryKeyLabel.text = VectorL10n.secretsSetupRecoveryKeyLoading
         
         self.exportButton.setTitle(VectorL10n.secretsSetupRecoveryKeyExportAction, for: .normal)

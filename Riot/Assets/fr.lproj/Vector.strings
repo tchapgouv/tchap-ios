@@ -563,7 +563,7 @@
 "auth_accept_policies" = "Veuillez lire et accepter les politiques de ce serveur d’accueil :";
 "settings_key_backup" = "SAUVEGARDE DE CLÉS";
 "settings_key_backup_info_checking" = "Vérification…";
-"settings_key_backup_info_none" = "Vos clés ne sont pas sauvegardées depuis cet appareil.";
+"settings_key_backup_info_none" = "Cette fonction vous permet de sauvegarder automatiquement vos messages et de les récupérer à tout moment."; // Tchap
 "settings_key_backup_info_version" = "Version de sauvegarde de clé : %@";
 "settings_key_backup_info_algorithm" = "Algorithme : %@";
 "settings_key_backup_info_valid" = "Cet appareil sauvegarde vos clés.";
@@ -579,10 +579,10 @@
 "settings_key_backup_info_trust_signature_invalid_device_unverified" = "La sauvegarde a une signature non valide depuis %@";
 "settings_key_backup_button_create" = "Commencer à utiliser la sauvegarde des clés";
 "settings_key_backup_button_restore" = "Restaurer depuis la sauvegarde";
-"settings_key_backup_button_delete" = "Supprimer la sauvegarde";
+"settings_key_backup_button_delete" = "Désactiver"; // Tchap
 "settings_key_backup_button_verify" = "Vérifier";
-"settings_key_backup_delete_confirmation_prompt_title" = "Supprimer la sauvegarde";
-"settings_key_backup_delete_confirmation_prompt_msg" = "En êtes-vous sûr ? Vous perdrez vos messages chiffrés si vos clés ne sont pas sauvegardées correctement.";
+"settings_key_backup_delete_confirmation_prompt_title" = "Désactiver"; // Tchap
+"settings_key_backup_delete_confirmation_prompt_msg" = "En êtes-vous sûr ? Vous perdrez vos messages chiffrés si la synchronisation sécurisée est désactivée."; // Tchap
 "room_does_not_exist" = "%@ n’existe pas";
 "key_backup_setup_title" = "Sauvegarde de clés";
 "key_backup_setup_skip_action" = "Ignorer";
@@ -628,7 +628,7 @@
 "key_backup_recover_banner_title_part1" = "Lancer la récupération de messages sécurisée";
 "key_backup_recover_banner_title_part2" = " pour lire l'historique des messages chiffrés sur cet appareil";
 "settings_key_backup_info" = "Les messages chiffrés sont sécurisés avec un chiffrement de bout en bout. Seuls vous et le(s) destinataire(s) avez les clés pour lire ces messages.";
-"settings_key_backup_info_signout_warning" = "Sauvegardez vos clés avant de vous déconnecter pour éviter de les perdre.";
+"settings_key_backup_info_signout_warning" = ""; // Tchap
 "settings_key_backup_button_use" = "Utiliser la sauvegarde de clés";
 "key_backup_setup_intro_setup_action_without_existing_backup" = "Commencer à utiliser la sauvegarde de clés";
 "key_backup_setup_intro_setup_action_with_existing_backup" = "Utiliser la sauvegarde de clés";
@@ -1056,9 +1056,9 @@
 "security_settings_crosssigning_info_not_bootstrapped" = "La signature croisée n’est pas encore configurée.";
 "security_settings_crosssigning_info_exists" = "Votre compte a une identité de signature croisée, mais cette session ne lui fait pas encore confiance. Améliorez la sécurité de cette session.";
 "security_settings_crosssigning_info_trusted" = "La signature croisée est activée. Vous pouvez faire confiance à d’autres utilisateurs et à vos autres sessions selon la signature croisée mais vous ne pouvez pas effectuer des signatures croisées depuis cette session car elle n’a pas de clés privées de signature croisée. Améliorez la sécurité de cette session.";
-"security_settings_crosssigning_info_ok" = "La signature croisée est prête à être utilisée.";
-"security_settings_crosssigning_bootstrap" = "Configurer";
-"security_settings_crosssigning_reset" = "Réinitialiser";
+"security_settings_crosssigning_info_ok" = "La signature croisée facilite la synchronisation des messages entre plusieurs appareils."; // Tchap
+"security_settings_crosssigning_bootstrap" = "Activer"; // Tchap
+"security_settings_crosssigning_reset" = "Désactiver"; // Tchap
 "security_settings_crosssigning_complete_security" = "Compléter la sécurité";
 "security_settings_complete_security_alert_title" = "Compléter la sécurité";
 "security_settings_complete_security_alert_message" = "Vous devriez d’abord compléter la sécurité de votre session actuelle.";
@@ -1134,10 +1134,10 @@
 "secure_key_backup_setup_intro_use_security_passphrase_info" = "Saisissez une phrase secrète que vous êtes seul à connaître et générez une clé pour la sauvegarde.";
 "secure_key_backup_setup_cancel_alert_title" = "En êtes-vous sûr ?";
 "secure_key_backup_setup_cancel_alert_message" = "Si vous annulez maintenant, vous pourriez perdre les messages et données chiffrés si vous perdez l’accès à vos connexions.\n\nVous pouvez également configurer la sauvegarde sécurisée et gérer vos clés dans les paramètres.";
-"secrets_setup_recovery_key_title" = "Enregistrer votre clé de sécurité";
-"secrets_setup_recovery_key_information" = "Stockez votre clé de récupération dans un endroit sûr. Elle peut être utilisée pour déverrouiller vos messages et données chiffrés.";
+"secrets_setup_recovery_key_title" = "Clé de synchronisation"; // Tchap
+"secrets_setup_recovery_key_information" = "Cette clé vous permet de sauvegarder automatiquement vos messages et de les récupérer à tout moment."; // Tchap
 "secrets_setup_recovery_key_loading" = "Chargement…";
-"secrets_setup_recovery_key_export_action" = "Sauvegarder";
+"secrets_setup_recovery_key_export_action" = "Sauvegarder ma clé"; // Tchap
 "secrets_setup_recovery_key_done_action" = "Terminé";
 "secrets_setup_recovery_key_storage_alert_title" = "Conservez-la en lieu sûr";
 "secrets_setup_recovery_key_storage_alert_message" = "✓ Imprimez-la et stockez-la dans un endroit sûr\n✓ Sauvegardez-la sur une clé USB ou un disque de sauvegarde\n✓ Copiez-la sur votre stockage personnel dans le cloud";
@@ -1152,12 +1152,12 @@
 "authenticated_session_flow_not_supported" = "Cette application ne prend par en charge le mécanisme d’authentification de votre serveur d’accueil.";
 "secure_backup_setup_banner_title" = "Sauvegarde sécurisée";
 "secure_backup_setup_banner_subtitle" = "Protection afin d’éviter de perdre l’accès aux messages et données chiffrés";
-"security_settings_crypto_sessions_description_2" = "Si vous ne reconnaissez pas une connexion, changez votre mot de passe et réinitialisez la sauvegarde sécurisée.";
-"security_settings_secure_backup" = "SAUVEGARDE SÉCURISÉE";
+"security_settings_crypto_sessions_description_2" = "Si vous ne reconnaissez pas une connexion, changez votre mot de passe et réinitialisez la synchronisation sécurisée."; // Tchap
+"security_settings_secure_backup" = "SYNCHRONISATION SÉCURISÉE";
 "security_settings_secure_backup_description" = "Sauvegardez vos clés de chiffrement et les données de votre compte au où vous perdriez l’accès à vos sessions. Vos clés seront protégées par une clé de sécurité unique.";
 "security_settings_secure_backup_setup" = "Configurer";
 "security_settings_secure_backup_synchronise" = "Synchroniser";
-"security_settings_secure_backup_delete" = "Supprimer la sauvegarde";
+"security_settings_secure_backup_delete" = "Désactiver"; // Tchap
 "security_settings_user_password_description" = "Confirmez votre identité en saisissant le mot de passe de votre compte";
 "secure_key_backup_setup_existing_backup_error_title" = "Une sauvegarde pour les messages existe déjà";
 "secure_key_backup_setup_existing_backup_error_info" = "Déverrouillez-la pour la réutiliser dans la sauvegarde sécurisée ou supprimez-la pour créer une nouvelle sauvegarde de messages dans la sauvegarde sécurisée.";
@@ -1429,9 +1429,9 @@
 
 // Success from secure backup
 "key_backup_setup_success_from_secure_backup_info" = "Vos clés sont en cours de sauvegarde.";
-"security_settings_secure_backup_restore" = "Restaurer depuis une sauvegarde";
+"security_settings_secure_backup_restore" = "Synchroniser"; // Tchap
 "security_settings_secure_backup_reset" = "Réinitialiser";
-"security_settings_secure_backup_info_valid" = "Cette session sauvegarde vos clés.";
+"security_settings_secure_backup_info_valid" = "La synchronisation sécurisée est activée."; // Tchap
 "security_settings_secure_backup_info_checking" = "Vérification…";
 "settings_ui_theme_picker_message_match_system_theme" = "« Auto » s’aligne avec le thème de votre appareil";
 "settings_ui_theme_picker_message_invert_colours" = "« Auto » utilise le paramètre « Inverser les couleurs » de l’appreil";

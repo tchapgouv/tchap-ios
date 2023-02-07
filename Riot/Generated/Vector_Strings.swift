@@ -6783,10 +6783,10 @@ public class VectorL10n: NSObject {
   public static var secretsSetupRecoveryKeyExportAction: String { 
     return VectorL10n.tr("Vector", "secrets_setup_recovery_key_export_action") 
   }
-  /// Store your Security Key somewhere safe. It can be used to unlock your encrypted messages & data.
-  public static var secretsSetupRecoveryKeyInformation: String { 
-    return VectorL10n.tr("Vector", "secrets_setup_recovery_key_information") 
-  }
+    /// Store your Security Key somewhere safe. It can be used to unlock your encrypted messages & data.
+    public static var secretsSetupRecoveryKeyInformation: String { 
+      return VectorL10n.tr("Vector", "secrets_setup_recovery_key_information") 
+    }
   /// Loading…
   public static var secretsSetupRecoveryKeyLoading: String { 
     return VectorL10n.tr("Vector", "secrets_setup_recovery_key_loading") 
