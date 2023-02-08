@@ -583,7 +583,6 @@ class NotificationService: UNNotificationServiceExtension {
                             break
                     }
                     
-<<<<<<< HEAD
                     guard notificationBody != nil else {
                         MXLog.debug("[NotificationService] notificationContentForEvent: notificationBody is nil")
                         onComplete(nil, false)
@@ -591,8 +590,6 @@ class NotificationService: UNNotificationServiceExtension {
                     }
                     
                     
-=======
->>>>>>> v1.9.17
                     self.validateNotificationContentAndComplete(
                         notificationTitle: notificationTitle,
                         notificationBody: notificationBody,

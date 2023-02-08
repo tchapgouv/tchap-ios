@@ -52,15 +52,11 @@ enum
     ROOM_SETTINGS_MAIN_SECTION_ROW_TOPIC,
     ROOM_SETTINGS_MAIN_SECTION_ROW_TAG,
     ROOM_SETTINGS_MAIN_SECTION_ROW_DIRECT_CHAT,
-<<<<<<< HEAD
     ROOM_SETTINGS_MAIN_SECTION_ROW_MUTE_NOTIFICATIONS,
     ROOM_SETTINGS_MAIN_SECTION_ROW_LEAVE,
     //Tchap: Specific rows in room settings
     ROOM_SETTINGS_MAIN_SECTION_ROW_ACCESS_BY_LINK,
     ROOM_SETTINGS_MAIN_SECTION_ROW_ACCESS_RULE
-=======
-    ROOM_SETTINGS_MAIN_SECTION_ROW_MUTE_NOTIFICATIONS
->>>>>>> v1.9.17
 };
 
 enum
@@ -528,12 +524,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     {
         [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_MUTE_NOTIFICATIONS];
     }
-<<<<<<< HEAD
     [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_ACCESS_BY_LINK];
     [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_ACCESS_RULE];
     [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_LEAVE];
-=======
->>>>>>> v1.9.17
     [tmpSections addObject:sectionMain];
     
     if (RiotSettings.shared.roomSettingsScreenAllowChangingAccessSettings)
@@ -2339,7 +2332,6 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 cell = favoriteCell;
             }
         }
-<<<<<<< HEAD
         else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_ACCESS_BY_LINK)
         {
             // Check whether the current user is room admin
@@ -2437,8 +2429,6 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             cell = leaveCell;
         }
-=======
->>>>>>> v1.9.17
     }
     else if (section == SECTION_TAG_ACCESS)
     {

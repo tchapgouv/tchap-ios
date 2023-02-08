@@ -11,7 +11,6 @@ import Foundation
 // swiftlint:disable identifier_name line_length type_body_length
 internal enum InfoPlist {
   private static let _document = PlistDocument(path: "Info.plist")
-
   internal static let cfBundleDevelopmentRegion: String = _document["CFBundleDevelopmentRegion"]
   internal static let cfBundleDisplayName: String = _document["CFBundleDisplayName"]
   internal static let cfBundleDocumentTypes: [[String: Any]] = _document["CFBundleDocumentTypes"]
@@ -24,7 +23,6 @@ internal enum InfoPlist {
   internal static let cfBundleSignature: String = _document["CFBundleSignature"]
   internal static let cfBundleVersion: String = _document["CFBundleVersion"]
   internal static let itsAppUsesNonExemptEncryption: Bool = _document["ITSAppUsesNonExemptEncryption"]
-  internal static let itsEncryptionExportComplianceCode: String = _document["ITSEncryptionExportComplianceCode"]
   internal static let lsRequiresIPhoneOS: Bool = _document["LSRequiresIPhoneOS"]
   internal static let lsSupportsOpeningDocumentsInPlace: Bool = _document["LSSupportsOpeningDocumentsInPlace"]
   internal static let nsCalendarsUsageDescription: String = _document["NSCalendarsUsageDescription"]

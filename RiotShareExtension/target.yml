@@ -43,13 +43,9 @@ targets:
     - path: ../Config/CommonConfiguration.swift
     - path: ../Config/Configurable.swift
     - path: ../Riot/Categories/Bundle.swift
-<<<<<<< HEAD
-=======
     - path: ../Riot/Categories/MXEvent.swift
     - path: ../Riot/Managers/Theme/
     - path: ../Riot/Utils/AvatarGenerator.m
-    - path: ../Config/BuildSettings.swift
->>>>>>> v1.9.17
     - path: ../Riot/Categories/Character.swift
     - path: ../Riot/Categories/MXKImageView.swift
     - path: ../Riot/Categories/MXRoom+Riot.m
@@ -95,8 +91,7 @@ targets:
       excludes:
         - "**/*.md" # excludes all files with the .md extension
     - path: ../Riot/Modules/Room/TimelineCells/Styles/RoomTimelineStyleIdentifier.swift
-<<<<<<< HEAD
-    - path: ../Riot/Modules/VoiceBroadcast/VoiceBroadcastSDK/VoiceBroadcastSettings.swift
+    - path: ../Riot/Modules/VoiceBroadcast/VoiceBroadcastSDK/MatrixSDK
 
 
     # Tchap
@@ -112,6 +107,3 @@ targets:
     - path: ../Tchap/Managers/DisplayName
     - path: ../Tchap/Model
     - path: ../Tchap/Utils
-=======
-    - path: ../Riot/Modules/VoiceBroadcast/VoiceBroadcastSDK/MatrixSDK
->>>>>>> v1.9.17

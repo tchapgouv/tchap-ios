@@ -27,12 +27,7 @@
 {
     [super customizeTableViewCellRendering];
     
-<<<<<<< HEAD
-    self.userNameLabel.textColor = ThemeService.shared.theme.userNameColors[0];
-    self.messageTextView.tintColor = ThemeService.shared.theme.tintColor;
-=======
     [self updateUserNameColor];
->>>>>>> v1.9.17
 }
 
 + (CGFloat)heightForCellData:(MXKCellData*)cellData withMaximumWidth:(CGFloat)maxWidth
