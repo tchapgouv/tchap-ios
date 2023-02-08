@@ -174,6 +174,11 @@ final class RoomInfoListViewController: UIViewController {
         let rowMembers = Row(type: .default, icon: Asset.Images.userIcon.image, text: text, accessoryType: .disclosureIndicator) {
             self.viewModel.process(viewAction: .navigate(target: .members))
         }
+        
+        let rowPollHistory = Row(type: .default, icon: Asset.Images.pollHistory.image, text: VectorL10n.roomDetailsPolls, accessoryType: .disclosureIndicator) {
+            self.viewModel.process(viewAction: .navigate(target: .pollHistory))
+        }
+        
         let rowUploads = Row(type: .default, icon: Asset.Images.scrollup.image, text: VectorL10n.roomDetailsFiles, accessoryType: .disclosureIndicator) {
             self.viewModel.process(viewAction: .navigate(target: .uploads))
         }
@@ -195,9 +200,18 @@ final class RoomInfoListViewController: UIViewController {
         if RiotSettings.shared.roomInfoScreenShowIntegrations {
             rows.append(rowIntegrations)
         }
+<<<<<<< HEAD
         if !isRoomDirect {
             rows.append(rowMembers)
         }
+=======
+        rows.append(rowMembers)
+        
+        if BuildSettings.pollsHistoryEnabled {
+            rows.append(rowPollHistory)
+        }
+        
+>>>>>>> v1.9.17
         rows.append(rowUploads)
         if !viewData.isEncrypted {
             rows.append(rowSearch)

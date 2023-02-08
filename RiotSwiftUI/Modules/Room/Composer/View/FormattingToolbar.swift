@@ -32,22 +32,39 @@ struct FormattingToolbar: View {
     var formatAction: (FormatType) -> Void
     
     var body: some View {
-        HStack(spacing: 4) {
-            ForEach(formatItems) { item in
-                Button {
-                    formatAction(item.type)
-                } label: {
-                    Image(item.icon)
-                        .renderingMode(.template)
-                        .foregroundColor(item.active ? theme.colors.accent : theme.colors.tertiaryContent)
+        ScrollView(.horizontal) {
+            HStack(spacing: 4) {
+                ForEach(formatItems) { item in
+                    Button {
+                        formatAction(item.type)
+                    } label: {
+                        Image(item.icon)
+                            .renderingMode(.template)
+                            .foregroundColor(getForegroundColor(for: item))
+                    }
+                    .disabled(item.state == .disabled)
+                    .frame(width: 44, height: 44)
+                    .background(getBackgroundColor(for: item))
+                    .cornerRadius(8)
+                    .accessibilityIdentifier(item.accessibilityIdentifier)
+                    .accessibilityLabel(item.accessibilityLabel)
                 }
-                .disabled(item.disabled)
-                .frame(width: 44, height: 44)
-                .background(item.active ? theme.colors.accent.opacity(0.1) : theme.colors.background)
-                .cornerRadius(8)
-                .accessibilityIdentifier(item.accessibilityIdentifier)
-                .accessibilityLabel(item.accessibilityLabel)
             }
+        }
+    }
+    
+    private func getForegroundColor(for item: FormatItem) -> Color {
+        switch item.state {
+        case .reversed: return theme.colors.accent
+        case .enabled: return theme.colors.tertiaryContent
+        case .disabled: return theme.colors.tertiaryContent.opacity(0.3)
+        }
+    }
+    
+    private func getBackgroundColor(for item: FormatItem) -> Color {
+        switch item.state {
+        case .reversed: return theme.colors.accent.opacity(0.1)
+        default: return theme.colors.background
         }
     }
 }
@@ -56,11 +73,8 @@ struct FormattingToolbar: View {
 
 struct FormattingToolbar_Previews: PreviewProvider {
     static var previews: some View {
-        FormattingToolbar(formatItems: [
-            FormatItem(type: .bold, active: true, disabled: false),
-            FormatItem(type: .italic, active: false, disabled: false),
-            FormatItem(type: .strikethrough, active: true, disabled: false),
-            FormatItem(type: .underline, active: false, disabled: true)
-        ], formatAction: { _ in })
+        FormattingToolbar(
+            formatItems: FormatType.allCases.map { FormatItem(type: $0, state: .enabled) }
+        , formatAction: { _ in })
     }
 }
