@@ -71,7 +71,7 @@ targets:
     - path: ../Riot/Managers/KeyValueStorage/
     - path: ../Riot/Managers/Settings/RiotSettings.swift
     - path: ../Riot/Modules/Room/TimelineCells/Styles/RoomTimelineStyleIdentifier.swift
-    - path: ../Riot/Modules/VoiceBroadcast/VoiceBroadcastSDK/VoiceBroadcastSettings.swift
+    - path: ../Riot/Modules/VoiceBroadcast
     - path: ../Riot/PropertyWrappers
 
     # Tests

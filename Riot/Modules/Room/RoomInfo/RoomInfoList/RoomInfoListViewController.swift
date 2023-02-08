@@ -200,18 +200,12 @@ final class RoomInfoListViewController: UIViewController {
         if RiotSettings.shared.roomInfoScreenShowIntegrations {
             rows.append(rowIntegrations)
         }
-<<<<<<< HEAD
-        if !isRoomDirect {
-            rows.append(rowMembers)
-        }
-=======
         rows.append(rowMembers)
         
         if BuildSettings.pollsHistoryEnabled {
             rows.append(rowPollHistory)
         }
         
->>>>>>> v1.9.17
         rows.append(rowUploads)
         if !viewData.isEncrypted {
             rows.append(rowSearch)

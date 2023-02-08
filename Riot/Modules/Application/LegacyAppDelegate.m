@@ -2576,7 +2576,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 - (void)showLaunchAnimation
 {
-<<<<<<< HEAD
     // Tchap: Don't show Element Launch animation.
 //    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
 //
@@ -2595,35 +2594,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 //
 //        [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:MXTaskProfileNameStartupLaunchScreen];
 //    }
-=======
-    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-    
-    if (!launchAnimationContainerView && window)
-    {
-        MXLogDebug(@"[AppDelegate] showLaunchAnimation");
-        
-        LaunchLoadingView *launchLoadingView;
-        if (MXSDKOptions.sharedInstance.enableStartupProgress)
-        {
-            MXSession *mainSession = self.mxSessions.firstObject;
-            launchLoadingView = [LaunchLoadingView instantiateWithStartupProgress:mainSession.startupProgress];
-        }
-        else
-        {
-            launchLoadingView = [LaunchLoadingView instantiateWithStartupProgress:nil];
-        }
-                
-        launchLoadingView.frame = window.bounds;
-        [launchLoadingView updateWithTheme:ThemeService.shared.theme];
-        launchLoadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        
-        [window addSubview:launchLoadingView];
-        
-        launchAnimationContainerView = launchLoadingView;
-        
-        [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:MXTaskProfileNameStartupLaunchScreen];
-    }
->>>>>>> v1.9.17
 }
 
 - (void)hideLaunchAnimation

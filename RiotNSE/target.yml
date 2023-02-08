@@ -53,14 +53,9 @@ targets:
     - path: ../Riot/Managers/Locale/LocaleProviderType.swift
     - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
     - path: ../Riot/Categories/Bundle.swift
-<<<<<<< HEAD
+    - path: ../Riot/Categories/MXEvent.swift
     - path: ../Riot/Generated/Vector_Strings.swift
     - path: ../Tchap/Generated/Images_Riot.swift
-=======
-    - path: ../Riot/Categories/MXEvent.swift
-    - path: ../Riot/Generated/Strings.swift
-    - path: ../Riot/Generated/Images.swift
->>>>>>> v1.9.17
     - path: ../Riot/Managers/KeyValueStorage/KeychainStore.swift
     - path: ../Riot/Managers/LocalAuthentication/LocalAuthenticationService.swift
     - path: ../Config/Configurable.swift

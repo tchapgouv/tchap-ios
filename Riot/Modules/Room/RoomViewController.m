@@ -7946,7 +7946,6 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 #pragma mark - VoiceMessageControllerDelegate
 
-<<<<<<< HEAD
 //- (void)voiceMessageControllerDidRequestMicrophonePermission:(VoiceMessageController *)voiceMessageController
 //{
 //    NSString *message = [VectorL10n microphoneAccessNotGrantedForVoiceMessage:AppInfo.current.displayName];
@@ -7958,13 +7957,27 @@ static CGSize kThreadListBarButtonItemImageSize;
 //    }];
 //}
 //
+//- (BOOL)voiceMessageControllerDidRequestRecording:(VoiceMessageController *)voiceMessageController
+//{
+//    MXSession* session = self.roomDataSource.mxSession;
+//    // Check whether the user is not already broadcasting here or in another room
+//    if (session.voiceBroadcastService)
+//    {
+//        [self showAlertWithTitle:[VectorL10n voiceMessageBroadcastInProgressTitle] message:[VectorL10n voiceMessageBroadcastInProgressMessage]];
+//
+//        return NO;
+//    }
+//
+//    return YES;
+//}
+//
 //- (void)voiceMessageController:(VoiceMessageController *)voiceMessageController
 //    didRequestSendForFileAtURL:(NSURL *)url
 //                      duration:(NSUInteger)duration
 //                       samples:(NSArray<NSNumber *> *)samples
 //                    completion:(void (^)(BOOL))completion
 //{
-//    [self.roomDataSource sendVoiceMessage:url mimeType:nil duration:duration samples:samples success:^(NSString *eventId) {
+//    [self.roomDataSource sendVoiceMessage:url additionalContentParams:nil mimeType:nil duration:duration samples:samples success:^(NSString *eventId) {
 //        MXLogDebug(@"Success with event id %@", eventId);
 //        completion(YES);
 //    } failure:^(NSError *error) {
@@ -7972,47 +7985,6 @@ static CGSize kThreadListBarButtonItemImageSize;
 //        completion(NO);
 //    }];
 //}
-=======
-- (void)voiceMessageControllerDidRequestMicrophonePermission:(VoiceMessageController *)voiceMessageController
-{
-    NSString *message = [VectorL10n microphoneAccessNotGrantedForVoiceMessage:AppInfo.current.displayName];
-    
-    [MXKTools checkAccessForMediaType:AVMediaTypeAudio
-                  manualChangeMessage: message
-            showPopUpInViewController:self completionHandler:^(BOOL granted) {
-        
-    }];
-}
-
-- (BOOL)voiceMessageControllerDidRequestRecording:(VoiceMessageController *)voiceMessageController
-{
-    MXSession* session = self.roomDataSource.mxSession;
-    // Check whether the user is not already broadcasting here or in another room
-    if (session.voiceBroadcastService)
-    {
-        [self showAlertWithTitle:[VectorL10n voiceMessageBroadcastInProgressTitle] message:[VectorL10n voiceMessageBroadcastInProgressMessage]];
-
-        return NO;
-    }
-
-    return YES;
-}
-
-- (void)voiceMessageController:(VoiceMessageController *)voiceMessageController
-    didRequestSendForFileAtURL:(NSURL *)url
-                      duration:(NSUInteger)duration
-                       samples:(NSArray<NSNumber *> *)samples
-                    completion:(void (^)(BOOL))completion
-{
-    [self.roomDataSource sendVoiceMessage:url additionalContentParams:nil mimeType:nil duration:duration samples:samples success:^(NSString *eventId) {
-        MXLogDebug(@"Success with event id %@", eventId);
-        completion(YES);
-    } failure:^(NSError *error) {
-        MXLogError(@"Failed sending voice message");
-        completion(NO);
-    }];
-}
->>>>>>> v1.9.17
 
 #pragma mark - SpaceDetailPresenterDelegate
 
