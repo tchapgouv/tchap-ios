@@ -19,17 +19,18 @@ import SwiftUI
 
 struct AvatarImage: View {
     @Environment(\.theme) var theme: ThemeSwiftUI
-    @Environment(\.dependencies) var dependencies: DependencyContainer
-    @StateObject var viewModel = AvatarViewModel()
+    @EnvironmentObject var viewModel: AvatarViewModel
     
     var mxContentUri: String?
     var matrixItemId: String
     var displayName: String?
     var size: AvatarSize
     
+    @State private var avatar: AvatarViewState = .empty
+    
     var body: some View {
         Group {
-            switch viewModel.viewState {
+            switch avatar {
             case .empty:
                 ProgressView()
             case .placeholder(let firstCharacter, let colorIndex):
@@ -43,14 +44,16 @@ struct AvatarImage: View {
         .frame(maxWidth: CGFloat(size.rawValue), maxHeight: CGFloat(size.rawValue))
         .clipShape(Circle())
         .onAppear {
-            viewModel.inject(dependencies: dependencies)
-            viewModel.loadAvatar(
-                mxContentUri: mxContentUri,
-                matrixItemId: matrixItemId,
-                displayName: displayName,
-                colorCount: theme.colors.namesAndAvatars.count,
-                avatarSize: size
-            )
+            avatar = viewModel.placeholderAvatar(matrixItemId: matrixItemId,
+                                                 displayName: displayName,
+                                                 colorCount: theme.colors.namesAndAvatars.count)
+            viewModel.loadAvatar(mxContentUri: mxContentUri,
+                                 matrixItemId: matrixItemId,
+                                 displayName: displayName,
+                                 colorCount: theme.colors.namesAndAvatars.count,
+                                 avatarSize: size ) { newState in
+                avatar = newState
+            }
         }
     }
 }
@@ -95,7 +98,7 @@ struct AvatarImage_Previews: PreviewProvider {
                     AvatarImage(mxContentUri: nil, matrixItemId: name, displayName: name, size: .xLarge)
                 }
             }
-            .addDependency(MockAvatarService.example)
+            .environmentObject(AvatarViewModel.withMockedServices())
         }
     }
 }

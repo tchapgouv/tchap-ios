@@ -72,7 +72,7 @@ targets:
     - path: ../Riot/Modules/Analytics/AnalyticsScreen.swift
     - path: ../Riot/Modules/LocationSharing/LocationAuthorizationStatus.swift
     - path: ../Riot/Modules/QRCode/QRCodeGenerator.swift
-    - path: ../Riot/Modules/VoiceBroadcast/VoiceBroadcastSDK/VoiceBroadcastInfoState.swift
+    - path: ../Riot/Modules/VoiceBroadcast/VoiceBroadcastSDK/MatrixSDK/VoiceBroadcastInfoState.swift
     - path: ../Riot/Assets/en.lproj/Untranslated.strings
     - path: ../Tchap/Generated/Images.swift
       buildPhase: resources

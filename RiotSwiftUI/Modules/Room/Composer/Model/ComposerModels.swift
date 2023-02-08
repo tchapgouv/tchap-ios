@@ -24,10 +24,8 @@ import WysiwygComposer
 struct FormatItem {
     /// The type of the item
     let type: FormatType
-    /// Whether it is active(highlighted)
-    let active: Bool
-    /// Whether it is disabled or enabled
-    let disabled: Bool
+    /// The state of the item
+    let state: ActionState
 }
 
 /// The types of formatting actions
@@ -36,6 +34,12 @@ enum FormatType {
     case italic
     case underline
     case strikethrough
+    case unorderedList
+    case orderedList
+    case inlineCode
+    case codeBlock
+    case quote
+    case link
 }
 
 extension FormatType: CaseIterable, Identifiable {
@@ -54,10 +58,22 @@ extension FormatItem {
             return Asset.Images.bold.name
         case .italic:
             return Asset.Images.italic.name
-        case .strikethrough:
-            return Asset.Images.strikethrough.name
         case .underline:
             return Asset.Images.underlined.name
+        case .strikethrough:
+            return Asset.Images.strikethrough.name
+        case .unorderedList:
+            return Asset.Images.bulletList.name
+        case .orderedList:
+            return Asset.Images.numberedList.name
+        case .inlineCode:
+            return Asset.Images.code.name
+        case .codeBlock:
+            return Asset.Images.codeBlock.name
+        case .quote:
+            return Asset.Images.quote.name
+        case .link:
+            return Asset.Images.link.name
         }
     }
     
@@ -67,10 +83,22 @@ extension FormatItem {
             return "boldButton"
         case .italic:
             return "italicButton"
-        case .strikethrough:
-            return "strikethroughButton"
         case .underline:
             return "underlineButton"
+        case .strikethrough:
+            return "strikethroughButton"
+        case .unorderedList:
+            return "unorderedListButton"
+        case .orderedList:
+            return "orderedListButton"
+        case .inlineCode:
+            return "inlineCodeButton"
+        case .codeBlock:
+            return "codeBlockButton"
+        case .quote:
+            return "quoteButton"
+        case .link:
+            return "linkButton"
         }
     }
     
@@ -80,10 +108,22 @@ extension FormatItem {
             return VectorL10n.wysiwygComposerFormatActionBold
         case .italic:
             return VectorL10n.wysiwygComposerFormatActionItalic
-        case .strikethrough:
-            return VectorL10n.wysiwygComposerFormatActionStrikethrough
         case .underline:
             return VectorL10n.wysiwygComposerFormatActionUnderline
+        case .strikethrough:
+            return VectorL10n.wysiwygComposerFormatActionStrikethrough
+        case .unorderedList:
+            return VectorL10n.wysiwygComposerFormatActionUnorderedList
+        case .orderedList:
+            return VectorL10n.wysiwygComposerFormatActionOrderedList
+        case .inlineCode:
+            return VectorL10n.wysiwygComposerFormatActionInlineCode
+        case .codeBlock:
+            return VectorL10n.wysiwygComposerFormatActionCodeBlock
+        case .quote:
+            return VectorL10n.wysiwygComposerFormatActionQuote
+        case .link:
+            return VectorL10n.wysiwygComposerFormatActionLink
         }
     }
 }
@@ -96,15 +136,26 @@ extension FormatType {
             return .bold
         case .italic:
             return .italic
-        case .strikethrough:
-            return .strikeThrough
         case .underline:
             return .underline
+        case .strikethrough:
+            return .strikeThrough
+        case .unorderedList:
+            return .unorderedList
+        case .orderedList:
+            return .orderedList
+        case .inlineCode:
+            return .inlineCode
+        case .codeBlock:
+            return .codeBlock
+        case .quote:
+            return .quote
+        case .link:
+            return .link
         }
     }
     
     // TODO: We probably don't need to expose this, clean up.
-    
     /// Convenience method to map it to the external rust binging action
     var composerAction: ComposerAction {
         switch self {
@@ -112,10 +163,22 @@ extension FormatType {
             return .bold
         case .italic:
             return .italic
-        case .strikethrough:
-            return .strikeThrough
         case .underline:
             return .underline
+        case .strikethrough:
+            return .strikeThrough
+        case .unorderedList:
+            return .unorderedList
+        case .orderedList:
+            return .orderedList
+        case .inlineCode:
+            return .inlineCode
+        case .codeBlock:
+            return .codeBlock
+        case .quote:
+            return .quote
+        case .link:
+            return .link
         }
     }
 }
@@ -130,11 +193,21 @@ enum ComposerSendMode: Equatable {
 enum ComposerViewAction: Equatable {
     case cancel
     case contentDidChange(isEmpty: Bool)
+    case linkTapped(linkAction: LinkAction)
+    case storeSelection(selection: NSRange)
 }
 
 enum ComposerViewModelResult: Equatable {
     case cancel
     case contentDidChange(isEmpty: Bool)
+    case linkTapped(LinkAction: LinkAction)
 }
 
-
+final class LinkActionWrapper: NSObject {
+    let linkAction: LinkAction
+    
+    init(_ linkAction: LinkAction) {
+        self.linkAction = linkAction
+        super.init()
+    }
+}
