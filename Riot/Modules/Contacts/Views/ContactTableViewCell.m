@@ -314,44 +314,51 @@
 
 - (void)refreshContactPresence
 {
-    NSString* presenceText;
-    NSString* matrixId = self.firstMatrixId;
-    
-    if (matrixId)
-    {
-        MXUser *user = nil;
-        
-        // Consider here all sessions reported into contact manager
-        NSArray* mxSessions = [MXKContactManager sharedManager].mxSessions;
-        for (MXSession *mxSession in mxSessions)
-        {
-            user = [mxSession userWithUserId:matrixId];
-            if (user)
-            {
-                break;
-            }
-        }
-
-        presenceText = [Tools presenceText:user];
-    }
-    else if (contact.isThirdPartyInvite)
-    {
-        presenceText =  [VectorL10n roomParticipantsOffline];
-    }
-    
-    if (presenceText.length)
-    {
-        self.contactInformationLabel.hidden = NO;
-    }
-    else
-    {
-        // Hide and fill the label with a fake string to harmonize the height of all the cells.
-        // This is a drawback of the self-sizing cell.
-        self.contactInformationLabel.hidden = YES;
-        presenceText = @"No presence";
-    }
-
-    self.contactInformationLabel.text = presenceText;
+    // Tchap: hide user presence information
+    //   - set content to nil
+    //   - center vertically displayName on thumbnail by deactivating existing constraints and adding a new one
+    self.contactInformationLabel.text = nil;
+    self.contactDisplayNameTopConstraint.active = false;
+    self.contactDisplayNameBottomConstraint.active = false;
+    [self.contactDisplayNameLabel.centerYAnchor constraintEqualToAnchor:self.thumbnailView.centerYAnchor constant:0.0].active = true;
+//    NSString* presenceText;
+//    NSString* matrixId = self.firstMatrixId;
+//
+//    if (matrixId)
+//    {
+//        MXUser *user = nil;
+//
+//        // Consider here all sessions reported into contact manager
+//        NSArray* mxSessions = [MXKContactManager sharedManager].mxSessions;
+//        for (MXSession *mxSession in mxSessions)
+//        {
+//            user = [mxSession userWithUserId:matrixId];
+//            if (user)
+//            {
+//                break;
+//            }
+//        }
+//
+//        presenceText = [Tools presenceText:user];
+//    }
+//    else if (contact.isThirdPartyInvite)
+//    {
+//        presenceText =  [VectorL10n roomParticipantsOffline];
+//    }
+//
+//    if (presenceText.length)
+//    {
+//        self.contactInformationLabel.hidden = NO;
+//    }
+//    else
+//    {
+//        // Hide and fill the label with a fake string to harmonize the height of all the cells.
+//        // This is a drawback of the self-sizing cell.
+//        self.contactInformationLabel.hidden = YES;
+//        presenceText = @"No presence";
+//    }
+//
+//    self.contactInformationLabel.text = presenceText;
 }
 
 #pragma mark - events

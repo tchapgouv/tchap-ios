@@ -386,8 +386,10 @@
         
         if (userId)
         {
-            MXUser *user = [self.mxRoom.mxSession userWithUserId:userId];
-            presenceText = [Tools presenceText:user];
+            // Tchap: hide user presence information
+            presenceText = nil;
+//            MXUser *user = [self.mxRoom.mxSession userWithUserId:userId];
+//            presenceText = [Tools presenceText:user];
         }
         
         self.roomMemberStatusLabel.text = presenceText;

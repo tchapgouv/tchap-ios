@@ -39,6 +39,8 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *customAccessViewWidthConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *customAccessoryViewLeadingConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *contactDisplayNameBottomConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *contactDisplayNameTopConstraint;
 
 /**
  Tell whether the matrix id should be added in the contact display name (NO by default)
