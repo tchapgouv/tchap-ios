@@ -2583,7 +2583,17 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 //    {
 //        MXLogDebug(@"[AppDelegate] showLaunchAnimation");
 //
-//        LaunchLoadingView *launchLoadingView = [LaunchLoadingView instantiate];
+//        LaunchLoadingView *launchLoadingView;
+//        if (MXSDKOptions.sharedInstance.enableStartupProgress)
+//        {
+//            MXSession *mainSession = self.mxSessions.firstObject;
+//            launchLoadingView = [LaunchLoadingView instantiateWithStartupProgress:mainSession.startupProgress];
+//        }
+//        else
+//        {
+//            launchLoadingView = [LaunchLoadingView instantiateWithStartupProgress:nil];
+//        }
+//
 //        launchLoadingView.frame = window.bounds;
 //        [launchLoadingView updateWithTheme:ThemeService.shared.theme];
 //        launchLoadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
