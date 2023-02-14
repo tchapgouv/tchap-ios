@@ -174,6 +174,11 @@ final class RoomInfoListViewController: UIViewController {
         let rowMembers = Row(type: .default, icon: Asset.Images.userIcon.image, text: text, accessoryType: .disclosureIndicator) {
             self.viewModel.process(viewAction: .navigate(target: .members))
         }
+        
+        let rowPollHistory = Row(type: .default, icon: Asset.Images.pollHistory.image, text: VectorL10n.roomDetailsPolls, accessoryType: .disclosureIndicator) {
+            self.viewModel.process(viewAction: .navigate(target: .pollHistory))
+        }
+        
         let rowUploads = Row(type: .default, icon: Asset.Images.scrollup.image, text: VectorL10n.roomDetailsFiles, accessoryType: .disclosureIndicator) {
             self.viewModel.process(viewAction: .navigate(target: .uploads))
         }
@@ -195,9 +200,15 @@ final class RoomInfoListViewController: UIViewController {
         if RiotSettings.shared.roomInfoScreenShowIntegrations {
             rows.append(rowIntegrations)
         }
+        // Tchap: We should not display room members list to avoid the access at the invite button. The server doesn't authorize invitation in DM.
         if !isRoomDirect {
             rows.append(rowMembers)
         }
+        
+        if BuildSettings.pollsHistoryEnabled {
+            rows.append(rowPollHistory)
+        }
+        
         rows.append(rowUploads)
         if !viewData.isEncrypted {
             rows.append(rowSearch)

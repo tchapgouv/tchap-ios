@@ -27,8 +27,7 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.userNameLabel.textColor = ThemeService.shared.theme.userNameColors[0];
-    self.messageTextView.tintColor = ThemeService.shared.theme.tintColor;
+    [self updateUserNameColor];
 }
 
 - (void)render:(MXKCellData *)cellData

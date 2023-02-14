@@ -359,7 +359,8 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
                                              attributes:@{
                                                           NSLinkAttributeName: linkActionString,
                                                           NSForegroundColorAttributeName: self.sendingTextColor,
-                                                          NSFontAttributeName: self.encryptedMessagesTextFont
+                                                          NSFontAttributeName: self.encryptedMessagesTextFont,
+                                                          NSUnderlineStyleAttributeName: [NSNumber numberWithInt:NSUnderlineStyleSingle] 
                                                           }]];
 
             [attributedStringWithRerequestMessage appendAttributedString:
@@ -384,8 +385,6 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
          [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@", [VectorL10n eventFormatterMessageEditedMention]]
                                          attributes:@{
                                                       NSLinkAttributeName: linkActionString,
-                                                      // NOTE: Color is curretly overidden by UIText.tintColor as we use `NSLinkAttributeName`.
-                                                      // If we use UITextView.linkTextAttributes to set link color we will also have the issue that color will be the same for all kind of links.
                                                       NSForegroundColorAttributeName: self.editionMentionTextColor,
                                                       NSFontAttributeName: self.editionMentionTextFont
                                                       }]];
@@ -487,6 +486,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         self.bingTextColor = ThemeService.shared.theme.noticeColor;
         self.encryptingTextColor = ThemeService.shared.theme.textPrimaryColor;
         self.sendingTextColor = ThemeService.shared.theme.textPrimaryColor;
+        self.linksColor = ThemeService.shared.theme.colors.links;
         self.errorTextColor = ThemeService.shared.theme.textPrimaryColor;
         self.showEditionMention = YES;
         self.editionMentionTextColor = ThemeService.shared.theme.textSecondaryColor;
@@ -546,6 +546,90 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 }
 
 #pragma mark - MXRoomSummaryUpdating
+- (BOOL)session:(MXSession *)session updateRoomSummary:(MXRoomSummary *)summary withLastEvent:(MXEvent *)event eventState:(MXRoomState *)eventState roomState:(MXRoomState *)roomState
+{
+    // Do not display voice broadcast chunk in last message.
+    if (event.eventType == MXEventTypeRoomMessage && event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType])
+    {
+        return NO;
+    }
+    
+    // Update last message if we have a voice broadcast in the room.
+    MXEvent *lastVoiceBroadcastInfoEvent = [self lastVoiceBroadcastInfoEventWithEvent:event roomState:roomState];
+    if (lastVoiceBroadcastInfoEvent != nil)
+    {
+        MXEvent *voiceBroadcastInfoStartedEvent = [self voiceBroadcastInfoStartedEventWithEvent:lastVoiceBroadcastInfoEvent
+                                                                                         roomId:summary.roomId
+                                                                                        session:session];
+        if (voiceBroadcastInfoStartedEvent != nil
+            && !(voiceBroadcastInfoStartedEvent.isRedactedEvent || [voiceBroadcastInfoStartedEvent.eventId isEqualToString:event.redacts]))
+        {
+            return [self session:session
+               updateRoomSummary:summary
+withVoiceBroadcastInfoStateEvent:lastVoiceBroadcastInfoEvent
+  voiceBroadcastInfoStartedEvent:voiceBroadcastInfoStartedEvent
+                       roomState:roomState];
+        }
+    }
+    
+    BOOL updated = [super session:session updateRoomSummary:summary withLastEvent:event eventState:eventState roomState:roomState];
+    
+    if (updated)
+    {
+        // Force the default text color for the last message (cancel highlighted message color)
+        NSMutableAttributedString *lastEventDescription = [[NSMutableAttributedString alloc] initWithAttributedString:summary.lastMessage.attributedText];
+        [lastEventDescription addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.theme.textSecondaryColor
+                                     range:NSMakeRange(0, lastEventDescription.length)];
+        summary.lastMessage.attributedText = lastEventDescription;
+    }
+    
+    return updated;
+}
+
+
+- (MXEvent *)lastVoiceBroadcastInfoEventWithEvent:(MXEvent *)event roomState:(MXRoomState *)roomState
+{
+    MXEvent *voiceBroadcastInfoEvent = nil;
+    VoiceBroadcastInfo *info = nil;
+    if ([event.type isEqualToString:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType])
+    {
+        info = [VoiceBroadcastInfo modelFromJSON: event.content];
+        
+        if (info != nil)
+        {
+            voiceBroadcastInfoEvent = event;
+        }
+    }
+    else
+    {
+        MXEvent *stateEvent = [roomState stateEventsWithType:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType].lastObject;
+        if (stateEvent != nil)
+        {
+            info = [VoiceBroadcastInfo modelFromJSON: stateEvent.content];
+            if (info != nil && ![VoiceBroadcastInfo isStoppedFor:info.state])
+            {
+                voiceBroadcastInfoEvent = stateEvent;
+            }
+        }
+    }
+    
+    return voiceBroadcastInfoEvent;
+}
+
+- (MXEvent *)voiceBroadcastInfoStartedEventWithEvent:(MXEvent *)voiceBroadcastInfoEvent roomId:(NSString *)roomId session:(MXSession *)session
+{
+    VoiceBroadcastInfo *voiceBroadcastInfo = [VoiceBroadcastInfo modelFromJSON: voiceBroadcastInfoEvent.content];
+    if ([VoiceBroadcastInfo isStartedFor:voiceBroadcastInfo.state])
+    {
+        return voiceBroadcastInfoEvent;
+    }
+    else
+    {
+        // Search for the event only in the store to avoid network calls while updating the room summary (this a synchronous process and we cannot delay it).
+        return [mxSession.store eventWithEventId:voiceBroadcastInfo.voiceBroadcastId inRoom:roomId];
+    }
+}
+
 - (BOOL)session:(MXSession *)session updateRoomSummary:(MXRoomSummary *)summary withStateEvents:(NSArray<MXEvent *> *)stateEvents roomState:(MXRoomState *)roomState
 {
     BOOL updated = [super session:session updateRoomSummary:summary withStateEvents:stateEvents roomState:roomState];
@@ -570,6 +654,80 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     }
     
     return updated;
+}
+
+- (BOOL)session:(MXSession *)session updateRoomSummary:(MXRoomSummary *)summary withVoiceBroadcastInfoStateEvent:(MXEvent *)stateEvent voiceBroadcastInfoStartedEvent:(MXEvent *)voiceBroadcastInfoStartedEvent roomState:(MXRoomState *)roomState
+{
+    BOOL isStoppedVoiceBroadcast = [VoiceBroadcastInfo isStoppedFor:[VoiceBroadcastInfo modelFromJSON: stateEvent.content].state];
+    
+    if ([summary.lastMessage.eventId isEqualToString:voiceBroadcastInfoStartedEvent.eventId])
+    {
+        if (!isStoppedVoiceBroadcast)
+        {
+            return NO;
+        }
+    }
+    else
+    {
+        [summary updateLastMessage:[[MXRoomLastMessage alloc] initWithEvent:voiceBroadcastInfoStartedEvent]];
+        if (summary.lastMessage.others == nil)
+        {
+            summary.lastMessage.others = [NSMutableDictionary dictionary];
+        }
+    }
+    
+    NSAttributedString *attachmentString = nil;
+    UIColor *textColor;
+    if (isStoppedVoiceBroadcast)
+    {
+        textColor = ThemeService.shared.theme.textSecondaryColor;
+        NSString *senderDisplayName;
+        if ([stateEvent.stateKey isEqualToString:session.myUser.userId])
+        {
+            summary.lastMessage.text = VectorL10n.noticeVoiceBroadcastEndedByYou;
+        }
+        else
+        {
+            senderDisplayName = [self senderDisplayNameForEvent:stateEvent withRoomState:roomState];
+            summary.lastMessage.text = [VectorL10n noticeVoiceBroadcastEnded:senderDisplayName];
+        }
+        summary.lastMessage.others[@"lastEventDate"] = [self dateStringFromEvent:stateEvent withTime:YES];
+    }
+    else
+    {
+        textColor = ThemeService.shared.theme.colors.alert;
+        UIImage *liveImage = AssetImages.voiceBroadcastLive.image;
+        
+        NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
+        attachment.image = [liveImage imageWithTintColor:textColor renderingMode:UIImageRenderingModeAlwaysTemplate];
+        attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
+        
+        summary.lastMessage.text = VectorL10n.noticeVoiceBroadcastLive;
+        summary.lastMessage.others[@"lastEventDate"] = [self dateStringFromEvent:voiceBroadcastInfoStartedEvent withTime:YES];
+    }
+    
+    // Compute the attribute text message
+    NSMutableAttributedString *lastMessage;
+    if (attachmentString)
+    {
+        lastMessage = [[NSMutableAttributedString alloc] initWithAttributedString:attachmentString];
+        // Change base line
+        [lastMessage addAttribute:NSBaselineOffsetAttributeName value:@(-3.0f) range:NSMakeRange(0, attachmentString.length)];
+        
+        NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@", summary.lastMessage.text]];
+        [lastMessage appendAttributedString:attributedText];
+        [lastMessage addAttribute:NSFontAttributeName value:self.defaultTextFont range:NSMakeRange(0, lastMessage.length)];
+    }
+    else
+    {
+        NSAttributedString *attributedText = [self renderString:summary.lastMessage.text forEvent:stateEvent];
+        lastMessage = [[NSMutableAttributedString alloc] initWithAttributedString:attributedText];
+    }
+    
+    [lastMessage addAttribute:NSForegroundColorAttributeName value:textColor range:NSMakeRange(0, lastMessage.length)];
+    summary.lastMessage.attributedText = lastMessage;
+    
+    return YES;
 }
 
 - (NSAttributedString *)redactedMessageReplacementAttributedString

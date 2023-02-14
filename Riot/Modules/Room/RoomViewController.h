@@ -36,6 +36,7 @@
 //@class ThreadsCoordinatorBridgePresenter;
 //@class LiveLocationSharingBannerView;
 @class VoiceBroadcastService;
+@class ComposerLinkActionBridgePresenter;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -124,6 +125,8 @@ extern NSTimeInterval const kResizeComposerAnimationDuration;
 @property (strong, nonatomic, nullable) UIView* maximisedToolbarDimmingView;
 
 @property (nonatomic) CGFloat wysiwygTranslation;
+
+@property (nonatomic, strong, nullable) ComposerLinkActionBridgePresenter *composerLinkActionBridgePresenter;
 
 
 /**
