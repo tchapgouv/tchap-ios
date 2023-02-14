@@ -46,7 +46,7 @@ extension MXRoom {
         }
     }
     
-    public func lastVoiceBroadcastStateEvent(completion: @escaping (MXEvent?) -> Void) {
+    func lastVoiceBroadcastStateEvent(completion: @escaping (MXEvent?) -> Void) {
         self.state { roomState in
             completion(roomState?.stateEvents(with: .custom(VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType))?.last)
         }
