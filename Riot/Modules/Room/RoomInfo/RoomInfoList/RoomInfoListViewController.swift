@@ -200,7 +200,10 @@ final class RoomInfoListViewController: UIViewController {
         if RiotSettings.shared.roomInfoScreenShowIntegrations {
             rows.append(rowIntegrations)
         }
-        rows.append(rowMembers)
+        // Tchap: We should not display room members list to avoid the access at the invite button. The server doesn't authorize invitation in DM.
+        if !isRoomDirect {
+            rows.append(rowMembers)
+        }
         
         if BuildSettings.pollsHistoryEnabled {
             rows.append(rowPollHistory)

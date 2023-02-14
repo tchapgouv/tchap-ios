@@ -479,6 +479,9 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
 
 - (void)updateUserNameColor
 {
+    // Tchap: override the usernamecolor with a single color only.
+    self.userNameLabel.textColor = ThemeService.shared.theme.userNameColors[0]; in
+    
 //    static UserNameColorGenerator *userNameColorGenerator;
 //    
 //    static dispatch_once_t onceToken;
