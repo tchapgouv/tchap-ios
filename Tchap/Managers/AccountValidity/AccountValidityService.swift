@@ -36,7 +36,7 @@ final class AccountValidityService: AccountValidityServiceType {
         }
         
         self.credentials = credentials
-        self.httpClient = MXHTTPClient(baseURL: "\(homeServer)/\(kMXAPIPrefixPathUnstable)",
+        self.httpClient = MXHTTPClient(baseURL: "\(homeServer)/_synapse/client",
                                        authenticated: true,
                                        andOnUnrecognizedCertificateBlock: nil)
         
@@ -52,7 +52,7 @@ final class AccountValidityService: AccountValidityServiceType {
     }
     
     func requestRenewalEmail(completion: @escaping (MXResponse<Void>) -> Void) -> MXHTTPOperation? {
-        return httpClient.request(withMethod: "POST", path: "account_validity/send_mail", parameters: nil, success: { (response: [AnyHashable: Any]?) in
+        return httpClient.request(withMethod: "POST", path: "email_account_validity/send_mail", parameters: nil, success: { (response: [AnyHashable: Any]?) in
             MXLog.debug("[AccountValidityService] request renewal email succeeded")
             completion(.success(Void()))
         }, failure: { (error: Error?) in
