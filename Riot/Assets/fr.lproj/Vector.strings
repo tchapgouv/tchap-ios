@@ -1521,7 +1521,7 @@
 "spaces_empty_space_title" = "Cet espace n’a pas (encore) de salon";
 "space_tag" = "espace";
 "spaces_suggested_room" = "Recommandé";
-"spaces_explore_rooms" = "Parcourir les salons";
+"spaces_explore_rooms" = "Rejoindre un forum"; // Tchap
 "leave_space_and_all_rooms_action" = "Quitter tous les salons et espaces";
 "leave_space_only_action" = "Ne quitter aucun salon";
 "leave_space_message_admin_warning" = "Vous êtes administrateur de cet espace. Assurez-vous d’avoir transmis les droits d’administration à un autre membre avant de partir.";
