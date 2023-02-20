@@ -171,7 +171,7 @@
 "authentication_verify_email_input_title" = "Enter your email";
 /* The placeholder will show the homeserver's domain */
 "authentication_verify_email_input_message" = "%@ needs to verify your account";
-"authentication_verify_email_text_field_placeholder" = "Email address"; // Tchap
+"authentication_verify_email_text_field_placeholder" = "Email";
 "authentication_verify_email_waiting_title" = "Verify your email.";
 /* The placeholder will show the email address that was entered. */
 "authentication_verify_email_waiting_message" = "Follow the instructions sent to %@";
@@ -181,7 +181,7 @@
 "authentication_forgot_password_input_title" = "Enter your email";
 /* The placeholder will show the homeserver's domain */
 "authentication_forgot_password_input_message" = "%@ will send you a verification link";
-"authentication_forgot_password_text_field_placeholder" = "Email address"; // Tchap
+"authentication_forgot_password_text_field_placeholder" = "Email";
 "authentication_forgot_password_waiting_title" = "Check your email.";
 /* The placeholder will show the email address that was entered. */
 "authentication_forgot_password_waiting_message" = "Follow the instructions sent to %@";
@@ -324,9 +324,9 @@
 "auth_softlogout_signed_out" = "You’re signed out";
 "auth_softlogout_sign_in" = "Sign In";
 "auth_softlogout_reason" = "Your homeserver (%1$@) admin has signed you out of your account %2$@ (%3$@).";
-"auth_softlogout_recover_encryption_keys" = "Sign in to recover Tchap keys stored exclusively on this device. You need them to read all of your secure messages on any device."; // Tchap
+"auth_softlogout_recover_encryption_keys" = "Sign in to recover encryption keys stored exclusively on this device. You need them to read all of your secure messages on any device.";
 "auth_softlogout_clear_data" = "Clear personal data";
-"auth_softlogout_clear_data_message_1" = "Warning: Your personal data (including Tchap keys) is still stored on this device."; // Tchap
+"auth_softlogout_clear_data_message_1" = "Warning: Your personal data (including encryption keys) is still stored on this device.";
 "auth_softlogout_clear_data_message_2" = "Clear it if you're finished using this device, or want to sign in to another account.";
 "auth_softlogout_clear_data_button" = "Clear all data";
 "auth_softlogout_clear_data_sign_out_title" = "Are you sure?";
@@ -709,7 +709,7 @@ Tap the + to start adding people.";
 
 "settings_sign_out" = "Sign Out";
 "settings_sign_out_confirmation" = "Are you sure?";
-"settings_sign_out_e2e_warn" = "You will lose your end-to-end Tchap keys. That means you will no longer be able to read old messages in encrypted rooms on this device."; // Tchap
+"settings_sign_out_e2e_warn" = "You will lose your end-to-end encryption keys. That means you will no longer be able to read old messages in encrypted rooms on this device.";
 "settings_profile_picture" = "Profile Picture";
 "settings_display_name" = "Display Name";
 "settings_first_name" = "First Name";
@@ -717,7 +717,7 @@ Tap the + to start adding people.";
 "settings_remove_prompt_title" = "Confirmation";
 "settings_remove_email_prompt_msg" = "Are you sure you want to remove the email address %@?";
 "settings_remove_phone_prompt_msg" = "Are you sure you want to remove the phone number %@?";
-"settings_email_address" = "Email address"; // Tchap
+"settings_email_address" = "Email";
 "settings_email_address_placeholder" = "Enter your email address";
 "settings_add_email_address" = "Add email address";
 "settings_phone_number" = "Phone";
@@ -899,10 +899,10 @@ Tap the + to start adding people.";
 "security_settings_title" = "Security";
 "security_settings_crypto_sessions" = "MY SESSIONS";
 "security_settings_crypto_sessions_loading" = "Loading sessions…";
-"security_settings_crypto_sessions_description_2" = "If you don’t recognise a login, change your Matrix account password and reset automatic backup of messages."; // Tchap
+"security_settings_crypto_sessions_description_2" = "If you don’t recognise a login, change your Matrix account password and reset Secure Backup.";
 
-"security_settings_secure_backup" = "AUTOMATIC BACKUP OF MESSAGES"; // Tchap
-"security_settings_secure_backup_description" =  "Back up your Tchap keys with your account data in case you lose access to your sessions. Your keys will be secured with a unique Security Key."; // Tchap
+"security_settings_secure_backup" = "SECURE BACKUP";
+"security_settings_secure_backup_description" =  "Back up your encryption keys with your account data in case you lose access to your sessions. Your keys will be secured with a unique Security Key.";
 "security_settings_secure_backup_info_checking" = "Checking…";
 "security_settings_secure_backup_info_valid" = "This session is backing up your keys.";
 "security_settings_secure_backup_setup" = "Set up";
@@ -1384,7 +1384,7 @@ Tap the + to start adding people.";
 // Intro
 
 "secure_key_backup_setup_intro_title" = "Auto-Backup messages"; // Tchap
-"secure_key_backup_setup_intro_info" = "Safeguard against losing access to encrypted messages & data by backing up Tchap keys on your server."; // Tchap
+"secure_key_backup_setup_intro_info" = "Safeguard against losing access to encrypted messages & data by backing up encryption keys on your server.";
 
 "secure_key_backup_setup_intro_use_security_key_title" = "Use a Backup Key"; // Tchap
 "secure_key_backup_setup_intro_use_security_key_info" = "Generate a security key to store somewhere safe like a password manager or a safe.";
@@ -1393,7 +1393,7 @@ Tap the + to start adding people.";
 "secure_key_backup_setup_intro_use_security_passphrase_info" = "Enter a secret phrase only you know, and generate a key for backup.";
 
 "secure_key_backup_setup_existing_backup_error_title" = "A backup for messages already exists";
-"secure_key_backup_setup_existing_backup_error_info" = "Unlock it to reuse it in the messages backup or delete it to create a new messages backup in the secure backup."; // Tchap
+"secure_key_backup_setup_existing_backup_error_info" = "Unlock it to reuse it in the secure backup or delete it to create a new messages backup in the secure backup.";
 "secure_key_backup_setup_existing_backup_error_unlock_it" = "Unlock it";
 "secure_key_backup_setup_existing_backup_error_delete_it" = "Delete it";
 
@@ -1401,11 +1401,11 @@ Tap the + to start adding people.";
 // Cancel
 
 "secure_key_backup_setup_cancel_alert_title" = "Are your sure?";
-"secure_key_backup_setup_cancel_alert_message" = "If you cancel now, you may lose encrypted messages & data if you lose access to your logins.\n\nYou can also set up automatic backup of messages & manage your keys in Settings."; // Tchap
+"secure_key_backup_setup_cancel_alert_message" = "If you cancel now, you may lose encrypted messages & data if you lose access to your logins.\n\nYou can also set up Secure Backup & manage your keys in Settings.";
 
 // Banner
 
-"secure_backup_setup_banner_title" = "Automatic backup of messages"; // Tchap
+"secure_backup_setup_banner_title" = "Secure Backup";
 "secure_backup_setup_banner_subtitle" = "Safeguard against losing access to encrypted messages & data";
 
 
@@ -1506,7 +1506,7 @@ Tap the + to start adding people.";
 "sign_out_existing_key_backup_alert_sign_out_action" = "Sign out";
 
 "sign_out_non_existing_key_backup_alert_title" = "You’ll lose access to your encrypted messages if you sign out now";
-"sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Start using automatic backup of messages"; // Tchap
+"sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Start using Secure Backup";
 "sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "I don't want my encrypted messages";
 
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_title" = "You'll lose your encrypted messages";
@@ -1945,9 +1945,9 @@ Tap the + to start adding people.";
 "create_room_enable_encryption" = "Enable Encryption";
 "create_room_section_footer_encryption" = "Encryption can’t be disabled afterwards.";
 "create_room_section_header_type" = "WHO CAN ACCESS";
-"create_room_type_private" = "Room"; // Tchap
+"create_room_type_private" = "Private Room (invite only)";
 "create_room_type_restricted" = "Space members";
-"create_room_type_public" = "Forum"; // Tchap
+"create_room_type_public" = "Public Room (anyone)";
 "create_room_section_footer_type_private" = "Only people invited can find and join.";
 "create_room_section_footer_type_restricted" = "Anyone in Space name can find and join.";
 "create_room_section_footer_type_public" = "Only people invited can find and join, not just people in Space name.";
@@ -2072,7 +2072,7 @@ Tap the + to start adding people.";
 "leave_space_message_admin_warning" = "You are admin of this space, ensure that you have transferred admin right to another member before leaving.";
 "leave_space_only_action" = "Don't leave any rooms";
 "leave_space_and_all_rooms_action" = "Leave all rooms and spaces";
-"spaces_explore_rooms" = "Join forum"; // Tchap
+"spaces_explore_rooms" = "Explore rooms";
 "spaces_explore_rooms_format" = "Explore %@";
 "spaces_suggested_room" = "Suggested";
 "spaces_explore_rooms_room_number" = "%@ rooms";
@@ -2135,7 +2135,7 @@ Tap the + to start adding people.";
 
 "spaces_creation_email_invites_title" = "Invite your team";
 "spaces_creation_email_invites_message" = "You can invite them later too.";
-"spaces_creation_email_invites_email_title" = "Email address"; // Tchap
+"spaces_creation_email_invites_email_title" = "Email";
 
 "spaces_creation_sharing_type_title" = "Who are you working with?";
 "spaces_creation_sharing_type_message" = "Make sure the right people have access %@. You can change this later.";
@@ -2542,7 +2542,7 @@ To enable access, tap Settings> Location and select Always";
 "device_type_name_unknown" = "Unknown";
 
 "user_session_details_title" = "Session details";
-"user_session_details_session_section_header" = "Device"; // Tchap
+"user_session_details_session_section_header" = "Session";
 "user_session_details_application_section_header" = "Application";
 "user_session_details_device_section_header" = "Device";
 "user_session_details_session_name" = "Session name";
@@ -2558,7 +2558,7 @@ To enable access, tap Settings> Location and select Always";
 "user_session_details_application_version" = "Version";
 "user_session_details_application_url" = "URL";
 "user_session_overview_current_session_title" = "Current session";
-"user_session_overview_session_title" = "Device"; // Tchap
+"user_session_overview_session_title" = "Session";
 "user_session_overview_session_details_button_title" = "Session details";
 
 
@@ -2889,7 +2889,7 @@ To enable access, tap Settings> Location and select Always";
 
 // E2E import
 "e2e_import_room_keys" = "Import room keys";
-"e2e_import_prompt" = "This process allows you to import Tchap keys that you had previously exported from another Matrix client. You will then be able to decrypt any messages that the other client could decrypt.\nThe export file is protected with a passphrase. You should enter the passphrase here, to decrypt the file."; // Tchap
+"e2e_import_prompt" = "This process allows you to import encryption keys that you had previously exported from another Matrix client. You will then be able to decrypt any messages that the other client could decrypt.\nThe export file is protected with a passphrase. You should enter the passphrase here, to decrypt the file.";
 "e2e_import" = "Import";
 "e2e_passphrase_enter" = "Enter passphrase";
 
