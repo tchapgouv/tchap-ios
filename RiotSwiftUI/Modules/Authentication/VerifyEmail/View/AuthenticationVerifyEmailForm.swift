@@ -79,21 +79,17 @@ struct AuthenticationVerifyEmailForm: View {
 //                textField
 //                    .onSubmit(submit)
 //            } else {
-                textField
+
+            textField
+                .introspectTextField {
+                    $0.becomeFirstResponder()
+                }
+                
+
 //            }
             
             // Tchap: Add password management
-            RoundedBorderTextField(title: nil,
-                                   placeHolder: VectorL10n.authPasswordPlaceholder,
-                                   text: $viewModel.password,
-                                           footerText: VectorL10n.authenticationRegistrationPasswordFooter,
-                                   isError: viewModel.viewState.hasEditedPassword && viewModel.viewState.isPasswordInvalid,
-                                   isFirstResponder: isEditingTextField,//isPasswordFocused,
-                                   configuration: UIKitTextInputConfiguration(returnKeyType: .done,
-                                                                              isSecureTextEntry: true),
-                                   onEditingChanged: nil,//passwordEditingChanged,
-                                   onCommit: submit)
-            .accessibilityIdentifier("passwordTextField")
+            passwordField
             
             // Tchap: Add Terms and Conditions buttons
             HStack(alignment: .center, spacing: 8) {
@@ -133,6 +129,20 @@ struct AuthenticationVerifyEmailForm: View {
         .accessibilityIdentifier("addressTextField")
     }
     
+    var passwordField: some View {
+        RoundedBorderTextField(title: nil,
+                               placeHolder: VectorL10n.authPasswordPlaceholder,
+                               text: $viewModel.password,
+                               footerText: VectorL10n.authenticationRegistrationPasswordFooter,
+                               isError: viewModel.viewState.hasEditedPassword && viewModel.viewState.isPasswordInvalid,
+                               isFirstResponder: isEditingTextField,//isPasswordFocused,
+                               configuration: UIKitTextInputConfiguration(returnKeyType: .done,
+                                                                          isSecureTextEntry: true),
+                               onEditingChanged: nil,//passwordEditingChanged,
+                               onCommit: nil)
+        .accessibilityIdentifier("passwordTextField")
+    }
+
     // Tchap: Prepare the account creation when email and pwd are ready
     func submit() {
         guard !viewModel.viewState.hasInvalidAddress else { return }
