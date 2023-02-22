@@ -1,5 +1,5 @@
-//
-// Copyright 2021 New Vector Ltd
+// 
+// Copyright 2023 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,9 +15,12 @@
 //
 
 import Foundation
+import MatrixSDKCrypto
 
-protocol AllChatsOnboardingViewModelProtocol {
-    var completion: ((AllChatsOnboardingViewModelResult) -> Void)? { get set }
-    static func makeAllChatsOnboardingViewModel() -> AllChatsOnboardingViewModelProtocol
-    var context: AllChatsOnboardingViewModelType.Context { get }
+extension CryptoStoreError: LocalizedError {
+    public var errorDescription: String? {
+        // We dont really care about the type of error here when showing to the user.
+        // Details about the error are tracked independently
+        return VectorL10n.e2eNeedLogInAgain
+    }
 }

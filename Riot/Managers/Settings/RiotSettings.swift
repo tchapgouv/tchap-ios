@@ -209,11 +209,9 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "enableVoiceBroadcast", defaultValue: false, storage: defaults)
     var enableVoiceBroadcast
     
-    #if DEBUG
     /// Flag indicating if we are using rust-based `MatrixCryptoSDK` instead of `MatrixSDK`'s internal crypto module
     @UserDefault(key: "enableCryptoSDK", defaultValue: false, storage: defaults)
     var enableCryptoSDK
-    #endif
 
     // MARK: Calls
     
@@ -424,11 +422,6 @@ final class RiotSettings: NSObject {
     /// Number of spaces previously tracked by the `AnalyticsSpaceTracker` instance.
     @UserDefault(key: "lastNumberOfTrackedSpaces", defaultValue: nil, storage: defaults)
     var lastNumberOfTrackedSpaces: Int?
-    
-    // MARK: - All Chats Onboarding
-    
-    @UserDefault(key: "allChatsOnboardingHasBeenDisplayed", defaultValue: false, storage: defaults)
-    var allChatsOnboardingHasBeenDisplayed
     
 }
 
