@@ -272,7 +272,7 @@
 "settings_remove_prompt_title" = "Confirmation";
 "settings_remove_email_prompt_msg" = "Voulez-vous vraiment supprimer l’adresse e-mail %@ ?";
 "settings_remove_phone_prompt_msg" = "Voulez-vous vraiment supprimer le numéro de téléphone %@ ?";
-"settings_email_address" = "E-mail";
+"settings_email_address" = "Adresse mail"; // Tchap
 "settings_email_address_placeholder" = "Saisir votre adresse e-mail";
 "settings_add_email_address" = "Ajouter une adresse e-mail";
 "settings_phone_number" = "Téléphone";
@@ -786,9 +786,9 @@
 "auth_softlogout_signed_out" = "Vous êtes déconnecté";
 "auth_softlogout_sign_in" = "Se connecter";
 "auth_softlogout_reason" = "L’administrateur de votre serveur d’accueil (%1$@) vous a déconnecté de votre compte %2$@ (%3$@).";
-"auth_softlogout_recover_encryption_keys" = "Connectez-vous pour récupérer les clés de chiffrement stockées uniquement sur cet appareil. Vous en avez besoin pour lire tous les messages sécurisés sur n’importe quel appareil.";
+"auth_softlogout_recover_encryption_keys" = "Connectez-vous pour récupérer les clés Tchap stockées uniquement sur cet appareil. Vous en avez besoin pour lire tous les messages sécurisés sur n’importe quel appareil."; // Tchap
 "auth_softlogout_clear_data" = "Effacer les données personnelles";
-"auth_softlogout_clear_data_message_1" = "Attention : vos données personnelles (y compris vos clés de chiffrement) sont toujours stockées sur cet appareil.";
+"auth_softlogout_clear_data_message_1" = "Attention : vos données personnelles (y compris vos clés Tchap) sont toujours stockées sur cet appareil."; // Tchap
 "auth_softlogout_clear_data_message_2" = "Effacez-les si vous n’utilisez plus cet appareil ou si vous voulez vous connecter avec un autre compte.";
 "auth_softlogout_clear_data_button" = "Effacer toutes les données";
 "auth_softlogout_clear_data_sign_out_title" = "En êtes-vous sûr ?";
@@ -1127,13 +1127,13 @@
 "secrets_recovery_with_key_invalid_recovery_key_title" = "Impossible d’accéder au coffre secret";
 "secrets_recovery_with_key_invalid_recovery_key_message" = "Vérifiez que vous avez saisi la bonne clé de récupération.";
 "secure_key_backup_setup_intro_title" = "Sauvegarde automatique des messages"; // Tchap
-"secure_key_backup_setup_intro_info" = "Protection afin d’éviter de perdre l’accès aux messages et données chiffrés en sauvegardant les clés de chiffrement sur votre serveur.";
+"secure_key_backup_setup_intro_info" = "Protection afin d’éviter de perdre l’accès aux messages et données chiffrés en sauvegardant les clés Tchap sur votre serveur."; // Tchap
 "secure_key_backup_setup_intro_use_security_key_title" = "Utiliser une clé de sauvegarde Tchap"; // Tchap
 "secure_key_backup_setup_intro_use_security_key_info" = "Générer une clé de sécurité à stocker dans un endroit sûr comme un gestionnaire de mots de passe ou un coffre.";
 "secure_key_backup_setup_intro_use_security_passphrase_title" = "Utiliser une phrase secrète de sécurité";
 "secure_key_backup_setup_intro_use_security_passphrase_info" = "Saisissez une phrase secrète que vous êtes seul à connaître et générez une clé pour la sauvegarde.";
 "secure_key_backup_setup_cancel_alert_title" = "En êtes-vous sûr ?";
-"secure_key_backup_setup_cancel_alert_message" = "Si vous annulez maintenant, vous pourriez perdre les messages et données chiffrés si vous perdez l’accès à vos connexions.\n\nVous pouvez également configurer la sauvegarde sécurisée et gérer vos clés dans les paramètres.";
+"secure_key_backup_setup_cancel_alert_message" = "Si vous annulez maintenant, vous pourriez perdre les messages et données chiffrés si vous perdez l’accès à vos connexions.\n\nVous pouvez également configurer la sauvegarde automatique des messages et gérer vos clés dans les paramètres."; // Tchap
 "secrets_setup_recovery_key_title" = "Enregistrer votre clé de sécurité";
 "secrets_setup_recovery_key_information" = "Stockez votre clé de récupération dans un endroit sûr. Elle peut être utilisée pour déverrouiller vos messages et données chiffrés.";
 "secrets_setup_recovery_key_loading" = "Chargement…";
@@ -1150,17 +1150,17 @@
 "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Confirmer la phrase secrète";
 // AuthenticatedSessionViewControllerFactory
 "authenticated_session_flow_not_supported" = "Cette application ne prend par en charge le mécanisme d’authentification de votre serveur d’accueil.";
-"secure_backup_setup_banner_title" = "Sauvegarde sécurisée";
+"secure_backup_setup_banner_title" = "Sauvegarde automatique des messages"; // Tchap
 "secure_backup_setup_banner_subtitle" = "Protection afin d’éviter de perdre l’accès aux messages et données chiffrés";
-"security_settings_crypto_sessions_description_2" = "Si vous ne reconnaissez pas une connexion, changez votre mot de passe et réinitialisez la sauvegarde sécurisée.";
-"security_settings_secure_backup" = "SAUVEGARDE SÉCURISÉE";
-"security_settings_secure_backup_description" = "Sauvegardez vos clés de chiffrement et les données de votre compte au où vous perdriez l’accès à vos sessions. Vos clés seront protégées par une clé de sécurité unique.";
+"security_settings_crypto_sessions_description_2" = "Si vous ne reconnaissez pas une connexion, changez votre mot de passe et réinitialisez la sauvegarde automatique des messages."; // Tchap
+"security_settings_secure_backup" = "SAUVEGARDE AUTOMATIQUE DES MESSAGES"; // Tchap
+"security_settings_secure_backup_description" = "Sauvegardez vos clés Tchap et les données de votre compte au où vous perdriez l’accès à vos sessions. Vos clés seront protégées par une clé de sécurité unique."; // Tchap
 "security_settings_secure_backup_setup" = "Configurer";
 "security_settings_secure_backup_synchronise" = "Synchroniser";
 "security_settings_secure_backup_delete" = "Supprimer la sauvegarde";
 "security_settings_user_password_description" = "Confirmez votre identité en saisissant le mot de passe de votre compte";
 "secure_key_backup_setup_existing_backup_error_title" = "Une sauvegarde pour les messages existe déjà";
-"secure_key_backup_setup_existing_backup_error_info" = "Déverrouillez-la pour la réutiliser dans la sauvegarde sécurisée ou supprimez-la pour créer une nouvelle sauvegarde de messages dans la sauvegarde sécurisée.";
+"secure_key_backup_setup_existing_backup_error_info" = "Déverrouillez-la pour la réutiliser dans la sauvegarde automatique des messages ou supprimez-la pour créer une nouvelle sauvegarde de messages dans la sauvegarde sécurisée."; // Tchap
 "secure_key_backup_setup_existing_backup_error_unlock_it" = "La déverrouiller";
 "secure_key_backup_setup_existing_backup_error_delete_it" = "La supprimer";
 "sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Commencer à utiliser la sauvegarde sécurisée";
@@ -1236,9 +1236,9 @@
 "create_room_placeholder_address" = "#salondetest:matrix.org";
 "create_room_section_header_address" = "Adresse du salon";
 "create_room_show_in_directory" = "Publier le salon dans le répertoire";
-"create_room_section_footer_type" = "Les personnes ne rejoignent un salon privé que sur invitation.";
-"create_room_type_public" = "Salon public";
-"create_room_type_private" = "Salon privé";
+"create_room_section_footer_type" = "Les personnes ne rejoignent un salon que sur invitation.";
+"create_room_type_public" = "Forum"; // Tchap
+"create_room_type_private" = "Salon"; // Tchap
 "create_room_section_header_type" = "Type de salon";
 "create_room_section_footer_encryption" = "Le chiffrement ne peut pas être désactivé ensuite.";
 "create_room_enable_encryption" = "Activer le chiffrement";
@@ -1521,7 +1521,7 @@
 "spaces_empty_space_title" = "Cet espace n’a pas (encore) de salon";
 "space_tag" = "espace";
 "spaces_suggested_room" = "Recommandé";
-"spaces_explore_rooms" = "Parcourir les salons";
+"spaces_explore_rooms" = "Rejoindre un forum"; // Tchap
 "leave_space_and_all_rooms_action" = "Quitter tous les salons et espaces";
 "leave_space_only_action" = "Ne quitter aucun salon";
 "leave_space_message_admin_warning" = "Vous êtes administrateur de cet espace. Assurez-vous d’avoir transmis les droits d’administration à un autre membre avant de partir.";
@@ -1913,7 +1913,7 @@
 "format_time_d" = "j";
 // E2E import
 "e2e_import_room_keys" = "Importer les clés du salon";
-"e2e_import_prompt" = "Ce processus permet d’importer les clés de chiffrement que vous avez précédemment exportées d’un autre client Matrix. Vous pourrez ensuite déchiffrer tous les messages que l’autre client pouvait déchiffrer.\nLe fichier exporté est protégé par une phrase secrète. Entrez la phrase secrète ci-dessous pour déchiffrer le fichier.";
+"e2e_import_prompt" = "Ce processus permet d’importer les clés Tchap que vous avez précédemment exportées d’un autre client Matrix. Vous pourrez ensuite déchiffrer tous les messages que l’autre client pouvait déchiffrer.\nLe fichier exporté est protégé par une phrase secrète. Entrez la phrase secrète ci-dessous pour déchiffrer le fichier."; // Tchap
 "e2e_import" = "Importer";
 "e2e_passphrase_enter" = "Entrer la phrase secrète";
 // E2E export
@@ -2283,7 +2283,7 @@
 /* The placeholder will show the email address that was entered. */
 "authentication_forgot_password_waiting_message" = "Suivez les instructions envoyées à %@";
 "authentication_forgot_password_waiting_title" = "Relevez vos e-mails.";
-"authentication_forgot_password_text_field_placeholder" = "E-mail";
+"authentication_forgot_password_text_field_placeholder" = "Adresse mail"; // Tchap
 "authentication_verify_email_waiting_title" = "Surveillez votre boîte de réception.";
 /* The placeholder will show the homeserver's domain */
 "authentication_forgot_password_input_message" = "%@ va vous envoyer un lien de vérification";
@@ -2292,7 +2292,7 @@
 "authentication_verify_email_waiting_hint" = "Vous n’avez pas reçu l’e-mail ?";
 /* The placeholder will show the email address that was entered. */
 "authentication_verify_email_waiting_message" = "Suivez les instructions envoyées à %@";
-"authentication_verify_email_text_field_placeholder" = "E-mail";
+"authentication_verify_email_text_field_placeholder" = "Adresse mail"; // Tchap
 /* The placeholder will show the homeserver's domain */
 "authentication_verify_email_input_message" = "%@ doit vérifier votre compte";
 "authentication_verify_email_input_title" = "Entrez votre e-mail";
@@ -2395,7 +2395,7 @@
 "spaces_creation_sharing_type_just_me_title" = "Seulement moi";
 "spaces_creation_sharing_type_message" = "Assurez-vous que les bonnes personnes ont accès %@. Vous pouvez changer ceci plus tard.";
 "spaces_creation_sharing_type_title" = "Avec qui travaillez-vous ?";
-"spaces_creation_email_invites_email_title" = "E-mail";
+"spaces_creation_email_invites_email_title" = "Adresse mail"; // Tchap
 "spaces_creation_email_invites_message" = "Vous pouvez aussi les inviter plus tard.";
 "spaces_creation_email_invites_title" = "Invitez votre équipe";
 "spaces_creation_new_rooms_support" = "Support";
@@ -2537,7 +2537,7 @@
 "user_session_verified_additional_info" = "Cette session est prête pour la messagerie sécurisée.";
 "room_event_encryption_info_key_authenticity_not_guaranteed" = "L’authenticité de ce message chiffré ne peut être garantie sur cet appareil.";
 "user_session_overview_session_details_button_title" = "Informations de session";
-"user_session_overview_session_title" = "Session";
+"user_session_overview_session_title" = "Appareil"; // Tchap
 "user_session_overview_current_session_title" = "Session courante";
 "user_session_details_application_url" = "URL";
 "user_session_details_application_version" = "Version";
@@ -2552,7 +2552,7 @@
 "user_session_details_session_name" = "Nom de la session";
 "user_session_details_device_section_header" = "Appareil";
 "user_session_details_application_section_header" = "Application";
-"user_session_details_session_section_header" = "Session";
+"user_session_details_session_section_header" = "Appareil"; // Tchap
 "user_session_details_title" = "Informations de session";
 "device_type_name_unknown" = "Inconnu";
 "device_type_name_mobile" = "Mobile";
@@ -2643,10 +2643,10 @@
 "settings_labs_enable_wysiwyg_composer" = "Essayez le compositeur de messages visuel";
 
 // Tchap: override some MatrixKit strings
-"attachment_e2e_keys_file_prompt" = "Ce fichier contient des clés de chiffrement exportées d'un client Tchap.\nVoulez-vous voir le contenu du fichier ou importer les clés qu'il contient ?";
+"attachment_e2e_keys_file_prompt" = "Ce fichier contient des clés Tchap exportées d'un client Tchap.\nVoulez-vous voir le contenu du fichier ou importer les clés qu'il contient ?"; // Tchap
 // E2E import
 "e2e_import_room_keys" = "Importer les clés du salon";
-"e2e_import_prompt" = "Ce processus permet d'importer les clés de chiffrement que vous avez précédemment exportées d'un autre client Tchap. Vous pourrez ensuite déchiffrer tous les messages que l'autre client pouvait déchiffrer.\nLe fichier d'export est protégé par une phrase secrète. Entrez la phrase secrète ci-dessous pour déchiffrer le fichier.";
+"e2e_import_prompt" = "Ce processus permet d'importer les clés Tchap que vous avez précédemment exportées d'un autre client Tchap. Vous pourrez ensuite déchiffrer tous les messages que l'autre client pouvait déchiffrer.\nLe fichier d'export est protégé par une phrase secrète. Entrez la phrase secrète ci-dessous pour déchiffrer le fichier."; // Tchap
 "e2e_import" = "Importer";
 "e2e_passphrase_enter" = "Entrer la phrase secrète";
 // E2E export
