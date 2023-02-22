@@ -22,6 +22,8 @@ final class RoundedButton: CustomRoundedButton, Themable {
     
     private enum Constants {
         static let backgroundColorAlpha: CGFloat = 0.2
+        // Tchap : adapt rounded button title color to theme
+        static let titleDisabledColorAlpha: CGFloat = 0.5
     }
     
     // MARK: - Properties
@@ -64,6 +66,8 @@ final class RoundedButton: CustomRoundedButton, Themable {
         
         self.vc_setBackgroundColor(backgroundColor.withAlphaComponent(Constants.backgroundColorAlpha), for: .normal)
         self.setTitleColor(backgroundColor, for: .normal)
+        // Tchap : adapt rounded button title color to theme
+        self.setTitleColor(backgroundColor.withAlphaComponent(Constants.titleDisabledColorAlpha), for: .disabled)
     }
     
     // MARK: - Themable
