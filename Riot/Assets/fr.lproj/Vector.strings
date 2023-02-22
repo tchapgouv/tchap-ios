@@ -1236,10 +1236,10 @@
 "create_room_placeholder_address" = "#salondetest:matrix.org";
 "create_room_section_header_address" = "Adresse du salon";
 "create_room_show_in_directory" = "Publier le salon dans le répertoire";
-"create_room_section_footer_type" = "Les personnes ne rejoignent un salon privé que sur invitation.";
-"create_room_type_public" = "Forum (tout le monde)";
-"create_room_type_private" = "Salon (seulement sur invitation)";
-"create_room_section_header_type" = "QUI PEUT Y ACCÉDER";
+"create_room_section_footer_type" = "Les personnes ne rejoignent un salon que sur invitation.";
+"create_room_type_public" = "Forum"; // Tchap
+"create_room_type_private" = "Salon"; // Tchap
+"create_room_section_header_type" = "Type de salon";
 "create_room_section_footer_encryption" = "Le chiffrement ne peut pas être désactivé ensuite.";
 "create_room_enable_encryption" = "Activer le chiffrement";
 "create_room_section_header_encryption" = "Chiffrement du salon";
@@ -1521,7 +1521,7 @@
 "spaces_empty_space_title" = "Cet espace n’a pas (encore) de salon";
 "space_tag" = "espace";
 "spaces_suggested_room" = "Recommandé";
-"spaces_explore_rooms" = "Rejoindre un forum";
+"spaces_explore_rooms" = "Rejoindre un forum"; // Tchap
 "leave_space_and_all_rooms_action" = "Quitter tous les salons et espaces";
 "leave_space_only_action" = "Ne quitter aucun salon";
 "leave_space_message_admin_warning" = "Vous êtes administrateur de cet espace. Assurez-vous d’avoir transmis les droits d’administration à un autre membre avant de partir.";
