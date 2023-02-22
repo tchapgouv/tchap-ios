@@ -406,7 +406,7 @@ final class BuildSettings: NSObject {
     
     // MARK: - Polls
     
-    static let pollsEnabled = false // Currently disabled in Tchap.
+    static let pollsEnabled = false //true : Currently disabled in Tchap.
     static var pollsHistoryEnabled: Bool = false
     
     // MARK: - Location Sharing
