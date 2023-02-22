@@ -94,7 +94,10 @@ class CommonConfiguration: NSObject, Configurable {
         sdkOptions.enableNewClientInformationFeature = RiotSettings.shared.enableClientInformationFeature
         
         if sdkOptions.isCryptoSDKAvailable {
-            let isEnabled = RiotSettings.shared.enableCryptoSDK
+            // Tchap : force to not use the new Rust based Crypto SDK
+//            let isEnabled = RiotSettings.shared.enableCryptoSDK
+            let isEnabled = false
+            
             MXLog.debug("[CommonConfiguration] Crypto SDK is \(isEnabled ? "enabled" : "disabled")")
             sdkOptions.enableCryptoSDK = isEnabled
             sdkOptions.enableStartupProgress = isEnabled
