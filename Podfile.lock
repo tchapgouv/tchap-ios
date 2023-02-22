@@ -95,10 +95,6 @@ DEPENDENCIES:
   - Down (~> 0.11.0)
   - DSBottomSheet (~> 0.3)
   - DSWaveformImage (~> 6.1.1)
-<<<<<<< HEAD
-  - DTCoreText (= 1.6.26)
-=======
->>>>>>> v1.10.2
   - FLEX (~> 4.5.0)
   - FlowCommoniOS (~> 1.12.0)
   - GBDeviceInfo (~> 6.6.0)
@@ -221,10 +217,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-<<<<<<< HEAD
-PODFILE CHECKSUM: 3c76918930e030ea0488d550923cceb09992573a
-=======
-PODFILE CHECKSUM: becc7a1d080df477982664af957cdc02ff843c56
->>>>>>> v1.10.2
+PODFILE CHECKSUM: 317cc2602eb01d0865bc252dfeb81092f9b1966c
 
 COCOAPODS: 1.11.3

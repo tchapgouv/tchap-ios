@@ -184,14 +184,11 @@ class AllChatsViewController: HomeViewController {
         }
 
         AppDelegate.theDelegate().checkAppVersion()
-<<<<<<< HEAD
 
         if BuildSettings.newAppLayoutEnabled && !RiotSettings.shared.allChatsOnboardingHasBeenDisplayed {
             // Tchap: Disable new layout tutorials. Wait for an updated tutorials before show it.
 //            self.showAllChatsOnboardingScreen()
         }
-=======
->>>>>>> v1.10.2
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

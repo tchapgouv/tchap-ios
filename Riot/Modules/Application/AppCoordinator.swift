@@ -309,7 +309,47 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         self.splitViewCoordinator?.start(with: spaceId)
     }
     
-<<<<<<< HEAD
+    private func setupPushRulesSessionEvents() {
+        let sessionReady = NotificationCenter.default.publisher(for: .mxSessionStateDidChange)
+            .compactMap { $0.object as? MXSession }
+            .filter { $0.state == .running }
+            .removeDuplicates { session1, session2 in
+                session1 == session2
+            }
+        
+        sessionReady
+            .sink { [weak self] session in
+                self?.setupPushRulesUpdater(session: session)
+            }
+            .store(in: &cancellables)
+        
+        
+        let sessionClosed = NotificationCenter.default.publisher(for: .mxSessionStateDidChange)
+            .compactMap { $0.object as? MXSession }
+            .filter { $0.state == .closed }
+        
+        sessionClosed
+            .sink { [weak self] _ in
+                self?.pushRulesUpdater = nil
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func setupPushRulesUpdater(session: MXSession) {
+        pushRulesUpdater = .init(notificationSettingsService: MXNotificationSettingsService(session: session))
+        
+        let applicationDidBecomeActive = NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).eraseOutput()
+        let needsCheckPublisher = applicationDidBecomeActive.merge(with: Just(())).eraseToAnyPublisher()
+        
+        needsCheckPublisher
+            .sink { _ in
+                Task { @MainActor [weak self] in
+                    await self?.pushRulesUpdater?.syncRulesIfNeeded()
+                }
+            }
+            .store(in: &cancellables)
+    }
+
     private func presentApplicationUpdate(with versionInfo: ClientVersionInfo) {
         guard self.appVersionUpdateCoordinator == nil else {
             MXLog.debug("[AppCoordinor] AppVersionUpdateCoordinator already presented")
@@ -485,47 +525,6 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
 extension AppCoordinator: AppVersionUpdateCoordinatorDelegate {
     func appVersionUpdateCoordinatorDidCancel(_ coordinator: AppVersionUpdateCoordinatorType) {
         self.remove(childCoordinator: coordinator)
-=======
-    private func setupPushRulesSessionEvents() {
-        let sessionReady = NotificationCenter.default.publisher(for: .mxSessionStateDidChange)
-            .compactMap { $0.object as? MXSession }
-            .filter { $0.state == .running }
-            .removeDuplicates { session1, session2 in
-                session1 == session2
-            }
-        
-        sessionReady
-            .sink { [weak self] session in
-                self?.setupPushRulesUpdater(session: session)
-            }
-            .store(in: &cancellables)
-        
-        
-        let sessionClosed = NotificationCenter.default.publisher(for: .mxSessionStateDidChange)
-            .compactMap { $0.object as? MXSession }
-            .filter { $0.state == .closed }
-        
-        sessionClosed
-            .sink { [weak self] _ in
-                self?.pushRulesUpdater = nil
-            }
-            .store(in: &cancellables)
-    }
-    
-    private func setupPushRulesUpdater(session: MXSession) {
-        pushRulesUpdater = .init(notificationSettingsService: MXNotificationSettingsService(session: session))
-        
-        let applicationDidBecomeActive = NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).eraseOutput()
-        let needsCheckPublisher = applicationDidBecomeActive.merge(with: Just(())).eraseToAnyPublisher()
-        
-        needsCheckPublisher
-            .sink { _ in
-                Task { @MainActor [weak self] in
-                    await self?.pushRulesUpdater?.syncRulesIfNeeded()
-                }
-            }
-            .store(in: &cancellables)
->>>>>>> v1.10.2
     }
 }
 

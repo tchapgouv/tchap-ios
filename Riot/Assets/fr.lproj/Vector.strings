@@ -168,17 +168,10 @@
 "room_participants_unknown" = "Inconnu";
 "room_participants_idle" = "Inactif";
 "room_participants_now" = "maintenant";
-<<<<<<< HEAD
-"room_participants_ago" = "d'inactivité";
-"room_participants_action_section_admin_tools" = "Outils d'administration";
-"room_participants_action_section_direct_chats" = "Discussions directes";
-"room_participants_action_section_devices" = "Appareils";
-=======
 "room_participants_ago" = "d’inactivité";
 "room_participants_action_section_admin_tools" = "Outils d’administration";
 "room_participants_action_section_direct_chats" = "Messages directs";
 "room_participants_action_section_devices" = "Sessions";
->>>>>>> v1.10.2
 "room_participants_action_section_other" = "Options";
 "room_participants_action_invite" = "Inviter";
 "room_participants_action_leave" = "Quitter ce salon";
@@ -420,15 +413,9 @@
 "today" = "Aujourd’hui";
 "yesterday" = "Hier";
 "network_offline_prompt" = "La connexion Internet semble être hors-ligne.";
-<<<<<<< HEAD
-"public_room_section_title" = "Salons forums (sur %@) :";
-"bug_report_prompt" = "L'application s'est terminée brusquement la dernière fois. Voulez-vous envoyer un rapport d'erreur ?";
-"rage_shake_prompt" = "Vous semblez secouer le téléphone avec frustration. Souhaitez-vous soumettre un rapport d'erreur ?";
-=======
 "public_room_section_title" = "Forums (sur %@) :";
 "bug_report_prompt" = "L’application s’est arrêtée brusquement la dernière fois. Voulez-vous envoyer un rapport d’anomalie ?";
 "rage_shake_prompt" = "Vous semblez secouer le téléphone avec frustration. Souhaitez-vous soumettre un rapport d’anomalie ?";
->>>>>>> v1.10.2
 "do_not_ask_again" = "Ne plus demander";
 "camera_access_not_granted" = "%@ n’a pas la permission pour utiliser l’appareil photo, veuillez modifier les options de confidentialité";
 "large_badge_value_k_format" = "%.1fK";
@@ -1250,15 +1237,9 @@
 "create_room_section_header_address" = "Adresse du salon";
 "create_room_show_in_directory" = "Publier le salon dans le répertoire";
 "create_room_section_footer_type" = "Les personnes ne rejoignent un salon privé que sur invitation.";
-<<<<<<< HEAD
-"create_room_type_public" = "Salon public";
-"create_room_type_private" = "Salon privé";
-"create_room_section_header_type" = "Type de salon";
-=======
 "create_room_type_public" = "Forum (tout le monde)";
 "create_room_type_private" = "Salon (seulement sur invitation)";
 "create_room_section_header_type" = "QUI PEUT Y ACCÉDER";
->>>>>>> v1.10.2
 "create_room_section_footer_encryption" = "Le chiffrement ne peut pas être désactivé ensuite.";
 "create_room_enable_encryption" = "Activer le chiffrement";
 "create_room_section_header_encryption" = "Chiffrement du salon";
@@ -2652,35 +2633,6 @@
 "manage_session_name_info" = "Gardez en tête que les noms des sessions sont aussi visibles par les personnes avec qui vous communiquez. %@";
 "manage_session_name_hint" = "Personnaliser les noms des sessions peut vous aider à reconnaître vos appareils plus facilement.";
 "settings_labs_enable_wysiwyg_composer" = "Essayez le compositeur de messages visuel";
-<<<<<<< HEAD
-
-// Tchap: override some MatrixKit strings
-"attachment_e2e_keys_file_prompt" = "Ce fichier contient des clés de chiffrement exportées d'un client Tchap.\nVoulez-vous voir le contenu du fichier ou importer les clés qu'il contient ?";
-// E2E import
-"e2e_import_room_keys" = "Importer les clés du salon";
-"e2e_import_prompt" = "Ce processus permet d'importer les clés de chiffrement que vous avez précédemment exportées d'un autre client Tchap. Vous pourrez ensuite déchiffrer tous les messages que l'autre client pouvait déchiffrer.\nLe fichier d'export est protégé par une phrase secrète. Entrez la phrase secrète ci-dessous pour déchiffrer le fichier.";
-"e2e_import" = "Importer";
-"e2e_passphrase_enter" = "Entrer la phrase secrète";
-// E2E export
-"e2e_export_room_keys" = "Exporter les clés de salon";
-"e2e_export_prompt" = "Ce processus permet d'exporter vers un fichier local les clés des messages que vous avez reçu sur les salons chiffrés. Vous pourrez ensuite importer ce fichier dans un autre client Tchap, pour qu'il puisse déchiffrer aussi ces messages.\nLe fichier exporté permettra à tous ceux qui y ont accès de déchiffrer tous les messages chiffrés que vous pouvez voir, donc vous devriez le conserver dans un endroit sécurisé.";
-"e2e_export" = "Exporter";
-"e2e_passphrase_confirm" = "Confirmer la phrase secrète";
-"e2e_passphrase_empty" = "La phrase secrète ne peut pas être vide";
-"e2e_passphrase_not_match" = "Les phrases secrète doivent être identiques";
-"e2e_passphrase_create" = "Créer la phrase secrète";
-// Encryption information
-"room_event_encryption_verify_message" = "Pour valider que vous pouvez faire confiance à cet appareil, merci de vérifier que la clé que vous voyez dans les Paramètres Utilisateur de cet appareil correspond à la clé ci-dessous :\n\n    Nom de l'appareil : %@\n    Identifiant de l'appareil : %@\n    Clé de l'appareil : %@\n\nSi les clés correspondent, cliquer sur le bouton Vérifier ci-dessous.";
-"room_event_encryption_info_verify" = "Vérifier...";
-"room_event_encryption_info_unverify" = "A revérifier";
-"room_event_encryption_info_block" = "Bloquer";
-"room_event_encryption_info_unblock" = "Débloquer";
-// Contacts
-"local_contacts_access_discovery_warning" = "Afin d’afficher qui parmi vos contacts utilise déjà Tchap, nous pouvons exploiter les adresses e-mails de votre carnet d'adresse. Ces données ne seront pas mémorisées. Pour plus d'informations, veuillez consulter les Termes et Conditions disponibles dans les paramètres de l'application.";
-// Events formatter
-"notice_crypto_unable_to_decrypt" = "** Echec de déchiffrement : %@ **";
-"notice_crypto_error_unknown_inbound_session_id" = "Veuillez ouvrir Tchap sur vos autres appareils afin d'autoriser le partage de clés.";
-=======
 "settings_labs_enable_voice_broadcast" = "Diffusion vocale";
 "wysiwyg_composer_format_action_un_indent" = "Diminuer le retrait";
 "wysiwyg_composer_format_action_indent" = "Augmenter le retrait";
@@ -2814,4 +2766,30 @@
 // MARK: Password policy errors
 "password_policy_too_short_pwd_error" = "Mot de passe trop court";
 "accessibility_selected" = "sélectionné";
->>>>>>> v1.10.2
+
+// Tchap: override some MatrixKit strings
+"attachment_e2e_keys_file_prompt" = "Ce fichier contient des clés de chiffrement exportées d'un client Tchap.\nVoulez-vous voir le contenu du fichier ou importer les clés qu'il contient ?";
+// E2E import
+"e2e_import_room_keys" = "Importer les clés du salon";
+"e2e_import_prompt" = "Ce processus permet d'importer les clés de chiffrement que vous avez précédemment exportées d'un autre client Tchap. Vous pourrez ensuite déchiffrer tous les messages que l'autre client pouvait déchiffrer.\nLe fichier d'export est protégé par une phrase secrète. Entrez la phrase secrète ci-dessous pour déchiffrer le fichier.";
+"e2e_import" = "Importer";
+"e2e_passphrase_enter" = "Entrer la phrase secrète";
+// E2E export
+"e2e_export_room_keys" = "Exporter les clés de salon";
+"e2e_export_prompt" = "Ce processus permet d'exporter vers un fichier local les clés des messages que vous avez reçu sur les salons chiffrés. Vous pourrez ensuite importer ce fichier dans un autre client Tchap, pour qu'il puisse déchiffrer aussi ces messages.\nLe fichier exporté permettra à tous ceux qui y ont accès de déchiffrer tous les messages chiffrés que vous pouvez voir, donc vous devriez le conserver dans un endroit sécurisé.";
+"e2e_export" = "Exporter";
+"e2e_passphrase_confirm" = "Confirmer la phrase secrète";
+"e2e_passphrase_empty" = "La phrase secrète ne peut pas être vide";
+"e2e_passphrase_not_match" = "Les phrases secrète doivent être identiques";
+"e2e_passphrase_create" = "Créer la phrase secrète";
+// Encryption information
+"room_event_encryption_verify_message" = "Pour valider que vous pouvez faire confiance à cet appareil, merci de vérifier que la clé que vous voyez dans les Paramètres Utilisateur de cet appareil correspond à la clé ci-dessous :\n\n    Nom de l'appareil : %@\n    Identifiant de l'appareil : %@\n    Clé de l'appareil : %@\n\nSi les clés correspondent, cliquer sur le bouton Vérifier ci-dessous.";
+"room_event_encryption_info_verify" = "Vérifier...";
+"room_event_encryption_info_unverify" = "A revérifier";
+"room_event_encryption_info_block" = "Bloquer";
+"room_event_encryption_info_unblock" = "Débloquer";
+// Contacts
+"local_contacts_access_discovery_warning" = "Afin d’afficher qui parmi vos contacts utilise déjà Tchap, nous pouvons exploiter les adresses e-mails de votre carnet d'adresse. Ces données ne seront pas mémorisées. Pour plus d'informations, veuillez consulter les Termes et Conditions disponibles dans les paramètres de l'application.";
+// Events formatter
+"notice_crypto_unable_to_decrypt" = "** Echec de déchiffrement : %@ **";
+"notice_crypto_error_unknown_inbound_session_id" = "Veuillez ouvrir Tchap sur vos autres appareils afin d'autoriser le partage de clés.";
