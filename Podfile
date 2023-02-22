@@ -78,7 +78,7 @@ end
 
 abstract_target 'TchapPods' do
 
-  pod 'GBDeviceInfo', '~> 6.6.0'
+  pod 'GBDeviceInfo', '~> 7.1.0'
   pod 'Reusable', '~> 4.1'
   pod 'KeychainAccess', '~> 4.2.2'
   pod 'WeakDictionary', '~> 2.0'
@@ -96,7 +96,7 @@ abstract_target 'TchapPods' do
 
   # Tools
   pod 'SwiftGen', '~> 6.3'
-  pod 'SwiftLint', '~> 0.44.0'
+  pod 'SwiftLint', '~> 0.49.1'
 
   target "Tchap" do
     import_MatrixSDK
