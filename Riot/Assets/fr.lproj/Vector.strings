@@ -657,7 +657,7 @@
 "sign_out_existing_key_backup_alert_sign_out_action" = "Se déconnecter";
 "sign_out_non_existing_key_backup_alert_title" = "Vous n’aurez plus accès à vos messages chiffrés si vous vous déconnectez maintenant";
 "sign_out_non_existing_key_backup_alert_setup_key_backup_action" = "Commencer à utiliser la sauvegarde de clés";
-"sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "Je ne veux pas de mes messages chiffrés";
+"sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "Se déconnecter quand même"; // Tchap
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_title" = "Vous perdrez vos messages chiffrés";
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_message" = "Vous n’aurez plus accès à vos messages chiffrés sauf si vous sauvegardez vos clés avant de vous déconnecter.";
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_sign_out_action" = "Se déconnecter";
@@ -1134,7 +1134,7 @@
 "secure_key_backup_setup_intro_use_security_passphrase_info" = "Saisissez une phrase secrète que vous êtes seul à connaître et générez une clé pour la sauvegarde.";
 "secure_key_backup_setup_cancel_alert_title" = "En êtes-vous sûr ?";
 "secure_key_backup_setup_cancel_alert_message" = "Si vous annulez maintenant, vous pourriez perdre les messages et données chiffrés si vous perdez l’accès à vos connexions.\n\nVous pouvez également configurer la sauvegarde automatique des messages et gérer vos clés dans les paramètres."; // Tchap
-"secrets_setup_recovery_key_title" = "Enregistrer votre clé de sécurité";
+"secrets_setup_recovery_key_title" = "Sauvegardez votre Clé de récupération"; // Tchap
 "secrets_setup_recovery_key_information" = "Stockez votre clé de récupération dans un endroit sûr. Elle peut être utilisée pour déverrouiller vos messages et données chiffrés.";
 "secrets_setup_recovery_key_loading" = "Chargement…";
 "secrets_setup_recovery_key_export_action" = "Sauvegarder";
@@ -1163,7 +1163,7 @@
 "secure_key_backup_setup_existing_backup_error_info" = "Déverrouillez-la pour la réutiliser dans la sauvegarde automatique des messages ou supprimez-la pour créer une nouvelle sauvegarde de messages dans la sauvegarde sécurisée."; // Tchap
 "secure_key_backup_setup_existing_backup_error_unlock_it" = "La déverrouiller";
 "secure_key_backup_setup_existing_backup_error_delete_it" = "La supprimer";
-"sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Commencer à utiliser la sauvegarde sécurisée";
+"sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Utiliser la sauvegarde automatique"; // Tchap
 "cross_signing_setup_banner_title" = "Configurer le chiffrement";
 "cross_signing_setup_banner_subtitle" = "Vérifiez vos autres appareils plus facilement";
 // Events formatter with you
