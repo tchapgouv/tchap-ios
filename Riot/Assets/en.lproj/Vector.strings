@@ -836,8 +836,8 @@ Tap the + to start adding people.";
 
 "settings_key_backup_info" = "Encrypted messages are secured with end-to-end encryption. Only you and the recipient(s) have the keys to read these messages.";
 "settings_key_backup_info_checking" = "Checking…";
-"settings_key_backup_info_none" = "This feature allows you to automatically save your messages and retrieve them at any time."; // Tchap
-"settings_key_backup_info_signout_warning" = ""; // Tchap
+"settings_key_backup_info_none" = "Your keys are not being backed up from this session.";
+"settings_key_backup_info_signout_warning" = "Back up your keys before signing out to avoid losing them.";
 "settings_key_backup_info_version" = "Key Backup Version: %@";
 "settings_key_backup_info_algorithm" = "Algorithm: %@";
 "settings_key_backup_info_valid" = "This session is backing up your keys.";
@@ -854,10 +854,10 @@ Tap the + to start adding people.";
 
 "settings_key_backup_button_create" = "Start using Key Backup";
 "settings_key_backup_button_restore" = "Restore from Backup";
-"settings_key_backup_button_delete" = "Deactivate"; // Tchap
+"settings_key_backup_button_delete" = "Delete Backup";
 "settings_key_backup_button_connect" = "Connect this session to Key Backup";
-"settings_key_backup_delete_confirmation_prompt_title" = "Deactivate"; // Tchap
-"settings_key_backup_delete_confirmation_prompt_msg" = "Are you sure? You will lose your encrypted messages if secure synchronization is deactivated."; // Tchap
+"settings_key_backup_delete_confirmation_prompt_title" = "Delete Backup";
+"settings_key_backup_delete_confirmation_prompt_msg" = "Are you sure? You will lose your encrypted messages if your keys are not backed up properly.";
 
 "settings_devices_description" = "A session's public name is visible to people you communicate with";
 
@@ -895,16 +895,16 @@ Tap the + to start adding people.";
 "security_settings_title" = "Security";
 "security_settings_crypto_sessions" = "MY SESSIONS";
 "security_settings_crypto_sessions_loading" = "Loading sessions…";
-"security_settings_crypto_sessions_description_2" = "If you don’t recognise a login, change your Matrix account password and reset Secure Synchronization."; // Tchap
+"security_settings_crypto_sessions_description_2" = "If you don’t recognise a login, change your Matrix account password and reset Secure Backup.";
 
-"security_settings_secure_backup" = "SECURE SYNCHRONIZATION";
+"security_settings_secure_backup" = "SECURE BACKUP";
 "security_settings_secure_backup_description" =  "Back up your encryption keys with your account data in case you lose access to your sessions. Your keys will be secured with a unique Security Key.";
 "security_settings_secure_backup_info_checking" = "Checking…";
-"security_settings_secure_backup_info_valid" = "Secure synchronization is active."; // Tchap
+"security_settings_secure_backup_info_valid" = "This session is backing up your keys.";
 "security_settings_secure_backup_setup" = "Set up";
 "security_settings_secure_backup_reset" = "Reset";
-"security_settings_secure_backup_restore" = "Synchronize"; // Tchap
-"security_settings_secure_backup_delete" = "Deactivate"; // Tchap
+"security_settings_secure_backup_restore" = "Restore from Backup";
+"security_settings_secure_backup_delete" = "Delete Backup";
 
 "security_settings_backup" = "MESSAGE BACKUP";
 
@@ -912,9 +912,9 @@ Tap the + to start adding people.";
 "security_settings_crosssigning_info_not_bootstrapped" = "Cross-signing is not yet set up.";
 "security_settings_crosssigning_info_exists" = "Your account has a cross-signing identity, but it is not yet trusted by this session. Complete security of this session.";
 "security_settings_crosssigning_info_trusted" = "Cross-signing is enabled. You can trust other users and your other sessions based on cross-signing but you cannot cross-sign from this session because it does not have cross-signing private keys. Complete security of this session.";
-"security_settings_crosssigning_info_ok" = "Cross-signing makes it easy to synchronize messages across multiple devices."; // Tchap
-"security_settings_crosssigning_bootstrap" = "Activate"; // Tchap
-"security_settings_crosssigning_reset" = "Deactivate"; // Tchap
+"security_settings_crosssigning_info_ok" = "Cross-signing is ready for use.";
+"security_settings_crosssigning_bootstrap" = "Set up";
+"security_settings_crosssigning_reset" = "Reset";
 "security_settings_crosssigning_complete_security" = "Complete security";
 
 "security_settings_cryptography" = "CRYPTOGRAPHY";
@@ -1832,10 +1832,10 @@ Tap the + to start adding people.";
 
 // Recovery Key
 
-"secrets_setup_recovery_key_title" = "synchronization Key"; // Tchap
-"secrets_setup_recovery_key_information" = "This key allows you to automatically save your messages and retrieve them at any time."; // Tchap
+"secrets_setup_recovery_key_title" = "Save your Security Key";
+"secrets_setup_recovery_key_information" = "Store your Security Key somewhere safe. It can be used to unlock your encrypted messages & data.";
 "secrets_setup_recovery_key_loading" = "Loading…";
-"secrets_setup_recovery_key_export_action" = "Save my key"; // Tchap
+"secrets_setup_recovery_key_export_action" = "Save";
 "secrets_setup_recovery_key_done_action" = "Done";
 
 "secrets_setup_recovery_key_storage_alert_title" = "Keep it safe";
