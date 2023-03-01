@@ -184,8 +184,12 @@ final class SecretsSetupRecoveryKeyViewController: UIViewController {
         self.doneButton.isEnabled = self.isPassphraseOnly
         
         if !self.isPassphraseOnly {
-            self.recoveryKey = recoveryKey
-            self.recoveryKeyLabel.text = recoveryKey
+            // Tchap : don't display recovery key
+            // Display blank character to avoid bottom button to move up when emptying fields.
+//            self.recoveryKey = recoveryKey
+//            self.recoveryKeyLabel.text = recoveryKey
+            self.recoveryKey = " "
+            self.recoveryKeyLabel.text = " "
         }
     }
     
