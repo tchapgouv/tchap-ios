@@ -17,6 +17,7 @@
 import Foundation
 import Reusable
 import WysiwygComposer
+import HTMLParser
 import SwiftUI
 import Combine
 import UIKit
@@ -42,7 +43,16 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var heightConstraint: NSLayoutConstraint!
     private var voiceMessageBottomConstraint: NSLayoutConstraint?
     private var hostingViewController: VectorHostingController!
-    private var wysiwygViewModel = WysiwygComposerViewModel(textColor: ThemeService.shared().theme.colors.primaryContent)
+    private var wysiwygViewModel = WysiwygComposerViewModel(
+        parserStyle: HTMLParserStyle(textColor: ThemeService.shared().theme.colors.primaryContent,
+                                     linkColor: ThemeService.shared().theme.colors.links,
+                                     codeBackgroundColor: ThemeService.shared().theme.selectedBackgroundColor,
+                                     codeBorderColor: ThemeService.shared().theme.textQuinaryColor,
+                                     quoteBackgroundColor: ThemeService.shared().theme.selectedBackgroundColor,
+                                     quoteBorderColor: ThemeService.shared().theme.textQuinaryColor,
+                                     borderWidth: 1.0,
+                                     cornerRadius: 4.0)
+    )
     private var viewModel: ComposerViewModelProtocol!
     
     private var isLandscapePhone: Bool {
@@ -212,6 +222,13 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         wysiwygViewModel.maximised = false
     }
     
+    func performLinkOperation(_ linkOperation: WysiwygLinkOperation) {
+        if let selectionToRestore = viewModel.selectionToRestore {
+            wysiwygViewModel.select(range: selectionToRestore)
+        }
+        wysiwygViewModel.applyLinkOperation(linkOperation)
+    }
+    
     // MARK: - Private
     
     @objc private func keyboardWillShow(_ notification: Notification) {
@@ -258,9 +275,11 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private func handleViewModelResult(_ result: ComposerViewModelResult) {
         switch result {
         case .cancel:
-            self.toolbarViewDelegate?.roomInputToolbarViewDidTapCancel(self)
+            toolbarViewDelegate?.roomInputToolbarViewDidTapCancel(self)
         case let .contentDidChange(isEmpty):
             setVoiceMessageToolbarIsHidden(!isEmpty)
+        case let .linkTapped(linkAction):
+            toolbarViewDelegate?.didSendLinkAction(LinkActionWrapper(linkAction))
         }
     }
     
@@ -285,7 +304,14 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     
     private func update(theme: Theme) {
         hostingViewController.view.backgroundColor = theme.colors.background
-        wysiwygViewModel.textColor = theme.colors.primaryContent
+        wysiwygViewModel.parserStyle = HTMLParserStyle(textColor: ThemeService.shared().theme.colors.primaryContent,
+                                                       linkColor: ThemeService.shared().theme.colors.links,
+                                                       codeBackgroundColor: ThemeService.shared().theme.selectedBackgroundColor,
+                                                       codeBorderColor: ThemeService.shared().theme.textQuinaryColor,
+                                                       quoteBackgroundColor: ThemeService.shared().theme.selectedBackgroundColor,
+                                                       quoteBorderColor: ThemeService.shared().theme.textQuinaryColor,
+                                                       borderWidth: 1.0,
+                                                       cornerRadius: 4.0)
     }
     
     private func updateTextViewHeight() {

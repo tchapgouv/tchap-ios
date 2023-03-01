@@ -14,6 +14,7 @@
  limitations under the License.
  */
 
+import Combine
 import Foundation
 import Intents
 import MatrixSDK
@@ -73,6 +74,8 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     }
         
     private var currentSpaceId: String?
+    private var cancellables: Set<AnyCancellable> = .init()
+    private var pushRulesUpdater: PushRulesUpdater?
   
     // MARK: Public
     
@@ -99,9 +102,10 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-        self.setupLogger()
-        self.setupTheme()
-        self.excludeAllItemsFromBackup()
+        setupLogger()
+        setupTheme()
+        excludeAllItemsFromBackup()
+        setupPushRulesSessionEvents()
         
         // Setup navigation router store
         _ = NavigationRouterStore.shared
@@ -120,7 +124,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
             if AppDelegate.theDelegate().isOffline {
                 self.splitViewCoordinator?.showAppStateIndicator(with: VectorL10n.networkOfflineTitle, icon: UIImage(systemName: "wifi.slash"))
             } else {
-                self.splitViewCoordinator?.hideAppStateIndicator()
+                self.splitViewCoordinator?.hideAppStateIndicator()                
             }
         }
         
@@ -305,6 +309,47 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         self.splitViewCoordinator?.start(with: spaceId)
     }
     
+    private func setupPushRulesSessionEvents() {
+        let sessionReady = NotificationCenter.default.publisher(for: .mxSessionStateDidChange)
+            .compactMap { $0.object as? MXSession }
+            .filter { $0.state == .running }
+            .removeDuplicates { session1, session2 in
+                session1 == session2
+            }
+        
+        sessionReady
+            .sink { [weak self] session in
+                self?.setupPushRulesUpdater(session: session)
+            }
+            .store(in: &cancellables)
+        
+        
+        let sessionClosed = NotificationCenter.default.publisher(for: .mxSessionStateDidChange)
+            .compactMap { $0.object as? MXSession }
+            .filter { $0.state == .closed }
+        
+        sessionClosed
+            .sink { [weak self] _ in
+                self?.pushRulesUpdater = nil
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func setupPushRulesUpdater(session: MXSession) {
+        pushRulesUpdater = .init(notificationSettingsService: MXNotificationSettingsService(session: session))
+        
+        let applicationDidBecomeActive = NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).eraseOutput()
+        let needsCheckPublisher = applicationDidBecomeActive.merge(with: Just(())).eraseToAnyPublisher()
+        
+        needsCheckPublisher
+            .sink { _ in
+                Task { @MainActor [weak self] in
+                    await self?.pushRulesUpdater?.syncRulesIfNeeded()
+                }
+            }
+            .store(in: &cancellables)
+    }
+
     private func presentApplicationUpdate(with versionInfo: ClientVersionInfo) {
         guard self.appVersionUpdateCoordinator == nil else {
             MXLog.debug("[AppCoordinor] AppVersionUpdateCoordinator already presented")

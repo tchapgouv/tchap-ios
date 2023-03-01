@@ -92,6 +92,15 @@ class CommonConfiguration: NSObject, Configurable {
         MXKeyProvider.sharedInstance().delegate = EncryptionKeyManager.shared
 
         sdkOptions.enableNewClientInformationFeature = RiotSettings.shared.enableClientInformationFeature
+        
+        if sdkOptions.isCryptoSDKAvailable {
+            let isEnabled = RiotSettings.shared.enableCryptoSDK
+            MXLog.debug("[CommonConfiguration] Crypto SDK is \(isEnabled ? "enabled" : "disabled")")
+            sdkOptions.enableCryptoSDK = isEnabled
+            sdkOptions.enableStartupProgress = isEnabled
+        } else {
+            MXLog.debug("[CommonConfiguration] Crypto SDK is not available)")
+        }
     }
     
     private func makeASCIIUserAgent() -> String? {

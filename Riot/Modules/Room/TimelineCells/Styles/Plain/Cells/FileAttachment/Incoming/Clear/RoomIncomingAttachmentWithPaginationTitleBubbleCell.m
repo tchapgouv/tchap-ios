@@ -31,7 +31,6 @@
     
     self.paginationLabel.textColor = ThemeService.shared.theme.tintColor;
     self.paginationSeparatorView.backgroundColor = ThemeService.shared.theme.tintColor;
-    self.messageTextView.tintColor = ThemeService.shared.theme.tintColor;
 }
 
 - (void)render:(MXKCellData *)cellData

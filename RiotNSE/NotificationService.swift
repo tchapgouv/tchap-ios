@@ -41,6 +41,7 @@ class NotificationService: UNNotificationServiceExtension {
     private var ongoingVoIPPushRequests: [String: Bool] = [:]
     
     private var userAccount: MXKAccount?
+    private var isCryptoSDKEnabled = false
     
     /// Best attempt contents. Will be updated incrementally, if something fails during the process, this best attempt content will be showed as notification. Keys are eventId's
     private var bestAttemptContents: [String: UNMutableNotificationContent] = [:]
@@ -195,9 +196,10 @@ class NotificationService: UNNotificationServiceExtension {
         self.userAccount = MXKAccountManager.shared()?.activeAccounts.first
         if let userAccount = userAccount {
             Self.backgroundServiceInitQueue.sync {
-                if NotificationService.backgroundSyncService?.credentials != userAccount.mxCredentials {
+                if hasChangedCryptoSDK() || NotificationService.backgroundSyncService?.credentials != userAccount.mxCredentials {
                     MXLog.debug("[NotificationService] setup: MXBackgroundSyncService init: BEFORE")
                     self.logMemory()
+                    
                     NotificationService.backgroundSyncService = MXBackgroundSyncService(withCredentials: userAccount.mxCredentials, persistTokenDataHandler: { persistTokenDataHandler in
                         MXKAccountManager.shared().readAndWriteCredentials(persistTokenDataHandler)
                     }, unauthenticatedHandler: { error, softLogout, refreshTokenAuth, completion in
@@ -212,6 +214,16 @@ class NotificationService: UNNotificationServiceExtension {
             MXLog.debug("[NotificationService] setup: No active accounts")
             fallbackToBestAttemptContent(forEventId: eventId)
         }
+    }
+    
+    /// Determine whether we have switched from using crypto v1 to v2 or vice versa which will require
+    /// rebuilding `MXBackgroundSyncService`
+    private func hasChangedCryptoSDK() -> Bool {
+        guard isCryptoSDKEnabled != RiotSettings.shared.enableCryptoSDK else {
+            return false
+        }
+        isCryptoSDKEnabled = RiotSettings.shared.enableCryptoSDK
+        return true
     }
     
     /// Attempts to preprocess payload and attach room display name to the best attempt content
@@ -473,7 +485,14 @@ class NotificationService: UNNotificationServiceExtension {
                                 notificationBody = NotificationService.localizedString(forKey: "VIDEO_FROM_USER", eventSenderName)
                             case kMXMessageTypeAudio:
                                 if event.isVoiceMessage() {
-                                    notificationBody = NotificationService.localizedString(forKey: "VOICE_MESSAGE_FROM_USER", eventSenderName)
+                                    // Ignore voice broadcast chunk event except the first one.
+                                    if let chunkInfo = event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType] as? [String: UInt] {
+                                        if chunkInfo[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkSequence] == 1 {
+                                            notificationBody = NotificationService.localizedString(forKey: "VOICE_BROADCAST_FROM_USER", eventSenderName)
+                                        }
+                                    } else {
+                                        notificationBody = NotificationService.localizedString(forKey: "VOICE_MESSAGE_FROM_USER", eventSenderName)
+                                    }
                                 } else {
                                     notificationBody = NotificationService.localizedString(forKey: "AUDIO_FROM_USER", eventSenderName, messageContent)
                                 }
@@ -546,7 +565,7 @@ class NotificationService: UNNotificationServiceExtension {
                                 // Otherwise show a generic reaction.
                                 notificationBody = NotificationService.localizedString(forKey: "GENERIC_REACTION_FROM_USER", eventSenderName)
                             }
-                            
+
                         case .custom:
                             if (event.type == kWidgetMatrixEventTypeString || event.type == kWidgetModularEventTypeString),
                                let type = event.content?["type"] as? String,
@@ -563,19 +582,18 @@ class NotificationService: UNNotificationServiceExtension {
                                     additionalUserInfo = [Constants.userInfoKeyPresentNotificationOnForeground: true]
                                 }
                             }
+
                         case .pollStart:
                             notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
                             notificationBody = MXEventContentPollStart(fromJSON: event.content)?.question
+                        
+                        case .pollEnd:
+                            notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
+                            notificationBody = VectorL10n.pollTimelineEndedText
+                        
                         default:
                             break
                     }
-                    
-                    guard notificationBody != nil else {
-                        MXLog.debug("[NotificationService] notificationContentForEvent: notificationBody is nil")
-                        onComplete(nil, false)
-                        return
-                    }
-                    
                     
                     self.validateNotificationContentAndComplete(
                         notificationTitle: notificationTitle,

@@ -638,6 +638,9 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
     // Pause Voice Broadcast recording if needed
     [VoiceBroadcastRecorderProvider.shared pauseRecording];
+    
+    // Pause Voice Broadcast playing if needed
+    [VoiceBroadcastPlaybackProvider.shared pausePlayingInProgressVoiceBroadcast];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -2363,6 +2366,9 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     // Clear cache
     [self clearCache];
     
+    // Reset Crypto SDK configuration (labs flag for which crypto module to use)
+    [CryptoSDKConfiguration.shared disable];
+    
     // Reset key backup banner preferences
     [SecureBackupBannerPreferences.shared reset];
     
@@ -2395,9 +2401,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
     // Logout all matrix account
     [[MXKAccountManager sharedManager] logoutWithCompletion:^{
-        
-        // We reset allChatsOnboardingHasBeenDisplayed flag on logout
-        RiotSettings.shared.allChatsOnboardingHasBeenDisplayed = NO;
         
         if (completion)
         {
@@ -2580,7 +2583,17 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 //    {
 //        MXLogDebug(@"[AppDelegate] showLaunchAnimation");
 //
-//        LaunchLoadingView *launchLoadingView = [LaunchLoadingView instantiate];
+//        LaunchLoadingView *launchLoadingView;
+//        if (MXSDKOptions.sharedInstance.enableStartupProgress)
+//        {
+//            MXSession *mainSession = self.mxSessions.firstObject;
+//            launchLoadingView = [LaunchLoadingView instantiateWithStartupProgress:mainSession.startupProgress];
+//        }
+//        else
+//        {
+//            launchLoadingView = [LaunchLoadingView instantiateWithStartupProgress:nil];
+//        }
+//
 //        launchLoadingView.frame = window.bounds;
 //        [launchLoadingView updateWithTheme:ThemeService.shared.theme];
 //        launchLoadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;

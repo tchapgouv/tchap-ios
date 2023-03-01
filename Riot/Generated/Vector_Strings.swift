@@ -27,6 +27,10 @@ public class VectorL10n: NSObject {
   public static var accessibilityCheckboxLabel: String { 
     return VectorL10n.tr("Vector", "accessibility_checkbox_label") 
   }
+  /// selected
+  public static var accessibilitySelected: String { 
+    return VectorL10n.tr("Vector", "accessibility_selected") 
+  }
   /// Unable to verify email address. Please check your email and click on the link it contains. Once this is done, click continue
   public static var accountEmailValidationError: String { 
     return VectorL10n.tr("Vector", "account_email_validation_error") 
@@ -206,38 +210,6 @@ public class VectorL10n: NSObject {
   /// Nothing found.
   public static var allChatsNothingFoundPlaceholderTitle: String { 
     return VectorL10n.tr("Vector", "all_chats_nothing_found_placeholder_title") 
-  }
-  /// To simplify your Element, tabs are now optional. Manage them using the top-right menu.
-  public static var allChatsOnboardingPageMessage1: String { 
-    return VectorL10n.tr("Vector", "all_chats_onboarding_page_message1") 
-  }
-  /// Access your Spaces (bottom-left) faster and easier than ever before.
-  public static var allChatsOnboardingPageMessage2: String { 
-    return VectorL10n.tr("Vector", "all_chats_onboarding_page_message2") 
-  }
-  /// Tap your profile to let us know what you think.
-  public static var allChatsOnboardingPageMessage3: String { 
-    return VectorL10n.tr("Vector", "all_chats_onboarding_page_message3") 
-  }
-  /// Welcome to a new view!
-  public static var allChatsOnboardingPageTitle1: String { 
-    return VectorL10n.tr("Vector", "all_chats_onboarding_page_title1") 
-  }
-  /// Access Spaces
-  public static var allChatsOnboardingPageTitle2: String { 
-    return VectorL10n.tr("Vector", "all_chats_onboarding_page_title2") 
-  }
-  /// Give Feedback
-  public static var allChatsOnboardingPageTitle3: String { 
-    return VectorL10n.tr("Vector", "all_chats_onboarding_page_title3") 
-  }
-  /// What's new
-  public static var allChatsOnboardingTitle: String { 
-    return VectorL10n.tr("Vector", "all_chats_onboarding_title") 
-  }
-  /// Try it out
-  public static var allChatsOnboardingTryIt: String { 
-    return VectorL10n.tr("Vector", "all_chats_onboarding_try_it") 
   }
   /// Chats
   public static var allChatsSectionTitle: String { 
@@ -2543,6 +2515,10 @@ public class VectorL10n: NSObject {
   public static var homeContextMenuMarkAsRead: String { 
     return VectorL10n.tr("Vector", "home_context_menu_mark_as_read") 
   }
+  /// Mark as unread
+  public static var homeContextMenuMarkAsUnread: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_mark_as_unread") 
+  }
   /// Mute
   public static var homeContextMenuMute: String { 
     return VectorL10n.tr("Vector", "home_context_menu_mute") 
@@ -2750,6 +2726,10 @@ public class VectorL10n: NSObject {
   /// Restoring backup…
   public static var keyBackupRecoverFromPrivateKeyInfo: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_from_private_key_info") 
+  }
+  /// %@%% Complete
+  public static func keyBackupRecoverFromPrivateKeyProgress(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "key_backup_recover_from_private_key_progress", p1)
   }
   /// Use your Security Key to unlock your secure message history
   public static var keyBackupRecoverFromRecoveryKeyInfo: String { 
@@ -3178,6 +3158,10 @@ public class VectorL10n: NSObject {
   /// Later
   public static var later: String { 
     return VectorL10n.tr("Vector", "later") 
+  }
+  /// Migrating data\n%@ %%
+  public static func launchLoadingMigratingData(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "launch_loading_migrating_data", p1)
   }
   /// Processing data\n%@ %%
   public static func launchLoadingProcessingResponse(_ p1: String) -> String {
@@ -4323,6 +4307,18 @@ public class VectorL10n: NSObject {
   public static var noticeVideoAttachment: String { 
     return VectorL10n.tr("Vector", "notice_video_attachment") 
   }
+  /// %@ ended a voice broadcast.
+  public static func noticeVoiceBroadcastEnded(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "notice_voice_broadcast_ended", p1)
+  }
+  /// You ended a voice broadcast.
+  public static var noticeVoiceBroadcastEndedByYou: String { 
+    return VectorL10n.tr("Vector", "notice_voice_broadcast_ended_by_you") 
+  }
+  /// Live broadcast
+  public static var noticeVoiceBroadcastLive: String { 
+    return VectorL10n.tr("Vector", "notice_voice_broadcast_live") 
+  }
   /// Always notify
   public static var notificationSettingsAlwaysNotify: String { 
     return VectorL10n.tr("Vector", "notification_settings_always_notify") 
@@ -4827,6 +4823,58 @@ public class VectorL10n: NSObject {
   public static var pollEditFormUpdateFailureTitle: String { 
     return VectorL10n.tr("Vector", "poll_edit_form_update_failure_title") 
   }
+  /// Active polls
+  public static var pollHistoryActiveSegmentTitle: String { 
+    return VectorL10n.tr("Vector", "poll_history_active_segment_title") 
+  }
+  /// View poll in timeline
+  public static var pollHistoryDetailViewInTimeline: String { 
+    return VectorL10n.tr("Vector", "poll_history_detail_view_in_timeline") 
+  }
+  /// Error fetching polls.
+  public static var pollHistoryFetchingError: String { 
+    return VectorL10n.tr("Vector", "poll_history_fetching_error") 
+  }
+  /// Load more polls
+  public static var pollHistoryLoadMore: String { 
+    return VectorL10n.tr("Vector", "poll_history_load_more") 
+  }
+  /// Displaying polls
+  public static var pollHistoryLoadingText: String { 
+    return VectorL10n.tr("Vector", "poll_history_loading_text") 
+  }
+  /// There are no active polls for the past %@ days. Load more polls to view polls for previous months
+  public static func pollHistoryNoActivePollPeriodText(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "poll_history_no_active_poll_period_text", p1)
+  }
+  /// There are no active polls in this room
+  public static var pollHistoryNoActivePollText: String { 
+    return VectorL10n.tr("Vector", "poll_history_no_active_poll_text") 
+  }
+  /// There are no past polls for the past %@ days. Load more polls to view polls for previous months
+  public static func pollHistoryNoPastPollPeriodText(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "poll_history_no_past_poll_period_text", p1)
+  }
+  /// There are no past polls in this room
+  public static var pollHistoryNoPastPollText: String { 
+    return VectorL10n.tr("Vector", "poll_history_no_past_poll_text") 
+  }
+  /// Past polls
+  public static var pollHistoryPastSegmentTitle: String { 
+    return VectorL10n.tr("Vector", "poll_history_past_segment_title") 
+  }
+  /// Poll history
+  public static var pollHistoryTitle: String { 
+    return VectorL10n.tr("Vector", "poll_history_title") 
+  }
+  /// Due to decryption errors, some votes may not be counted
+  public static var pollTimelineDecryptionError: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_decryption_error") 
+  }
+  /// Ended the poll
+  public static var pollTimelineEndedText: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_ended_text") 
+  }
   /// Please try again
   public static var pollTimelineNotClosedSubtitle: String { 
     return VectorL10n.tr("Vector", "poll_timeline_not_closed_subtitle") 
@@ -4838,6 +4886,10 @@ public class VectorL10n: NSObject {
   /// 1 vote
   public static var pollTimelineOneVote: String { 
     return VectorL10n.tr("Vector", "poll_timeline_one_vote") 
+  }
+  /// Ended poll
+  public static var pollTimelineReplyEndedPoll: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_reply_ended_poll") 
   }
   /// Final results based on %lu votes
   public static func pollTimelineTotalFinalResults(_ p1: Int) -> String {
@@ -5486,6 +5538,10 @@ public class VectorL10n: NSObject {
   /// Photo
   public static var roomDetailsPhotoForDm: String { 
     return VectorL10n.tr("Vector", "room_details_photo_for_dm") 
+  }
+  /// Poll history
+  public static var roomDetailsPolls: String { 
+    return VectorL10n.tr("Vector", "room_details_polls") 
   }
   /// Suggest to space members
   public static var roomDetailsPromoteRoomSuggestTitle: String { 
@@ -7535,9 +7591,17 @@ public class VectorL10n: NSObject {
   public static var settingsLabs: String { 
     return VectorL10n.tr("Vector", "settings_labs") 
   }
+  /// Please be advised that as this feature is still in its experimental stage, it may not function as expected and could potentially have unintended consequences. To revert the feature, simply log out and log back in. Use at your own discretion and with caution.
+  public static var settingsLabsConfirmCryptoSdk: String { 
+    return VectorL10n.tr("Vector", "settings_labs_confirm_crypto_sdk") 
+  }
   /// Create conference calls with jitsi
   public static var settingsLabsCreateConferenceWithJitsi: String { 
     return VectorL10n.tr("Vector", "settings_labs_create_conference_with_jitsi") 
+  }
+  /// Rust end-to-end encryption (log out to disable)
+  public static var settingsLabsDisableCryptoSdk: String { 
+    return VectorL10n.tr("Vector", "settings_labs_disable_crypto_sdk") 
   }
   /// End-to-End Encryption
   public static var settingsLabsE2eEncryption: String { 
@@ -7550,6 +7614,10 @@ public class VectorL10n: NSObject {
   /// Auto Report Decryption Errors
   public static var settingsLabsEnableAutoReportDecryptionErrors: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_auto_report_decryption_errors") 
+  }
+  /// Rust end-to-end encryption
+  public static var settingsLabsEnableCryptoSdk: String { 
+    return VectorL10n.tr("Vector", "settings_labs_enable_crypto_sdk") 
   }
   /// Live location sharing - share current location (active development, and temporarily, locations persist in room history)
   public static var settingsLabsEnableLiveLocationSharing: String { 
@@ -7575,7 +7643,7 @@ public class VectorL10n: NSObject {
   public static var settingsLabsEnableThreads: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_threads") 
   }
-  /// Voice broadcast (under active development)
+  /// Voice broadcast
   public static var settingsLabsEnableVoiceBroadcast: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_voice_broadcast") 
   }
@@ -7710,6 +7778,10 @@ public class VectorL10n: NSObject {
   /// Profile Picture
   public static var settingsProfilePicture: String { 
     return VectorL10n.tr("Vector", "settings_profile_picture") 
+  }
+  /// An error occurred when updating your notification preferences. Please try to toggle your option again.
+  public static var settingsPushRulesError: String { 
+    return VectorL10n.tr("Vector", "settings_push_rules_error") 
   }
   /// Are you sure you want to remove the email address %@?
   public static func settingsRemoveEmailPromptMsg(_ p1: String) -> String {
@@ -8735,7 +8807,7 @@ public class VectorL10n: NSObject {
   public static var userOtherSessionPermanentlyUnverifiedAdditionalInfo: String { 
     return VectorL10n.tr("Vector", "user_other_session_permanently_unverified_additional_info") 
   }
-  /// Security recommendation
+  /// Other sessions
   public static var userOtherSessionSecurityRecommendationTitle: String { 
     return VectorL10n.tr("Vector", "user_other_session_security_recommendation_title") 
   }
@@ -9167,6 +9239,14 @@ public class VectorL10n: NSObject {
   public static var voiceBroadcastBuffering: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_buffering") 
   }
+  /// Unfortunately we’re unable to start a recording right now. Please try again later.
+  public static var voiceBroadcastConnectionErrorMessage: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_connection_error_message") 
+  }
+  /// Connection error
+  public static var voiceBroadcastConnectionErrorTitle: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_connection_error_title") 
+  }
   /// Live
   public static var voiceBroadcastLive: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_live") 
@@ -9178,6 +9258,18 @@ public class VectorL10n: NSObject {
   /// Unable to play this voice broadcast.
   public static var voiceBroadcastPlaybackLoadingError: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_playback_loading_error") 
+  }
+  /// Voice broadcast
+  public static var voiceBroadcastPlaybackLockScreenPlaceholder: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_playback_lock_screen_placeholder") 
+  }
+  /// Unable to decrypt this voice broadcast.
+  public static var voiceBroadcastPlaybackUnableToDecrypt: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_playback_unable_to_decrypt") 
+  }
+  /// Connection error - Recording paused
+  public static var voiceBroadcastRecorderConnectionError: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_recorder_connection_error") 
   }
   /// Yes, stop
   public static var voiceBroadcastStopAlertAgreeButton: String { 
@@ -9202,6 +9294,22 @@ public class VectorL10n: NSObject {
   /// Can't start a new voice broadcast
   public static var voiceBroadcastUnauthorizedTitle: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_unauthorized_title") 
+  }
+  /// You can’t start a call as you are currently recording a live broadcast. Please end your live broadcast in order to start a call.
+  public static var voiceBroadcastVoipCannotStartDescription: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_voip_cannot_start_description") 
+  }
+  /// Can’t start a call
+  public static var voiceBroadcastVoipCannotStartTitle: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_voip_cannot_start_title") 
+  }
+  /// You can't start a voice message as you are currently recording a live broadcast. Please end your live broadcast in order to start recording a voice message
+  public static var voiceMessageBroadcastInProgressMessage: String { 
+    return VectorL10n.tr("Vector", "voice_message_broadcast_in_progress_message") 
+  }
+  /// Can't start voice message
+  public static var voiceMessageBroadcastInProgressTitle: String { 
+    return VectorL10n.tr("Vector", "voice_message_broadcast_in_progress_title") 
   }
   /// Voice message
   public static var voiceMessageLockScreenPlaceholder: String { 
@@ -9319,17 +9427,65 @@ public class VectorL10n: NSObject {
   public static var wysiwygComposerFormatActionBold: String { 
     return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_bold") 
   }
+  /// Toggle code block
+  public static var wysiwygComposerFormatActionCodeBlock: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_code_block") 
+  }
+  /// Increase indentation
+  public static var wysiwygComposerFormatActionIndent: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_indent") 
+  }
+  /// Apply inline code format
+  public static var wysiwygComposerFormatActionInlineCode: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_inline_code") 
+  }
   /// Apply italic format
   public static var wysiwygComposerFormatActionItalic: String { 
     return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_italic") 
+  }
+  /// Apply link format
+  public static var wysiwygComposerFormatActionLink: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_link") 
+  }
+  /// Toggle numbered list
+  public static var wysiwygComposerFormatActionOrderedList: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_ordered_list") 
+  }
+  /// Toggle quote
+  public static var wysiwygComposerFormatActionQuote: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_quote") 
   }
   /// Apply underline format
   public static var wysiwygComposerFormatActionStrikethrough: String { 
     return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_strikethrough") 
   }
+  /// Decrease indentation
+  public static var wysiwygComposerFormatActionUnIndent: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_un_indent") 
+  }
   /// Apply strikethrough format
   public static var wysiwygComposerFormatActionUnderline: String { 
     return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_underline") 
+  }
+  /// Toggle bulleted list
+  public static var wysiwygComposerFormatActionUnorderedList: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_unordered_list") 
+  }
+  /// Create a link
+  public static var wysiwygComposerLinkActionCreateTitle: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_link_action_create_title") 
+  }
+  /// Edit link
+  public static var wysiwygComposerLinkActionEditTitle: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_link_action_edit_title") 
+  }
+  /// Link
+  public static var wysiwygComposerLinkActionLink: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_link_action_link") 
+  }
+  /// Text
+  public static var wysiwygComposerLinkActionText: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_link_action_text") 
   }
   /// Attachments
   public static var wysiwygComposerStartActionAttachments: String { 

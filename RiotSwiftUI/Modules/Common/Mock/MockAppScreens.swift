@@ -71,6 +71,9 @@ enum MockAppScreens {
         MockSpaceSelectorScreenState.self,
         MockComposerScreenState.self,
         MockComposerCreateActionListScreenState.self,
-        MockVoiceBroadcastPlaybackScreenState.self
+        MockComposerLinkActionScreenState.self,
+        MockVoiceBroadcastPlaybackScreenState.self,
+        MockPollHistoryScreenState.self,
+        MockPollHistoryDetailScreenState.self
     ]
 }

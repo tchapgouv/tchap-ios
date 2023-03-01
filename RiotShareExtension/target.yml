@@ -33,6 +33,7 @@ targets:
 
     dependencies:
     - package: DeviceKit
+    - package: DTCoreText
 
     configFiles:
       Debug: Debug.xcconfig
@@ -43,6 +44,9 @@ targets:
     - path: ../Config/CommonConfiguration.swift
     - path: ../Config/Configurable.swift
     - path: ../Riot/Categories/Bundle.swift
+    - path: ../Riot/Categories/MXEvent.swift
+    - path: ../Riot/Managers/Theme/
+    - path: ../Riot/Utils/AvatarGenerator.m
     - path: ../Riot/Categories/Character.swift
     - path: ../Riot/Categories/MXKImageView.swift
     - path: ../Riot/Categories/MXRoom+Riot.m
@@ -88,7 +92,7 @@ targets:
       excludes:
         - "**/*.md" # excludes all files with the .md extension
     - path: ../Riot/Modules/Room/TimelineCells/Styles/RoomTimelineStyleIdentifier.swift
-    - path: ../Riot/Modules/VoiceBroadcast/VoiceBroadcastSDK/VoiceBroadcastSettings.swift
+    - path: ../Riot/Modules/VoiceBroadcast/VoiceBroadcastSDK/MatrixSDK
 
 
     # Tchap

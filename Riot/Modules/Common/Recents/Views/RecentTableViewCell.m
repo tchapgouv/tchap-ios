@@ -69,6 +69,7 @@
     self.missedNotifAndUnreadIndicator.hidden = YES;
     self.missedNotifAndUnreadBadgeBgView.hidden = YES;
     self.missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = 0;
+    self.missedNotifAndUnreadBadgeLabel.text = @"";
     
     roomCellData = (id<MXKRecentCellDataStoring>)cellData;
     if (roomCellData)
@@ -80,10 +81,7 @@
         // Manage lastEventAttributedTextMessage optional property
         if (!roomCellData.roomSummary.spaceChildInfo && [roomCellData respondsToSelector:@selector(lastEventAttributedTextMessage)])
         {
-            // Force the default text color for the last message (cancel highlighted message color)
-            NSMutableAttributedString *lastEventDescription = [[NSMutableAttributedString alloc] initWithAttributedString:roomCellData.lastEventAttributedTextMessage];
-            [lastEventDescription addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.theme.textSecondaryColor range:NSMakeRange(0, lastEventDescription.length)];
-            self.lastEventDescription.attributedText = lastEventDescription;
+            self.lastEventDescription.attributedText = roomCellData.lastEventAttributedTextMessage;
         }
         else
         {
@@ -94,10 +92,15 @@
         self.lastEventDecriptionLabelTrailingConstraint.constant = self.unsentImageView.hidden ? 10 : 30;
 
         // Notify unreads and bing
-        if (roomCellData.hasUnread)
+        if (roomCellData.isRoomMarkedAsUnread)
+        {
+            self.missedNotifAndUnreadBadgeBgView.hidden = NO;
+            self.missedNotifAndUnreadBadgeBgView.backgroundColor = ThemeService.shared.theme.tintColor;
+            self.missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = 20;
+        }
+        else if (roomCellData.hasUnread)
         {
             self.missedNotifAndUnreadIndicator.hidden = NO;
-
             if (0 < roomCellData.notificationCount)
             {
                 self.missedNotifAndUnreadIndicator.backgroundColor = roomCellData.highlightCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor;
