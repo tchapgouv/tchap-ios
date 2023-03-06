@@ -99,11 +99,12 @@ struct AuthenticationLoginScreen: View {
     /// The form with text fields for username and password, along with a submit button.
     var loginForm: some View {
         VStack(spacing: 14) {
-            // Tchap: Update placeholder
+            // Tchap: Update placeholder and set keyboard type to email address
             RoundedBorderTextField(placeHolder: VectorL10n.authenticationVerifyEmailTextFieldPlaceholder,
                                    text: $viewModel.username,
                                    isFirstResponder: false,
-                                   configuration: UIKitTextInputConfiguration(returnKeyType: .next,
+                                   configuration: UIKitTextInputConfiguration(keyboardType: .emailAddress,
+                                                                              returnKeyType: .next,
                                                                               autocapitalizationType: .none,
                                                                               autocorrectionType: .no),
                                    onEditingChanged: usernameEditingChanged,
