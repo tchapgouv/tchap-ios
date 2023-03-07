@@ -96,7 +96,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate/*, RoomCreationModalCoordinatorBridgePresenterDelegate*/, RoomInfoCoordinatorBridgePresenterDelegate/*, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate*/, UserSuggestionCoordinatorBridgeDelegate/*, ThreadsCoordinatorBridgePresenterDelegate, ThreadsBetaCoordinatorBridgePresenterDelegate, MXThreadingServiceDelegate, RoomParticipantsInviteCoordinatorBridgePresenterDelegate*/, RoomInputToolbarViewDelegate/*, ComposerCreateActionListBridgePresenterDelegate*/>
+    RoomDataSourceDelegate/*, RoomCreationModalCoordinatorBridgePresenterDelegate*/, RoomInfoCoordinatorBridgePresenterDelegate/*, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate*/, VoiceMessageControllerDelegate /*, SpaceDetailPresenterDelegate*/, UserSuggestionCoordinatorBridgeDelegate/*, ThreadsCoordinatorBridgePresenterDelegate, ThreadsBetaCoordinatorBridgePresenterDelegate, MXThreadingServiceDelegate, RoomParticipantsInviteCoordinatorBridgePresenterDelegate*/, RoomInputToolbarViewDelegate/*, ComposerCreateActionListBridgePresenterDelegate*/>
 {
     
     // The preview header
@@ -212,7 +212,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 @property (nonatomic, getter=isScrollToBottomHidden) BOOL scrollToBottomHidden;
 @property (nonatomic, getter=isMissedDiscussionsBadgeHidden) BOOL missedDiscussionsBadgeHidden;
 
-//@property (nonatomic, strong) VoiceMessageController *voiceMessageController;
+@property (nonatomic, strong) VoiceMessageController *voiceMessageController;
 //@property (nonatomic, strong) SpaceDetailPresenter *spaceDetailPresenter;
 
 @property (nonatomic, strong) ShareManager *shareManager;
@@ -335,8 +335,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     // Show / hide actions button in document preview according BuildSettings
     self.allowActionsInDocumentPreview = BuildSettings.messageDetailsAllowShare;
     
-//    _voiceMessageController = [[VoiceMessageController alloc] initWithThemeService:ThemeService.shared mediaServiceProvider:VoiceMessageMediaServiceProvider.sharedProvider];
-//    self.voiceMessageController.delegate = self;
+    _voiceMessageController = [[VoiceMessageController alloc] initWithThemeService:ThemeService.shared mediaServiceProvider:VoiceMessageMediaServiceProvider.sharedProvider];
+    self.voiceMessageController.delegate = self;
 }
 
 - (void)viewDidLoad
@@ -1073,8 +1073,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     [self refreshRoomInputToolbar];
     
-//    [VoiceMessageMediaServiceProvider.sharedProvider setCurrentRoomSummary:dataSource.room.summary];
-//    _voiceMessageController.roomId = dataSource.roomId;
+    [VoiceMessageMediaServiceProvider.sharedProvider setCurrentRoomSummary:dataSource.room.summary];
+    _voiceMessageController.roomId = dataSource.roomId;
 
     _userSuggestionCoordinator = [[UserSuggestionCoordinatorBridge alloc] initWithMediaManager:self.roomDataSource.mxSession.mediaManager
                                                                                           room:dataSource.room];
@@ -1224,10 +1224,10 @@ static CGSize kThreadListBarButtonItemImageSize;
         [super setRoomInputToolbarViewClass:roomInputToolbarViewClass];
         
         // The voice message toolbar cannot be set on DisabledInputToolbarView.
-//        if ([self.inputToolbarView.class conformsToProtocol:@protocol(RoomInputToolbarViewProtocol)]) {
-//            id<RoomInputToolbarViewProtocol> inputToolbar = (id<RoomInputToolbarViewProtocol>)self.inputToolbarView;
-//            [inputToolbar setVoiceMessageToolbarView:self.voiceMessageController.voiceMessageToolbarView];
-//        }
+        if ([self.inputToolbarView.class conformsToProtocol:@protocol(RoomInputToolbarViewProtocol)]) {
+            id<RoomInputToolbarViewProtocol> inputToolbar = (id<RoomInputToolbarViewProtocol>)self.inputToolbarView;
+            [inputToolbar setVoiceMessageToolbarView:self.voiceMessageController.voiceMessageToolbarView];
+        }
         
         [self updateInputToolBarViewHeight];
         [self refreshRoomInputToolbar];
@@ -3179,39 +3179,39 @@ static CGSize kThreadListBarButtonItemImageSize;
 //    {
 //        cellIdentifier = RoomTimelineCellIdentifierGroupCallStatus;
 //    }
-//    else if (bubbleData.attachment.type == MXKAttachmentTypeVoiceMessage || bubbleData.attachment.type == MXKAttachmentTypeAudio)
-//    {
-//        if (bubbleData.isIncoming)
-//        {
-//            if (bubbleData.isPaginationFirstBubble)
-//            {
-//                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceMessageWithPaginationTitle;
-//            }
-//            else if (bubbleData.shouldHideSenderInformation)
-//            {
-//                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceMessageWithoutSenderInfo;
-//            }
-//            else
-//            {
-//                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceMessage;
-//            }
-//        }
-//        else
-//        {
-//            if (bubbleData.isPaginationFirstBubble)
-//            {
-//                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceMessageWithPaginationTitle;
-//            }
-//            else if (bubbleData.shouldHideSenderInformation)
-//            {
-//                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceMessageWithoutSenderInfo;
-//            }
-//            else
-//            {
-//                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceMessage;
-//            }
-//        }
-//    }
+    else if (bubbleData.attachment.type == MXKAttachmentTypeVoiceMessage || bubbleData.attachment.type == MXKAttachmentTypeAudio)
+    {
+        if (bubbleData.isIncoming)
+        {
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceMessageWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceMessageWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceMessage;
+            }
+        }
+        else
+        {
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceMessageWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceMessageWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceMessage;
+            }
+        }
+    }
 //    else if (bubbleData.tag == RoomBubbleCellDataTagPoll)
 //    {
 //        if (bubbleData.isIncoming)
@@ -7286,7 +7286,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     MXWeakify(self);
     
     RoomContextualMenuItem *replyMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionReply];
-    replyMenuItem.isEnabled = [self.roomDataSource canReplyToEventWithId:event.eventId];// && !self.voiceMessageController.isRecordingAudio;
+    replyMenuItem.isEnabled = [self.roomDataSource canReplyToEventWithId:event.eventId] && !self.voiceMessageController.isRecordingAudio;
     replyMenuItem.action = ^{
         MXStrongifyAndReturnIfNil(self);
         
@@ -7305,7 +7305,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     MXWeakify(self);
     
     RoomContextualMenuItem *item = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionReplyInThread];
-//    item.isEnabled = [self.roomDataSource canReplyToEventWithId:event.eventId] && !self.voiceMessageController.isRecordingAudio;
+    item.isEnabled = [self.roomDataSource canReplyToEventWithId:event.eventId] && !self.voiceMessageController.isRecordingAudio;
     item.action = ^{
         MXStrongifyAndReturnIfNil(self);
         
@@ -7959,45 +7959,45 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 #pragma mark - VoiceMessageControllerDelegate
 
-//- (void)voiceMessageControllerDidRequestMicrophonePermission:(VoiceMessageController *)voiceMessageController
-//{
-//    NSString *message = [VectorL10n microphoneAccessNotGrantedForVoiceMessage:AppInfo.current.displayName];
-//    
-//    [MXKTools checkAccessForMediaType:AVMediaTypeAudio
-//                  manualChangeMessage: message
-//            showPopUpInViewController:self completionHandler:^(BOOL granted) {
-//        
-//    }];
-//}
-//
-//- (BOOL)voiceMessageControllerDidRequestRecording:(VoiceMessageController *)voiceMessageController
-//{
-//    MXSession* session = self.roomDataSource.mxSession;
-//    // Check whether the user is not already broadcasting here or in another room
-//    if (session.voiceBroadcastService)
-//    {
-//        [self showAlertWithTitle:[VectorL10n voiceMessageBroadcastInProgressTitle] message:[VectorL10n voiceMessageBroadcastInProgressMessage]];
-//
-//        return NO;
-//    }
-//
-//    return YES;
-//}
-//
-//- (void)voiceMessageController:(VoiceMessageController *)voiceMessageController
-//    didRequestSendForFileAtURL:(NSURL *)url
-//                      duration:(NSUInteger)duration
-//                       samples:(NSArray<NSNumber *> *)samples
-//                    completion:(void (^)(BOOL))completion
-//{
-//    [self.roomDataSource sendVoiceMessage:url additionalContentParams:nil mimeType:nil duration:duration samples:samples success:^(NSString *eventId) {
-//        MXLogDebug(@"Success with event id %@", eventId);
-//        completion(YES);
-//    } failure:^(NSError *error) {
-//        MXLogError(@"Failed sending voice message");
-//        completion(NO);
-//    }];
-//}
+- (void)voiceMessageControllerDidRequestMicrophonePermission:(VoiceMessageController *)voiceMessageController
+{
+    NSString *message = [VectorL10n microphoneAccessNotGrantedForVoiceMessage:AppInfo.current.displayName];
+    
+    [MXKTools checkAccessForMediaType:AVMediaTypeAudio
+                  manualChangeMessage: message
+            showPopUpInViewController:self completionHandler:^(BOOL granted) {
+        
+    }];
+}
+
+- (BOOL)voiceMessageControllerDidRequestRecording:(VoiceMessageController *)voiceMessageController
+{
+    MXSession* session = self.roomDataSource.mxSession;
+    // Check whether the user is not already broadcasting here or in another room
+    if (session.voiceBroadcastService)
+    {
+        [self showAlertWithTitle:[VectorL10n voiceMessageBroadcastInProgressTitle] message:[VectorL10n voiceMessageBroadcastInProgressMessage]];
+
+        return NO;
+    }
+
+    return YES;
+}
+
+- (void)voiceMessageController:(VoiceMessageController *)voiceMessageController
+    didRequestSendForFileAtURL:(NSURL *)url
+                      duration:(NSUInteger)duration
+                       samples:(NSArray<NSNumber *> *)samples
+                    completion:(void (^)(BOOL))completion
+{
+    [self.roomDataSource sendVoiceMessage:url additionalContentParams:nil mimeType:nil duration:duration samples:samples success:^(NSString *eventId) {
+        MXLogDebug(@"Success with event id %@", eventId);
+        completion(YES);
+    } failure:^(NSError *error) {
+        MXLogError(@"Failed sending voice message");
+        completion(NO);
+    }];
+}
 
 #pragma mark - SpaceDetailPresenterDelegate
 
