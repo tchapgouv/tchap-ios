@@ -80,7 +80,7 @@
 "auth_reset_password_success_message" = "Votre mot de passe a été réinitialisé.\n\nVous avez été déconnecté de tous vos appareils et ne recevrez plus les notifications. Pour réactiver les notifications, reconnectez-vous sur chaque appareil.";
 "auth_add_email_and_phone_warning" = "L'inscription avec un e-mail et un numéro de téléphone à la fois n'est pas supporté tant que l'API n'existe pas. Seul votre numéro de téléphone sera pris en compte. Vous pourrez ajouter l'adresse e-mail dans vos options de profil.";
 // Chat creation
-"room_creation_title" = "Nouvelle discussion";
+"room_creation_title" = "Nouveau message direct";
 "room_creation_account" = "Compte";
 "room_creation_appearance" = "Apparence";
 "room_creation_appearance_name" = "Nom";
@@ -114,7 +114,7 @@
 "people_conversation_section" = "SALONS";
 "people_no_conversation" = "Aucun salon";
 // Rooms tab
-"room_directory_no_public_room" = "Aucun forum disponible";
+"room_directory_no_public_room" = "Aucun salon public disponible";
 // Groups tab
 "group_invite_section" = "INVITATIONS";
 "group_section" = "COMMUNAUTÉS";
@@ -321,7 +321,7 @@
 "room_details_favourite_tag" = "Favoris";
 "room_details_low_priority_tag" = "Priorité basse";
 "room_details_mute_notifs" = "Désactiver les notifications";
-"room_details_direct_chat" = "Discussion directe";
+"room_details_direct_chat" = "Message direct";
 "room_details_access_section" = "Qui peut accéder à ce salon ?";
 "room_details_access_section_invited_only" = "Seules les personnes qui ont été invitées";
 "room_details_access_section_anyone_apart_from_guest" = "Tous ceux qui connaissent le lien du salon, à part les visiteurs";
@@ -406,14 +406,14 @@
 "directory_server_picker_title" = "Sélectionner un répertoire";
 "directory_server_all_rooms" = "Tous les salons sur le serveur %@";
 "directory_server_all_native_rooms" = "Tous les salons Matrix natifs";
-"directory_server_type_homeserver" = "Saisir un serveur d’accueil pour lister ses forums";
+"directory_server_type_homeserver" = "Saisir un serveur d’accueil pour lister ses salons publics";
 "directory_server_placeholder" = "matrix.org";
 // Others
 "you" = "Vous";
 "today" = "Aujourd’hui";
 "yesterday" = "Hier";
 "network_offline_prompt" = "La connexion Internet semble être hors-ligne.";
-"public_room_section_title" = "Forums (sur %@) :";
+"public_room_section_title" = "Salons publics (sur %@) :";
 "bug_report_prompt" = "L’application s’est arrêtée brusquement la dernière fois. Voulez-vous envoyer un rapport d’anomalie ?";
 "rage_shake_prompt" = "Vous semblez secouer le téléphone avec frustration. Souhaitez-vous soumettre un rapport d’anomalie ?";
 "do_not_ask_again" = "Ne plus demander";
@@ -1343,7 +1343,7 @@
 "room_details_room_name_for_dm" = "Nom";
 "room_details_photo_for_dm" = "Photo";
 "room_details_title_for_dm" = "Détails";
-"settings_show_NSFW_public_rooms" = "Afficher les forums au contenu choquant";
+"settings_show_NSFW_public_rooms" = "Afficher les salons publics au contenu choquant";
 "external_link_confirmation_message" = "Le lien %@ vous emmène vers un autre site : %@\n\nÊtes vous sûr de vouloir poursuivre ?";
 "external_link_confirmation_title" = "Inspectez ce lien";
 "room_open_dialpad" = "Pavé de numérotation";
