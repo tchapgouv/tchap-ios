@@ -50,6 +50,7 @@ targetTemplates:
     - target: CommonKit
     - package: OrderedCollections
     - package: DeviceKit
+    - package: SwiftOGG
     - package: WysiwygComposer
 
     preBuildScripts:
