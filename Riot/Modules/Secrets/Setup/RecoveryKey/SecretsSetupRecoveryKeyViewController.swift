@@ -212,38 +212,44 @@ final class SecretsSetupRecoveryKeyViewController: UIViewController {
         self.present(alertController, animated: true, completion: nil)
     }
     
-    private func shareRecoveryKey() {
-        guard let recoveryKey = self.recoveryKey else {
-            return
-        }
-        
-        // Set up activity view controller
-        let activityItems: [Any] = [ recoveryKey ]
-        let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
-        
-        activityViewController.completionWithItemsHandler = { (activityType, completed, returnedItems, error) in
-            
-            // Enable made copy button only if user has selected an activity item and has setup recovery key without passphrase
-            if completed {
-                self.hasSavedRecoveryKey = true
-                self.updateDoneButton()
-            }
-        }
-        
-        // Configure source view when activity view controller is presented with a popover
-        if let popoverPresentationController = activityViewController.popoverPresentationController {
-            popoverPresentationController.sourceView = self.exportButton
-            popoverPresentationController.sourceRect = self.exportButton.bounds
-            popoverPresentationController.permittedArrowDirections = [.down, .up]
-        }
-        
-        self.present(activityViewController, animated: true)
-    }
+    // Tchap : don't export key
+//    private func shareRecoveryKey() {
+//        guard let recoveryKey = self.recoveryKey else {
+//            return
+//        }
+//
+//        // Set up activity view controller
+//        let activityItems: [Any] = [ recoveryKey ]
+//        let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+//
+//        activityViewController.completionWithItemsHandler = { (activityType, completed, returnedItems, error) in
+//
+//            // Enable made copy button only if user has selected an activity item and has setup recovery key without passphrase
+//            if completed {
+//                self.hasSavedRecoveryKey = true
+//                self.updateDoneButton()
+//            }
+//        }
+//
+//        // Configure source view when activity view controller is presented with a popover
+//        if let popoverPresentationController = activityViewController.popoverPresentationController {
+//            popoverPresentationController.sourceView = self.exportButton
+//            popoverPresentationController.sourceRect = self.exportButton.bounds
+//            popoverPresentationController.permittedArrowDirections = [.down, .up]
+//        }
+//
+//        self.present(activityViewController, animated: true)
+//    }
     
     // MARK: - Actions
 
     @IBAction private func exportButtonAction(_ sender: Any) {
-        self.shareRecoveryKey()
+        // Tchap : don't show Share sheet. Only copy security code to clipboard
+//        self.shareRecoveryKey()
+        UIPasteboard.general.string = self.recoveryKey
+        view.vc_toast(message: TchapL10n.secretsSetupRecoveryKeyExportActionDone)
+        self.hasSavedRecoveryKey = true
+        self.updateDoneButton()
     }
     
     @IBAction private func doneButtonAction(_ sender: Any) {

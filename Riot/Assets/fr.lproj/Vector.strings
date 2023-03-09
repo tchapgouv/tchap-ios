@@ -1137,7 +1137,7 @@
 "secrets_setup_recovery_key_title" = "Sauvegardez votre Clé de récupération"; // Tchap
 "secrets_setup_recovery_key_information" = "Stockez votre clé de récupération dans un endroit sûr. Elle peut être utilisée pour déverrouiller vos messages et données chiffrés.";
 "secrets_setup_recovery_key_loading" = "Chargement…";
-"secrets_setup_recovery_key_export_action" = "Sauvegarder";
+"secrets_setup_recovery_key_export_action" = "Copier la clé"; // Tchap
 "secrets_setup_recovery_key_done_action" = "Terminé";
 "secrets_setup_recovery_key_storage_alert_title" = "Conservez-la en lieu sûr";
 "secrets_setup_recovery_key_storage_alert_message" = "✓ Imprimez-la et stockez-la dans un endroit sûr\n✓ Sauvegardez-la sur une clé USB ou un disque de sauvegarde\n✓ Copiez-la sur votre stockage personnel dans le cloud";
