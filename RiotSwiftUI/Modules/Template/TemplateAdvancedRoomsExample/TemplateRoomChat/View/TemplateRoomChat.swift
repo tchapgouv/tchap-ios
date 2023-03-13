@@ -36,7 +36,8 @@ struct TemplateRoomChat: View {
                     Button(action: {
                         viewModel.send(viewAction: .sendMessage)
                     }, label: {
-                        Image(uiImage: Asset_tchap.Images.sendIcon.image)
+                        // Tchap : use Tchap send icon
+                        Image(uiImage: Asset_tchap.Images.sendIconTchap.image)
                     })
                 }
             }
