@@ -320,6 +320,8 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
             self.lockContainerBackgroundView.backgroundColor = theme.colors.navigation
             self.lockButtonsContainerView.backgroundColor = theme.colors.navigation
             
+            // Tchap : use Tchap send icon
+            self.sendButton.setImage(Asset_tchap.Images.sendIconTchap.image, for: .normal)
         } completion: { _ in
             switch details.state {
             case .idle:
