@@ -760,7 +760,7 @@
         else
         {
             // set default title
-            self.navigationItem.title = roomDataSource.room.summary.displayname;
+            self.navigationItem.title = roomDataSource.room.summary.displayName;
         }
         
         // Show input tool bar
@@ -780,7 +780,7 @@
                 }
                 else
                 {
-                    self.navigationItem.title = roomDataSource.room.summary.displayname;
+                    self.navigationItem.title = roomDataSource.room.summary.displayName;
                 }
             }
             else
@@ -891,10 +891,15 @@
         }
         
     } failure:^(NSError *error) {
+<<<<<<< HEAD
         if (cancelIndicator) {
             cancelIndicator();
         }
         MXLogDebug(@"[MXKRoomVC] Failed to join room (%@)", self->roomDataSource.room.summary.displayname);
+=======
+        cancelIndicator();
+        MXLogDebug(@"[MXKRoomVC] Failed to join room (%@)", self->roomDataSource.room.summary.displayName);
+>>>>>>> v1.10.4
         [self processRoomJoinFailureWithError:error completion:completion];
     }];
 }

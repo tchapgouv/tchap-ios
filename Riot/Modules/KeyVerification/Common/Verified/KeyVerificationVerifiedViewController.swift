@@ -106,6 +106,12 @@ final class KeyVerificationVerifiedViewController: UIViewController {
         self.titleLabel.text = VectorL10n.deviceVerificationVerifiedTitle
         self.informationLabel.text = TchapL10n.deviceVerificationVerifiedDescription
         
+<<<<<<< HEAD
+=======
+        self.titleLabel.text =  bodyTitle
+        self.informationLabel.text = informationText
+
+>>>>>>> v1.10.4
         self.doneButton.setTitle(VectorL10n.deviceVerificationVerifiedGotItButton, for: .normal)
     }
     
