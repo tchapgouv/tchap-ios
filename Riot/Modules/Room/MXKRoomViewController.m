@@ -891,15 +891,10 @@
         }
         
     } failure:^(NSError *error) {
-<<<<<<< HEAD
         if (cancelIndicator) {
             cancelIndicator();
         }
-        MXLogDebug(@"[MXKRoomVC] Failed to join room (%@)", self->roomDataSource.room.summary.displayname);
-=======
-        cancelIndicator();
         MXLogDebug(@"[MXKRoomVC] Failed to join room (%@)", self->roomDataSource.room.summary.displayName);
->>>>>>> v1.10.4
         [self processRoomJoinFailureWithError:error completion:completion];
     }];
 }

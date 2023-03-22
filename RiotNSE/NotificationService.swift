@@ -241,19 +241,10 @@ class NotificationService: UNNotificationServiceExtension {
         
         // If a room summary is available, use the displayname for the best attempt title.
         guard let roomSummary = NotificationService.backgroundSyncService.roomSummary(forRoomId: roomId) else { return }
-<<<<<<< HEAD
-        guard let roomDisplayName = roomSummary.displayname else { return }
-        if roomSummary.isDirect == true {
-            bestAttemptContents[eventId]?.body = NSString.localizedUserNotificationString(forKey: "MESSAGE_FROM_X", arguments: [roomDisplayName as Any])
-        } else {
-            bestAttemptContents[eventId]?.body = NSString.localizedUserNotificationString(forKey: "MESSAGE_IN_X", arguments: [roomDisplayName as Any])
-        }
-=======
         guard let roomDisplayName = roomSummary.displayName else { return }
         bestAttemptContents[eventId]?.title = roomDisplayName
         
         // At this stage we don't know the message type, so leave the body as set in didReceive.
->>>>>>> v1.10.4
     }
     
     private func fetchAndProcessEvent(withEventId eventId: String, roomId: String) {

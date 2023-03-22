@@ -7551,9 +7551,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)updateThreadListBarButtonItem:(UIBarButtonItem *)barButtonItem with:(MXThreadingService *)service
 {
-<<<<<<< HEAD
-    // Tchap: Threads are disabled in Tchap
-//    if (!service)
+//    if (!service || _isWaitingForOtherParticipants)
 //    {
 //        return;
 //    }
@@ -7620,75 +7618,6 @@ static CGSize kThreadListBarButtonItemImageSize;
 //    NSMutableArray<UIBarButtonItem*> *items = [self.navigationItem.rightBarButtonItems mutableCopy];
 //    items[replaceIndex] = threadListBarButtonItem;
 //    self.navigationItem.rightBarButtonItems = items;
-=======
-    if (!service || _isWaitingForOtherParticipants)
-    {
-        return;
-    }
-
-    __block NSInteger replaceIndex = NSNotFound;
-    [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem * _Nonnull item, NSUInteger index, BOOL * _Nonnull stop)
-     {
-        if (item.tag == kThreadListBarButtonItemTag)
-        {
-            replaceIndex = index;
-            *stop = YES;
-        }
-    }];
-
-    if (!barButtonItem && replaceIndex == NSNotFound)
-    {
-        //  there is no thread list bar button item, and not provided another to update
-        //  ignore
-        return;
-    }
-
-    UIBarButtonItem *threadListBarButtonItem = barButtonItem ?: [self threadListBarButtonItem];
-    UIButton *button = (UIButton *)threadListBarButtonItem.customView;
-    
-    MXThreadNotificationsCount *notificationsCount = [service notificationsCountForRoom:self.roomDataSource.roomId];
-    
-    UIImage *buttonIcon = [AssetImages.threadsIcon.image vc_resizedWith:kThreadListBarButtonItemImageSize];
-    [button setImage:buttonIcon forState:UIControlStateNormal];
-    button.contentEdgeInsets = kThreadListBarButtonItemContentInsetsNoDot;
-
-    if (notificationsCount.notificationsNumber > 0)
-    {
-        BadgeLabel *badgeLabel = [[BadgeLabel alloc] init];
-        badgeLabel.text = notificationsCount.notificationsNumber > 99 ? @"99+" : [NSString stringWithFormat:@"%lu", notificationsCount.notificationsNumber];
-        id<Theme> theme = ThemeService.shared.theme;
-        badgeLabel.font = theme.fonts.caption1SB;
-        badgeLabel.textColor = theme.colors.navigation;
-        badgeLabel.badgeColor = notificationsCount.numberOfHighlightedThreads ? theme.colors.alert : theme.colors.secondaryContent;
-        [button addSubview:badgeLabel];
-        
-        [badgeLabel layoutIfNeeded];
-        
-        badgeLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        [badgeLabel.centerYAnchor constraintEqualToAnchor:button.centerYAnchor
-                                                constant:badgeLabel.bounds.size.height - buttonIcon.size.height / 2].active = YES;
-        [badgeLabel.centerXAnchor constraintEqualToAnchor:button.centerXAnchor
-                                                 constant:badgeLabel.bounds.size.width + buttonIcon.size.width / 2].active = YES;
-    }
-
-    if (replaceIndex == NSNotFound)
-    {
-        // there is no thread list bar button item, this was only an update
-        return;
-    }
-
-    UIBarButtonItem *originalItem = self.navigationItem.rightBarButtonItems[replaceIndex];
-    UIButton *originalButton = (UIButton *)originalItem.customView;
-    if ([originalButton imageForState:UIControlStateNormal] == [button imageForState:UIControlStateNormal]
-        && UIEdgeInsetsEqualToEdgeInsets(originalButton.contentEdgeInsets, button.contentEdgeInsets))
-    {
-        //  no need to replace, it's the same
-        return;
-    }
-    NSMutableArray<UIBarButtonItem*> *items = [self.navigationItem.rightBarButtonItems mutableCopy];
-    items[replaceIndex] = threadListBarButtonItem;
-    self.navigationItem.rightBarButtonItems = items;
->>>>>>> v1.10.4
 }
 
 #pragma mark - RoomContextualMenuViewControllerDelegate

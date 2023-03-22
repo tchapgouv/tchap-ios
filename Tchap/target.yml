@@ -52,6 +52,7 @@ targetTemplates:
     - package: DeviceKit
     - package: SwiftOGG
     - package: WysiwygComposer
+    - package: AnalyticsEvents
 
     preBuildScripts:
     - name: 🛠 Environment
@@ -78,7 +79,6 @@ targetTemplates:
     - path: ../Config/Project-Warnings.xcconfig
     - path: ../Config/AppIdentifiers.xcconfig
     - path: ../Config/CommonConfiguration.swift
-    - path: ../Config/CryptoSDKConfiguration.swift
     - path: ../Config/Configurable.swift
     - path: ../Tchap
       excludes:
@@ -133,6 +133,7 @@ targetTemplates:
     - path: ../Riot/Assets/third_party_licenses.html
     - path: ../Riot/Categories
     - path: ../Riot/Coordinators
+    - path: ../Riot/Experiments/
     - path: ../Riot/Generated/UntranslatedStrings.swift
     - path: ../Riot/Generated/Vector_Strings.swift
     - path: ../Riot/Managers/AppInfo

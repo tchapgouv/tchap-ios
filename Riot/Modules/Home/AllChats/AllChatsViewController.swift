@@ -508,11 +508,7 @@ class AllChatsViewController: HomeViewController {
 
     private func updateUI() {
         let currentSpace = self.dataSource?.currentSpace
-<<<<<<< HEAD
-        self.title = currentSpace?.summary?.displayname ?? VectorL10n.titleHome
-=======
         self.title = currentSpace?.summary?.displayName ?? VectorL10n.allChatsTitle
->>>>>>> v1.10.4
         
         setupEditOptions()
         updateToolbar(with: editActionProvider.updateMenu(with: mainSession, parentSpace: currentSpace, completion: { [weak self] menu in
