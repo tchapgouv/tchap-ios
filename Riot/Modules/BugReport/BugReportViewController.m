@@ -380,7 +380,7 @@
         }];
     
     [bugReportRestClient vc_sendBugReportWithDescription:bugReportDescription
-                                                sendLogs:false /*_sendLogs */ // Tchap : force to not send log files becasue they are too big and generate an error 500 on backend.
+                                                sendLogs:false /*_sendLogs */ // Tchap : force to not send log files becasue they are too big and generate an error 500 on backend.  
                                             sendCrashLog:_reportCrash
                                                sendFiles:files
                                         additionalLabels:nil
