@@ -2367,7 +2367,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     [self clearCache];
     
     // Reset Crypto SDK configuration (labs flag for which crypto module to use)
-    [CryptoSDKConfiguration.shared disable];
+    [CryptoSDKFeature.shared reset];
     
     // Reset key backup banner preferences
     [SecureBackupBannerPreferences.shared reset];
