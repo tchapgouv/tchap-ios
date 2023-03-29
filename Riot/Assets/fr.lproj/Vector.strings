@@ -1057,8 +1057,10 @@
 "security_settings_crosssigning_info_exists" = "Votre compte a une identité de signature croisée, mais cette session ne lui fait pas encore confiance. Améliorez la sécurité de cette session.";
 "security_settings_crosssigning_info_trusted" = "La signature croisée est activée. Vous pouvez faire confiance à d’autres utilisateurs et à vos autres sessions selon la signature croisée mais vous ne pouvez pas effectuer des signatures croisées depuis cette session car elle n’a pas de clés privées de signature croisée. Améliorez la sécurité de cette session.";
 "security_settings_crosssigning_info_ok" = "La signature croisée est prête à être utilisée.";
+"security_settings_crosssigning_info_ok" = "La signature croisée est activée sur cet appareil."; // Tchap
 "security_settings_crosssigning_bootstrap" = "Configurer";
 "security_settings_crosssigning_reset" = "Réinitialiser";
+"security_settings_crosssigning_reset" = "Réinitialiser"; // Tchap
 "security_settings_crosssigning_complete_security" = "Compléter la sécurité";
 "security_settings_complete_security_alert_title" = "Compléter la sécurité";
 "security_settings_complete_security_alert_message" = "Vous devriez d’abord compléter la sécurité de votre session actuelle.";
@@ -1155,9 +1157,11 @@
 "security_settings_crypto_sessions_description_2" = "Si vous ne reconnaissez pas une connexion, changez votre mot de passe et réinitialisez la sauvegarde automatique des messages."; // Tchap
 "security_settings_secure_backup" = "SAUVEGARDE AUTOMATIQUE DES MESSAGES"; // Tchap
 "security_settings_secure_backup_description" = "Sauvegardez vos clés Tchap et les données de votre compte au où vous perdriez l’accès à vos sessions. Vos clés seront protégées par une clé de sécurité unique."; // Tchap
+"security_settings_secure_backup_description" = "Sauvegardez automatiquement vos messages et récupérez-les à tout moment à l’aide du code de récupération."; // Tchap
 "security_settings_secure_backup_setup" = "Configurer";
 "security_settings_secure_backup_synchronise" = "Synchroniser";
 "security_settings_secure_backup_delete" = "Supprimer la sauvegarde";
+"security_settings_secure_backup_delete" = "Supprimer la sauvegarde"; // Tchap
 "security_settings_user_password_description" = "Confirmez votre identité en saisissant le mot de passe de votre compte";
 "secure_key_backup_setup_existing_backup_error_title" = "Une sauvegarde pour les messages existe déjà";
 "secure_key_backup_setup_existing_backup_error_info" = "Déverrouillez-la pour la réutiliser dans la sauvegarde automatique des messages ou supprimez-la pour créer une nouvelle sauvegarde de messages dans la sauvegarde sécurisée."; // Tchap
@@ -1432,6 +1436,9 @@
 "security_settings_secure_backup_restore" = "Restaurer depuis une sauvegarde";
 "security_settings_secure_backup_reset" = "Réinitialiser";
 "security_settings_secure_backup_info_valid" = "Cette session sauvegarde vos clés.";
+"security_settings_secure_backup_restore" = "Récupérer les messages"; // Tchap
+"security_settings_secure_backup_reset" = "Générer un nouveau code"; // Tchap
+"security_settings_secure_backup_info_valid" = "Cet appareil sauvegarde vos messages."; // Tchap
 "security_settings_secure_backup_info_checking" = "Vérification…";
 "settings_ui_theme_picker_message_match_system_theme" = "« Auto » s’aligne avec le thème de votre appareil";
 "settings_ui_theme_picker_message_invert_colours" = "« Auto » utilise le paramètre « Inverser les couleurs » de l’appreil";
