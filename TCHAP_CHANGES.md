@@ -1,3 +1,21 @@
+## Changes in 2.4.1 (2023-04-03)
+
+🙌 Improvements
+
+- Send button in Room view should be in line with Tchap design and not Element design ([#778](https://github.com/tchapgouv/tchap-ios/issues/778))
+- [VoiceMessages] Set Record icons in Tchap design ([#783](https://github.com/tchapgouv/tchap-ios/issues/783))
+- Rebase Element 1.10.4 ([#785](https://github.com/tchapgouv/tchap-ios/issues/785))
+- Add email to Rageshake data ([#787](https://github.com/tchapgouv/tchap-ios/issues/787))
+- Restore settings option "Timeline bubbles” ([#788](https://github.com/tchapgouv/tchap-ios/issues/788))
+- Rageshake - Remove log files ([#789](https://github.com/tchapgouv/tchap-ios/issues/789))
+- Align buttons' labels relative to Cross-signing and Secure Storage settings on all clients (web/Android/iOS) ([#792](https://github.com/tchapgouv/tchap-ios/issues/792))
+- Enable push notifications for DevTchap ([#795](https://github.com/tchapgouv/tchap-ios/issues/795))
+
+🐛 Bugfixes
+
+- Input command should not be auto-corrected ([#777](https://github.com/tchapgouv/tchap-ios/issues/777))
+
+
 ## Changes in 2.4.0 (2023-03-14)
 
 🙌 Improvements
