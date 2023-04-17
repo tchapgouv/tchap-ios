@@ -8122,11 +8122,6 @@ static CGSize kThreadListBarButtonItemImageSize;
                                                                     range:NSMakeRange(0, attributedTextMessage.length)];
     [toolbar setAttributedTextMessage:attributedTextMessage];
     }
-<<<<<<< HEAD
-
-    [self mention:member];
-=======
->>>>>>> v1.10.9
 }
 
 - (void)userSuggestionCoordinatorBridge:(UserSuggestionCoordinatorBridge *)coordinator didUpdateViewHeight:(CGFloat)height

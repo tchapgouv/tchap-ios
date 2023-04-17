@@ -114,9 +114,12 @@ final class BuildSettings: NSObject {
     static let serverConfigSygnalAPIUrlString = "https://sygnal.tchap.incubateur.net/_matrix/push/v1/notify"
     
     // MARK: - Legal URLs
+
+    // Note: Set empty strings to hide the related entry in application settings
     static let applicationTermsConditionsUrlString = "https://www.tchap.incubateur.net/tac.html"
     static let clientConfigURL = "https://www.tchap.incubateur.net/client/config/agent/ios"
     static let applicationHelpUrlString = "https://www.tchap.incubateur.net/faq"
+    static let applicationAcceptableUsePolicyUrlString = ""
 
     
     // MARK: - Matrix permalinks

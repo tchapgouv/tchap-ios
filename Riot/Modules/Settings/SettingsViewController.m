@@ -612,20 +612,12 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     [tmpSections addObject:sectionAdvanced];
     
     Section *sectionAbout = [Section sectionWithTag:SECTION_TAG_ABOUT];
-<<<<<<< HEAD
     // Tchap: Hide Copyright
 //    if (BuildSettings.applicationCopyrightUrlString.length)
 //    {
 //        [sectionAbout addRowWithTag:ABOUT_COPYRIGHT_INDEX];
 //    }
-    if (BuildSettings.applicationTermsConditionsUrlString.length)
-=======
-    if (BuildSettings.applicationCopyrightUrlString.length)
-    {
-        [sectionAbout addRowWithTag:ABOUT_COPYRIGHT_INDEX];
-    }
     if (BuildSettings.applicationAcceptableUsePolicyUrlString.length)
->>>>>>> v1.10.9
     {
         [sectionAbout addRowWithTag:ABOUT_ACCEPTABLE_USE_INDEX];
     }
@@ -3007,7 +2999,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         }
         else if (section == SECTION_TAG_ABOUT)
         {
-<<<<<<< HEAD
             // Tchap: Hide Copyright
 //            if (row == ABOUT_COPYRIGHT_INDEX)
 //            {
@@ -3019,19 +3010,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 //                [self pushViewController:webViewViewController];
 //            }
 //            else 
-            if (row == ABOUT_TERM_CONDITIONS_INDEX)
-=======
-            if (row == ABOUT_COPYRIGHT_INDEX)
-            {
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationCopyrightUrlString];
-                
-                webViewViewController.title = [VectorL10n settingsCopyright];
-                [webViewViewController vc_setLargeTitleDisplayMode:UINavigationItemLargeTitleDisplayModeNever];
-                
-                [self pushViewController:webViewViewController];
-            }
-            else if (row == ABOUT_ACCEPTABLE_USE_INDEX)
->>>>>>> v1.10.9
+            if (row == ABOUT_ACCEPTABLE_USE_INDEX)
             {
                 WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationAcceptableUsePolicyUrlString];
                 
