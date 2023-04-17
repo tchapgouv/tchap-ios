@@ -174,7 +174,7 @@ typedef NS_ENUM(NSUInteger, ADVANCED)
 typedef NS_ENUM(NSUInteger, ABOUT)
 {
     ABOUT_COPYRIGHT_INDEX = 0,
-    ABOUT_TERM_CONDITIONS_INDEX,
+    ABOUT_ACCEPTABLE_USE_INDEX,
     ABOUT_PRIVACY_INDEX,
     ABOUT_THIRD_PARTY_INDEX,
 };
@@ -612,14 +612,22 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     [tmpSections addObject:sectionAdvanced];
     
     Section *sectionAbout = [Section sectionWithTag:SECTION_TAG_ABOUT];
+<<<<<<< HEAD
     // Tchap: Hide Copyright
 //    if (BuildSettings.applicationCopyrightUrlString.length)
 //    {
 //        [sectionAbout addRowWithTag:ABOUT_COPYRIGHT_INDEX];
 //    }
     if (BuildSettings.applicationTermsConditionsUrlString.length)
+=======
+    if (BuildSettings.applicationCopyrightUrlString.length)
     {
-        [sectionAbout addRowWithTag:ABOUT_TERM_CONDITIONS_INDEX];
+        [sectionAbout addRowWithTag:ABOUT_COPYRIGHT_INDEX];
+    }
+    if (BuildSettings.applicationAcceptableUsePolicyUrlString.length)
+>>>>>>> v1.10.9
+    {
+        [sectionAbout addRowWithTag:ABOUT_ACCEPTABLE_USE_INDEX];
     }
     // Tchap: Hide Privacy Policy
 //    if (BuildSettings.applicationPrivacyPolicyUrlString.length)
@@ -2548,11 +2556,11 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     }
     else if (section == SECTION_TAG_ABOUT)
     {
-        if (row == ABOUT_TERM_CONDITIONS_INDEX)
+        if (row == ABOUT_ACCEPTABLE_USE_INDEX)
         {
             MXKTableViewCell *termAndConditionCell = [self getDefaultTableViewCell:tableView];
 
-            termAndConditionCell.textLabel.text = [VectorL10n settingsTermConditions];
+            termAndConditionCell.textLabel.text = [VectorL10n settingsAcceptableUse];
             
             [termAndConditionCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             
@@ -2999,6 +3007,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         }
         else if (section == SECTION_TAG_ABOUT)
         {
+<<<<<<< HEAD
             // Tchap: Hide Copyright
 //            if (row == ABOUT_COPYRIGHT_INDEX)
 //            {
@@ -3011,10 +3020,22 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 //            }
 //            else 
             if (row == ABOUT_TERM_CONDITIONS_INDEX)
+=======
+            if (row == ABOUT_COPYRIGHT_INDEX)
             {
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationTermsConditionsUrlString];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationCopyrightUrlString];
                 
-                webViewViewController.title = [VectorL10n settingsTermConditions];
+                webViewViewController.title = [VectorL10n settingsCopyright];
+                [webViewViewController vc_setLargeTitleDisplayMode:UINavigationItemLargeTitleDisplayModeNever];
+                
+                [self pushViewController:webViewViewController];
+            }
+            else if (row == ABOUT_ACCEPTABLE_USE_INDEX)
+>>>>>>> v1.10.9
+            {
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationAcceptableUsePolicyUrlString];
+                
+                webViewViewController.title = [VectorL10n settingsAcceptableUse];
                 [webViewViewController vc_setLargeTitleDisplayMode:UINavigationItemLargeTitleDisplayModeNever];
                 
                 [self pushViewController:webViewViewController];

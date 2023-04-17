@@ -15,6 +15,7 @@
 //
 
 import Foundation
+import MatrixSDKCrypto
 
 /// An implementation of `MXCryptoV2Feature` which uses `UserDefaults` to persist the enabled status
 /// of `CryptoSDK`, and which uses feature flags to control rollout availability.
@@ -34,18 +35,29 @@ import Foundation
         RiotSettings.shared.enableCryptoSDK
     }
     
+    var needsVerificationUpgrade: Bool {
+        get {
+            return RiotSettings.shared.showVerificationUpgradeAlert
+        }
+        set {
+            RiotSettings.shared.showVerificationUpgradeAlert = newValue
+        }
+    }
+    
     private static let FeatureName = "ios-crypto-sdk"
+    private static let FeatureNameV2 = "ios-crypto-sdk-v2"
+    
     private let remoteFeature: RemoteFeaturesClientProtocol
     private let localFeature: PhasedRolloutFeature
     
-    init(remoteFeature: RemoteFeaturesClientProtocol = PostHogAnalyticsClient.shared) {
+    init(
+        remoteFeature: RemoteFeaturesClientProtocol = PostHogAnalyticsClient.shared,
+        localTargetPercentage: Double = 0.5
+    ) {
         self.remoteFeature = remoteFeature
         self.localFeature = PhasedRolloutFeature(
             name: Self.FeatureName,
-            // Local feature is currently set to 0% target, and all availability is fully controlled
-            // by the remote feature. Once the remote is fully rolled out, target for local feature will
-            // be gradually increased.
-            targetPercentage: 0.0
+            targetPercentage: localTargetPercentage
         )
     }
     
@@ -92,6 +104,13 @@ import Foundation
     }
     
     private func isFeatureEnabled(userId: String) -> Bool {
-        remoteFeature.isFeatureEnabled(Self.FeatureName) || localFeature.isEnabled(userId: userId)
+        // This feature includes app version with a bug, and thus will not be rolled out to 100% users
+        remoteFeature.isFeatureEnabled(Self.FeatureName)
+        
+        // Second version of the remote feature with a bugfix and released eventually to 100% users
+        || remoteFeature.isFeatureEnabled(Self.FeatureNameV2)
+        
+        // Local feature
+        || localFeature.isEnabled(userId: userId)
     }
 }
