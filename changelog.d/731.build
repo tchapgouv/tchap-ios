@@ -1,1 +1,0 @@
-Fix parameters order and format in target.yml that erase some previous configuration like the Info.plist filepath.

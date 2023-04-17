@@ -48,7 +48,7 @@ import MediaPlayer
         didSet {
             //  set avatar placeholder for now
             roomAvatar = AvatarGenerator.generateAvatar(forMatrixItem: currentRoomSummary?.roomId,
-                                                        withDisplayName: currentRoomSummary?.displayname,
+                                                        withDisplayName: currentRoomSummary?.displayName,
                                                         size: Constants.roomAvatarImageSize.width,
                                                         andFontSize: Constants.roomAvatarFontSize)
             
@@ -191,7 +191,9 @@ import MediaPlayer
                 continue
             }
             
-            audioRecorder.stopRecording()
+            // We should release the audio session only if we want to pause all services
+            let shouldReleaseAudioSession = (service == nil)
+            audioRecorder.stopRecording(releaseAudioSession: shouldReleaseAudioSession)
         }
         
         guard let audioPlayersEnumerator = audioPlayers.objectEnumerator() else {

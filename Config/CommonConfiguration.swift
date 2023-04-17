@@ -93,11 +93,8 @@ class CommonConfiguration: NSObject, Configurable {
 
         sdkOptions.enableNewClientInformationFeature = RiotSettings.shared.enableClientInformationFeature
         
-        #if DEBUG
-        if sdkOptions.isCryptoSDKAvailable {
-            sdkOptions.enableCryptoSDK = RiotSettings.shared.enableCryptoSDK
-        }
-        #endif
+        // Configure Crypto SDK feature deciding which crypto module to use
+        sdkOptions.cryptoSDKFeature = CryptoSDKFeature.shared
     }
     
     private func makeASCIIUserAgent() -> String? {

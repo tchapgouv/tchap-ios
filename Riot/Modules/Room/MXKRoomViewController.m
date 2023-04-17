@@ -370,6 +370,11 @@
     [self.roomDataSource.room.summary markAllAsReadLocally];
     
     [self updateCurrentEventIdAtTableBottom:YES];
+    
+    if (!self.isContextPreview)
+    {
+        [self.roomDataSource.room resetUnread];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -755,7 +760,7 @@
         else
         {
             // set default title
-            self.navigationItem.title = roomDataSource.room.summary.displayname;
+            self.navigationItem.title = roomDataSource.room.summary.displayName;
         }
         
         // Show input tool bar
@@ -775,7 +780,7 @@
                 }
                 else
                 {
-                    self.navigationItem.title = roomDataSource.room.summary.displayname;
+                    self.navigationItem.title = roomDataSource.room.summary.displayName;
                 }
             }
             else
@@ -889,7 +894,7 @@
         if (cancelIndicator) {
             cancelIndicator();
         }
-        MXLogDebug(@"[MXKRoomVC] Failed to join room (%@)", self->roomDataSource.room.summary.displayname);
+        MXLogDebug(@"[MXKRoomVC] Failed to join room (%@)", self->roomDataSource.room.summary.displayName);
         [self processRoomJoinFailureWithError:error completion:completion];
     }];
 }

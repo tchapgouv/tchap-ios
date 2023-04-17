@@ -41,6 +41,7 @@ class NotificationService: UNNotificationServiceExtension {
     private var ongoingVoIPPushRequests: [String: Bool] = [:]
     
     private var userAccount: MXKAccount?
+    private var isCryptoSDKEnabled = false
     
     /// Best attempt contents. Will be updated incrementally, if something fails during the process, this best attempt content will be showed as notification. Keys are eventId's
     private var bestAttemptContents: [String: UNMutableNotificationContent] = [:]
@@ -195,14 +196,18 @@ class NotificationService: UNNotificationServiceExtension {
         self.userAccount = MXKAccountManager.shared()?.activeAccounts.first
         if let userAccount = userAccount {
             Self.backgroundServiceInitQueue.sync {
-                if NotificationService.backgroundSyncService?.credentials != userAccount.mxCredentials {
+                if hasChangedCryptoSDK() || NotificationService.backgroundSyncService?.credentials != userAccount.mxCredentials {
                     MXLog.debug("[NotificationService] setup: MXBackgroundSyncService init: BEFORE")
                     self.logMemory()
-                    NotificationService.backgroundSyncService = MXBackgroundSyncService(withCredentials: userAccount.mxCredentials, persistTokenDataHandler: { persistTokenDataHandler in
-                        MXKAccountManager.shared().readAndWriteCredentials(persistTokenDataHandler)
-                    }, unauthenticatedHandler: { error, softLogout, refreshTokenAuth, completion in
-                        userAccount.handleUnauthenticatedWithError(error, isSoftLogout: softLogout, isRefreshTokenAuth: refreshTokenAuth, andCompletion: completion)
-                    })
+                    
+                    NotificationService.backgroundSyncService = MXBackgroundSyncService(
+                        withCredentials: userAccount.mxCredentials,
+                        isCryptoSDKEnabled: isCryptoSDKEnabled,
+                        persistTokenDataHandler: { persistTokenDataHandler in
+                            MXKAccountManager.shared().readAndWriteCredentials(persistTokenDataHandler)
+                        }, unauthenticatedHandler: { error, softLogout, refreshTokenAuth, completion in
+                            userAccount.handleUnauthenticatedWithError(error, isSoftLogout: softLogout, isRefreshTokenAuth: refreshTokenAuth, andCompletion: completion)
+                        })
                     MXLog.debug("[NotificationService] setup: MXBackgroundSyncService init: AFTER")
                     self.logMemory()
                 }
@@ -212,6 +217,16 @@ class NotificationService: UNNotificationServiceExtension {
             MXLog.debug("[NotificationService] setup: No active accounts")
             fallbackToBestAttemptContent(forEventId: eventId)
         }
+    }
+    
+    /// Determine whether we have switched from using crypto v1 to v2 or vice versa which will require
+    /// rebuilding `MXBackgroundSyncService`
+    private func hasChangedCryptoSDK() -> Bool {
+        guard isCryptoSDKEnabled != MXSDKOptions.sharedInstance().enableCryptoSDK else {
+            return false
+        }
+        isCryptoSDKEnabled = MXSDKOptions.sharedInstance().enableCryptoSDK
+        return true
     }
     
     /// Attempts to preprocess payload and attach room display name to the best attempt content
@@ -226,12 +241,10 @@ class NotificationService: UNNotificationServiceExtension {
         
         // If a room summary is available, use the displayname for the best attempt title.
         guard let roomSummary = NotificationService.backgroundSyncService.roomSummary(forRoomId: roomId) else { return }
-        guard let roomDisplayName = roomSummary.displayname else { return }
-        if roomSummary.isDirect == true {
-            bestAttemptContents[eventId]?.body = NSString.localizedUserNotificationString(forKey: "MESSAGE_FROM_X", arguments: [roomDisplayName as Any])
-        } else {
-            bestAttemptContents[eventId]?.body = NSString.localizedUserNotificationString(forKey: "MESSAGE_IN_X", arguments: [roomDisplayName as Any])
-        }
+        guard let roomDisplayName = roomSummary.displayName else { return }
+        bestAttemptContents[eventId]?.title = roomDisplayName
+        
+        // At this stage we don't know the message type, so leave the body as set in didReceive.
     }
     
     private func fetchAndProcessEvent(withEventId eventId: String, roomId: String) {
@@ -370,9 +383,15 @@ class NotificationService: UNNotificationServiceExtension {
                     var ignoreBadgeUpdate = false
                     var threadIdentifier: String? = roomId
                     let currentUserId = account.mxCredentials.userId
-                    let roomDisplayName = roomSummary?.displayname
+                    let roomDisplayName = roomSummary?.displayName
                     let pushRule = NotificationService.backgroundSyncService.pushRule(matching: event, roomState: roomState)
-                    
+                
+                    // if the push rule must not be notified we complete and return
+                    if pushRule?.dontNotify == true {
+                        onComplete(nil, false)
+                        return
+                    }
+
                     switch event.eventType {
                         case .callInvite:
                             let offer = event.content["offer"] as? [AnyHashable: Any]
@@ -875,5 +894,12 @@ class NotificationService: UNNotificationServiceExtension {
         let locale = LocaleProvider.locale ?? Locale.current
         
         return String(format: format, locale: locale, arguments: args)
+    }
+}
+
+private extension MXPushRule {
+    var dontNotify: Bool {
+        let actions = (actions as? [MXPushRuleAction]) ?? []
+        return actions.contains { $0.actionType == MXPushRuleActionTypeDontNotify }
     }
 }

@@ -32,7 +32,9 @@ targets:
     type: app-extension
 
     dependencies:
+    - package: AnalyticsEvents
     - package: DeviceKit
+    - package: DTCoreText
 
     configFiles:
       Debug: Debug.xcconfig
@@ -49,6 +51,10 @@ targets:
     - path: ../Riot/Categories/Character.swift
     - path: ../Riot/Categories/MXKImageView.swift
     - path: ../Riot/Categories/MXRoom+Riot.m
+    - path: ../Config/Configurable.swift
+    - path: ../Config/CommonConfiguration.swift
+    - path: ../Riot/Experiments/
+    - path: ../Riot/Utils/UserNameColorGenerator.swift
     - path: ../Riot/Categories/MXRoomSummary+Riot.m
     - path: ../Riot/Categories/String.swift
     - path: ../Riot/Categories/UIColor.swift

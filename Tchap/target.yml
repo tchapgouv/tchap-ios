@@ -50,7 +50,9 @@ targetTemplates:
     - target: CommonKit
     - package: OrderedCollections
     - package: DeviceKit
+    - package: SwiftOGG
     - package: WysiwygComposer
+    - package: AnalyticsEvents
 
     preBuildScripts:
     - name: 🛠 Environment
@@ -68,6 +70,8 @@ targetTemplates:
 
     settings:
       INFOPLIST_FILE: "${target_name}/SupportingFiles/Info.plist"
+      GCC_PREPROCESSOR_DEFINITIONS: $(inherited) SECURE_BACKUP=1 CROSS_SIGNING=1
+      OTHER_SWIFT_FLAGS: $(inherited) -D SECURE_BACKUP -D CROSS_SIGNING
 
     sources:
     - path: ../Config/AppConfiguration.swift
@@ -129,6 +133,7 @@ targetTemplates:
     - path: ../Riot/Assets/third_party_licenses.html
     - path: ../Riot/Categories
     - path: ../Riot/Coordinators
+    - path: ../Riot/Experiments/
     - path: ../Riot/Generated/UntranslatedStrings.swift
     - path: ../Riot/Generated/Vector_Strings.swift
     - path: ../Riot/Managers/AppInfo
@@ -143,6 +148,7 @@ targetTemplates:
     - path: ../Riot/Managers/RoomMessageLinkParser/RoomMessageURLParser.swift
     - path: ../Riot/Managers/PasswordStrength
     - path: ../Riot/Managers/PushNotification
+    - path: ../Riot/Managers/PushRulesUpdater
     - path: ../Riot/Managers/Serialization
     - path: ../Riot/Managers/Settings/RiotSettings.swift
     - path: ../Riot/Managers/Settings/Shared
@@ -340,10 +346,6 @@ targets:
     templates: 
       - BaseTarget
 
-    settings:
-      CC_PREPROCESSOR_DEFINITIONS: $(inherited) SECURE_BACKUP=1 CROSS_SIGNING=1
-      OTHER_SWIFT_FLAGS: $(inherited) -D SECURE_BACKUP -D CROSS_SIGNING
-
     configFiles:
       Debug: ../Btchap/SupportingFiles/Btchap-App-Debug.xcconfig
       Release: ../Btchap/SupportingFiles/Btchap-App-Release.xcconfig
@@ -361,10 +363,6 @@ targets:
     configFiles:
       Debug: ../DevTchap/SupportingFiles/DevTchap-App-Debug.xcconfig
       Release: ../DevTchap/SupportingFiles/DevTchap-App-Release.xcconfig
-
-    settings:
-      GCC_PREPROCESSOR_DEFINITIONS: $(inherited) SECURE_BACKUP=1 CROSS_SIGNING=1
-      OTHER_SWIFT_FLAGS: $(inherited) -D SECURE_BACKUP -D CROSS_SIGNING
 
     sources:
     - path: ../DevTchap

@@ -329,6 +329,7 @@ final class BuildSettings: NSObject {
     static let roomScreenAllowFilesAction: Bool = true
     
     // Timeline style
+    // Tchap: Show Timeline Bubble option in settings
     static let roomScreenAllowTimelineStyleConfiguration: Bool = true
     // Tchap: Activate bubbles by default
     static let roomScreenTimelineDefaultStyleIdentifier: RoomTimelineStyleIdentifier = .bubble
@@ -406,7 +407,7 @@ final class BuildSettings: NSObject {
     
     // MARK: - Polls
     
-    static let pollsEnabled = false // Currently disabled in Tchap.
+    static let pollsEnabled = false //true : Currently disabled in Tchap.
     static var pollsHistoryEnabled: Bool = false
     
     // MARK: - Location Sharing

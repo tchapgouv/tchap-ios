@@ -17,6 +17,7 @@
  */
 
 import UIKit
+import MatrixSDK
 
 @objcMembers
 final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
@@ -59,7 +60,7 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
     
     func start() {
 
-        let rootCoordinator = self.createShowSpaceExploreRoomCoordinator(session: self.session, spaceId: self.spaceId, spaceName: self.session.spaceService.getSpace(withId: self.spaceId)?.summary?.displayname)
+        let rootCoordinator = self.createShowSpaceExploreRoomCoordinator(session: self.session, spaceId: self.spaceId, spaceName: self.session.spaceService.getSpace(withId: self.spaceId)?.summary?.displayName)
 
         rootCoordinator.start()
 
@@ -518,6 +519,9 @@ extension ExploreRoomCoordinator: RoomInfoCoordinatorDelegate {
         self.navigationRouter.dismissModule(animated: true) {
             self.remove(childCoordinator: coordinator)
         }
+    }
+    func roomInfoCoordinator(_ coordinator: RoomInfoCoordinatorType, viewEventInTimeline event: MXEvent) {
+        
     }
     
 }

@@ -20,8 +20,11 @@ import GBDeviceInfo
 
 extension RoomInputToolbarView {
     open override func sendCurrentMessage() {
-        // Triggers auto-correct if needed.
-        if self.isFirstResponder {
+        // Tchap fix : don't autocorrecxt if it is a command (starts with a '/')
+        // Tchap fix will be removed when Element fix will come via rebase (https://github.com/vector-im/element-ios/pull/7462)
+        // Triggers auto-correct if needed and if it is not a command.
+        let isCommand = self.textMessage.hasPrefix("/")
+        if self.isFirstResponder && !isCommand {
             let temp = UITextField(frame: .zero)
             temp.isHidden = true
             self.addSubview(temp)

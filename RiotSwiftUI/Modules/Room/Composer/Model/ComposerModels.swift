@@ -36,6 +36,8 @@ enum FormatType {
     case strikethrough
     case unorderedList
     case orderedList
+    case indent
+    case unindent
     case inlineCode
     case codeBlock
     case quote
@@ -44,6 +46,18 @@ enum FormatType {
 
 extension FormatType: CaseIterable, Identifiable {
     var id: Self { self }
+}
+
+extension FormatType {
+    /// Return true if the format type is an indentation action.
+    var isIndentType: Bool {
+        switch self {
+        case .indent, .unindent:
+            return true
+        default:
+            return false
+        }
+    }
 }
 
 extension FormatItem: Identifiable {
@@ -66,6 +80,10 @@ extension FormatItem {
             return Asset.Images.bulletList.name
         case .orderedList:
             return Asset.Images.numberedList.name
+        case .indent:
+            return Asset.Images.indentIncrease.name
+        case .unindent:
+            return Asset.Images.indentDecrease.name
         case .inlineCode:
             return Asset.Images.code.name
         case .codeBlock:
@@ -91,6 +109,10 @@ extension FormatItem {
             return "unorderedListButton"
         case .orderedList:
             return "orderedListButton"
+        case .indent:
+            return "indentListButton"
+        case .unindent:
+            return "unIndentButton"
         case .inlineCode:
             return "inlineCodeButton"
         case .codeBlock:
@@ -116,6 +138,10 @@ extension FormatItem {
             return VectorL10n.wysiwygComposerFormatActionUnorderedList
         case .orderedList:
             return VectorL10n.wysiwygComposerFormatActionOrderedList
+        case .indent:
+            return VectorL10n.wysiwygComposerFormatActionIndent
+        case .unindent:
+            return VectorL10n.wysiwygComposerFormatActionUnIndent
         case .inlineCode:
             return VectorL10n.wysiwygComposerFormatActionInlineCode
         case .codeBlock:
@@ -144,6 +170,10 @@ extension FormatType {
             return .unorderedList
         case .orderedList:
             return .orderedList
+        case .indent:
+            return .indent
+        case .unindent:
+            return .unindent
         case .inlineCode:
             return .inlineCode
         case .codeBlock:
@@ -171,6 +201,10 @@ extension FormatType {
             return .unorderedList
         case .orderedList:
             return .orderedList
+        case .indent:
+            return .indent
+        case .unindent:
+            return .unindent
         case .inlineCode:
             return .inlineCode
         case .codeBlock:

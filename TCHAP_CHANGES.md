@@ -1,3 +1,57 @@
+## Changes in 2.4.1 (2023-04-03)
+
+🙌 Improvements
+
+- Send button in Room view should be in line with Tchap design and not Element design ([#778](https://github.com/tchapgouv/tchap-ios/issues/778))
+- [VoiceMessages] Set Record icons in Tchap design ([#783](https://github.com/tchapgouv/tchap-ios/issues/783))
+- Rebase Element 1.10.4 ([#785](https://github.com/tchapgouv/tchap-ios/issues/785))
+- Add email to Rageshake data ([#787](https://github.com/tchapgouv/tchap-ios/issues/787))
+- Restore settings option "Timeline bubbles” ([#788](https://github.com/tchapgouv/tchap-ios/issues/788))
+- Rageshake - Remove log files ([#789](https://github.com/tchapgouv/tchap-ios/issues/789))
+- Align buttons' labels relative to Cross-signing and Secure Storage settings on all clients (web/Android/iOS) ([#792](https://github.com/tchapgouv/tchap-ios/issues/792))
+- Enable push notifications for DevTchap ([#795](https://github.com/tchapgouv/tchap-ios/issues/795))
+
+🐛 Bugfixes
+
+- Input command should not be auto-corrected ([#777](https://github.com/tchapgouv/tchap-ios/issues/777))
+
+
+## Changes in 2.4.0 (2023-03-14)
+
+🙌 Improvements
+
+- Adopt SelfVerification path from Element if cross-signing is activated ([#698](https://github.com/tchapgouv/tchap-ios/issues/698))
+- Enable the secure storage for testing ([#720](https://github.com/tchapgouv/tchap-ios/issues/720))
+- Simplify Secure Storage setting workflow ([#737](https://github.com/tchapgouv/tchap-ios/issues/737))
+- [Dark modes] New blue color ([#739](https://github.com/tchapgouv/tchap-ios/issues/739))
+- Update French translations in Tchap ([#747](https://github.com/tchapgouv/tchap-ios/issues/747))
+- Use theme colors in rounded buttons disabled state ([#748](https://github.com/tchapgouv/tchap-ios/issues/748))
+- [Light modes] Restore original blue color ([#751](https://github.com/tchapgouv/tchap-ios/issues/751))
+- Rebase/element ios 1.10.2 ([#761](https://github.com/tchapgouv/tchap-ios/issues/761))
+- Set input keyboard to type Email Address on login screen ([#763](https://github.com/tchapgouv/tchap-ios/issues/763))
+- Activate Voice Messages from message toolbar ([#771](https://github.com/tchapgouv/tchap-ios/issues/771))
+- Show Security code and hide "Save code" button ([#772](https://github.com/tchapgouv/tchap-ios/issues/772))
+
+🐛 Bugfixes
+
+- [Dark mode] Wrong background color is applied to describe an infected media ([#642](https://github.com/tchapgouv/tchap-ios/issues/642))
+- Fix password update management in Tchap Settings screen ([#710](https://github.com/tchapgouv/tchap-ios/issues/710))
+- Accepting CGU is not mandatory on account creation ([#736](https://github.com/tchapgouv/tchap-ios/issues/736))
+
+🧱 Build
+
+- Enable CROSS_SIGNING and SECURE_BACKUP flags for DevTchap config ([#715](https://github.com/tchapgouv/tchap-ios/issues/715))
+- Deploy build flags SECURE_BACKUP and CROSS_SIGNING to Btchap target ([#729](https://github.com/tchapgouv/tchap-ios/issues/729))
+- Fix parameters order and format in target.yml that erase some previous configuration like the Info.plist filepath. ([#731](https://github.com/tchapgouv/tchap-ios/issues/731))
+- Customize DevTchap Info.plist to declare it doesn't use encryption that need export compliance (for TestFlight only) ([#732](https://github.com/tchapgouv/tchap-ios/issues/732))
+
+Others
+
+- Restore Element Share Extension content in Tchap ([#723](https://github.com/tchapgouv/tchap-ios/pull/723))
+- Remove favourites messages unused code ([#725](https://github.com/tchapgouv/tchap-ios/pull/725))
+- [Mainlining] Remove deprecated endpoint /_matrix/client/unstable/users/info ([#717](https://github.com/tchapgouv/tchap-ios/issues/717))
+
+
 ## Changes in 2.2.3 (2023-01-19)
 
 🙌 Improvements

@@ -71,7 +71,7 @@
             MXRoom *room = [_mxSession roomWithRoomId:mxPushRule.ruleId];
             if (room)
             {
-                description = [VectorL10n notificationSettingsRoomRuleTitle:room.summary.displayname];
+                description = [VectorL10n notificationSettingsRoomRuleTitle:room.summary.displayName];
             }
             break;
         }
@@ -163,7 +163,7 @@
     if (sender == _controlButton)
     {
         // Swap enable state
-        [_mxSession.notificationCenter enableRule:_mxPushRule isEnabled:!_mxPushRule.enabled];
+        [_mxSession.notificationCenter enableRule:_mxPushRule isEnabled:!_mxPushRule.enabled completion:nil];
     }
     else if (sender == _deleteButton)
     {

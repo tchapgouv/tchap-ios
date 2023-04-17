@@ -17,6 +17,7 @@
 import Foundation
 import Reusable
 import WysiwygComposer
+import HTMLParser
 import SwiftUI
 import Combine
 import UIKit
@@ -43,10 +44,26 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var voiceMessageBottomConstraint: NSLayoutConstraint?
     private var hostingViewController: VectorHostingController!
     private var wysiwygViewModel = WysiwygComposerViewModel(
-        textColor: ThemeService.shared().theme.colors.primaryContent,
-        linkColor: ThemeService.shared().theme.colors.links,
-        codeBackgroundColor: ThemeService.shared().theme.selectedBackgroundColor
+        parserStyle: WysiwygInputToolbarView.parserStyle
     )
+    /// Compute current HTML parser style for composer.
+    private static var parserStyle: HTMLParserStyle {
+        return HTMLParserStyle(
+            textColor: ThemeService.shared().theme.colors.primaryContent,
+            linkColor: ThemeService.shared().theme.colors.links,
+            codeBlockStyle: BlockStyle(backgroundColor: ThemeService.shared().theme.selectedBackgroundColor,
+                                       borderColor: ThemeService.shared().theme.textQuinaryColor,
+                                       borderWidth: 1.0,
+                                       cornerRadius: 4.0,
+                                       padding: .init(horizontal: 10.0, vertical: 12.0),
+                                       type: .background),
+            quoteBlockStyle: BlockStyle(backgroundColor: ThemeService.shared().theme.selectedBackgroundColor,
+                                        borderColor: ThemeService.shared().theme.selectedBackgroundColor,
+                                        borderWidth: 0.0,
+                                        cornerRadius: 0.0,
+                                        padding: .init(horizontal: 25.0, vertical: 12.0),
+                                        type: .side(offset: 5, width: 4)))
+    }
     private var viewModel: ComposerViewModelProtocol!
     
     private var isLandscapePhone: Bool {
@@ -298,9 +315,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     
     private func update(theme: Theme) {
         hostingViewController.view.backgroundColor = theme.colors.background
-        wysiwygViewModel.textColor = theme.colors.primaryContent
-        wysiwygViewModel.linkColor = theme.colors.links
-        wysiwygViewModel.codeBackgroundColor = theme.selectedBackgroundColor
+        wysiwygViewModel.parserStyle = WysiwygInputToolbarView.parserStyle
     }
     
     private func updateTextViewHeight() {

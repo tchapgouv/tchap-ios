@@ -80,7 +80,7 @@
 "auth_reset_password_success_message" = "Votre mot de passe a été réinitialisé.\n\nVous avez été déconnecté de tous vos appareils et ne recevrez plus les notifications. Pour réactiver les notifications, reconnectez-vous sur chaque appareil.";
 "auth_add_email_and_phone_warning" = "L'inscription avec un e-mail et un numéro de téléphone à la fois n'est pas supporté tant que l'API n'existe pas. Seul votre numéro de téléphone sera pris en compte. Vous pourrez ajouter l'adresse e-mail dans vos options de profil.";
 // Chat creation
-"room_creation_title" = "Nouvelle discussion";
+"room_creation_title" = "Nouveau message direct";
 "room_creation_account" = "Compte";
 "room_creation_appearance" = "Apparence";
 "room_creation_appearance_name" = "Nom";
@@ -104,7 +104,7 @@
 "room_recents_no_conversation" = "Aucun salon";
 "room_recents_low_priority_section" = "PRIORITÉ BASSE";
 "room_recents_invites_section" = "INVITATIONS";
-"room_recents_start_chat_with" = "Commencer une discussion";
+"room_recents_start_chat_with" = "Nouveau message direct";
 "room_recents_create_empty_room" = "Créer un salon";
 "room_recents_join_room" = "Rejoindre le salon";
 "room_recents_join_room_title" = "Rejoindre un salon";
@@ -114,7 +114,7 @@
 "people_conversation_section" = "SALONS";
 "people_no_conversation" = "Aucun salon";
 // Rooms tab
-"room_directory_no_public_room" = "Aucun forum disponible";
+"room_directory_no_public_room" = "Aucun salon public disponible";
 // Groups tab
 "group_invite_section" = "INVITATIONS";
 "group_section" = "COMMUNAUTÉS";
@@ -168,22 +168,22 @@
 "room_participants_unknown" = "Inconnu";
 "room_participants_idle" = "Inactif";
 "room_participants_now" = "maintenant";
-"room_participants_ago" = "d'inactivité";
-"room_participants_action_section_admin_tools" = "Outils d'administration";
-"room_participants_action_section_direct_chats" = "Discussions directes";
-"room_participants_action_section_devices" = "Appareils";
+"room_participants_ago" = "d’inactivité";
+"room_participants_action_section_admin_tools" = "Outils d’administration";
+"room_participants_action_section_direct_chats" = "Messages directs";
+"room_participants_action_section_devices" = "Sessions";
 "room_participants_action_section_other" = "Options";
 "room_participants_action_invite" = "Inviter";
 "room_participants_action_leave" = "Quitter ce salon";
 "room_participants_action_remove" = "Exclure de ce salon";
-"room_participants_action_ban" = "Bannir de ce salon";
+"room_participants_action_ban" = "Interdire l’accès au salon (définitif)";
 "room_participants_action_unban" = "Révoquer le bannissement";
 "room_participants_action_ignore" = "Masquer tous les messages de cet utilisateur";
 "room_participants_action_unignore" = "Afficher tous les messages de cet utilisateur";
 "room_participants_action_set_default_power_level" = "Rétrograder en utilisateur normal";
 "room_participants_action_set_moderator" = "Nommer modérateur";
 "room_participants_action_set_admin" = "Nommer administrateur";
-"room_participants_action_start_new_chat" = "Commencer une nouvelle discussion";
+"room_participants_action_start_new_chat" = "Nouveau message direct";
 "room_participants_action_start_voice_call" = "Commencer un appel audio";
 "room_participants_action_start_video_call" = "Commencer un appel vidéo";
 "room_participants_action_mention" = "Mentionner";
@@ -272,7 +272,7 @@
 "settings_remove_prompt_title" = "Confirmation";
 "settings_remove_email_prompt_msg" = "Voulez-vous vraiment supprimer l’adresse e-mail %@ ?";
 "settings_remove_phone_prompt_msg" = "Voulez-vous vraiment supprimer le numéro de téléphone %@ ?";
-"settings_email_address" = "E-mail";
+"settings_email_address" = "Adresse mail"; // Tchap
 "settings_email_address_placeholder" = "Saisir votre adresse e-mail";
 "settings_add_email_address" = "Ajouter une adresse e-mail";
 "settings_phone_number" = "Téléphone";
@@ -321,7 +321,7 @@
 "room_details_favourite_tag" = "Favoris";
 "room_details_low_priority_tag" = "Priorité basse";
 "room_details_mute_notifs" = "Désactiver les notifications";
-"room_details_direct_chat" = "Discussion directe";
+"room_details_direct_chat" = "Message direct";
 "room_details_access_section" = "Qui peut accéder à ce salon ?";
 "room_details_access_section_invited_only" = "Seules les personnes qui ont été invitées";
 "room_details_access_section_anyone_apart_from_guest" = "Tous ceux qui connaissent le lien du salon, à part les visiteurs";
@@ -413,9 +413,9 @@
 "today" = "Aujourd’hui";
 "yesterday" = "Hier";
 "network_offline_prompt" = "La connexion Internet semble être hors-ligne.";
-"public_room_section_title" = "Salons forums (sur %@) :";
-"bug_report_prompt" = "L'application s'est terminée brusquement la dernière fois. Voulez-vous envoyer un rapport d'erreur ?";
-"rage_shake_prompt" = "Vous semblez secouer le téléphone avec frustration. Souhaitez-vous soumettre un rapport d'erreur ?";
+"public_room_section_title" = "Salons publics (sur %@) :";
+"bug_report_prompt" = "L’application s’est arrêtée brusquement la dernière fois. Voulez-vous envoyer un rapport d’anomalie ?";
+"rage_shake_prompt" = "Vous semblez secouer le téléphone avec frustration. Souhaitez-vous soumettre un rapport d’anomalie ?";
 "do_not_ask_again" = "Ne plus demander";
 "camera_access_not_granted" = "%@ n’a pas la permission pour utiliser l’appareil photo, veuillez modifier les options de confidentialité";
 "large_badge_value_k_format" = "%.1fK";
@@ -657,7 +657,7 @@
 "sign_out_existing_key_backup_alert_sign_out_action" = "Se déconnecter";
 "sign_out_non_existing_key_backup_alert_title" = "Vous n’aurez plus accès à vos messages chiffrés si vous vous déconnectez maintenant";
 "sign_out_non_existing_key_backup_alert_setup_key_backup_action" = "Commencer à utiliser la sauvegarde de clés";
-"sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "Je ne veux pas de mes messages chiffrés";
+"sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "Se déconnecter quand même"; // Tchap
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_title" = "Vous perdrez vos messages chiffrés";
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_message" = "Vous n’aurez plus accès à vos messages chiffrés sauf si vous sauvegardez vos clés avant de vous déconnecter.";
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_sign_out_action" = "Se déconnecter";
@@ -786,9 +786,9 @@
 "auth_softlogout_signed_out" = "Vous êtes déconnecté";
 "auth_softlogout_sign_in" = "Se connecter";
 "auth_softlogout_reason" = "L’administrateur de votre serveur d’accueil (%1$@) vous a déconnecté de votre compte %2$@ (%3$@).";
-"auth_softlogout_recover_encryption_keys" = "Connectez-vous pour récupérer les clés de chiffrement stockées uniquement sur cet appareil. Vous en avez besoin pour lire tous les messages sécurisés sur n’importe quel appareil.";
+"auth_softlogout_recover_encryption_keys" = "Connectez-vous pour récupérer les clés Tchap stockées uniquement sur cet appareil. Vous en avez besoin pour lire tous les messages sécurisés sur n’importe quel appareil."; // Tchap
 "auth_softlogout_clear_data" = "Effacer les données personnelles";
-"auth_softlogout_clear_data_message_1" = "Attention : vos données personnelles (y compris vos clés de chiffrement) sont toujours stockées sur cet appareil.";
+"auth_softlogout_clear_data_message_1" = "Attention : vos données personnelles (y compris vos clés Tchap) sont toujours stockées sur cet appareil."; // Tchap
 "auth_softlogout_clear_data_message_2" = "Effacez-les si vous n’utilisez plus cet appareil ou si vous voulez vous connecter avec un autre compte.";
 "auth_softlogout_clear_data_button" = "Effacer toutes les données";
 "auth_softlogout_clear_data_sign_out_title" = "En êtes-vous sûr ?";
@@ -1057,8 +1057,10 @@
 "security_settings_crosssigning_info_exists" = "Votre compte a une identité de signature croisée, mais cette session ne lui fait pas encore confiance. Améliorez la sécurité de cette session.";
 "security_settings_crosssigning_info_trusted" = "La signature croisée est activée. Vous pouvez faire confiance à d’autres utilisateurs et à vos autres sessions selon la signature croisée mais vous ne pouvez pas effectuer des signatures croisées depuis cette session car elle n’a pas de clés privées de signature croisée. Améliorez la sécurité de cette session.";
 "security_settings_crosssigning_info_ok" = "La signature croisée est prête à être utilisée.";
+"security_settings_crosssigning_info_ok" = "La signature croisée est activée sur cet appareil."; // Tchap
 "security_settings_crosssigning_bootstrap" = "Configurer";
 "security_settings_crosssigning_reset" = "Réinitialiser";
+"security_settings_crosssigning_reset" = "Réinitialiser"; // Tchap
 "security_settings_crosssigning_complete_security" = "Compléter la sécurité";
 "security_settings_complete_security_alert_title" = "Compléter la sécurité";
 "security_settings_complete_security_alert_message" = "Vous devriez d’abord compléter la sécurité de votre session actuelle.";
@@ -1127,17 +1129,17 @@
 "secrets_recovery_with_key_invalid_recovery_key_title" = "Impossible d’accéder au coffre secret";
 "secrets_recovery_with_key_invalid_recovery_key_message" = "Vérifiez que vous avez saisi la bonne clé de récupération.";
 "secure_key_backup_setup_intro_title" = "Sauvegarde automatique des messages"; // Tchap
-"secure_key_backup_setup_intro_info" = "Protection afin d’éviter de perdre l’accès aux messages et données chiffrés en sauvegardant les clés de chiffrement sur votre serveur.";
+"secure_key_backup_setup_intro_info" = "Protection afin d’éviter de perdre l’accès aux messages et données chiffrés en sauvegardant les clés Tchap sur votre serveur."; // Tchap
 "secure_key_backup_setup_intro_use_security_key_title" = "Utiliser une clé de sauvegarde Tchap"; // Tchap
 "secure_key_backup_setup_intro_use_security_key_info" = "Générer une clé de sécurité à stocker dans un endroit sûr comme un gestionnaire de mots de passe ou un coffre.";
 "secure_key_backup_setup_intro_use_security_passphrase_title" = "Utiliser une phrase secrète de sécurité";
 "secure_key_backup_setup_intro_use_security_passphrase_info" = "Saisissez une phrase secrète que vous êtes seul à connaître et générez une clé pour la sauvegarde.";
 "secure_key_backup_setup_cancel_alert_title" = "En êtes-vous sûr ?";
-"secure_key_backup_setup_cancel_alert_message" = "Si vous annulez maintenant, vous pourriez perdre les messages et données chiffrés si vous perdez l’accès à vos connexions.\n\nVous pouvez également configurer la sauvegarde sécurisée et gérer vos clés dans les paramètres.";
-"secrets_setup_recovery_key_title" = "Enregistrer votre clé de sécurité";
+"secure_key_backup_setup_cancel_alert_message" = "Si vous annulez maintenant, vous pourriez perdre les messages et données chiffrés si vous perdez l’accès à vos connexions.\n\nVous pouvez également configurer la sauvegarde automatique des messages et gérer vos clés dans les paramètres."; // Tchap
+"secrets_setup_recovery_key_title" = "Sauvegardez votre Clé de récupération"; // Tchap
 "secrets_setup_recovery_key_information" = "Stockez votre clé de récupération dans un endroit sûr. Elle peut être utilisée pour déverrouiller vos messages et données chiffrés.";
 "secrets_setup_recovery_key_loading" = "Chargement…";
-"secrets_setup_recovery_key_export_action" = "Sauvegarder";
+"secrets_setup_recovery_key_export_action" = "Copier la clé"; // Tchap
 "secrets_setup_recovery_key_done_action" = "Terminé";
 "secrets_setup_recovery_key_storage_alert_title" = "Conservez-la en lieu sûr";
 "secrets_setup_recovery_key_storage_alert_message" = "✓ Imprimez-la et stockez-la dans un endroit sûr\n✓ Sauvegardez-la sur une clé USB ou un disque de sauvegarde\n✓ Copiez-la sur votre stockage personnel dans le cloud";
@@ -1150,20 +1152,22 @@
 "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Confirmer la phrase secrète";
 // AuthenticatedSessionViewControllerFactory
 "authenticated_session_flow_not_supported" = "Cette application ne prend par en charge le mécanisme d’authentification de votre serveur d’accueil.";
-"secure_backup_setup_banner_title" = "Sauvegarde sécurisée";
+"secure_backup_setup_banner_title" = "Sauvegarde automatique des messages"; // Tchap
 "secure_backup_setup_banner_subtitle" = "Protection afin d’éviter de perdre l’accès aux messages et données chiffrés";
-"security_settings_crypto_sessions_description_2" = "Si vous ne reconnaissez pas une connexion, changez votre mot de passe et réinitialisez la sauvegarde sécurisée.";
-"security_settings_secure_backup" = "SAUVEGARDE SÉCURISÉE";
-"security_settings_secure_backup_description" = "Sauvegardez vos clés de chiffrement et les données de votre compte au où vous perdriez l’accès à vos sessions. Vos clés seront protégées par une clé de sécurité unique.";
+"security_settings_crypto_sessions_description_2" = "Si vous ne reconnaissez pas une connexion, changez votre mot de passe et réinitialisez la sauvegarde automatique des messages."; // Tchap
+"security_settings_secure_backup" = "SAUVEGARDE AUTOMATIQUE DES MESSAGES"; // Tchap
+"security_settings_secure_backup_description" = "Sauvegardez vos clés Tchap et les données de votre compte au où vous perdriez l’accès à vos sessions. Vos clés seront protégées par une clé de sécurité unique."; // Tchap
+"security_settings_secure_backup_description" = "Sauvegardez automatiquement vos messages et récupérez-les à tout moment à l’aide du code de récupération."; // Tchap
 "security_settings_secure_backup_setup" = "Configurer";
 "security_settings_secure_backup_synchronise" = "Synchroniser";
 "security_settings_secure_backup_delete" = "Supprimer la sauvegarde";
+"security_settings_secure_backup_delete" = "Supprimer la sauvegarde"; // Tchap
 "security_settings_user_password_description" = "Confirmez votre identité en saisissant le mot de passe de votre compte";
 "secure_key_backup_setup_existing_backup_error_title" = "Une sauvegarde pour les messages existe déjà";
-"secure_key_backup_setup_existing_backup_error_info" = "Déverrouillez-la pour la réutiliser dans la sauvegarde sécurisée ou supprimez-la pour créer une nouvelle sauvegarde de messages dans la sauvegarde sécurisée.";
+"secure_key_backup_setup_existing_backup_error_info" = "Déverrouillez-la pour la réutiliser dans la sauvegarde automatique des messages ou supprimez-la pour créer une nouvelle sauvegarde de messages dans la sauvegarde sécurisée."; // Tchap
 "secure_key_backup_setup_existing_backup_error_unlock_it" = "La déverrouiller";
 "secure_key_backup_setup_existing_backup_error_delete_it" = "La supprimer";
-"sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Commencer à utiliser la sauvegarde sécurisée";
+"sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Utiliser la sauvegarde automatique"; // Tchap
 "cross_signing_setup_banner_title" = "Configurer le chiffrement";
 "cross_signing_setup_banner_subtitle" = "Vérifiez vos autres appareils plus facilement";
 // Events formatter with you
@@ -1236,9 +1240,9 @@
 "create_room_placeholder_address" = "#salondetest:matrix.org";
 "create_room_section_header_address" = "Adresse du salon";
 "create_room_show_in_directory" = "Publier le salon dans le répertoire";
-"create_room_section_footer_type" = "Les personnes ne rejoignent un salon privé que sur invitation.";
-"create_room_type_public" = "Salon public";
-"create_room_type_private" = "Salon privé";
+"create_room_section_footer_type" = "Les personnes ne rejoignent un salon que sur invitation.";
+"create_room_type_public" = "Forum"; // Tchap
+"create_room_type_private" = "Salon"; // Tchap
 "create_room_section_header_type" = "Type de salon";
 "create_room_section_footer_encryption" = "Le chiffrement ne peut pas être désactivé ensuite.";
 "create_room_enable_encryption" = "Activer le chiffrement";
@@ -1432,6 +1436,9 @@
 "security_settings_secure_backup_restore" = "Restaurer depuis une sauvegarde";
 "security_settings_secure_backup_reset" = "Réinitialiser";
 "security_settings_secure_backup_info_valid" = "Cette session sauvegarde vos clés.";
+"security_settings_secure_backup_restore" = "Récupérer les messages"; // Tchap
+"security_settings_secure_backup_reset" = "Générer un nouveau code"; // Tchap
+"security_settings_secure_backup_info_valid" = "Cet appareil sauvegarde vos messages."; // Tchap
 "security_settings_secure_backup_info_checking" = "Vérification…";
 "settings_ui_theme_picker_message_match_system_theme" = "« Auto » s’aligne avec le thème de votre appareil";
 "settings_ui_theme_picker_message_invert_colours" = "« Auto » utilise le paramètre « Inverser les couleurs » de l’appreil";
@@ -1521,7 +1528,7 @@
 "spaces_empty_space_title" = "Cet espace n’a pas (encore) de salon";
 "space_tag" = "espace";
 "spaces_suggested_room" = "Recommandé";
-"spaces_explore_rooms" = "Parcourir les salons";
+"spaces_explore_rooms" = "Rejoindre un forum"; // Tchap
 "leave_space_and_all_rooms_action" = "Quitter tous les salons et espaces";
 "leave_space_only_action" = "Ne quitter aucun salon";
 "leave_space_message_admin_warning" = "Vous êtes administrateur de cet espace. Assurez-vous d’avoir transmis les droits d’administration à un autre membre avant de partir.";
@@ -1750,7 +1757,7 @@
 "set_default_power_level" = "Réinitialiser le rang";
 "set_moderator" = "Nommer modérateur";
 "set_admin" = "Nommer administrateur";
-"start_chat" = "Nouvelle conversation privée";
+"start_chat" = "Nouveau message direct";
 "start_voice_call" = "Commencer un appel audio";
 "start_video_call" = "Commencer un appel vidéo";
 "mention" = "Mentionner";
@@ -1913,7 +1920,7 @@
 "format_time_d" = "j";
 // E2E import
 "e2e_import_room_keys" = "Importer les clés du salon";
-"e2e_import_prompt" = "Ce processus permet d’importer les clés de chiffrement que vous avez précédemment exportées d’un autre client Matrix. Vous pourrez ensuite déchiffrer tous les messages que l’autre client pouvait déchiffrer.\nLe fichier exporté est protégé par une phrase secrète. Entrez la phrase secrète ci-dessous pour déchiffrer le fichier.";
+"e2e_import_prompt" = "Ce processus permet d’importer les clés Tchap que vous avez précédemment exportées d’un autre client Matrix. Vous pourrez ensuite déchiffrer tous les messages que l’autre client pouvait déchiffrer.\nLe fichier exporté est protégé par une phrase secrète. Entrez la phrase secrète ci-dessous pour déchiffrer le fichier."; // Tchap
 "e2e_import" = "Importer";
 "e2e_passphrase_enter" = "Entrer la phrase secrète";
 // E2E export
@@ -1986,8 +1993,8 @@
 "membership_ban" = "Banni";
 "num_members_one" = "%@ utilisateur";
 "num_members_other" = "%@ utilisateurs";
-"kick" = "Expulser";
-"ban" = "Bannir";
+"kick" = "Retirer du salon (réversible)";
+"ban" = "Interdire l’accès au salon (définitif)";
 "unban" = "Révoquer le bannissement";
 "message_unsaved_changes" = "Il y a des modifications non enregistrées. Quitter les annulera.";
 // Login Screen 
@@ -2283,7 +2290,7 @@
 /* The placeholder will show the email address that was entered. */
 "authentication_forgot_password_waiting_message" = "Suivez les instructions envoyées à %@";
 "authentication_forgot_password_waiting_title" = "Relevez vos e-mails.";
-"authentication_forgot_password_text_field_placeholder" = "E-mail";
+"authentication_forgot_password_text_field_placeholder" = "Adresse mail"; // Tchap
 "authentication_verify_email_waiting_title" = "Surveillez votre boîte de réception.";
 /* The placeholder will show the homeserver's domain */
 "authentication_forgot_password_input_message" = "%@ va vous envoyer un lien de vérification";
@@ -2292,7 +2299,7 @@
 "authentication_verify_email_waiting_hint" = "Vous n’avez pas reçu l’e-mail ?";
 /* The placeholder will show the email address that was entered. */
 "authentication_verify_email_waiting_message" = "Suivez les instructions envoyées à %@";
-"authentication_verify_email_text_field_placeholder" = "E-mail";
+"authentication_verify_email_text_field_placeholder" = "Adresse mail"; // Tchap
 /* The placeholder will show the homeserver's domain */
 "authentication_verify_email_input_message" = "%@ doit vérifier votre compte";
 "authentication_verify_email_input_title" = "Entrez votre e-mail";
@@ -2395,7 +2402,7 @@
 "spaces_creation_sharing_type_just_me_title" = "Seulement moi";
 "spaces_creation_sharing_type_message" = "Assurez-vous que les bonnes personnes ont accès %@. Vous pouvez changer ceci plus tard.";
 "spaces_creation_sharing_type_title" = "Avec qui travaillez-vous ?";
-"spaces_creation_email_invites_email_title" = "E-mail";
+"spaces_creation_email_invites_email_title" = "Adresse mail"; // Tchap
 "spaces_creation_email_invites_message" = "Vous pouvez aussi les inviter plus tard.";
 "spaces_creation_email_invites_title" = "Invitez votre équipe";
 "spaces_creation_new_rooms_support" = "Support";
@@ -2467,7 +2474,6 @@
 "room_access_space_chooser_other_spaces_section_info" = "Ce sont probablement des choses auxquelles les autres admins de %@ participent.";
 "authentication_choose_password_not_verified_message" = "Vérifiez votre boîte de réception";
 "authentication_choose_password_not_verified_title" = "Email non vérifié";
-"all_chats_onboarding_page_title3" = "Donner mon avis";
 
 // MARK: User sessions management
 
@@ -2487,20 +2493,13 @@
 // Mark: - Room invites
 
 "room_invites_empty_view_title" = "Rien de neuf.";
-"all_chats_onboarding_try_it" = "Essayez";
-"all_chats_onboarding_title" = "Quoi de neuf";
-"all_chats_onboarding_page_message3" = "Appuyez sur votre profil pour nous faire vos retours.";
-"all_chats_onboarding_page_message2" = "Accédez à vos espaces (en bas à gauche) plus rapidement et facilement qu’avant.";
-"all_chats_onboarding_page_title2" = "Accéder aux espaces";
-"all_chats_onboarding_page_message1" = "Pour simplifier Element, les onglets sont désormais facultatifs. Gérez les depuis le menu en haut à droite.";
-"all_chats_onboarding_page_title1" = "Bienvenu dans une nouvelle vue !";
 "all_chats_edit_menu_space_settings" = "Paramètres de l’espace";
 "all_chats_edit_menu_leave_space" = "Quitter %@";
 "all_chats_user_menu_settings" = "Paramètres utilisateur";
 "room_recents_recently_viewed_section" = "Récemment vus";
 "all_chats_nothing_found_placeholder_message" = "Essayez d’affiner votre recherche.";
 "all_chats_nothing_found_placeholder_title" = "Aucun résultat.";
-"all_chats_empty_unreads_placeholder_message" = "C'est ici que vos messages non-lus s’afficheront lorsque vous en aurez.";
+"all_chats_empty_unreads_placeholder_message" = "C'est ici que vos messages non lus s’afficheront lorsque vous en aurez.";
 "all_chats_empty_list_placeholder_title" = "Plus rien à voir.";
 "all_chats_empty_view_information" = "La messagerie sécurisée tout en un pour les équipes, les amis, et les organisations. Créez une discussion ou rejoignez un salon pour démarrer.";
 "all_chats_empty_space_information" = "Les espaces sont un nouveau moyen de grouper les salons et les gens. Ajoutez un salon, ou créez en un nouveau à l’aide du bouton en bas à droite.";
@@ -2516,14 +2515,14 @@
 "all_chats_edit_layout_add_filters_title" = "Filtrez vos messages";
 "all_chats_edit_layout_add_section_message" = "Épinglez des sections à l’accueil pour y accéder plus rapidement";
 "all_chats_edit_layout_add_section_title" = "Ajouter une section à l’accueil";
-"all_chats_edit_layout_unreads" = "Non-lus";
+"all_chats_edit_layout_unreads" = "Non lus";
 "all_chats_edit_layout_recents" = "Récents";
 "all_chats_edit_layout" = "Préférences d’agencement";
 "all_chats_section_title" = "Discussions";
 
 // Mark: - All Chats
 
-"all_chats_title" = "Tous mes chats";
+"all_chats_title" = "Accueil";
 "spaces_subspace_creation_visibility_message" = "L’espace créé sera ajouté à %@.";
 "spaces_subspace_creation_visibility_title" = "Quel type de sous-espace voulez-vous créer ?";
 "spaces_explore_rooms_format" = "Parcourir %@";
@@ -2537,7 +2536,7 @@
 "user_session_verified_additional_info" = "Cette session est prête pour la messagerie sécurisée.";
 "room_event_encryption_info_key_authenticity_not_guaranteed" = "L’authenticité de ce message chiffré ne peut être garantie sur cet appareil.";
 "user_session_overview_session_details_button_title" = "Informations de session";
-"user_session_overview_session_title" = "Session";
+"user_session_overview_session_title" = "Appareil"; // Tchap
 "user_session_overview_current_session_title" = "Session courante";
 "user_session_details_application_url" = "URL";
 "user_session_details_application_version" = "Version";
@@ -2552,7 +2551,7 @@
 "user_session_details_session_name" = "Nom de la session";
 "user_session_details_device_section_header" = "Appareil";
 "user_session_details_application_section_header" = "Application";
-"user_session_details_session_section_header" = "Session";
+"user_session_details_session_section_header" = "Appareil"; // Tchap
 "user_session_details_title" = "Informations de session";
 "device_type_name_unknown" = "Inconnu";
 "device_type_name_mobile" = "Mobile";
@@ -2564,7 +2563,7 @@
 "device_name_desktop" = "%@ Bureau";
 "user_inactive_session_item_with_date" = "Inactif depuis 90 jours ou plus (%@)";
 "user_inactive_session_item" = "Inactif depuis 90 jours ou plus";
-"user_session_item_details" = "%@ · Dernière activité %@";
+"user_session_item_details" = "%1$@ · %2$@";
 
 // First item is client name and second item is session display name
 "user_session_name" = "%@ : %@";
@@ -2641,12 +2640,145 @@
 "manage_session_name_info" = "Gardez en tête que les noms des sessions sont aussi visibles par les personnes avec qui vous communiquez. %@";
 "manage_session_name_hint" = "Personnaliser les noms des sessions peut vous aider à reconnaître vos appareils plus facilement.";
 "settings_labs_enable_wysiwyg_composer" = "Essayez le compositeur de messages visuel";
+"settings_labs_enable_voice_broadcast" = "Diffusion vocale";
+"wysiwyg_composer_format_action_un_indent" = "Diminuer le retrait";
+"wysiwyg_composer_format_action_indent" = "Augmenter le retrait";
+"wysiwyg_composer_format_action_code_block" = "Bloc de code";
+"wysiwyg_composer_start_action_stickers" = "Autocollants";
+"user_session_rename_session_title" = "Renommer les sessions";
+"user_session_verified_session_description" = "Les sessions vérifiées sont toutes celles où vous vous êtes connecté à Element grâce à vos identifiants ou celles pour lesquelles vous avez confirmé votre identité à l'aide d'une autre session.\n\nCela signifie que vous êtes en possession de toutes les clés requises pour déchiffrer vos messages et montrer aux autres utilisateurs que vous faites confiance à cette session.";
+"poll_history_loading_text" = "Afficher les sondages";
+"voice_message_broadcast_in_progress_title" = "Impossible de démarrer l'enregistrement vocal";
+"home_context_menu_mark_as_unread" = "Marquer comme non lu";
+"launch_loading_processing_response" = "Traitement des données\n%@ %%";
+"notice_voice_broadcast_ended_by_you" = "Vous avez terminé une diffusion vocale.";
+"notice_voice_broadcast_ended" = "%@ a terminé une diffusion vocale.";
+"notice_voice_broadcast_live" = "Diffusion en direct";
+"deselect_all" = "Tout désélectionner";
+"wysiwyg_composer_link_action_edit_title" = "Modifier le lien";
+"wysiwyg_composer_link_action_create_title" = "Créer un lien";
+"wysiwyg_composer_link_action_link" = "Lien";
+
+// Links
+"wysiwyg_composer_link_action_text" = "Texte";
+"wysiwyg_composer_format_action_quote" = "Citation";
+"wysiwyg_composer_format_action_ordered_list" = "Liste numérique";
+"wysiwyg_composer_format_action_unordered_list" = "Liste à puces";
+"wysiwyg_composer_format_action_inline_code" = "Formater comme code informatique";
+"wysiwyg_composer_format_action_link" = "Formater comme lien";
+"wysiwyg_composer_format_action_strikethrough" = "Souligner";
+"wysiwyg_composer_format_action_underline" = "Barrer";
+"wysiwyg_composer_format_action_italic" = "Mettre en italique";
+
+// Formatting Actions
+"wysiwyg_composer_format_action_bold" = "Mettre en caractères gras";
+"wysiwyg_composer_start_action_voice_broadcast" = "Diffusion vocale";
+"wysiwyg_composer_start_action_text_formatting" = "Formatage du texte";
+"wysiwyg_composer_start_action_camera" = "Appareil photo";
+"wysiwyg_composer_start_action_location" = "Position";
+"wysiwyg_composer_start_action_polls" = "Sondages";
+"wysiwyg_composer_start_action_attachments" = "Pièces jointes";
+
+
+// MARK: - WYSIWYG Composer
+
+// Send Media Actions
+"wysiwyg_composer_start_action_media_picker" = "Galerie photo";
+"user_session_details_last_activity" = "Dernière activité";
+"user_session_item_details_last_activity" = "Dernière activité %@";
+"user_other_session_menu_sign_out_sessions" = "Déconnecter %@ sessions";
+"user_other_session_selected_count" = "%@ sélectionnées";
+"user_other_session_menu_select_sessions" = "Sélectionnez des sessions";
+"user_other_session_clear_filter" = "Effacer les filtres";
+"user_other_session_no_unverified_sessions" = "Aucune session non vérifiée trouvée.";
+"user_other_session_no_verified_sessions" = "Aucune session vérifiée trouvée.";
+"user_other_session_no_inactive_sessions" = "Aucune session inactive trouvée.";
+"user_other_session_filter_menu_inactive" = "Inactives";
+"user_other_session_filter_menu_unverified" = "Non vérifiées";
+"user_other_session_filter_menu_verified" = "Vérifiées";
+"user_other_session_filter_menu_all" = "Toutes les sessions";
+"user_other_session_filter" = "Filtrer";
+"user_other_session_verified_sessions_header_subtitle" = "Pour augmenter la sécurité, veuillez déconnecter toutes les sessions qui vous semblent inconnues ou que vous n'utilisez plus.";
+"user_other_session_current_session_details" = "Votre session actuelle";
+"user_other_session_security_recommendation_title" = "Autres sessions";
+"user_session_rename_session_description" = "D'autres utilisateurs des conversations et salons que vous rejoignez peuvent consulter la liste complète de vos session.\n\nCela leur permet de confirmer qu'ils communiquent bien avec vous, mais cela signifie également qu'ils verront le nom que vous donnez à vos sessions.";
+"user_session_inactive_session_description" = "Les sessions inactives sont celles qui n'ont pas été utilisées depuis un certain temps, mais qui continuent de recevoir des clés de chiffrement.\n\nÉliminer ces sessions inactives augmente la sécurité et les performances, et facilite l'identification de nouvelles connexions suspectes.";
+"user_session_inactive_session_title" = "Sessions inactives";
+"user_session_permanently_unverified_session_description" = "Cette session de prend pas en charge le chiffrement et ne peut donc être vérifiée.\n\nVous ne pourrez pas intervenir dans les salons où le chiffrement est activé en utilisant cette session.\n\nPour une sécurité et confidentialité optimale, il est recommandé d'utiliser des clients Matrix qui prennent en charge le chiffrement.";
+"user_session_unverified_session_description" = "Les sessions non vérifiez sont celles qui sont connectées avec vos identifiants, mais qui n'ont pas passé les vérifications croisées.\n\nVous devriez passer en revue ces sessions car elles pourraient témoigner d'un usage malicieux de votre compte.";
+"user_session_unverified_session_title" = "Session non vérifiée";
+"user_session_verified_session_title" = "Sessions vérifiées";
+"user_session_got_it" = "Entendu";
+"user_other_session_verified_additional_info" = "Cette session est prête à l'échange de messages.";
+"user_other_session_permanently_unverified_additional_info" = "Cette session ne prend pas en charge le chiffrement et ne peut donc être vérifiée.";
+"user_other_session_unverified_additional_info" = "Vérifier ou déconnecter cette session pour une sécurité et une fiabilité accrue.";
+"user_session_verification_unknown_additional_info" = "Vérifier la session actuelle pour révéler l'état de vérification de cette session.";
+"user_session_verification_unknown_short" = "Inconnu";
+"user_session_verification_unknown" = "État de vérification inconnu";
+"user_sessions_hide_location_info" = "Masquer l'adresse IP";
+"user_sessions_show_location_info" = "Montrer l'adresse IP";
+"poll_timeline_reply_ended_poll" = "Sondage terminé";
+"poll_timeline_ended_text" = "Sondage clos";
+"poll_timeline_decryption_error" = "Des erreurs de déchiffrement pourrait empêcher certains votes d'être comptabilisés";
+"poll_history_fetching_error" = "Erreur au cours de la récupération des sondages.";
+"poll_history_load_more" = "Charger plus de sondages";
+"poll_history_no_past_poll_period_text" = "Il n'y a pas eu de sondages les %@ derniers jours. Veuillez charger plus de sondages pour consulter les sondages des mois antérieurs";
+"poll_history_no_active_poll_period_text" = "Il n'y a pas eu de sondages depuis %@ jours. Veuillez charger plus de sondages pour consulter les sondages des mois antérieurs";
+"poll_history_detail_view_in_timeline" = "Consulter la chronologie des sondages";
+"poll_history_no_past_poll_text" = "Il n'y a pas de sondage précédent dans ce salon";
+"poll_history_no_active_poll_text" = "Il n'y a aucun sondage en cours dans ce salon";
+"poll_history_past_segment_title" = "Sondages précédents";
+"poll_history_active_segment_title" = "Sondages en cours";
+
+// MARK: - Polls history
+
+"poll_history_title" = "Historique des sondages";
+"voice_broadcast_playback_unable_to_decrypt" = "Impossible de déchiffrer cette diffusion vocale.";
+"voice_broadcast_recorder_connection_error" = "Erreur de connexion - Enregistrement interrompu";
+"voice_broadcast_connection_error_message" = "Nous sommes malheureusement dans l'impossibilité de démarrer un enregistrement maintenant. Veuillez réessayer plus tard.";
+"voice_broadcast_connection_error_title" = "Erreur de connexion";
+"voice_broadcast_voip_cannot_start_description" = "Vous ne pouvez pas démarrer d'appel car vous enregistrez déjà une diffusion en direct. Veuillez interrompre votre diffusion pour lancer un appel.";
+"voice_broadcast_voip_cannot_start_title" = "Impossible de démarrer l'appel";
+"voice_broadcast_stop_alert_agree_button" = "Oui, terminer";
+"voice_broadcast_stop_alert_description" = "Êtes vous sûr de vouloir interrompre votre diffusion vocale ? Cela mettra fin à la diffusion et rendra l'enregistrement disponible dans le salon.";
+"voice_broadcast_stop_alert_title" = "Arrêter la diffusion vocale ?";
+"voice_broadcast_buffering" = "Mise en mémoire tampon...";
+"voice_broadcast_time_left" = "%@ restant";
+"voice_broadcast_tile" = "Diffusion vocale";
+"voice_broadcast_live" = "En direct";
+"voice_broadcast_playback_lock_screen_placeholder" = "Diffusion vocale";
+"voice_broadcast_playback_loading_error" = "Impossible de lire cette diffusion vocale.";
+"voice_broadcast_blocked_by_someone_else_message" = "Quelqu'un d'autre est déjà en train d'enregistrer une diffusion vocale. Veuillez attendre la fin de la leur pour en démarrer une nouvelle.";
+"voice_broadcast_already_in_progress_message" = "Vous êtes déjà en train d'enregistrer une diffusion vocale. Veuillez y mettre fin avant d'en démarrer une nouvelle.";
+"voice_broadcast_permission_denied_message" = "Vous n'avez pas les autorisations nécessaires pour démarrer une diffusion vocal dans ce salon. Contactez un administrateur pour qu'il vous octroie la permission.";
+
+// MARK: - Voice Broadcast
+"voice_broadcast_unauthorized_title" = "Impossible de démarrer une nouvelle diffusion vocale";
+"voice_message_broadcast_in_progress_message" = "Vous ne pouvez pas démarrer d'enregistrement vocal car vous diffusez en direct. Veuillez interrompre votre diffusion pour démarrer l'enregistrement vocal";
+"launch_loading_server_syncing_nth_attempt" = "Synchronisation avec le serveur\n(%@ tentatives)";
+"launch_loading_server_syncing" = "Synchronisation avec le serveur";
+
+// MARK: - Launch loading
+
+"launch_loading_migrating_data" = "Migration des données\n%@ %%";
+"key_backup_recover_from_private_key_progress" = "%@%% Fini";
+"room_details_polls" = "Historique des sondages";
+"settings_labs_disable_crypto_sdk" = "Chiffrement de bout en bout avec Rust (se déconnecter pour désactiver)";
+"settings_labs_confirm_crypto_sdk" = "Cette option activera le nouveau moteur de chiffrement de bout en bout, plus rapide et plus fiable, écrit en Rust. Une fois activé vous devrez vous déconnecter pour le désactiver. Voulez-vous continuer ?";
+"settings_labs_enable_crypto_sdk" = "Chiffrement de bout en bout en Rust";
+"settings_push_rules_error" = "Nous avons rencontré une erreur lors de la mise à jours de vos préférences de notification. Veuillez réactiver l'option.";
+"password_policy_pwd_in_dict_error" = "Ce mot de passe a été trouvé dans un dictionnaire, et son usage n'est donc pas autorisé.";
+"password_policy_weak_pwd_error" = "Ce mot de passe est trop faible. Il doit contenir au moins 8 caractères, dont au moins une majuscule, une minuscule, un chiffre et un caractère spécial.";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "Mot de passe trop court";
+"accessibility_selected" = "sélectionné";
 
 // Tchap: override some MatrixKit strings
-"attachment_e2e_keys_file_prompt" = "Ce fichier contient des clés de chiffrement exportées d'un client Tchap.\nVoulez-vous voir le contenu du fichier ou importer les clés qu'il contient ?";
+"attachment_e2e_keys_file_prompt" = "Ce fichier contient des clés Tchap exportées d'un client Tchap.\nVoulez-vous voir le contenu du fichier ou importer les clés qu'il contient ?"; // Tchap
 // E2E import
 "e2e_import_room_keys" = "Importer les clés du salon";
-"e2e_import_prompt" = "Ce processus permet d'importer les clés de chiffrement que vous avez précédemment exportées d'un autre client Tchap. Vous pourrez ensuite déchiffrer tous les messages que l'autre client pouvait déchiffrer.\nLe fichier d'export est protégé par une phrase secrète. Entrez la phrase secrète ci-dessous pour déchiffrer le fichier.";
+"e2e_import_prompt" = "Ce processus permet d'importer les clés Tchap que vous avez précédemment exportées d'un autre client Tchap. Vous pourrez ensuite déchiffrer tous les messages que l'autre client pouvait déchiffrer.\nLe fichier d'export est protégé par une phrase secrète. Entrez la phrase secrète ci-dessous pour déchiffrer le fichier."; // Tchap
 "e2e_import" = "Importer";
 "e2e_passphrase_enter" = "Entrer la phrase secrète";
 // E2E export

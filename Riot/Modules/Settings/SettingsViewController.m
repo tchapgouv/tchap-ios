@@ -639,12 +639,10 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     if (BuildSettings.settingsScreenShowLabSettings)
     {
         Section *sectionLabs = [Section sectionWithTag:SECTION_TAG_LABS];
-        #if DEBUG
-        if (MXSDKOptions.sharedInstance.isCryptoSDKAvailable)
+        if ([CryptoSDKFeature.shared canManuallyEnableForUserId:self.mainSession.myUserId])
         {
             [sectionLabs addRowWithTag:LABS_ENABLE_CRYPTO_SDK];
         }
-        #endif
         
         [sectionLabs addRowWithTag:LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX];
         [sectionLabs addRowWithTag:LABS_ENABLE_THREADS_INDEX];
@@ -2675,22 +2673,17 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
             cell = labelAndSwitchCell;
         }
-        else
+        else if (row == LABS_ENABLE_CRYPTO_SDK)
         {
-        #if DEBUG
-            if (row == LABS_ENABLE_CRYPTO_SDK)
-            {
-                MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-                BOOL isEnabled = MXSDKOptions.sharedInstance.enableCryptoSDK;
-                labelAndSwitchCell.mxkLabel.text = isEnabled ? VectorL10n.settingsLabsDisableCryptoSdk : VectorL10n.settingsLabsEnableCryptoSdk;
-                labelAndSwitchCell.mxkSwitch.on = isEnabled;
-                [labelAndSwitchCell.mxkSwitch setEnabled:!isEnabled];
-                labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-                [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableCryptoSDKFeature:) forControlEvents:UIControlEventTouchUpInside];
-                
-                cell = labelAndSwitchCell;
-            }
-        #endif
+            MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            BOOL isEnabled = MXSDKOptions.sharedInstance.enableCryptoSDK;
+            labelAndSwitchCell.mxkLabel.text = isEnabled ? VectorL10n.settingsLabsDisableCryptoSdk : VectorL10n.settingsLabsEnableCryptoSdk;
+            labelAndSwitchCell.mxkSwitch.on = isEnabled;
+            [labelAndSwitchCell.mxkSwitch setEnabled:!isEnabled];
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(enableCryptoSDKFeature:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell = labelAndSwitchCell;
         }
     }
     else if (section == SECTION_TAG_SECURITY)
@@ -3510,17 +3503,14 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     RiotSettings.shared.enableVoiceBroadcast = sender.isOn;
 }
 
-#if DEBUG
-- (void)toggleEnableCryptoSDKFeature:(UISwitch *)sender
+- (void)enableCryptoSDKFeature:(UISwitch *)sender
 {
-    BOOL isEnabled = sender.isOn;
-    MXWeakify(self);
-    
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
-    UIAlertController *confirmationAlert = [UIAlertController alertControllerWithTitle:nil
+    UIAlertController *confirmationAlert = [UIAlertController alertControllerWithTitle:VectorL10n.settingsLabsEnableCryptoSdk
                                                                              message:VectorL10n.settingsLabsConfirmCryptoSdk
                                                                       preferredStyle:UIAlertControllerStyleAlert];
 
+    MXWeakify(self);
     [confirmationAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
         MXStrongifyAndReturnIfNil(self);
         self->currentAlert = nil;
@@ -3529,17 +3519,13 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     }]];
 
     [confirmationAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n continue] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-        MXStrongifyAndReturnIfNil(self);
-        
-        RiotSettings.shared.enableCryptoSDK = isEnabled;
-        MXSDKOptions.sharedInstance.enableCryptoSDK = isEnabled;
+        [CryptoSDKFeature.shared enable];
         [[AppDelegate theDelegate] reloadMatrixSessions:YES];
     }]];
 
     [self presentViewController:confirmationAlert animated:YES completion:nil];
     currentAlert = confirmationAlert;
 }
-#endif
 
 - (void)togglePinRoomsWithMissedNotif:(UISwitch *)sender
 {

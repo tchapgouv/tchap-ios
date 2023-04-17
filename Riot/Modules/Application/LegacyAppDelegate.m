@@ -2366,6 +2366,9 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     // Clear cache
     [self clearCache];
     
+    // Reset Crypto SDK configuration (labs flag for which crypto module to use)
+    [CryptoSDKFeature.shared reset];
+    
     // Reset key backup banner preferences
     [SecureBackupBannerPreferences.shared reset];
     
@@ -2398,9 +2401,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
     // Logout all matrix account
     [[MXKAccountManager sharedManager] logoutWithCompletion:^{
-        
-        // We reset allChatsOnboardingHasBeenDisplayed flag on logout
-        RiotSettings.shared.allChatsOnboardingHasBeenDisplayed = NO;
         
         if (completion)
         {

@@ -32,7 +32,9 @@ targets:
     type: app-extension
 
     dependencies:
+    - package: AnalyticsEvents
     - package: DeviceKit
+    - package: DTCoreText
 
     configFiles:
       Debug: Debug.xcconfig
@@ -43,6 +45,7 @@ targets:
     - path: ../Riot/Managers/Settings/RiotSettings.swift
     - path: ../Riot/Utils/DataProtectionHelper.swift
     - path: ../Config/CommonConfiguration.swift
+    - path: ../Riot/Experiments/
     - path: ../Riot/Managers/PushNotification/PushNotificationStore.swift
     - path: ../Riot/Modules/SetPinCode/PinCodePreferences.swift
     - path: ../Riot/Managers/KeyValueStorage/Extensions/Keychain.swift

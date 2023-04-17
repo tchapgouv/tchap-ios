@@ -65,13 +65,16 @@ targets:
     # Riot
     - path: ../Riot/Categories/Bundle.swift
     - path: ../Riot/Categories/MXRoom+VoiceBroadcast.swift
+    - path: ../Riot/Experiments/
     - path: ../Riot/Generated/Vector_Strings.swift
     - path: ../Riot/Managers/AppInfo
     - path: ../Riot/Managers/Locale
     - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
     - path: ../Riot/Managers/KeyValueStorage/
     - path: ../Riot/Managers/Settings/RiotSettings.swift
+    - path: ../Riot/Managers/UserSessions
     - path: ../Riot/Modules/Room/TimelineCells/Styles/RoomTimelineStyleIdentifier.swift
+    - path: ../Riot/Modules/Analytics
     - path: ../Riot/Modules/VoiceBroadcast
     - path: ../Riot/PropertyWrappers
 

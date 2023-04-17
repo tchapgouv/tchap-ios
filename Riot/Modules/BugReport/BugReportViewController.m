@@ -357,6 +357,10 @@
     [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
     userInfo[@"utc_time"] = [dateFormatter stringFromDate:currentDate];
 
+    // Tchap : add user's email for support automation
+    NSMutableDictionary<NSString *, NSString *> *customFields = NSMutableDictionary.dictionary;
+    customFields[@"email"] = mainAccount.linkedEmails.firstObject ?: @"undefined";
+    
     bugReportRestClient.others = userInfo;
 
     // Screenshot
@@ -380,11 +384,11 @@
         }];
     
     [bugReportRestClient vc_sendBugReportWithDescription:bugReportDescription
-                                                sendLogs:_sendLogs
+                                                sendLogs:false /*_sendLogs */ // Tchap : force to not send log files becasue they are too big and generate an error 500 on backend.  
                                             sendCrashLog:_reportCrash
                                                sendFiles:files
                                         additionalLabels:nil
-                                            customFields:nil
+                                            customFields:customFields // Tchap : add custom fields (fro email actually)
                                                 progress:^(MXBugReportState state, NSProgress *progress) {
         
         switch (state)

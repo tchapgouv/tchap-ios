@@ -72,6 +72,8 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
             completion?(.share(userLocationAnnotation.coordinate))
         case .mapCreditsDidTap:
             state.bindings.showMapCreditsSheet.toggle()
+        case .showUserLocation:
+            showsCurrentUserLocation()
         }
     }
     
@@ -209,6 +211,14 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
             return
         }
         
+        /*
+            if the map is currently following the current user's location,
+            we want to switch back to only showing the marker,
+            so the the highlighted shared location can be centered
+         */
+        if state.showsUserLocationMode == .follow {
+            state.showsUserLocationMode = .show
+        }
         state.highlightedAnnotation = foundUserAnnotation
     }
     
@@ -227,6 +237,14 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
                                                           message: VectorL10n.locationSharingLiveStopSharingError,
                                                           primaryButton: (VectorL10n.ok, nil))
             }
+        }
+    }
+    
+    private func showsCurrentUserLocation() {
+        if liveLocationSharingViewerService.requestAuthorizationIfNeeded() {
+            state.showsUserLocationMode = .follow
+        } else {
+            state.errorSubject.send(.invalidLocationAuthorization)
         }
     }
 }

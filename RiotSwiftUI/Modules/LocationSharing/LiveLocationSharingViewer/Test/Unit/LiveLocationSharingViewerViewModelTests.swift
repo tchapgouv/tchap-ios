@@ -15,6 +15,7 @@
 //
 
 import Combine
+import CoreLocation
 import XCTest
 
 @testable import RiotSwiftUI
@@ -29,5 +30,20 @@ class LiveLocationSharingViewerViewModelTests: XCTestCase {
         service = MockLiveLocationSharingViewerService()
         viewModel = LiveLocationSharingViewerViewModel(mapStyleURL: BuildSettings.defaultTileServerMapStyleURL, service: service)
         context = viewModel.context
+    }
+    
+    func testIsUserBeingShared() {
+        XCTAssertTrue(context.viewState.isCurrentUserShared)
+    }
+    
+    func testToggleShowUserLocation() {
+        let service = MockLiveLocationSharingViewerService(currentUserSharingLocation: false)
+        let viewModel = LiveLocationSharingViewerViewModel(mapStyleURL: BuildSettings.defaultTileServerMapStyleURL, service: service)
+        XCTAssertFalse(viewModel.context.viewState.isCurrentUserShared)
+        XCTAssertEqual(viewModel.context.viewState.showsUserLocationMode, .hide)
+        viewModel.context.send(viewAction: .showUserLocation)
+        XCTAssertEqual(viewModel.context.viewState.showsUserLocationMode, .follow)
+        viewModel.context.send(viewAction: .tapListItem("@bob:matrix.org"))
+        XCTAssertEqual(viewModel.context.viewState.showsUserLocationMode, .show)
     }
 }

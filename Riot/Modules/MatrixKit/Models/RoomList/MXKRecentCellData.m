@@ -66,6 +66,11 @@
     return (roomSummary.localUnreadEventCount != 0);
 }
 
+- (BOOL)isRoomMarkedAsUnread
+{
+    return [[self mxSession] isRoomMarkedAsUnread:roomSummary.roomId];;
+}
+
 - (NSString *)roomIdentifier
 {
     if (self.isSuggestedRoom)
@@ -81,7 +86,7 @@
     {
         return self.roomSummary.spaceChildInfo.displayName;
     }
-    return roomSummary.displayname;
+    return roomSummary.displayName;
 }
 
 - (NSString *)avatarUrl

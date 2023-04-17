@@ -1,3 +1,88 @@
+## Changes in 1.10.4 (2023-03-07)
+
+🙌 Improvements
+
+- CryptoV2: CryptoSDK phased rollout feature ([#7374](https://github.com/vector-im/element-ios/pull/7374))
+- Analytics: Use SwiftPM for AnalyticsEvents instead of CocoaPods ([#7401](https://github.com/vector-im/element-ios/pull/7401))
+- Upgrade MatrixSDK version ([v0.26.0](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.26.0)).
+- Session verification: automatically starts scanning for a QR code if we do not have a QR code to display. ([#3115](https://github.com/vector-im/element-ios/issues/3115))
+- Direct Message: manage encrypted DM in case of invite by email ([#6612](https://github.com/vector-im/element-ios/issues/6612))
+
+🐛 Bugfixes
+
+- fix issue on timeline's bubbles not showing proper content after decrypt ([#7397](https://github.com/vector-im/element-ios/pull/7397))
+- Fixes bug about centring user in live location sharing ([#7398](https://github.com/vector-im/element-ios/pull/7398))
+- Polls: improve rendering of poll ended events. ([#7402](https://github.com/vector-im/element-ios/pull/7402))
+- Fix an issue where SAS verification would fail between two iOS devices ([#3946](https://github.com/vector-im/element-ios/issues/3946))
+- Pin SwiftOGG to a release rather than main branch to avoid breaking changes in SwiftOGG causing bugs in element-ios. ([#7388](https://github.com/vector-im/element-ios/issues/7388))
+
+
+## Changes in 1.10.3 (2023-02-21)
+
+🙌 Improvements
+
+- Polls: add fallback text for poll ended events. ([#7353](https://github.com/vector-im/element-ios/pull/7353))
+- Push Rules: Apply push rules client side for encrypted rooms, hiding in case of dont_notify action ([#7356](https://github.com/vector-im/element-ios/pull/7356))
+- Map Views: Show own location in map views ([#7361](https://github.com/vector-im/element-ios/pull/7361))
+- Do not reset device keys if migrating to CryptoSDK ([#7369](https://github.com/vector-im/element-ios/pull/7369))
+- Labs: Rich Text Editor: Update to version 1.1.1 ([#7370](https://github.com/vector-im/element-ios/pull/7370))
+- Updates to protocol used for Sign in with QR code. ([#7372](https://github.com/vector-im/element-ios/pull/7372))
+- Upgrade MatrixSDK version ([v0.25.2](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.25.2)).
+
+🐛 Bugfixes
+
+- A voice message is now replayable. ([#7217](https://github.com/vector-im/element-ios/issues/7217))
+- Fix an issue where a voice message recording was failing. ([#7325](https://github.com/vector-im/element-ios/issues/7325))
+- Fix an issue where a voice message disappears after being sent. ([#7326](https://github.com/vector-im/element-ios/issues/7326))
+
+
+## Changes in 1.10.2 (2023-02-10)
+
+🐛 Bugfixes
+
+- Fixes #7350 - Fix green dot only to appear for marked action ([#7530](https://github.com/vector-im/element-ios/issues/7530))
+
+
+## Changes in 1.10.1 (2023-02-07)
+
+✨ Features
+
+- Add mark as unread option for rooms ([#7253](https://github.com/vector-im/element-ios/issues/7253))
+
+🙌 Improvements
+
+- Polls: add logic for fetching poll histories in rooms. ([#7293](https://github.com/vector-im/element-ios/pull/7293))
+- Poll: add a feature to load more polls in the poll history. ([#7303](https://github.com/vector-im/element-ios/pull/7303))
+- CryptoV2: Generate Crypto SDK store key ([#7310](https://github.com/vector-im/element-ios/pull/7310))
+- Poll: added poll detail in poll list hisotry with navigation to timeline ([#7314](https://github.com/vector-im/element-ios/pull/7314))
+- Backup: Display backup import progress ([#7319](https://github.com/vector-im/element-ios/pull/7319))
+- Polls: sync push rules with the one of normal messages. ([#7320](https://github.com/vector-im/element-ios/pull/7320))
+- CryptoV2: Reset Crypto SDK on logout ([#7323](https://github.com/vector-im/element-ios/pull/7323))
+- Polls: add error handling when syncing push rules with the ones of normal messages. ([#7324](https://github.com/vector-im/element-ios/pull/7324))
+- CryptoV2: Refresh notification service on crypto change ([#7332](https://github.com/vector-im/element-ios/pull/7332))
+- CryptoV2: Enable Crypto SDK for production ([#7333](https://github.com/vector-im/element-ios/pull/7333))
+- Polls: add automatic synchronization logic for poll push rules. ([#7335](https://github.com/vector-im/element-ios/pull/7335))
+- Polls: update poll history UI. ([#7341](https://github.com/vector-im/element-ios/pull/7341))
+- Upgrade MatrixSDK version ([v0.25.1](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.25.1)).
+- Hide the presence info if the presence status is unknown. ([#6597](https://github.com/vector-im/element-ios/issues/6597))
+- Inform the user about decryption errors during a voice broadcast. ([#7189](https://github.com/vector-im/element-ios/issues/7189))
+- App Layout: Removed the onboarding flow ([#7298](https://github.com/vector-im/element-ios/issues/7298))
+- Improve error handling during a voice broadcast playback. ([#7311](https://github.com/vector-im/element-ios/issues/7311))
+- Labs: Rich text editor: enable list items indentation ([#7316](https://github.com/vector-im/element-ios/issues/7316))
+
+
+## Changes in 1.10.0 (2023-02-02)
+
+🙌 Improvements
+
+- CryptoV2: Generate Crypto SDK store key ([#7310](https://github.com/vector-im/element-ios/pull/7310))
+- Backup: Display backup import progress ([#7319](https://github.com/vector-im/element-ios/pull/7319))
+- CryptoV2: Reset Crypto SDK on logout ([#7323](https://github.com/vector-im/element-ios/pull/7323))
+- CryptoV2: Refresh notification service on crypto change ([#7332](https://github.com/vector-im/element-ios/pull/7332))
+- CryptoV2: Enable Crypto SDK for production ([#7333](https://github.com/vector-im/element-ios/pull/7333))
+- Upgrade MatrixSDK version ([v0.25.0](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.25.0)).
+
+
 ## Changes in 1.9.17 (2023-01-26)
 
 🙌 Improvements

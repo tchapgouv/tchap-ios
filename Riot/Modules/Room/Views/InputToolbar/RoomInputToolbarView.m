@@ -74,6 +74,9 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     [self.rightInputToolbarButton setTitle:nil forState:UIControlStateNormal];
     [self.rightInputToolbarButton setTitle:nil forState:UIControlStateHighlighted];
 
+    // Tchap : use Tchap send icon
+    [self.rightInputToolbarButton setImage:AssetImages_tchap.sendIconTchap.image forState:UIControlStateNormal];
+    
     self.isEncryptionEnabled = _isEncryptionEnabled;
     
     [self updateUIWithAttributedTextMessage:nil animated:NO];
@@ -219,7 +222,8 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     switch (_sendMode)
     {
         case RoomInputToolbarViewSendModeReply:
-            buttonImage = AssetImages_tchap.sendIcon.image;
+            // Tchap : use Tchap send icon
+            buttonImage = AssetImages_tchap.sendIconTchap.image;
             self.inputContextImageView.image = AssetImages.inputReplyIcon.image;
             self.inputContextLabel.text = [VectorL10n roomMessageReplyingTo:self.eventSenderDisplayName];
 
@@ -237,11 +241,13 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
             self.textView.maxHeight -= kContextBarHeight;
             break;
         case RoomInputToolbarViewSendModeCreateDM:
-            buttonImage = AssetImages_tchap.sendIcon.image;
+            // Tchap : use Tchap send icon
+            buttonImage = AssetImages_tchap.sendIconTchap.image;
             self.inputContextViewHeightConstraint.constant = 0;
             break;
         default:
-            buttonImage = AssetImages_tchap.sendIcon.image;
+            // Tchap : use Tchap send icon
+            buttonImage = AssetImages_tchap.sendIconTchap.image;
 
             if (previousMode != _sendMode)
             {
