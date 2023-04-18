@@ -128,10 +128,13 @@ final class BuildSettings: NSObject {
     
     
     // MARK: - Legal URLs
+
+    // Note: Set empty strings to hide the related entry in application settings
     static let applicationTermsConditionsUrlString = "https://www.tchap.gouv.fr/tac.html"
     static let clientConfigURL = "https://www.tchap.gouv.fr/client/config/agent/ios"
     static let applicationHelpUrlString = "https://www.tchap.gouv.fr/faq"
-    
+    static let applicationAcceptableUsePolicyUrlString = ""
+
     
     // MARK: - Matrix permalinks
     // Hosts/Paths for URLs that will considered as valid permalinks. Those permalinks are opened within the app.

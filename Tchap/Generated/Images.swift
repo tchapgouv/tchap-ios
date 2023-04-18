@@ -44,7 +44,6 @@ internal class Asset_tchap: NSObject {
     internal static let roomContextMenuShare = ImageAsset(name: "room_context_menu_share")
     internal static let roomHeaderHistory = ImageAsset(name: "room_header_history")
     internal static let roomHeaderMembers = ImageAsset(name: "room_header_members")
-    internal static let sendIcon = ImageAsset(name: "send_icon")
     internal static let sendIconTchap = ImageAsset(name: "send_icon_tchap")
     internal static let forum = ImageAsset(name: "forum")
     internal static let privateRoom = ImageAsset(name: "private_room")

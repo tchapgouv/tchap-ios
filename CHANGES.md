@@ -1,3 +1,62 @@
+## Changes in 1.10.9 (2023-04-04)
+
+🙌 Improvements
+
+- Encryption: Simplify event encryption decoration ([#7440](https://github.com/vector-im/element-ios/pull/7440))
+- Add user suggestions for @room and highlight incoming messages containing @room when the room is encrypted. ([#7453](https://github.com/vector-im/element-ios/pull/7453))
+- Crypto: Expand rust crypto rollout to 50% users ([#7466](https://github.com/vector-im/element-ios/pull/7466))
+- Upgrade MatrixSDK version ([v0.26.6](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.26.6)).
+- Replace Terms and Conditions with Acceptable Use Policy. ([#7456](https://github.com/vector-im/element-ios/issues/7456))
+- Crypto: Display correct SDK version ([#7457](https://github.com/vector-im/element-ios/issues/7457))
+
+🐛 Bugfixes
+
+- QR verification: Start scanning as soon as camera ready ([#7469](https://github.com/vector-im/element-ios/pull/7469))
+- Timeline: No event decoration if no decryption result ([#7471](https://github.com/vector-im/element-ios/pull/7471))
+- Long pills are now truncated. ([#7413](https://github.com/vector-im/element-ios/issues/7413))
+- Update the read marker position even if it is not displayed ([#7420](https://github.com/vector-im/element-ios/issues/7420))
+
+
+## Changes in 1.10.8 (2023-03-28)
+
+🙌 Improvements
+
+- Verification: Display upgrade verification prompt ([#7454](https://github.com/vector-im/element-ios/pull/7454))
+- Upgrade MatrixSDK version ([v0.26.5](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.26.5)).
+
+
+## Changes in 1.10.7 (2023-03-22)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.26.4](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.26.4)).
+
+
+## Changes in 1.10.6 (2023-03-21)
+
+🙌 Improvements
+
+- Encryption: Refactor user / room encryption trust level ([#7430](https://github.com/vector-im/element-ios/pull/7430))
+- Crypto: Increase local rust crypto rollout to 20% of all users ([#7434](https://github.com/vector-im/element-ios/pull/7434))
+- Upgrade MatrixSDK version ([v0.26.2](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.26.2)).
+- Permalinks to a room/space are pillified ([#7409](https://github.com/vector-im/element-ios/issues/7409))
+- Permalinks to a matrix user are pillified ([#7411](https://github.com/vector-im/element-ios/issues/7411))
+- Permalinks to messages are pillified ([#7412](https://github.com/vector-im/element-ios/issues/7412))
+- Loading: Update startup progress UX ([#7417](https://github.com/vector-im/element-ios/issues/7417))
+
+🐛 Bugfixes
+
+- Room list: increase tappability area of the avatar button. ([#7427](https://github.com/vector-im/element-ios/pull/7427))
+- Manage bad m.file attachment format. ([#7406](https://github.com/vector-im/element-ios/issues/7406))
+
+
+## Changes in 1.10.5 (2023-03-13)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.26.1](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.26.1)).
+
+
 ## Changes in 1.10.4 (2023-03-07)
 
 🙌 Improvements
