@@ -365,6 +365,11 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
             }
         }
 
+        // Tchap : help access in User menu
+        subMenuActions.append(UIAction(title: VectorL10n.sideMenuActionHelp, image: UIImage(systemName: "lightbulb.circle")) { [weak self] action in
+            self?.showHelp()
+        })
+        
         subMenuActions.append(UIAction(title: VectorL10n.sideMenuActionFeedback, image: UIImage(systemName: "questionmark.circle")) { [weak self] action in
             self?.showBugReport()
         })
@@ -660,6 +665,11 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         self.navigationRouter.present(bugReportViewController, animated: true)
     }
 
+    // Tchap : help access in User menu
+    private func showHelp() {
+        self.allChatsViewController.present(HelpController(targetUrl: URL(string: BuildSettings.applicationHelpUrlString)!), animated: true)
+    }
+    
     private func userAvatarViewData(from mxSession: MXSession?) -> UserAvatarViewData? {
         guard let mxSession = mxSession, let userId = mxSession.myUserId, let mediaManager = mxSession.mediaManager, let myUser = mxSession.myUser else {
             return nil

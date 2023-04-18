@@ -1416,7 +1416,7 @@
 "space_feature_unavailable_title" = "Les espaces ne sont pas encore pris en charge";
 "side_menu_app_version" = "Version %@";
 "side_menu_action_feedback" = "Remarques";
-"side_menu_action_help" = "Aide";
+"side_menu_action_help" = "Accéder à la FAQ"; // Tchap
 "side_menu_action_settings" = "Paramètres";
 "side_menu_action_invite_friends" = "Inviter des amis";
 
