@@ -118,9 +118,8 @@ final class BuildSettings: NSObject {
     static let applicationCopyrightUrlString = "https://element.io/copyright"
     static let applicationPrivacyPolicyUrlString = "https://element.io/privacy"
     static let applicationAcceptableUsePolicyUrlString = "https://element.io/acceptable-use-policy-terms"
-    static let applicationHelpUrlString =
-    "https://element.io/help"
-    
+    static let applicationHelpUrlString = "https://aide.tchap.beta.gouv.fr/fr/"
+
     
     // MARK: - Permalinks
     // Hosts/Paths for URLs that will considered as valid permalinks. Those permalinks are opened within the app.

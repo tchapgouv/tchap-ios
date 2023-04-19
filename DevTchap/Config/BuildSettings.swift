@@ -118,7 +118,7 @@ final class BuildSettings: NSObject {
     // Note: Set empty strings to hide the related entry in application settings
     static let applicationTermsConditionsUrlString = "https://www.tchap.incubateur.net/tac.html"
     static let clientConfigURL = "https://www.tchap.incubateur.net/client/config/agent/ios"
-    static let applicationHelpUrlString = "https://www.tchap.incubateur.net/faq"
+    static let applicationHelpUrlString = "https://aide.tchap.beta.gouv.fr/fr/"
     static let applicationAcceptableUsePolicyUrlString = ""
 
     
