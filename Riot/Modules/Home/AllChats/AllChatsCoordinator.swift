@@ -667,7 +667,7 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
 
     // Tchap : help access in User menu
     private func showHelp() {
-        self.allChatsViewController.present(HelpController(targetUrl: URL(string: BuildSettings.applicationHelpUrlString)!), animated: true)
+        self.allChatsViewController.present(WebSheetViewController(targetUrl: URL(string: BuildSettings.applicationHelpUrlString)!), animated: true)
     }
     
     private func userAvatarViewData(from mxSession: MXSession?) -> UserAvatarViewData? {

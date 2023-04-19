@@ -16,9 +16,9 @@
 
 import Foundation
 
-class HelpController: UIViewController, WKUIDelegate {
+class WebSheetViewController: UIViewController, WKUIDelegate {
     
-    lazy var webview: WKWebView = { [unowned self] in
+    private lazy var webview: WKWebView = { [unowned self] in
         let conf = WKWebViewConfiguration()
         conf.preferences.javaScriptEnabled = true
         let wb = WKWebView(frame: .zero, configuration: conf)
@@ -27,13 +27,13 @@ class HelpController: UIViewController, WKUIDelegate {
         return wb
     }()
     
-    lazy var loadingSpinner: UIActivityIndicatorView = { [unowned self] in
+    private lazy var loadingSpinner: UIActivityIndicatorView = { [unowned self] in
         let spinner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
         spinner.translatesAutoresizingMaskIntoConstraints = false
         return spinner
     }()
     
-    var closeButtonIsHidden = true {
+    private var closeButtonIsHidden = true {
         didSet {
             if self.closeButtonIsHidden {
                 self.view.removeFromSuperview()
@@ -45,7 +45,7 @@ class HelpController: UIViewController, WKUIDelegate {
         }
     }
     
-    lazy var buttonClose: UIButton = { [unowned self] in
+    private lazy var buttonClose: UIButton = { [unowned self] in
         let btn = UIButton(type: .close)
         btn.backgroundColor = .black
         btn.translatesAutoresizingMaskIntoConstraints = false
@@ -53,7 +53,7 @@ class HelpController: UIViewController, WKUIDelegate {
         return btn
     }()
     
-    func updateCloseButtonConstraints() {
+    private func updateCloseButtonConstraints() {
         guard !self.closeButtonIsHidden else { return }
         
         self.buttonClose.centerXAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -32.0).isActive = true
@@ -62,7 +62,7 @@ class HelpController: UIViewController, WKUIDelegate {
         self.buttonClose.heightAnchor.constraint(equalTo: self.buttonClose.widthAnchor, multiplier: 1.0).isActive = true
     }
     
-    var targetUrl: URL?
+    private var targetUrl: URL?
     
     private func _configure() {
         self.closeButtonIsHidden = false
@@ -76,7 +76,7 @@ class HelpController: UIViewController, WKUIDelegate {
         self.displayLoading(true)
     }
 
-    func displayLoading(_ show: Bool) {
+    private func displayLoading(_ show: Bool) {
         if show && self.loadingSpinner.superview != self.view {
             self.webview.addSubview(self.loadingSpinner)
             self.loadingSpinner.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -32.0).isActive = true
@@ -103,7 +103,7 @@ class HelpController: UIViewController, WKUIDelegate {
         }
     }
     
-    func setConstraints() {
+    private func setConstraints() {
         let constraints = [
             self.webview.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             self.webview.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
@@ -114,12 +114,12 @@ class HelpController: UIViewController, WKUIDelegate {
         NSLayoutConstraint.activate(constraints)
     }
     
-    @objc func close(sender: UIButton) {
+    @objc private func close(sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
 }
 
-extension HelpController: WKNavigationDelegate {
+extension WebSheetViewController: WKNavigationDelegate {
     /*
      webView decidePolicyFor navigationAction:
      webView didStartProvisionalNavigation:
