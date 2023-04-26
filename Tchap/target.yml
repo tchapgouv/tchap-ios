@@ -70,8 +70,6 @@ targetTemplates:
 
     settings:
       INFOPLIST_FILE: "${target_name}/SupportingFiles/Info.plist"
-      GCC_PREPROCESSOR_DEFINITIONS: $(inherited) SECURE_BACKUP=1 CROSS_SIGNING=1
-      OTHER_SWIFT_FLAGS: $(inherited) -D SECURE_BACKUP -D CROSS_SIGNING
 
     sources:
     - path: ../Config/AppConfiguration.swift
@@ -335,6 +333,10 @@ targets:
       Debug: ../Tchap/SupportingFiles/App-Debug.xcconfig
       Release: ../Tchap/SupportingFiles/App-Release.xcconfig
 
+    settings:
+      GCC_PREPROCESSOR_DEFINITIONS: $(inherited) SECURE_BACKUP=1 CROSS_SIGNING=1 TCHAP_PRODUCTION=1
+      OTHER_SWIFT_FLAGS: $(inherited) -D SECURE_BACKUP -D CROSS_SIGNING -D TCHAP_PRODUCTION
+
     sources:
     - path: ../Tchap/Assets
       excludes:
@@ -350,6 +352,10 @@ targets:
       Debug: ../Btchap/SupportingFiles/Btchap-App-Debug.xcconfig
       Release: ../Btchap/SupportingFiles/Btchap-App-Release.xcconfig
 
+    settings:
+      GCC_PREPROCESSOR_DEFINITIONS: $(inherited) SECURE_BACKUP=1 CROSS_SIGNING=1 TCHAP_PREPRODUCTION=1
+      OTHER_SWIFT_FLAGS: $(inherited) -D SECURE_BACKUP -D CROSS_SIGNING -D TCHAP_PREPRODUCTION
+
     sources:
     - path: ../Btchap
       excludes:
@@ -363,6 +369,10 @@ targets:
     configFiles:
       Debug: ../DevTchap/SupportingFiles/DevTchap-App-Debug.xcconfig
       Release: ../DevTchap/SupportingFiles/DevTchap-App-Release.xcconfig
+
+    settings:
+      GCC_PREPROCESSOR_DEFINITIONS: $(inherited) SECURE_BACKUP=1 CROSS_SIGNING=1 TCHAP_DEVELOPMENT=1
+      OTHER_SWIFT_FLAGS: $(inherited) -D SECURE_BACKUP -D CROSS_SIGNING -D TCHAP_DEVELOPMENT
 
     sources:
     - path: ../DevTchap
