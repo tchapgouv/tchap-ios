@@ -20,7 +20,7 @@ class WebSheetViewController: UIViewController, WKUIDelegate {
     
     private lazy var webview: WKWebView = { [unowned self] in
         let conf = WKWebViewConfiguration()
-        conf.preferences.javaScriptEnabled = true
+        conf.defaultWebpagePreferences.allowsContentJavaScript = true
         let wb = WKWebView(frame: .zero, configuration: conf)
         wb.translatesAutoresizingMaskIntoConstraints = false
         wb.navigationDelegate = self
