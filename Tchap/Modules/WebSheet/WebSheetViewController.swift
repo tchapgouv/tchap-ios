@@ -46,8 +46,9 @@ class WebSheetViewController: UIViewController, WKUIDelegate {
     }
     
     private lazy var buttonClose: UIButton = { [unowned self] in
-        let btn = UIButton(type: .close)
-        btn.backgroundColor = .black
+        let btn = UIButton(type: .custom)
+        btn.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
+        btn.tintColor = .white
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(close(sender:)), for: .touchUpInside)
         return btn
