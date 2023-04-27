@@ -118,7 +118,7 @@ final class BuildSettings: NSObject {
     static let applicationCopyrightUrlString = "https://element.io/copyright"
     static let applicationPrivacyPolicyUrlString = "https://element.io/privacy"
     static let applicationAcceptableUsePolicyUrlString = "https://element.io/acceptable-use-policy-terms"
-    static let applicationHelpUrlString = "https://aide.tchap.beta.gouv.fr/fr/"
+    static let applicationHelpUrlString = "https://www.tchap.gouv.fr/faq"
 
     
     // MARK: - Permalinks

@@ -118,7 +118,7 @@ final class BuildSettings: NSObject {
     // Note: Set empty strings to hide the related entry in application settings
     static let applicationTermsConditionsUrlString = "https://www.tchap.gouv.fr/tac.html"
     static let clientConfigURL = "https://www.tchap.gouv.fr/client/config/preprod/ios"
-    static let applicationHelpUrlString = "https://aide.tchap.beta.gouv.fr/fr/"
+    static let applicationHelpUrlString = "https://www.beta.tchap.gouv.fr/faq"
     static let applicationAcceptableUsePolicyUrlString = ""
     
     // MARK: - Matrix permalinks

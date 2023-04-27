@@ -52,13 +52,20 @@ import MatrixSDKCrypto
     
     init(
         remoteFeature: RemoteFeaturesClientProtocol = PostHogAnalyticsClient.shared,
-        localTargetPercentage: Double = 0.5
+        localTargetPercentage: Double = 1
     ) {
         self.remoteFeature = remoteFeature
-        self.localFeature = PhasedRolloutFeature(
-            name: Self.FeatureName,
-            targetPercentage: localTargetPercentage
-        )
+        // Tchap
+//        self.localFeature = PhasedRolloutFeature(name: Self.FeatureName, targetPercentage: localTargetPercentage)
+#if TCHAP_PRODUCTION
+        self.localFeature = PhasedRolloutFeature(name: Self.FeatureName, targetPercentage: 0.25)
+#elseif TCHAP_PREPRODUCTION
+        self.localFeature = PhasedRolloutFeature(name: Self.FeatureName, targetPercentage: 1.0)
+#elseif TCHAP_DEVELOPMENT
+        self.localFeature = PhasedRolloutFeature(name: Self.FeatureName, targetPercentage: 1.0)
+#else
+        self.localFeature = PhasedRolloutFeature(name: Self.FeatureName, targetPercentage: localTargetPercentage)
+#endif
     }
     
     func enable() {
