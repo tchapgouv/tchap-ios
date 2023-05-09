@@ -603,7 +603,7 @@
 "key_backup_setup_passphrase_confirm_passphrase_invalid" = "Les phrases secrètes ne correspondent pas";
 "key_backup_setup_passphrase_set_passphrase_action" = "Définir la phrase secrète";
 "key_backup_setup_recovery_key_info" = "Faites une copie de cette clé de récupération et conservez-la en lieu sûr.\n\nPar mesure de précaution, vous pouvez l'utiliser pour restaurer votre historique de messages chiffrés si vous oubliez votre phrase de passe de récupération.";
-"key_backup_setup_recovery_key_recovery_key_title" = "Code de récupération"; // Tchap
+"key_backup_setup_recovery_key_recovery_key_title" = "Clé de récupération";
 "key_backup_setup_recovery_key_make_copy_action" = "En faire une copie";
 "key_backup_setup_recovery_key_made_copy_action" = "J'en ai fait une copie";
 "key_backup_recover_title" = "Messages sécurisés";
@@ -642,7 +642,7 @@
 "key_backup_setup_success_from_passphrase_done_action" = "Terminé";
 // Success from recovery key
 "key_backup_setup_success_from_recovery_key_info" = "Vos clés sont en cours de sauvegarde.\n\nFaites une copie de cette clé de récupération et conservez-la en lieu sûr.";
-"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Code de récupération"; // Tchap
+"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Clé de récupération";
 "key_backup_setup_success_from_recovery_key_make_copy_action" = "En faire une copie";
 "key_backup_setup_success_from_recovery_key_made_copy_action" = "J’en ai fait une copie";
 "key_backup_recover_invalid_passphrase_title" = "Phrase secrète de récupération incorrecte";
@@ -1120,7 +1120,7 @@
 "secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
 "secrets_recovery_with_passphrase_invalid_passphrase_title" = "Impossible d’accéder au coffre secret";
 "secrets_recovery_with_passphrase_invalid_passphrase_message" = "Vérifiez que vous avez saisi la bonne phrase secrète de récupération.";
-"secrets_recovery_with_key_title" = "Code de récupération"; // Tchap
+"secrets_recovery_with_key_title" = "Clé de récupération";
 "secrets_recovery_with_key_information_default" = "Accédez à l’historique de vos messages sécurisés et à votre identité de signature croisée pour vérifier d’autres sessions en renseignant votre clé de récupération.";
 "secrets_recovery_with_key_information_verify_device" = "Utilisez votre clé de récupération pour vérifier cet appareil.";
 "secrets_recovery_with_key_recovery_key_title" = "Saisir";
