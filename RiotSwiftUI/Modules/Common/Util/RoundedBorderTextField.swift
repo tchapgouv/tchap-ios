@@ -89,6 +89,7 @@ struct RoundedBorderTextField: View {
                     .foregroundColor(isError ? theme.colors.alert : theme.colors.tertiaryContent)
                     .font(theme.fonts.footnote)
                     .multilineTextAlignment(.leading)
+                    .fixedSize(horizontal: false, vertical: true) // Tchap : needed to allow multiline footer
                     .padding(.top, 8)
                     .transition(.opacity)
             }
