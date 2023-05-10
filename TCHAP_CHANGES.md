@@ -1,3 +1,21 @@
+## Changes in 2.4.5 (2023-05-10)
+
+🙌 Improvements
+
+- [Mainlining] Update account_validity requests ([#718](https://github.com/tchapgouv/tchap-ios/issues/718))
+- Améliorer la visibilité de la FAQ #808 ([#808](https://github.com/tchapgouv/tchap-ios/issues/808))
+- Rebase iOS Element 1.10.10 minimun (pour permettre le renvoi de clés de chiffrement automatique) #814 ([#814](https://github.com/tchapgouv/tchap-ios/issues/814))
+- Deploy new CryptoSDK (Rust) partially to PROD and fully to Preprod and Dev (#816) ([#816](https://github.com/tchapgouv/tchap-ios/issues/816))
+- Améliorer l'UI de la pop-up FAQ (#818) ([#818](https://github.com/tchapgouv/tchap-ios/issues/818))
+- iOS Rebase Element 1.10.11 (#821) ([#821](https://github.com/tchapgouv/tchap-ios/issues/821))
+- Bad wording: clé de récupération should be code de récupération (#825) ([#825](https://github.com/tchapgouv/tchap-ios/issues/825))
+
+🐛 Bugfixes
+
+- [FAQ] Rétablir l'URL d'origine (#811) ([#811](https://github.com/tchapgouv/tchap-ios/issues/811))
+- [Création de compte] Critères de mot de passe tronqués (#827) ([#827](https://github.com/tchapgouv/tchap-ios/issues/827))
+
+
 ## Changes in 2.4.1 (2023-04-03)
 
 🙌 Improvements
