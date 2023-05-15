@@ -48,8 +48,9 @@ NSString* const kSettingsViewControllerPhoneBookCountryCellId = @"kSettingsViewC
 
 typedef NS_ENUM(NSUInteger, SECTION_TAG)
 {
-    SECTION_TAG_SIGN_OUT = 0,
-    SECTION_TAG_USER_SETTINGS,
+// Tchap : sign out moved to end of settings
+//    SECTION_TAG_SIGN_OUT = 0,
+    SECTION_TAG_USER_SETTINGS = 0,
     SECTION_TAG_SENDING_MEDIA,
     SECTION_TAG_LINKS,
     SECTION_TAG_SECURITY,
@@ -70,6 +71,8 @@ typedef NS_ENUM(NSUInteger, SECTION_TAG)
     SECTION_TAG_ADVANCED,
     SECTION_TAG_ABOUT,
     SECTION_TAG_LABS,
+// Tchap : sign out moved to end of settings
+    SECTION_TAG_SIGN_OUT,
     SECTION_TAG_DEACTIVATE_ACCOUNT
 };
 
@@ -371,10 +374,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 {
     NSMutableArray<Section*> *tmpSections = [NSMutableArray arrayWithCapacity:SECTION_TAG_DEACTIVATE_ACCOUNT + 1];
     
-    Section *sectionSignOut = [Section sectionWithTag:SECTION_TAG_SIGN_OUT];
-    [sectionSignOut addRowWithTag:0];
-    [tmpSections addObject:sectionSignOut];
-    
     Section *sectionUserSettings = [Section sectionWithTag:SECTION_TAG_USER_SETTINGS];
     [sectionUserSettings addRowWithTag:USER_SETTINGS_PROFILE_PICTURE_INDEX];
     [sectionUserSettings addRowWithTag:USER_SETTINGS_DISPLAYNAME_INDEX];
@@ -665,6 +664,11 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             [tmpSections addObject:sectionLabs];
         }
     }
+    
+    // Tchap : sign out moved to end of settings
+    Section *sectionSignOut = [Section sectionWithTag:SECTION_TAG_SIGN_OUT];
+    [sectionSignOut addRowWithTag:0];
+    [tmpSections addObject:sectionSignOut];
     
     if (BuildSettings.settingsScreenAllowDeactivatingAccount)
     {
@@ -1779,7 +1783,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         
         [signOutCell.mxkButton setTitle:title forState:UIControlStateNormal];
         [signOutCell.mxkButton setTitle:title forState:UIControlStateHighlighted];
-        [signOutCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
+        [signOutCell.mxkButton setTintColor:ThemeService.shared.theme.warningColor]; // Tchap: custom color
         signOutCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
         
         [signOutCell.mxkButton  removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
