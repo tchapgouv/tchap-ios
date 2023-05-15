@@ -160,14 +160,13 @@ class AllChatsEditActionProvider {
         }
     }
     
-    // Tchap : don't enable space creation
-//    private var createSpaceAction: UIAction {
-//        UIAction(title: parentSpace == nil ? VectorL10n.spacesCreateSpaceTitle : VectorL10n.spacesCreateSubspaceTitle,
-//                 image: UIImage(systemName: "plus"),
-//                 attributes: isAddRoomAvailable ? [] : .disabled) { [weak self] action in
-//            guard let self = self else { return }
-//
-//            self.delegate?.allChatsEditActionProvider(self, didSelect: .createSpace)
-//        }
-//    }
+    private var createSpaceAction: UIAction {
+        UIAction(title: parentSpace == nil ? VectorL10n.spacesCreateSpaceTitle : VectorL10n.spacesCreateSubspaceTitle,
+                 image: UIImage(systemName: "plus"),
+                 attributes: isAddRoomAvailable ? [] : .disabled) { [weak self] action in
+            guard let self = self else { return }
+
+            self.delegate?.allChatsEditActionProvider(self, didSelect: .createSpace)
+        }
+    }
 }
