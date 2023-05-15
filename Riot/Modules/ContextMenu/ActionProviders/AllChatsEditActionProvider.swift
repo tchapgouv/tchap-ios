@@ -55,9 +55,10 @@ class AllChatsEditActionProvider {
                 self.createRoomAction,
                 self.startChatAction
             ]
-            if rootSpaceCount > 0 {
-                createActions.insert(self.createSpaceAction, at: 0)
-            }
+            // Tchap : don't enable space creation
+//            if rootSpaceCount > 0 {
+//                createActions.insert(self.createSpaceAction, at: 0)
+//            }
             return UIMenu(title: "", children: [
                 self.exploreRoomsAction,
                 UIMenu(title: "", options: .displayInline, children: createActions)
@@ -69,7 +70,8 @@ class AllChatsEditActionProvider {
                 self.exploreRoomsAction
             ]),
             UIMenu(title: "", options: .displayInline, children: [
-                self.createSpaceAction,
+                // Tchap : don't enable space creation
+//                self.createSpaceAction,
                 self.createRoomAction
             ])
         ])
@@ -163,7 +165,7 @@ class AllChatsEditActionProvider {
                  image: UIImage(systemName: "plus"),
                  attributes: isAddRoomAvailable ? [] : .disabled) { [weak self] action in
             guard let self = self else { return }
-            
+
             self.delegate?.allChatsEditActionProvider(self, didSelect: .createSpace)
         }
     }
