@@ -16,28 +16,28 @@
 
 import Foundation
 
-/// List the different result cases
-enum InviteServiceResult {
-    case inviteHasBeenSent(roomID: String)
-    case inviteAlreadySent(roomID: String)
-    case inviteIgnoredForDiscoveredUser(userID: String)
-    case inviteIgnoredForUnauthorizedEmail
-}
-
-
-/// List the different discover user result cases
-enum InviteServiceDiscoverUserResult {
-    case bound(userID: String)
-    case unbound
-}
-
-/// Protocol describing a service used to invite someone to join Tchap.
-protocol InviteServiceType {
-    
-    /// Invite a contact by inviting him in a direct chat (if this is not already done).
-    ///
-    /// - Parameters:
-    ///   - email: an email address.
-    ///   - completion: A closure called when the operation complete. See InviteServiceResult values.
-    func sendEmailInvite(to email: String, completion: @escaping (MXResponse<InviteServiceResult>) -> Void)
-}
+///// List the different result cases
+//enum  {
+//    case inviteHasBeenSent(roomID: String)
+//    case inviteAlreadySent(roomID: String)
+//    case inviteIgnoredForDiscoveredUser(userID: String)
+//    case inviteIgnoredForUnauthorizedEmail
+//}
+//
+//
+///// List the different discover user result cases
+//enum InviteServiceDiscoverUserResult {
+//    case bound(userID: String)
+//    case unbound
+//}
+//
+///// Protocol describing a service used to invite someone to join Tchap.
+//protocol InviteServiceType {
+//    
+//    /// Invite a contact by inviting him in a direct chat (if this is not already done).
+//    ///
+//    /// - Parameters:
+//    ///   - email: an email address.
+//    ///   - completion: A closure called when the operation complete. See InviteServiceResult values.
+//    func sendEmailInvite(to email: String, completion: @escaping (MXResponse<InviteServiceResult>) -> Void)
+//}

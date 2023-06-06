@@ -81,7 +81,7 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     private var indicators = [UserIndicator]()
     private var signOutFlowPresenter: SignOutFlowPresenter?
     // Tchap: Add invite service for user invitation
-    private var inviteService: InviteServiceType?
+//    private var inviteService: InviteServiceType?
     private var errorPresenter: ErrorPresenter?
     private weak var currentAlertController: UIAlertController?
     
@@ -360,7 +360,7 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
                 !UserService.isExternalUser(for: userID) {
                 subMenuActions.append(UIAction(title: TchapL10n.sideMenuActionInviteFriends, image: UIImage(systemName: "square.and.arrow.up.fill")) { [weak self] action in
                     guard let self = self else { return }
-                    self.showInviteFriends(from: self.avatarMenuButton)
+                    self.allChatsViewController.startChat()
                 })
             }
         }
@@ -644,15 +644,15 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
 //    }
     
     private func showInviteFriends(from sourceView: UIView?) {
-        // Tchap: Use Tchap specific mechanism.
-        promptUserToFillAnEmailToInvite { [weak self] email in
-            self?.sendEmailInvite(to: email)
-        }
-                
-//        let myUserId = self.parameters.userSessionsService.mainUserSession?.userId ?? ""
-//
-//        let inviteFriendsPresenter = InviteFriendsPresenter()
-//        inviteFriendsPresenter.present(for: myUserId, from: self.navigationRouter.toPresentable(), sourceView: sourceView, animated: true)
+//        // Tchap: Use Tchap specific mechanism.
+//        promptUserToFillAnEmailToInvite { [weak self] email in
+//            self?.sendEmailInvite(to: email)
+//        }
+//                
+////        let myUserId = self.parameters.userSessionsService.mainUserSession?.userId ?? ""
+////
+////        let inviteFriendsPresenter = InviteFriendsPresenter()
+////        inviteFriendsPresenter.present(for: myUserId, from: self.navigationRouter.toPresentable(), sourceView: sourceView, animated: true)
     }
     
     private func showBugReport() {
@@ -911,55 +911,55 @@ extension AllChatsCoordinator {
     }
     
     private func sendEmailInvite(to email: String) {
-        guard let session = self.currentMatrixSession else { return }
-        if self.inviteService == nil {
-            self.inviteService = InviteService(session: session)
-        }
-        guard let inviteService = self.inviteService else { return }
-        
-        self.activityIndicatorPresenter.presentActivityIndicator(on: self.navigationRouter.toPresentable().view, animated: true)
-        inviteService.sendEmailInvite(to: email) { [weak self] (response) in
-            guard let sself = self else {
-                return
-            }
-            
-            sself.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
-            switch response {
-            case .success(let result):
-                var message: String
-                var discoveredUserID: String?
-                switch result {
-                case .inviteHasBeenSent(roomID: _):
-                    message = TchapL10n.inviteSendingSucceeded
-                case .inviteAlreadySent(roomID: _):
-                    message = TchapL10n.inviteAlreadySentByEmail(email)
-                case .inviteIgnoredForDiscoveredUser(userID: let userID):
-                    discoveredUserID = userID
-                    message = TchapL10n.inviteNotSentForDiscoveredUser
-                case .inviteIgnoredForUnauthorizedEmail:
-                    message = TchapL10n.inviteNotSentForUnauthorizedEmail(email)
-                }
-                
-                sself.currentAlertController?.dismiss(animated: false)
-                
-                let alert = UIAlertController(title: TchapL10n.inviteInformationTitle, message: message, preferredStyle: .alert)
-                
-                let okTitle = VectorL10n.ok
-                let okAction = UIAlertAction(title: okTitle, style: .default, handler: { action in
-                    if let userID = discoveredUserID {
-                        // Open the discussion
-                        AppDelegate.theDelegate().startDirectChat(withUserId: userID, completion: nil)
-                    }
-                })
-                alert.addAction(okAction)
-                sself.currentAlertController = alert
-                
-                sself.navigationRouter.toPresentable().present(alert, animated: true, completion: nil)
-            case .failure(let error):
-                let errorPresentable = sself.inviteErrorPresentable(from: error)
-                sself.errorPresenter?.present(errorPresentable: errorPresentable, animated: true)
-            }
-        }
+//        guard let session = self.currentMatrixSession else { return }
+//        if self.inviteService == nil {
+//            self.inviteService = InviteService(session: session)
+//        }
+//        guard let inviteService = self.inviteService else { return }
+//        
+//        self.activityIndicatorPresenter.presentActivityIndicator(on: self.navigationRouter.toPresentable().view, animated: true)
+//        inviteService.sendEmailInvite(to: email) { [weak self] (response) in
+//            guard let sself = self else {
+//                return
+//            }
+//            
+//            sself.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+//            switch response {
+//            case .success(let result):
+//                var message: String
+//                var discoveredUserID: String?
+//                switch result {
+//                case .inviteHasBeenSent(roomID: _):
+//                    message = TchapL10n.inviteSendingSucceeded
+//                case .inviteAlreadySent(roomID: _):
+//                    message = TchapL10n.inviteAlreadySentByEmail(email)
+//                case .inviteIgnoredForDiscoveredUser(userID: let userID):
+//                    discoveredUserID = userID
+//                    message = TchapL10n.inviteNotSentForDiscoveredUser
+//                case .inviteIgnoredForUnauthorizedEmail:
+//                    message = TchapL10n.inviteNotSentForUnauthorizedEmail(email)
+//                }
+//                
+//                sself.currentAlertController?.dismiss(animated: false)
+//                
+//                let alert = UIAlertController(title: TchapL10n.inviteInformationTitle, message: message, preferredStyle: .alert)
+//                
+//                let okTitle = VectorL10n.ok
+//                let okAction = UIAlertAction(title: okTitle, style: .default, handler: { action in
+//                    if let userID = discoveredUserID {
+//                        // Open the discussion
+//                        AppDelegate.theDelegate().startDirectChat(withUserId: userID, completion: nil)
+//                    }
+//                })
+//                alert.addAction(okAction)
+//                sself.currentAlertController = alert
+//                
+//                sself.navigationRouter.toPresentable().present(alert, animated: true, completion: nil)
+//            case .failure(let error):
+//                let errorPresentable = sself.inviteErrorPresentable(from: error)
+//                sself.errorPresenter?.present(errorPresentable: errorPresentable, animated: true)
+//            }
+//        }
     }
     
     private func inviteErrorPresentable(from error: Error) -> ErrorPresentable {
