@@ -336,9 +336,11 @@ MXKDocumentPickerPresenterDelegate>
     
     // Crypto sessions section
         
+    Section *sessionsSection = nil; // Tchap
+    
     if (RiotSettings.shared.settingsSecurityScreenShowSessions && !RiotSettings.shared.enableNewSessionManager)
     {
-        Section *sessionsSection = [Section sectionWithTag:SECTION_CRYPTO_SESSIONS];
+        sessionsSection = [Section sectionWithTag:SECTION_CRYPTO_SESSIONS];
         
         sessionsSection.headerTitle = [VectorL10n securitySettingsCryptoSessions];
         
@@ -357,9 +359,11 @@ MXKDocumentPickerPresenterDelegate>
     
     // Secure backup
 #ifdef SECURE_BACKUP
+    Section *secureBackupSection = nil; // Tchap
+
     if (!isSecureBackupRequired)
     {
-        Section *secureBackupSection = [Section sectionWithTag:SECTION_SECURE_BACKUP];
+        secureBackupSection = [Section sectionWithTag:SECTION_SECURE_BACKUP];
         secureBackupSection.headerTitle = [VectorL10n securitySettingsSecureBackup];
         secureBackupSection.footerTitle = VectorL10n.securitySettingsSecureBackupDescription;
 
@@ -414,10 +418,11 @@ MXKDocumentPickerPresenterDelegate>
 #endif
     
     // Advanced
+    Section *advancedSection = nil; // Tchap
     
     if (RiotSettings.shared.settingsSecurityScreenShowAdvancedUnverifiedDevices)
     {
-        Section *advancedSection = [Section sectionWithTag:SECTION_ADVANCED];
+        advancedSection = [Section sectionWithTag:SECTION_ADVANCED];
         advancedSection.headerTitle = VectorL10n.securitySettingsAdvanced;
         advancedSection.footerTitle = VectorL10n.securitySettingsBlacklistUnverifiedDevicesDescription;
         
@@ -425,6 +430,33 @@ MXKDocumentPickerPresenterDelegate>
         [sections addObject:advancedSection];
     }
 
+    
+    // Tchap reorder sections
+    [sections removeAllObjects];
+
+#ifdef SECURE_BACKUP
+    if( secureBackupSection != nil )
+    {
+        [sections addObject:secureBackupSection];
+    }
+#endif
+    [sections addObject:sessionsSection];
+#ifdef CROSS_SIGNING
+    [sections addObject:crossSigningSection];
+#endif
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
+    [sections addObject:keybackupSection];
+#endif
+    if (cryptographySection.rows.count)
+    {
+        [sections addObject:cryptographySection];
+    }
+    [sections addObject:pinCodeSection];
+    if( advancedSection != nil )
+    {
+        [sections addObject:advancedSection];
+    }
+    
     // Update sections
     
     self.tableViewSections.sections = sections;
