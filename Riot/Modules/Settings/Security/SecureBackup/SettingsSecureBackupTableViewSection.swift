@@ -134,8 +134,11 @@ private enum BackupRows {
             case .noKeyBackup:
                 let noBackup = VectorL10n.settingsKeyBackupInfoNone
                 let signoutWarning = VectorL10n.settingsKeyBackupInfoSignoutWarning
-                let infoText = [noBackup, signoutWarning].joined(separator: "\n")
+                // Tchap
+//                let infoText = [noBackup, signoutWarning].joined(separator: "\n")
+                let infoText = noBackup
                 
+                let backupInfoText = noBackup
                 backupRows = [
                     .info(text: infoText),
                     .createSecureBackupAction
@@ -165,8 +168,10 @@ private enum BackupRows {
             case .noKeyBackup:
                 let noBackup = VectorL10n.settingsKeyBackupInfoNone
                 let signoutWarning = VectorL10n.settingsKeyBackupInfoSignoutWarning
-                let infoText = [noBackup, signoutWarning].joined(separator: "\n")
-                
+                // Tchap
+//                let infoText = [noBackup, signoutWarning].joined(separator: "\n")
+                let infoText = noBackup
+                                
                 backupRows = [
                     .info(text: infoText),
                     .createKeyBackupAction,

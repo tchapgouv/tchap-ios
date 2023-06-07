@@ -563,7 +563,7 @@
 "auth_accept_policies" = "Veuillez lire et accepter les politiques de ce serveur d’accueil :";
 "settings_key_backup" = "SAUVEGARDE DE CLÉS";
 "settings_key_backup_info_checking" = "Vérification…";
-"settings_key_backup_info_none" = "Vos clés ne sont pas sauvegardées depuis cet appareil.";
+"settings_key_backup_info_none" = "Désactivée: cet appareil ne sauvegarde pas vos messages"; // Tchap
 "settings_key_backup_info_version" = "Version de sauvegarde de clé : %@";
 "settings_key_backup_info_algorithm" = "Algorithme : %@";
 "settings_key_backup_info_valid" = "Cet appareil sauvegarde vos clés.";
@@ -582,7 +582,7 @@
 "settings_key_backup_button_delete" = "Supprimer la sauvegarde";
 "settings_key_backup_button_verify" = "Vérifier";
 "settings_key_backup_delete_confirmation_prompt_title" = "Supprimer la sauvegarde";
-"settings_key_backup_delete_confirmation_prompt_msg" = "En êtes-vous sûr ? Vous perdrez vos messages chiffrés si vos clés ne sont pas sauvegardées correctement.";
+"settings_key_backup_delete_confirmation_prompt_msg" = "En supprimant la sauvegarde automatique, vous risquez de perdre vos messages."; // Tchap
 "room_does_not_exist" = "%@ n’existe pas";
 "key_backup_setup_title" = "Sauvegarde de clés";
 "key_backup_setup_skip_action" = "Ignorer";
@@ -606,7 +606,7 @@
 "key_backup_setup_recovery_key_recovery_key_title" = "Clé de récupération";
 "key_backup_setup_recovery_key_make_copy_action" = "En faire une copie";
 "key_backup_setup_recovery_key_made_copy_action" = "J'en ai fait une copie";
-"key_backup_recover_title" = "Messages sécurisés";
+"key_backup_recover_title" = "Récupération des messages"; // Tchap
 "key_backup_recover_empty_backup_title" = "Sauvegarde vide";
 "key_backup_recover_empty_backup_message" = "Il n'y a aucune clé à restaurer";
 "key_backup_recover_from_passphrase_info" = "Utilisez votre phrase secrète de récupération pour déverrouiller votre historique de messages sécurisés";
@@ -622,7 +622,7 @@
 "key_backup_recover_from_recovery_key_recover_action" = "Déverrouiller l’historique";
 "key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Vous avez perdu votre clé de récupération ? Vous pouvez en configurer une autre dans les réglages.";
 "key_backup_recover_success_info" = "Sauvegarde restaurée !";
-"key_backup_recover_done_action" = "Terminé";
+"key_backup_recover_done_action" = "Terminer"; // Tchap
 "key_backup_setup_banner_title_part1" = "Configurer la récupération de messages sécurisée";
 "key_backup_setup_banner_title_part2" = " pour ne jamais perdre vos messages chiffrés";
 "key_backup_recover_banner_title_part1" = "Lancer la récupération de messages sécurisée";
@@ -964,7 +964,7 @@
 "settings_security" = "SÉCURITÉ";
 // Security settings
 "security_settings_title" = "Sécurité";
-"security_settings_crypto_sessions" = "MES SESSIONS";
+"security_settings_crypto_sessions" = "APPAREILS CONNECTÉS"; // Tchap
 "security_settings_crypto_sessions_description" = "Faites confiance à des sessions pour leur accorder l’accès aux messages chiffrés de bout en bout. Si vous ne reconnaissez pas une session, modifiez votre mot de passe de connexion et réinitialisez votre mot de passe de messages utilisé pour la sauvegarde des messages.";
 "security_settings_backup" = "SAUVEGARDE DES MESSAGES";
 "security_settings_advanced" = "AVANCÉ";
@@ -1024,8 +1024,7 @@
 "key_verification_verify_qr_code_scan_other_code_success_title" = "Code validé !";
 "key_verification_verify_qr_code_scan_other_code_success_message" = "Le code QR a bien été validé.";
 "security_settings_crosssigning" = "SIGNATURE CROISÉE";
-"security_settings_cryptography" = "CRYPTOGRAPHIE";
-"room_participants_action_security_status_loading" = "Chargement…";
+"security_settings_cryptography" = "CLÉS TCHAP"; // Tchap
 "device_verification_self_verify_alert_title" = "Nouvelle connexion. Était-ce vous ?";
 "device_verification_self_verify_alert_message" = "Vérifiez la nouvelle connexion pour accéder à votre compte : %@";
 "device_verification_self_verify_alert_cancel_action" = "Ce n’était pas moi";
@@ -1053,13 +1052,11 @@
 "key_verification_scan_confirmation_scanned_user_information" = "Est-ce que %@ affiche le même bouclier ?";
 "key_verification_scan_confirmation_scanned_device_information" = "Est-ce que l’autre appareil affiche le même bouclier ?";
 "room_participants_action_security_status_complete_security" = "Améliorer la sécurité";
-"security_settings_crosssigning_info_not_bootstrapped" = "La signature croisée n’est pas encore configurée.";
+"security_settings_crosssigning_info_not_bootstrapped" = "Désactivée sur cet appareil."; // Tchap
 "security_settings_crosssigning_info_exists" = "Votre compte a une identité de signature croisée, mais cette session ne lui fait pas encore confiance. Améliorez la sécurité de cette session.";
 "security_settings_crosssigning_info_trusted" = "La signature croisée est activée. Vous pouvez faire confiance à d’autres utilisateurs et à vos autres sessions selon la signature croisée mais vous ne pouvez pas effectuer des signatures croisées depuis cette session car elle n’a pas de clés privées de signature croisée. Améliorez la sécurité de cette session.";
-"security_settings_crosssigning_info_ok" = "La signature croisée est prête à être utilisée.";
-"security_settings_crosssigning_info_ok" = "La signature croisée est activée sur cet appareil."; // Tchap
-"security_settings_crosssigning_bootstrap" = "Configurer";
-"security_settings_crosssigning_reset" = "Réinitialiser";
+"security_settings_crosssigning_info_ok" = "Activée sur cet appareil"; // Tchap
+"security_settings_crosssigning_bootstrap" = "Activer"; // Tchap
 "security_settings_crosssigning_reset" = "Réinitialiser"; // Tchap
 "security_settings_crosssigning_complete_security" = "Compléter la sécurité";
 "security_settings_complete_security_alert_title" = "Compléter la sécurité";
@@ -1072,6 +1069,10 @@
 "client_android_name" = "Tchap-Android";
 "device_verification_self_verify_wait_new_sign_in_title" = "Vérifier cette connexion";
 "device_verification_self_verify_wait_additional_information" = "ou un autre client Matrix qui prend en charge la signature croisée.";
+"device_verification_self_verify_open_on_other_device_title" = "Vérifiez cet appareil"; // Tchap
+"device_verification_self_verify_open_on_other_device_information" = "Vérifiez cet appareil pour récupérer vos messages.\n\nSi vous avez un autre appareil connecté à Tchap, ouvrez l’application et suivez les instructions."; // Tchap
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Utiliser le Code de Récupération"; // Tchap
+"device_verification_self_verify_wait_recover_secrets_additional_help" = "Vous n’avez pas d’autre appareil ?"; // Tchap
 // MARK: - Device Verification
 "key_verification_other_session_title" = "Vérifier l’appareil";
 "key_verification_new_session_title" = "Vérifiez votre nouvel appareil";
@@ -1092,7 +1093,7 @@
 "key_verification_verify_qr_code_start_emoji_action" = "Vérifier par émojis";
 "device_verification_self_verify_alert_validate_action" = "Vérifier";
 "key_verification_self_verify_current_session_alert_title" = "Vérifier cette session";
-"key_verification_self_verify_current_session_alert_message" = "Les autres utilisateurs peuvent ne pas lui faire confiance.";
+"key_verification_self_verify_current_session_alert_message" = "Une fois votre appareil vérifié, vous pourrez récupérer vos messages."; // Tchap
 "key_verification_self_verify_current_session_alert_validate_action" = "Vérifier";
 "key_verification_self_verify_unverified_sessions_alert_title" = "Vérifiez où vous vous êtes connecté";
 "key_verification_self_verify_unverified_sessions_alert_message" = "Vérifiez toutes vos sessions pour vous assurer que votre compte et vos message sont en sécurité.";
@@ -1106,7 +1107,7 @@
 "key_verification_manually_verify_device_additional_information" = "S’ils ne correspondent pas, la sécurité de vos communications est peut-être compromise.";
 "key_verification_manually_verify_device_validate_action" = "Vérifier";
 "user_verification_session_details_verify_action_current_user_manually" = "Vérifier manuellement avec un texte";
-"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Utiliser la clé de récupération";
+"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Utiliser le code de récupération"; // Tchap
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Utiliser la phrase secrète ou la clé de récupération";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "Si vous ne pouvez pas accéder à une session existante";
 "secrets_recovery_with_passphrase_title" = "Phrase secrète de récupération";
@@ -1120,14 +1121,14 @@
 "secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
 "secrets_recovery_with_passphrase_invalid_passphrase_title" = "Impossible d’accéder au coffre secret";
 "secrets_recovery_with_passphrase_invalid_passphrase_message" = "Vérifiez que vous avez saisi la bonne phrase secrète de récupération.";
-"secrets_recovery_with_key_title" = "Clé de récupération";
+"secrets_recovery_with_key_title" = "Récupération des messages"; // Tchap
 "secrets_recovery_with_key_information_default" = "Accédez à l’historique de vos messages sécurisés et à votre identité de signature croisée pour vérifier d’autres sessions en renseignant votre clé de récupération.";
-"secrets_recovery_with_key_information_verify_device" = "Utilisez votre clé de récupération pour vérifier cet appareil.";
+"secrets_recovery_with_key_information_verify_device" = "Insérez votre Code de Récupération pour vérifier cet appareil."; // Tchap
 "secrets_recovery_with_key_recovery_key_title" = "Saisir";
 "secrets_recovery_with_key_recovery_key_placeholder" = "Saisir la clé de récupération";
-"secrets_recovery_with_key_recover_action" = "Utiliser la clé";
-"secrets_recovery_with_key_invalid_recovery_key_title" = "Impossible d’accéder au coffre secret";
-"secrets_recovery_with_key_invalid_recovery_key_message" = "Vérifiez que vous avez saisi la bonne clé de récupération.";
+"secrets_recovery_with_key_recover_action" = "Utilizer le Code de Récupération"; // Tchap
+"secrets_recovery_with_key_invalid_recovery_key_title" = "Code erroné"; // Tchap
+"secrets_recovery_with_key_invalid_recovery_key_message" = "Vérifiez que vous avez saisi le Code de Récupération le plus récent."; // Tchap
 "secure_key_backup_setup_intro_title" = "Sauvegarde automatique des messages"; // Tchap
 "secure_key_backup_setup_intro_info" = "Protection afin d’éviter de perdre l’accès aux messages et données chiffrés en sauvegardant les clés Tchap sur votre serveur."; // Tchap
 "secure_key_backup_setup_intro_use_security_key_title" = "Utiliser une clé de sauvegarde Tchap"; // Tchap
@@ -1136,13 +1137,13 @@
 "secure_key_backup_setup_intro_use_security_passphrase_info" = "Saisissez une phrase secrète que vous êtes seul à connaître et générez une clé pour la sauvegarde.";
 "secure_key_backup_setup_cancel_alert_title" = "En êtes-vous sûr ?";
 "secure_key_backup_setup_cancel_alert_message" = "Si vous annulez maintenant, vous pourriez perdre les messages et données chiffrés si vous perdez l’accès à vos connexions.\n\nVous pouvez également configurer la sauvegarde automatique des messages et gérer vos clés dans les paramètres."; // Tchap
-"secrets_setup_recovery_key_title" = "Sauvegardez votre Clé de récupération"; // Tchap
-"secrets_setup_recovery_key_information" = "Stockez votre clé de récupération dans un endroit sûr. Elle peut être utilisée pour déverrouiller vos messages et données chiffrés.";
+"secrets_setup_recovery_key_title" = "Notez votre Code de Récupération"; // Tchap
+"secrets_setup_recovery_key_information" = "Notez ce code dans un endroit sûr.  Vous aurez à le copier / coller pour récupérer vos messages, donc évitez la capture d’écran."; // Tchap
 "secrets_setup_recovery_key_loading" = "Chargement…";
-"secrets_setup_recovery_key_export_action" = "Copier la clé"; // Tchap
+"secrets_setup_recovery_key_export_action" = "Copier le code"; // Tchap
 "secrets_setup_recovery_key_done_action" = "Terminé";
-"secrets_setup_recovery_key_storage_alert_title" = "Conservez-la en lieu sûr";
-"secrets_setup_recovery_key_storage_alert_message" = "✓ Imprimez-la et stockez-la dans un endroit sûr\n✓ Sauvegardez-la sur une clé USB ou un disque de sauvegarde\n✓ Copiez-la sur votre stockage personnel dans le cloud";
+"secrets_setup_recovery_key_storage_alert_title" = "Conservez-le en lieu sûr"; // Tchap
+"secrets_setup_recovery_key_storage_alert_message" = "✓ Imprimez-le et stockez-le dans un endroit sûr\n✓ Sauvegardez-le sur une clé USB ou un disque de sauvegarde\n✓ Copiez-le sur votre stockage personnel dans le cloud"; // Tchap
 "secrets_setup_recovery_passphrase_title" = "Définir une phrase de sécurité";
 "secrets_setup_recovery_passphrase_information" = "Saisissez une phrase de sécurité que vous seul connaissez, utilisée pour sécuriser les secrets sur votre serveur.";
 "secrets_setup_recovery_passphrase_additional_information" = "N’utilisez pas le mot de passe de votre compte.";
@@ -1158,7 +1159,7 @@
 "security_settings_secure_backup" = "SAUVEGARDE AUTOMATIQUE DES MESSAGES"; // Tchap
 "security_settings_secure_backup_description" = "Sauvegardez vos clés Tchap et les données de votre compte au où vous perdriez l’accès à vos sessions. Vos clés seront protégées par une clé de sécurité unique."; // Tchap
 "security_settings_secure_backup_description" = "Sauvegardez automatiquement vos messages et récupérez-les à tout moment à l’aide du code de récupération."; // Tchap
-"security_settings_secure_backup_setup" = "Configurer";
+"security_settings_secure_backup_setup" = "Activer"; // Tchap
 "security_settings_secure_backup_synchronise" = "Synchroniser";
 "security_settings_secure_backup_delete" = "Supprimer la sauvegarde";
 "security_settings_secure_backup_delete" = "Supprimer la sauvegarde"; // Tchap
@@ -1324,11 +1325,11 @@
 "social_login_button_title_sign_in" = "Se connecter avec %@";
 "secrets_setup_recovery_passphrase_summary_information" = "Mémorisez votre phrase de sécurité. Elle peut être utilisée pour déverrouiller vos messages et données chiffrés.";
 "secrets_setup_recovery_passphrase_summary_title" = "Enregistrer votre phrase de sécurité";
-"secrets_recovery_reset_action_part_2" = "Tout réinitialiser";
+"secrets_recovery_reset_action_part_2" = "Générer un nouveau code"; // Tchap
 
 // MARK: - Secrets recovery
 
-"secrets_recovery_reset_action_part_1" = "À cours d’options de récupération ? ";
+"secrets_recovery_reset_action_part_1" = "Vous avez perdu votre Code de Récupération ? "; // Tchap
 "bug_report_background_mode" = "Poursuivre en arrière-plan";
 "call_actions_unhold" = "Reprendre";
 "event_formatter_call_back" = "Rappeler";
@@ -1438,7 +1439,7 @@
 "security_settings_secure_backup_info_valid" = "Cette session sauvegarde vos clés.";
 "security_settings_secure_backup_restore" = "Récupérer les messages"; // Tchap
 "security_settings_secure_backup_reset" = "Générer un nouveau code"; // Tchap
-"security_settings_secure_backup_info_valid" = "Cet appareil sauvegarde vos messages."; // Tchap
+"security_settings_secure_backup_info_valid" = "Activée : cet appareil sauvegarde vos messages."; // Tchap
 "security_settings_secure_backup_info_checking" = "Vérification…";
 "settings_ui_theme_picker_message_match_system_theme" = "« Auto » s’aligne avec le thème de votre appareil";
 "settings_ui_theme_picker_message_invert_colours" = "« Auto » utilise le paramètre « Inverser les couleurs » de l’appreil";

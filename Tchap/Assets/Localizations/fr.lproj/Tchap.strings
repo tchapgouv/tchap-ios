@@ -304,3 +304,4 @@
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Device verification
 "secrets_setup_recovery_key_export_action_done" = "Clé copiée";
+"secrets_setup_recovery_key_warning" = "Attention : c'est la seule fois que votre code est affiché !"; // Tchap
