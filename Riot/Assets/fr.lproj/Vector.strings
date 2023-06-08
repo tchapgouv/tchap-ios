@@ -563,7 +563,7 @@
 "auth_accept_policies" = "Veuillez lire et accepter les politiques de ce serveur d’accueil :";
 "settings_key_backup" = "SAUVEGARDE DE CLÉS";
 "settings_key_backup_info_checking" = "Vérification…";
-"settings_key_backup_info_none" = "Désactivée: cet appareil ne sauvegarde pas vos messages"; // Tchap
+"settings_key_backup_info_none" = "Désactivée : cet appareil ne sauvegarde pas vos messages"; // Tchap
 "settings_key_backup_info_version" = "Version de sauvegarde de clé : %@";
 "settings_key_backup_info_algorithm" = "Algorithme : %@";
 "settings_key_backup_info_valid" = "Cet appareil sauvegarde vos clés.";

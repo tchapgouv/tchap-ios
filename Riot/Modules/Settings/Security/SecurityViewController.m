@@ -739,6 +739,49 @@ MXKDocumentPickerPresenterDelegate>
                                                         }];
 }
 
+// Tchap
+- (UIImage *)crossSigningIcon
+{
+    id<MXCrossSigning> crossSigning = self.mainSession.crypto.crossSigning;
+    
+    UIImage *crossSigningIcon;
+    switch (crossSigning.state)
+    {
+        case MXCrossSigningStateNotBootstrapped:
+        case MXCrossSigningStateCrossSigningExists:
+            crossSigningIcon = [UIImage systemImageNamed:@"xmark.circle.fill"];
+            break;
+        case MXCrossSigningStateTrustCrossSigning:
+        case MXCrossSigningStateCanCrossSign:
+            crossSigningIcon = [UIImage systemImageNamed:@"checkmark.circle.fill"];
+            break;
+    }
+    
+    return crossSigningIcon;
+}
+
+// Tchap
+- (UIColor *)crossSigningIconTint
+{
+    id<MXCrossSigning> crossSigning = self.mainSession.crypto.crossSigning;
+    
+    UIColor *crossSigningIconTint;
+    switch (crossSigning.state)
+    {
+        case MXCrossSigningStateNotBootstrapped:
+        case MXCrossSigningStateCrossSigningExists:
+            crossSigningIconTint = [UIColor systemGrayColor];
+            break;
+        case MXCrossSigningStateTrustCrossSigning:
+        case MXCrossSigningStateCanCrossSign:
+            crossSigningIconTint = [UIColor systemGreenColor];
+            break;
+    }
+    
+    return crossSigningIconTint;
+}
+
+
 - (UITableViewCell*)crossSigningButtonCellInTableView:(UITableView*)tableView forAction:(NSInteger)action
 {
     // Get a button cell
@@ -1280,6 +1323,7 @@ MXKDocumentPickerPresenterDelegate>
             {
                 MXKTableViewCellWithTextView *cryptoCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
                 cryptoCell.mxkTextView.attributedText = [self crossSigningInformation];
+                [cryptoCell setIcon:[self crossSigningIcon] withTint:[self crossSigningIconTint]];
                 cell = cryptoCell;
                 break;
             }
@@ -1299,6 +1343,7 @@ MXKDocumentPickerPresenterDelegate>
             {
                 MXKTableViewCellWithTextView *cryptoCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
                 cryptoCell.mxkTextView.attributedText = [self cryptographyInformation];
+                [cryptoCell setIcon:nil withTint:nil];
                 cell = cryptoCell;
                 break;
             }
