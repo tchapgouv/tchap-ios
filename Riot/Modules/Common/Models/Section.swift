@@ -34,7 +34,13 @@ final class Section: NSObject {
                 return
             }
             
-            attributedHeaderTitle = NSAttributedString(string: newValue)
+            // Tchap : add section title attributes
+            let headerAttributes: [NSAttributedString.Key: Any] = [
+                NSAttributedString.Key.foregroundColor: UIColor(rgb: 0x232323),
+                NSAttributedString.Key.font: ThemeService.shared().theme.fonts.footnote,
+                NSAttributedString.Key.strokeWidth: -5.0]
+            
+            attributedHeaderTitle = NSAttributedString(string: newValue, attributes: headerAttributes)
         }
     }
     var footerTitle: String? {
