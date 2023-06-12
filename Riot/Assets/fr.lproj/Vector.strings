@@ -1143,7 +1143,7 @@
 "secrets_setup_recovery_key_export_action" = "Copier le code"; // Tchap
 "secrets_setup_recovery_key_done_action" = "Terminé";
 "secrets_setup_recovery_key_storage_alert_title" = "Conservez-le en lieu sûr"; // Tchap
-"secrets_setup_recovery_key_storage_alert_message" = "✓ Imprimez-le et stockez-le dans un endroit sûr\n✓ Sauvegardez-le sur une clé USB ou un disque de sauvegarde\n✓ Copiez-le sur votre stockage personnel dans le cloud"; // Tchap
+"secrets_setup_recovery_key_storage_alert_message" = "\n✓ Dans votre gestionnaire de mot de passe\n✓ Sur une clé USB ou un disque de sauvegarde\n✓ Sur votre ordinateur ou cloud"; // Tchap
 "secrets_setup_recovery_passphrase_title" = "Définir une phrase de sécurité";
 "secrets_setup_recovery_passphrase_information" = "Saisissez une phrase de sécurité que vous seul connaissez, utilisée pour sécuriser les secrets sur votre serveur.";
 "secrets_setup_recovery_passphrase_additional_information" = "N’utilisez pas le mot de passe de votre compte.";

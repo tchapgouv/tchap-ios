@@ -1862,7 +1862,7 @@ Tap the + to start adding people.";
 "secrets_setup_recovery_key_done_action" = "Done";
 
 "secrets_setup_recovery_key_storage_alert_title" = "Keep it safe";
-"secrets_setup_recovery_key_storage_alert_message" = "✓ Print it and store it somewhere safe\n✓ Save it on a USB key or backup drive\n✓ Copy it to your personal cloud storage";
+"secrets_setup_recovery_key_storage_alert_message" = "\n✓ In your password manager\n✓ On a USB key or backup drive\n✓ On your computer or your personal cloud storage"; // Tchap
 
 // Recovery passphrase
 

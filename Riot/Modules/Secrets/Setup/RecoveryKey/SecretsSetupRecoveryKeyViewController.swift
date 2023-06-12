@@ -199,6 +199,20 @@ final class SecretsSetupRecoveryKeyViewController: UIViewController {
                                                 message: VectorL10n.secretsSetupRecoveryKeyStorageAlertMessage,
                                                 preferredStyle: .alert)
         
+        // Tchap ; left align alert text
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .left
+        paragraphStyle.headIndent = 18.0
+        let messageText = NSAttributedString(
+            string: VectorL10n.secretsSetupRecoveryKeyStorageAlertMessage,
+            attributes: [
+                NSAttributedString.Key.paragraphStyle: paragraphStyle,
+                NSAttributedString.Key.foregroundColor : UIColor.black,
+                NSAttributedString.Key.font : UIFont.preferredFont(forTextStyle: .body)
+            ]
+        )
+        alertController.setValue(messageText, forKey: "attributedMessage")
+        
         alertController.addAction(UIAlertAction(title: VectorL10n.continue, style: .cancel, handler: { action in
             self.viewModel.process(viewAction: .done)
         }))
