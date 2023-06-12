@@ -1402,8 +1402,12 @@ MXKDocumentPickerPresenterDelegate>
     {
         // Customize label style
         UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
-        tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.colors.secondaryContent;
-        tableViewHeaderFooterView.textLabel.font = ThemeService.shared.theme.fonts.footnote;
+
+        // Tchap: Display prepared attributed title
+//        tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.colors.secondaryContent;
+//        tableViewHeaderFooterView.textLabel.font = ThemeService.shared.theme.fonts.footnote;
+        Section *tableSection = [self.tableViewSections sectionAtIndex:section];
+        tableViewHeaderFooterView.textLabel.attributedText = tableSection.attributedHeaderTitle;
     }
 }
 
