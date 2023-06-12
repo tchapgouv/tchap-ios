@@ -1579,7 +1579,7 @@ Tap the + to start adding people.";
 "device_verification_self_verify_wait_new_sign_in_title" = "Verify this login";
 "device_verification_self_verify_wait_information" = "Verify this session from one of your other sessions, granting it access to encrypted messages.\n\nUse the latest %@ on your other devices:";
 "device_verification_self_verify_wait_additional_information" = "This works with %@ and other cross-signing capable Matrix clients.";
-"device_verification_self_verify_open_on_other_device_title" = "Vérify this device"; // Tchap
+"device_verification_self_verify_open_on_other_device_title" = "Verify this device"; // Tchap
 "device_verification_self_verify_open_on_other_device_information" = "Check this device to recover your messages.\n\nIf you have another device connected to Tchap, open the application and follow the instructions."; // Tchap
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Use Recovery Code"; // Tchap
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Use Security Phrase or Key";

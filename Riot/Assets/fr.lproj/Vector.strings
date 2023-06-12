@@ -1125,8 +1125,8 @@
 "secrets_recovery_with_key_information_default" = "Accédez à l’historique de vos messages sécurisés et à votre identité de signature croisée pour vérifier d’autres sessions en renseignant votre clé de récupération.";
 "secrets_recovery_with_key_information_verify_device" = "Insérez votre Code de Récupération pour vérifier cet appareil."; // Tchap
 "secrets_recovery_with_key_recovery_key_title" = "Saisir";
-"secrets_recovery_with_key_recovery_key_placeholder" = "Saisir la clé de récupération";
-"secrets_recovery_with_key_recover_action" = "Utilizer le Code de Récupération"; // Tchap
+"secrets_recovery_with_key_recovery_key_placeholder" = "Saisir le Code de Récupération";
+"secrets_recovery_with_key_recover_action" = "Utiliser le Code de Récupération"; // Tchap
 "secrets_recovery_with_key_invalid_recovery_key_title" = "Code erroné"; // Tchap
 "secrets_recovery_with_key_invalid_recovery_key_message" = "Vérifiez que vous avez saisi le Code de Récupération le plus récent."; // Tchap
 "secure_key_backup_setup_intro_title" = "Sauvegarde automatique des messages"; // Tchap
