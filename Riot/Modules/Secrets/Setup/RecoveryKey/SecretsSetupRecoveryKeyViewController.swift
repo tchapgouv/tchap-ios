@@ -28,8 +28,7 @@ final class SecretsSetupRecoveryKeyViewController: UIViewController {
     @IBOutlet private weak var informationLabel: UILabel!
     @IBOutlet private weak var recoveryKeyLabel: UILabel!
     @IBOutlet private weak var exportButton: RoundedButton!
-    @IBOutlet private weak var doneButton: RoundedButton!
-    
+    @IBOutlet weak var warningLabel: UILabel! // Tchap
     // MARK: Private
 
     private var viewModel: SecretsSetupRecoveryKeyViewModelType!
@@ -96,9 +95,9 @@ final class SecretsSetupRecoveryKeyViewController: UIViewController {
         self.secureKeyImageView.tintColor = theme.textPrimaryColor
         self.informationLabel.textColor = theme.textPrimaryColor
         self.recoveryKeyLabel.textColor = theme.textSecondaryColor
-        
+        self.warningLabel.textColor = theme.tintColor // Tchap
+       
         self.exportButton.update(theme: theme)
-        self.doneButton.update(theme: theme)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -128,9 +127,9 @@ final class SecretsSetupRecoveryKeyViewController: UIViewController {
         
         self.exportButton.setTitle(VectorL10n.secretsSetupRecoveryKeyExportAction, for: .normal)
         self.exportButton.isEnabled = false
-        self.doneButton.setTitle(VectorL10n.continue, for: .normal)
         
-        self.updateDoneButton()
+        // Tchap
+        self.warningLabel.text = TchapL10n.secretsSetupRecoveryKeyWarning
     }
 
     private func render(viewState: SecretsSetupRecoveryKeyViewState) {
@@ -181,7 +180,6 @@ final class SecretsSetupRecoveryKeyViewController: UIViewController {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         
         self.exportButton.isEnabled = !self.isPassphraseOnly
-        self.doneButton.isEnabled = self.isPassphraseOnly
         
         if !self.isPassphraseOnly {
             self.recoveryKey = recoveryKey
@@ -196,14 +194,24 @@ final class SecretsSetupRecoveryKeyViewController: UIViewController {
         }
     }
     
-    private func updateDoneButton() {
-        self.doneButton.isEnabled = self.hasSavedRecoveryKey
-    }
-    
     private func presentKeepSafeAlert() {
         let alertController = UIAlertController(title: VectorL10n.secretsSetupRecoveryKeyStorageAlertTitle,
                                                 message: VectorL10n.secretsSetupRecoveryKeyStorageAlertMessage,
                                                 preferredStyle: .alert)
+        
+        // Tchap ; left align alert text
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .left
+        paragraphStyle.headIndent = 18.0
+        let messageText = NSAttributedString(
+            string: VectorL10n.secretsSetupRecoveryKeyStorageAlertMessage,
+            attributes: [
+                NSAttributedString.Key.paragraphStyle: paragraphStyle,
+                NSAttributedString.Key.foregroundColor : UIColor.black,
+                NSAttributedString.Key.font : UIFont.preferredFont(forTextStyle: .body)
+            ]
+        )
+        alertController.setValue(messageText, forKey: "attributedMessage")
         
         alertController.addAction(UIAlertAction(title: VectorL10n.continue, style: .cancel, handler: { action in
             self.viewModel.process(viewAction: .done)
@@ -211,36 +219,7 @@ final class SecretsSetupRecoveryKeyViewController: UIViewController {
         
         self.present(alertController, animated: true, completion: nil)
     }
-    
-    // Tchap : don't export key
-//    private func shareRecoveryKey() {
-//        guard let recoveryKey = self.recoveryKey else {
-//            return
-//        }
-//
-//        // Set up activity view controller
-//        let activityItems: [Any] = [ recoveryKey ]
-//        let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
-//
-//        activityViewController.completionWithItemsHandler = { (activityType, completed, returnedItems, error) in
-//
-//            // Enable made copy button only if user has selected an activity item and has setup recovery key without passphrase
-//            if completed {
-//                self.hasSavedRecoveryKey = true
-//                self.updateDoneButton()
-//            }
-//        }
-//
-//        // Configure source view when activity view controller is presented with a popover
-//        if let popoverPresentationController = activityViewController.popoverPresentationController {
-//            popoverPresentationController.sourceView = self.exportButton
-//            popoverPresentationController.sourceRect = self.exportButton.bounds
-//            popoverPresentationController.permittedArrowDirections = [.down, .up]
-//        }
-//
-//        self.present(activityViewController, animated: true)
-//    }
-    
+        
     // MARK: - Actions
 
     @IBAction private func exportButtonAction(_ sender: Any) {
@@ -249,11 +228,8 @@ final class SecretsSetupRecoveryKeyViewController: UIViewController {
         UIPasteboard.general.string = self.recoveryKey
         view.vc_toast(message: TchapL10n.secretsSetupRecoveryKeyExportActionDone)
         self.hasSavedRecoveryKey = true
-        self.updateDoneButton()
-    }
-    
-    @IBAction private func doneButtonAction(_ sender: Any) {
-        
+
+        // Tchap
         if self.isPassphraseOnly {
             self.viewModel.process(viewAction: .done)
         } else {

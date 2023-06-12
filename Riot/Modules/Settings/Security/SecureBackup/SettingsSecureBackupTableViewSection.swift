@@ -37,7 +37,7 @@ import UIKit
 }
 
 private enum BackupRows {
-    case info(text: String)
+    case info(text: String, icon: UIImage?, tint: UIColor?)
     case createSecureBackupAction
     case resetSecureBackupAction
     case createKeyBackupAction
@@ -92,8 +92,9 @@ private enum BackupRows {
         
         var cell: UITableViewCell
         switch backupRow {
-        case .info(let text):
+        case .info(let text, let icon, let tintColor):
             cell = self.textCell(atRow: row, text: text)
+            (cell as? MXKTableViewCellWithTextView)?.setIcon(icon, withTint: tintColor)
         case .createSecureBackupAction:
             cell = self.buttonCellForCreateSecureBackup(atRow: row)
         case .resetSecureBackupAction:
@@ -126,7 +127,7 @@ private enum BackupRows {
         switch self.viewState {
         case .loading:
             backupRows = [
-                .info(text: VectorL10n.securitySettingsSecureBackupInfoChecking)
+                .info(text: VectorL10n.securitySettingsSecureBackupInfoChecking, icon: nil, tint: nil)
             ]
             
         case .noSecureBackup(let keyBackupState):
@@ -134,28 +135,31 @@ private enum BackupRows {
             case .noKeyBackup:
                 let noBackup = VectorL10n.settingsKeyBackupInfoNone
                 let signoutWarning = VectorL10n.settingsKeyBackupInfoSignoutWarning
-                let infoText = [noBackup, signoutWarning].joined(separator: "\n")
+                // Tchap
+//                let infoText = [noBackup, signoutWarning].joined(separator: "\n")
+                let infoText = noBackup
                 
+                let backupInfoText = noBackup
                 backupRows = [
-                    .info(text: infoText),
+                    .info(text: infoText, icon: UIImage(systemName: "xmark.circle.fill"), tint: .systemGray),
                     .createSecureBackupAction
                 ]
             case .keyBackup(let keyBackupVersion, _, let progress):
                 if let progress = progress {
                     backupRows = [
-                        .info(text: importProgressText(for: progress)),
+                        .info(text: importProgressText(for: progress), icon: nil, tint: nil),
                         .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion)
                     ]
                 } else {
                     backupRows = [
-                        .info(text: VectorL10n.securitySettingsSecureBackupInfoValid),
+                        .info(text: VectorL10n.securitySettingsSecureBackupInfoValid, icon: UIImage(systemName: "checkmark.circle.fill"), tint: .systemGreen),
                         .restoreFromKeyBackupAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.securitySettingsSecureBackupRestore),
                         .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion)
                     ]
                 }
             case .keyBackupNotTrusted(let keyBackupVersion, _):
                 backupRows = [
-                    .info(text: VectorL10n.securitySettingsSecureBackupInfoValid),
+                    .info(text: VectorL10n.securitySettingsSecureBackupInfoValid, icon: UIImage(systemName: "checkmark.circle.fill"), tint: .systemGreen),
                     .restoreFromKeyBackupAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.securitySettingsSecureBackupRestore),
                     .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion)
                 ]
@@ -165,23 +169,25 @@ private enum BackupRows {
             case .noKeyBackup:
                 let noBackup = VectorL10n.settingsKeyBackupInfoNone
                 let signoutWarning = VectorL10n.settingsKeyBackupInfoSignoutWarning
-                let infoText = [noBackup, signoutWarning].joined(separator: "\n")
-                
+                // Tchap
+//                let infoText = [noBackup, signoutWarning].joined(separator: "\n")
+                let infoText = noBackup
+                                
                 backupRows = [
-                    .info(text: infoText),
+                    .info(text: infoText, icon: UIImage(systemName: "xmark.circle.fill"), tint: .systemGray),
                     .createKeyBackupAction,
                     .resetSecureBackupAction
                 ]
             case .keyBackup(let keyBackupVersion, _, let progress):
                 if let progress = progress {
                     backupRows = [
-                        .info(text: importProgressText(for: progress)),
+                        .info(text: importProgressText(for: progress), icon: nil, tint: nil),
                         .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion),
                         .resetSecureBackupAction
                     ]
                 } else {
                     backupRows = [
-                        .info(text: VectorL10n.securitySettingsSecureBackupInfoValid),
+                        .info(text: VectorL10n.securitySettingsSecureBackupInfoValid, icon: UIImage(systemName: "checkmark.circle.fill"), tint: .systemGreen),
                         .restoreFromKeyBackupAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.securitySettingsSecureBackupRestore),
                         .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion),
                         .resetSecureBackupAction
@@ -189,7 +195,7 @@ private enum BackupRows {
                 }
             case .keyBackupNotTrusted(let keyBackupVersion, _):
                 backupRows = [
-                    .info(text: VectorL10n.securitySettingsSecureBackupInfoValid),
+                    .info(text: VectorL10n.securitySettingsSecureBackupInfoValid, icon: UIImage(systemName: "checkmark.circle.fill"), tint: .systemGreen),
                     .restoreFromKeyBackupAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.securitySettingsSecureBackupRestore),
                     .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion),
                     .resetSecureBackupAction
@@ -213,6 +219,7 @@ private enum BackupRows {
         
         let cell = delegate.settingsSecureBackupTableViewSection(self, textCellForRow: row)
         cell.mxkTextView.text = text
+        
         return cell
     }
     

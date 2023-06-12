@@ -336,9 +336,11 @@ MXKDocumentPickerPresenterDelegate>
     
     // Crypto sessions section
         
+    Section *sessionsSection = nil; // Tchap
+    
     if (RiotSettings.shared.settingsSecurityScreenShowSessions && !RiotSettings.shared.enableNewSessionManager)
     {
-        Section *sessionsSection = [Section sectionWithTag:SECTION_CRYPTO_SESSIONS];
+        sessionsSection = [Section sectionWithTag:SECTION_CRYPTO_SESSIONS];
         
         sessionsSection.headerTitle = [VectorL10n securitySettingsCryptoSessions];
         
@@ -357,9 +359,11 @@ MXKDocumentPickerPresenterDelegate>
     
     // Secure backup
 #ifdef SECURE_BACKUP
+    Section *secureBackupSection = nil; // Tchap
+
     if (!isSecureBackupRequired)
     {
-        Section *secureBackupSection = [Section sectionWithTag:SECTION_SECURE_BACKUP];
+        secureBackupSection = [Section sectionWithTag:SECTION_SECURE_BACKUP];
         secureBackupSection.headerTitle = [VectorL10n securitySettingsSecureBackup];
         secureBackupSection.footerTitle = VectorL10n.securitySettingsSecureBackupDescription;
 
@@ -414,10 +418,11 @@ MXKDocumentPickerPresenterDelegate>
 #endif
     
     // Advanced
+    Section *advancedSection = nil; // Tchap
     
     if (RiotSettings.shared.settingsSecurityScreenShowAdvancedUnverifiedDevices)
     {
-        Section *advancedSection = [Section sectionWithTag:SECTION_ADVANCED];
+        advancedSection = [Section sectionWithTag:SECTION_ADVANCED];
         advancedSection.headerTitle = VectorL10n.securitySettingsAdvanced;
         advancedSection.footerTitle = VectorL10n.securitySettingsBlacklistUnverifiedDevicesDescription;
         
@@ -425,6 +430,33 @@ MXKDocumentPickerPresenterDelegate>
         [sections addObject:advancedSection];
     }
 
+    
+    // Tchap reorder sections
+    [sections removeAllObjects];
+
+#ifdef SECURE_BACKUP
+    if( secureBackupSection != nil )
+    {
+        [sections addObject:secureBackupSection];
+    }
+#endif
+    [sections addObject:sessionsSection];
+#ifdef CROSS_SIGNING
+    [sections addObject:crossSigningSection];
+#endif
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
+    [sections addObject:keybackupSection];
+#endif
+    if (cryptographySection.rows.count)
+    {
+        [sections addObject:cryptographySection];
+    }
+    [sections addObject:pinCodeSection];
+    if( advancedSection != nil )
+    {
+        [sections addObject:advancedSection];
+    }
+    
     // Update sections
     
     self.tableViewSections.sections = sections;
@@ -707,6 +739,49 @@ MXKDocumentPickerPresenterDelegate>
                                                         }];
 }
 
+// Tchap
+- (UIImage *)crossSigningIcon
+{
+    id<MXCrossSigning> crossSigning = self.mainSession.crypto.crossSigning;
+    
+    UIImage *crossSigningIcon;
+    switch (crossSigning.state)
+    {
+        case MXCrossSigningStateNotBootstrapped:
+        case MXCrossSigningStateCrossSigningExists:
+            crossSigningIcon = [UIImage systemImageNamed:@"xmark.circle.fill"];
+            break;
+        case MXCrossSigningStateTrustCrossSigning:
+        case MXCrossSigningStateCanCrossSign:
+            crossSigningIcon = [UIImage systemImageNamed:@"checkmark.circle.fill"];
+            break;
+    }
+    
+    return crossSigningIcon;
+}
+
+// Tchap
+- (UIColor *)crossSigningIconTint
+{
+    id<MXCrossSigning> crossSigning = self.mainSession.crypto.crossSigning;
+    
+    UIColor *crossSigningIconTint;
+    switch (crossSigning.state)
+    {
+        case MXCrossSigningStateNotBootstrapped:
+        case MXCrossSigningStateCrossSigningExists:
+            crossSigningIconTint = [UIColor systemGrayColor];
+            break;
+        case MXCrossSigningStateTrustCrossSigning:
+        case MXCrossSigningStateCanCrossSign:
+            crossSigningIconTint = [UIColor systemGreenColor];
+            break;
+    }
+    
+    return crossSigningIconTint;
+}
+
+
 - (UITableViewCell*)crossSigningButtonCellInTableView:(UITableView*)tableView forAction:(NSInteger)action
 {
     // Get a button cell
@@ -771,7 +846,7 @@ MXKDocumentPickerPresenterDelegate>
 
 - (void)setupCrossSigning:(id)sender
 {
-    [self setupCrossSigningWithTitle:@"Set up cross-signing"    // TODO
+    [self setupCrossSigningWithTitle:@"Activer la signature croisée" // Tchap quick fix    // TODO
                              message:[VectorL10n securitySettingsUserPasswordDescription]
                              success:^{
                              } failure:^(NSError *error) {
@@ -824,11 +899,11 @@ MXKDocumentPickerPresenterDelegate>
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
     // Double confirmation
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Are you sure?"  // TODO
-                                                                             message:@"Anyone you have verified with will see security alerts. You almost certainly don't want to do this, unless you've lost every device you can cross-sign from."     // TODO
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Êtes-vous sur ?" // Tchap quick fix // TODO
+                                                                             message:@"Faites cette opération seulement si vous avez perdu tous vos autres appareils vérifiés." // Tchap quick fix    // TODO
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     
-    [alertController addAction:[UIAlertAction actionWithTitle:@"Reset"
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Réinitialiser" // Tchap quick fix
                                                         style:UIAlertActionStyleDefault
                                                       handler:^(UIAlertAction * action)
                                 {
@@ -1248,6 +1323,7 @@ MXKDocumentPickerPresenterDelegate>
             {
                 MXKTableViewCellWithTextView *cryptoCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
                 cryptoCell.mxkTextView.attributedText = [self crossSigningInformation];
+                [cryptoCell setIcon:[self crossSigningIcon] withTint:[self crossSigningIconTint]];
                 cell = cryptoCell;
                 break;
             }
@@ -1267,6 +1343,7 @@ MXKDocumentPickerPresenterDelegate>
             {
                 MXKTableViewCellWithTextView *cryptoCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
                 cryptoCell.mxkTextView.attributedText = [self cryptographyInformation];
+                [cryptoCell setIcon:nil withTint:nil];
                 cell = cryptoCell;
                 break;
             }

@@ -31,7 +31,7 @@ final class KeyBackupRecoverSuccessViewController: UIViewController {
     @IBOutlet private weak var informationLabel: UILabel!
     
     @IBOutlet private weak var doneButtonBackgroundView: UIView!
-    @IBOutlet private weak var doneButton: UIButton!
+    @IBOutlet private weak var doneButton: RoundedButton!
     
     // MARK: Private
     
@@ -100,8 +100,10 @@ final class KeyBackupRecoverSuccessViewController: UIViewController {
         
         self.informationLabel.textColor = theme.textPrimaryColor
         
-        self.doneButtonBackgroundView.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.doneButton)
+        // Tchap
+        self.doneButton.update(theme: theme)
+//        self.doneButtonBackgroundView.backgroundColor = theme.backgroundColor
+//        theme.applyStyle(onButton: self.doneButton)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
