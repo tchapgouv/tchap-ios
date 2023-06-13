@@ -1,3 +1,13 @@
+## Changes in 2.4.6 (2023-06-13)
+
+🙌 Improvements
+
+- [Paramètres] Mauvaise place du bouton "se déconnecter" (#826) ([#826](https://github.com/tchapgouv/tchap-ios/issues/826))
+- Remove "Create Space" option in Home "+" menu (#833) ([#833](https://github.com/tchapgouv/tchap-ios/issues/833))
+- [XSSS] Amélioration UX, wording et organisation des settings sécurité. #843 ([#843](https://github.com/tchapgouv/tchap-ios/issues/843))
+- [Paramètres utilisateur] Améliorer contraste des titres de section #846 ([#846](https://github.com/tchapgouv/tchap-ios/issues/846))
+
+
 ## Changes in 2.4.5 (2023-05-10)
 
 🙌 Improvements
