@@ -58,7 +58,7 @@ import MatrixSDKCrypto
         // Tchap
 //        self.localFeature = PhasedRolloutFeature(name: Self.FeatureName, targetPercentage: localTargetPercentage)
 #if TCHAP_PRODUCTION
-        self.localFeature = PhasedRolloutFeature(name: Self.FeatureName, targetPercentage: 0.25)
+        self.localFeature = PhasedRolloutFeature(name: Self.FeatureName, targetPercentage: 1.0)
 #elseif TCHAP_PREPRODUCTION
         self.localFeature = PhasedRolloutFeature(name: Self.FeatureName, targetPercentage: 1.0)
 #elseif TCHAP_DEVELOPMENT
