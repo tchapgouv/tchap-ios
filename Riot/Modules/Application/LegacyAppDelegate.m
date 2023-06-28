@@ -277,7 +277,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
     MXLogConfiguration *configuration = [[MXLogConfiguration alloc] init];
     configuration.logLevel = MXLogLevelVerbose;
-    configuration.logFilesSizeLimit = 100 * 1024 * 1024; // 100MB
+    configuration.logFilesSizeLimit = 10 * 1024 * 1024; // Tchap : limit logfiles size to 10MB else RageShake can be refused by back-end (error 500).
     configuration.maxLogFilesCount = 50;
     
     // Redirect NSLogs to files only if we are not debugging
