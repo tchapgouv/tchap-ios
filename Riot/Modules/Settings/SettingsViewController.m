@@ -378,7 +378,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     [sectionUserSettings addRowWithTag:USER_SETTINGS_PROFILE_PICTURE_INDEX];
     
     // Tchap: Remove Display Name because the function is blocked by back-end
-        [sectionUserSettings addRowWithTag:USER_SETTINGS_DISPLAYNAME_INDEX];
+    //    [sectionUserSettings addRowWithTag:USER_SETTINGS_DISPLAYNAME_INDEX];
     
     if (RiotSettings.shared.settingsScreenShowChangePassword)
     {
