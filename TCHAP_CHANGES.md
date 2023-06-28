@@ -1,3 +1,12 @@
+## Changes in 2.4.7 (2023-06-28)
+
+🙌 Improvements
+
+- [RageShake] Les logs transmis peuvent être trop gros pour le serveur (#841) ([#841](https://github.com/tchapgouv/tchap-ios/issues/841))
+- [Paramètres] Masquer l'option "Nom d'affichage" (#848) ([#848](https://github.com/tchapgouv/tchap-ios/issues/848))
+- Pousser le déploiement de RustCrypto à 100% (#851) ([#851](https://github.com/tchapgouv/tchap-ios/issues/851))
+
+
 ## Changes in 2.4.6 (2023-06-13)
 
 🙌 Improvements
