@@ -42,7 +42,7 @@ private enum BackupRows {
     case resetSecureBackupAction
     case createKeyBackupAction
     case restoreFromKeyBackupAction(keyBackupVersion: MXKeyBackupVersion, title: String)
-    case deleteKeyBackupAction(keyBackupVersion: MXKeyBackupVersion)
+//    case deleteKeyBackupAction(keyBackupVersion: MXKeyBackupVersion) // Tchap : no mpre "Delete backup" button
 }
 
 /// SettingsSecureBackupTableViewSection provides UITableViewCells to manage secure backup and key backup.
@@ -103,8 +103,9 @@ private enum BackupRows {
             cell = self.buttonCellForCreateKeyBackup(atRow: row)
         case .restoreFromKeyBackupAction(keyBackupVersion: let keyBackupVersion, let title):
             cell = self.buttonCellForRestoreFromKeyBackup(keyBackupVersion: keyBackupVersion, title: title, atRow: row)
-        case .deleteKeyBackupAction(keyBackupVersion: let keyBackupVersion):
-            cell = self.buttonCellForDeleteKeyBackup(keyBackupVersion: keyBackupVersion, atRow: row)
+        // Tchap : no mpre "Delete backup" button
+//        case .deleteKeyBackupAction(keyBackupVersion: let keyBackupVersion):
+//            cell = self.buttonCellForDeleteKeyBackup(keyBackupVersion: keyBackupVersion, atRow: row)
         }
         
         return cell
@@ -148,20 +149,20 @@ private enum BackupRows {
                 if let progress = progress {
                     backupRows = [
                         .info(text: importProgressText(for: progress), icon: nil, tint: nil),
-                        .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion)
+//                        .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion) // Tchap : no mpre "Delete backup" button
                     ]
                 } else {
                     backupRows = [
                         .info(text: VectorL10n.securitySettingsSecureBackupInfoValid, icon: UIImage(systemName: "checkmark.circle.fill"), tint: .systemGreen),
                         .restoreFromKeyBackupAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.securitySettingsSecureBackupRestore),
-                        .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion)
+//                        .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion) // Tchap : no mpre "Delete backup" button
                     ]
                 }
             case .keyBackupNotTrusted(let keyBackupVersion, _):
                 backupRows = [
                     .info(text: VectorL10n.securitySettingsSecureBackupInfoValid, icon: UIImage(systemName: "checkmark.circle.fill"), tint: .systemGreen),
                     .restoreFromKeyBackupAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.securitySettingsSecureBackupRestore),
-                    .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion)
+//                    .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion) // Tchap : no mpre "Delete backup" button
                 ]
             }
         case .secureBackup(let keyBackupState):
@@ -182,14 +183,14 @@ private enum BackupRows {
                 if let progress = progress {
                     backupRows = [
                         .info(text: importProgressText(for: progress), icon: nil, tint: nil),
-                        .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion),
+//                        .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion), // Tchap : no mpre "Delete backup" button
                         .resetSecureBackupAction
                     ]
                 } else {
                     backupRows = [
                         .info(text: VectorL10n.securitySettingsSecureBackupInfoValid, icon: UIImage(systemName: "checkmark.circle.fill"), tint: .systemGreen),
                         .restoreFromKeyBackupAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.securitySettingsSecureBackupRestore),
-                        .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion),
+//                        .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion), // Tchap : no mpre "Delete backup" button
                         .resetSecureBackupAction
                     ]
                 }
@@ -197,7 +198,7 @@ private enum BackupRows {
                 backupRows = [
                     .info(text: VectorL10n.securitySettingsSecureBackupInfoValid, icon: UIImage(systemName: "checkmark.circle.fill"), tint: .systemGreen),
                     .restoreFromKeyBackupAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.securitySettingsSecureBackupRestore),
-                    .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion),
+//                    .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion), // Tchap : no mpre "Delete backup" button
                     .resetSecureBackupAction
                 ]
             }

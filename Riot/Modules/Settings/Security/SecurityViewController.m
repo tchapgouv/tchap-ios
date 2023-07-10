@@ -50,7 +50,7 @@ enum
 enum {
     CROSSSIGNING_INFO,
     CROSSSIGNING_FIRST_ACTION,      // Bootstrap, Reset, Verify this session, Request keys
-    CROSSSIGNING_SECOND_ACTION,     // Reset
+//    CROSSSIGNING_SECOND_ACTION,     // Reset // Tchap : no second action
 };
 
 enum {
@@ -691,15 +691,16 @@ MXKDocumentPickerPresenterDelegate>
     NSInteger numberOfRowsInCrossSigningSection;
     
     id<MXCrossSigning> crossSigning = self.mainSession.crypto.crossSigning;
+    // Tchap : display Activate button only if cross-signing does not exist on account or if it is not trusted by this device.
     switch (crossSigning.state)
     {
-        case MXCrossSigningStateNotBootstrapped:                // Action: Bootstrap
-        case MXCrossSigningStateCanCrossSign:                   // Action: Reset
+        case MXCrossSigningStateNotBootstrapped:                // Action: display Activate button
+        case MXCrossSigningStateCrossSigningExists:
             numberOfRowsInCrossSigningSection = CROSSSIGNING_FIRST_ACTION + 1;
             break;
-        case MXCrossSigningStateCrossSigningExists:             // Actions: Verify this session, Reset
-        case MXCrossSigningStateTrustCrossSigning:              // Actions: Request keys, Reset
-            numberOfRowsInCrossSigningSection = CROSSSIGNING_SECOND_ACTION + 1;
+        case MXCrossSigningStateTrustCrossSigning:              // Actions: no action because cross-signing already exists and is trusted
+        case MXCrossSigningStateCanCrossSign:
+            numberOfRowsInCrossSigningSection = CROSSSIGNING_FIRST_ACTION;
             break;
     }
     
@@ -717,7 +718,7 @@ MXKDocumentPickerPresenterDelegate>
             crossSigningInformation = [VectorL10n securitySettingsCrosssigningInfoNotBootstrapped];
             break;
         case MXCrossSigningStateCrossSigningExists:
-            crossSigningInformation = [VectorL10n securitySettingsCrosssigningInfoExists];
+            crossSigningInformation = [VectorL10n securitySettingsCrosssigningInfoNotBootstrapped]; // Tchap : simply tell user cross-signing is not configured.
             break;
         case MXCrossSigningStateTrustCrossSigning:
             crossSigningInformation = [VectorL10n securitySettingsCrosssigningInfoTrusted];
@@ -813,9 +814,10 @@ MXKDocumentPickerPresenterDelegate>
                 case CROSSSIGNING_FIRST_ACTION:
                     [self setUpcrossSigningButtonCellForCompletingSecurity:buttonCell];
                     break;
-                case CROSSSIGNING_SECOND_ACTION:
-                    [self setUpcrossSigningButtonCellForReset:buttonCell];
-                    break;
+                    // Tchap : no second action
+//                case CROSSSIGNING_SECOND_ACTION:
+//                    [self setUpcrossSigningButtonCellForReset:buttonCell];
+//                    break;
             }
             break;
         case MXCrossSigningStateTrustCrossSigning:              // Actions: Request keys, Reset
@@ -825,9 +827,10 @@ MXKDocumentPickerPresenterDelegate>
                     // By verifying our device again, it will get cross-signing keys by gossiping
                     [self setUpcrossSigningButtonCellForCompletingSecurity:buttonCell];
                     break;
-                case CROSSSIGNING_SECOND_ACTION:
-                    [self setUpcrossSigningButtonCellForReset:buttonCell];
-                    break;
+                    // Tchap : no second action
+//                case CROSSSIGNING_SECOND_ACTION:
+//                    [self setUpcrossSigningButtonCellForReset:buttonCell]; // Tchap : no second action
+//                    break;
             }
             break;
     }
@@ -921,7 +924,7 @@ MXKDocumentPickerPresenterDelegate>
 
 - (void)setUpcrossSigningButtonCellForReset:(MXKTableViewCellWithButton*)buttonCell
 {
-    NSString *btnTitle = [VectorL10n securitySettingsCrosssigningReset];
+    NSString *btnTitle = [VectorL10n securitySettingsCrosssigningBootstrap]; // Tchap : simply tell user to activate cross-signing.
     [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
     [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
     
@@ -932,7 +935,7 @@ MXKDocumentPickerPresenterDelegate>
 
 - (void)setUpcrossSigningButtonCellForCompletingSecurity:(MXKTableViewCellWithButton*)buttonCell
 {
-    NSString *btnTitle = [VectorL10n securitySettingsCrosssigningCompleteSecurity];
+    NSString *btnTitle = [VectorL10n securitySettingsCrosssigningBootstrap]; // Tchap : simply tell user to activate cross-signing.
     [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
     [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
     
@@ -1330,9 +1333,10 @@ MXKDocumentPickerPresenterDelegate>
             case CROSSSIGNING_FIRST_ACTION:
                 cell = [self crossSigningButtonCellInTableView:tableView forAction:CROSSSIGNING_FIRST_ACTION];
                 break;
-            case CROSSSIGNING_SECOND_ACTION:
-                cell = [self crossSigningButtonCellInTableView:tableView forAction:CROSSSIGNING_SECOND_ACTION];
-                break;
+//              Tchap : no second action
+//            case CROSSSIGNING_SECOND_ACTION:
+//                cell = [self crossSigningButtonCellInTableView:tableView forAction:CROSSSIGNING_SECOND_ACTION];
+//                break;
         }
     }
     else if (sectionTag == SECTION_CRYPTOGRAPHY)
