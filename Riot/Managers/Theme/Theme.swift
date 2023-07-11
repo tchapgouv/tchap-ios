@@ -124,6 +124,8 @@ import DesignKit
     var domainLabel: UIColor { get }
     var unreadBackground: UIColor { get }
     
+    var settingsHeaderForegroundColor: UIColor { get } // Tchap
+    
     // MARK: - Customisation methods
 
     
