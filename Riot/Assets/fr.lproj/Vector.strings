@@ -612,15 +612,15 @@
 "key_backup_recover_from_passphrase_info" = "Utilisez votre phrase secrète de récupération pour déverrouiller votre historique de messages sécurisés";
 "key_backup_recover_from_passphrase_passphrase_title" = "Saisir";
 "key_backup_recover_from_passphrase_passphrase_placeholder" = "Saisir la phrase secrète";
-"key_backup_recover_from_passphrase_recover_action" = "Déverrouiller l’historique";
+"key_backup_recover_from_passphrase_recover_action" = "Utiliser le Code de Récupération"; // Tchap
 "key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Vous ne connaissez pas votre phrase secrète de récupération ? Vous pouvez ";
 "key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "utiliser votre clé de récupération";
 "key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
-"key_backup_recover_from_recovery_key_info" = "Utiliser votre clé de récupération pour déverrouiller l’historique de vos messages sécurisés";
+"key_backup_recover_from_recovery_key_info" = "Insérez votre Code de Récupération pour récupérer vos messages"; // Tchap
 "key_backup_recover_from_recovery_key_recovery_key_title" = "Saisir";
 "key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Saisir la clé de récupération";
-"key_backup_recover_from_recovery_key_recover_action" = "Déverrouiller l’historique";
-"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Vous avez perdu votre clé de récupération ? Vous pouvez en configurer une autre dans les réglages.";
+"key_backup_recover_from_recovery_key_recover_action" = "Utiliser le Code de Récupération"; // Tchap
+"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Vous avez perdu votre Code de Récupération ?"; // Tchap
 "key_backup_recover_success_info" = "Sauvegarde restaurée !";
 "key_backup_recover_done_action" = "Terminer"; // Tchap
 "key_backup_setup_banner_title_part1" = "Configurer la récupération de messages sécurisée";
@@ -1123,7 +1123,7 @@
 "secrets_recovery_with_passphrase_invalid_passphrase_message" = "Vérifiez que vous avez saisi la bonne phrase secrète de récupération.";
 "secrets_recovery_with_key_title" = "Récupération des messages"; // Tchap
 "secrets_recovery_with_key_information_default" = "Accédez à l’historique de vos messages sécurisés et à votre identité de signature croisée pour vérifier d’autres sessions en renseignant votre clé de récupération.";
-"secrets_recovery_with_key_information_verify_device" = "Insérez votre Code de Récupération pour vérifier cet appareil."; // Tchap
+"secrets_recovery_with_key_information_verify_device" = "Insérez votre Code de Récupération pour récupérer vos messages."; // Tchap
 "secrets_recovery_with_key_recovery_key_title" = "Saisir";
 "secrets_recovery_with_key_recovery_key_placeholder" = "Saisir le Code de Récupération";
 "secrets_recovery_with_key_recover_action" = "Utiliser le Code de Récupération"; // Tchap
@@ -1161,7 +1161,6 @@
 "security_settings_secure_backup_description" = "Sauvegardez automatiquement vos messages et récupérez-les à tout moment à l’aide du code de récupération."; // Tchap
 "security_settings_secure_backup_setup" = "Activer"; // Tchap
 "security_settings_secure_backup_synchronise" = "Synchroniser";
-"security_settings_secure_backup_delete" = "Supprimer la sauvegarde";
 "security_settings_secure_backup_delete" = "Supprimer la sauvegarde"; // Tchap
 "security_settings_user_password_description" = "Confirmez votre identité en saisissant le mot de passe de votre compte";
 "secure_key_backup_setup_existing_backup_error_title" = "Une sauvegarde pour les messages existe déjà";
@@ -1435,7 +1434,7 @@
 // Success from secure backup
 "key_backup_setup_success_from_secure_backup_info" = "Vos clés sont en cours de sauvegarde.";
 "security_settings_secure_backup_restore" = "Restaurer depuis une sauvegarde";
-"security_settings_secure_backup_reset" = "Réinitialiser";
+"" = "Réinitialiser";
 "security_settings_secure_backup_info_valid" = "Cette session sauvegarde vos clés.";
 "security_settings_secure_backup_restore" = "Récupérer les messages"; // Tchap
 "security_settings_secure_backup_reset" = "Générer un nouveau code"; // Tchap

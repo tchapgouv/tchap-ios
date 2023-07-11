@@ -38,7 +38,7 @@ final class KeyBackupRecoverFromRecoveryKeyViewController: UIViewController {
     @IBOutlet private weak var unknownRecoveryKeyButton: UIButton!
     
     @IBOutlet private weak var recoverButtonBackgroundView: UIView!
-    @IBOutlet private weak var recoverButton: UIButton!
+    @IBOutlet private weak var recoverButton: RoundedButton! // Tchap
     
     // MARK: Private
     
@@ -113,7 +113,7 @@ final class KeyBackupRecoverFromRecoveryKeyViewController: UIViewController {
         self.unknownRecoveryKeyButton.isUserInteractionEnabled = false
         
         self.recoverButton.vc_enableMultiLinesTitle()
-        self.recoverButton.setTitle(VectorL10n.keyBackupRecoverFromPassphraseRecoverAction, for: .normal)
+        self.recoverButton.setTitle(VectorL10n.keyBackupRecoverFromRecoveryKeyRecoverAction, for: .normal) // Tchap : use right string
         
         self.updateRecoverButton()
     }
@@ -140,9 +140,16 @@ final class KeyBackupRecoverFromRecoveryKeyViewController: UIViewController {
         theme.applyStyle(onButton: self.importFileButton)        
         
         self.recoverButtonBackgroundView.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.recoverButton)
         
-        self.unknownRecoveryKeyButton.setTitleColor(theme.textPrimaryColor, for: .normal)
+        // Tchap : customize button
+        self.recoverButton.update(theme: theme)
+        
+        let resetSecretsAttributedString = NSMutableAttributedString(string: VectorL10n.secretsRecoveryResetActionPart1, attributes: [.foregroundColor: self.theme.textPrimaryColor])
+        let resetSecretsAttributedStringPart2 = NSAttributedString(string: VectorL10n.secretsRecoveryResetActionPart2, attributes: [.foregroundColor: self.theme.warningColor])
+        
+        resetSecretsAttributedString.append(resetSecretsAttributedStringPart2)
+        
+        self.unknownRecoveryKeyButton.setAttributedTitle(resetSecretsAttributedString, for: .normal)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
