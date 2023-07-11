@@ -109,6 +109,8 @@ class DefaultTheme: NSObject, Theme {
     
     var roomCellLocalisationErrorColor: UIColor = UIColor(rgb: 0xFF5B55)
     
+    var settingsHeaderForegroundColor: UIColor = UIColor(rgb: 0x232323) // Tchap
+
     func applyStyle(onTabBar tabBar: UITabBar) {
         tabBar.unselectedItemTintColor = self.tabBarUnselectedItemTintColor
         tabBar.tintColor = self.tintColor

@@ -110,6 +110,8 @@ class DarkTheme: NSObject, Theme {
     var domainLabel: UIColor = UIColor(rgb:0x498FCF)
     var unreadBackground: UIColor = UIColor(rgb:0xE8EDF2)
 
+    var settingsHeaderForegroundColor: UIColor = UIColor(rgb: 0xFFFFFF) // Tchap
+    
     func applyStyle(onTabBar tabBar: UITabBar) {
         tabBar.unselectedItemTintColor = self.tabBarUnselectedItemTintColor
         tabBar.tintColor = self.tintColor

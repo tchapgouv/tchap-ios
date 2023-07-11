@@ -36,7 +36,7 @@ final class Section: NSObject {
             
             // Tchap : add section title attributes
             let headerAttributes: [NSAttributedString.Key: Any] = [
-                NSAttributedString.Key.foregroundColor: UIColor(rgb: 0x232323),
+                NSAttributedString.Key.foregroundColor: ThemeService.shared().theme.settingsHeaderForegroundColor,
                 NSAttributedString.Key.font: ThemeService.shared().theme.fonts.footnote,
                 NSAttributedString.Key.strokeWidth: -5.0]
             
