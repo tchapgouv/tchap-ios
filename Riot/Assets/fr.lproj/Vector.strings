@@ -1092,7 +1092,7 @@
 "key_verification_verify_qr_code_emoji_information" = "Vérifier en comparant des émojis uniques.";
 "key_verification_verify_qr_code_start_emoji_action" = "Vérifier par émojis";
 "device_verification_self_verify_alert_validate_action" = "Vérifier";
-"key_verification_self_verify_current_session_alert_title" = "Vérifier cette session";
+"key_verification_self_verify_current_session_alert_title" = "Vérifier cet appareil"; // Tchap
 "key_verification_self_verify_current_session_alert_message" = "Une fois votre appareil vérifié, vous pourrez récupérer vos messages."; // Tchap
 "key_verification_self_verify_current_session_alert_validate_action" = "Vérifier";
 "key_verification_self_verify_unverified_sessions_alert_title" = "Vérifiez où vous vous êtes connecté";
