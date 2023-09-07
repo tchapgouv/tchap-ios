@@ -20,6 +20,7 @@ import Intents
 import MatrixSDK
 import CommonKit
 import UIKit
+import SafariServices
 
 #if DEBUG
 import FLEX
@@ -122,7 +123,10 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
             guard let self = self else { return }
 
             if AppDelegate.theDelegate().isOffline {
-                self.splitViewCoordinator?.showAppStateIndicator(with: VectorL10n.networkOfflineTitle, icon: UIImage(systemName: "wifi.slash"))
+                // Tchap : add tap action
+                self.splitViewCoordinator?.showAppStateIndicator(with: VectorL10n.networkOfflineTitle, icon: UIImage(systemName: "wifi.slash")) {
+                    self.showServiceStatus()
+                }
             } else {
                 self.splitViewCoordinator?.hideAppStateIndicator()                
             }
@@ -146,6 +150,20 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
             MXLog.debug("[AppCoordinator] Custom scheme URL parsing failed with error: \(error)")
             return false
         }
+    }
+    
+    // Tchap functionality
+    private func showServiceStatus() {
+        guard let helpURL = URL(string: BuildSettings.applicationServicesStatusUrlString),
+              let presenter = self.splitViewCoordinator?.toPresentable() else {
+            return
+        }
+        
+        let safariViewController = SFSafariViewController(url: helpURL)
+        
+        // Show in fullscreen to animate presentation along side menu dismiss
+        safariViewController.modalPresentationStyle = .automatic
+        presenter.present(safariViewController, animated: true, completion: nil)
     }
     
     func checkMinAppVersionRequirements() {

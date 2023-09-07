@@ -17,6 +17,8 @@
 import Foundation
 
 struct ToastViewState {
+    typealias Action = () -> Void // Tchap : action type
+    
     enum Style {
         case loading
         case success
@@ -26,4 +28,5 @@ struct ToastViewState {
     
     let style: Style
     let label: String
+    let action: Action? // Tchap action
 }

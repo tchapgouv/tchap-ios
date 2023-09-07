@@ -216,9 +216,10 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         indicators.append(self.indicatorPresenter.present(.failure(label: title)))
     }
     
-    func showAppStateIndicator(with text: String, icon: UIImage?) {
+    // Tchap : add tap action
+    func showAppStateIndicator(with text: String, icon: UIImage?, action: ToastViewState.Action? = nil) {
         hideAppStateIndicator()
-        appSateIndicator = self.indicatorPresenter.present(.custom(label: text, icon: icon))
+        appSateIndicator = self.indicatorPresenter.present(.custom(label: text, icon: icon, action: action)) // Tchap : add tap action
     }
     
     func hideAppStateIndicator() {

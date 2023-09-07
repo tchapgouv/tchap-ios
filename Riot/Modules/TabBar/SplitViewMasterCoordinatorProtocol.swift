@@ -42,7 +42,7 @@ protocol SplitViewMasterCoordinatorProtocol: Coordinator, SplitViewMasterPresent
     func showErroIndicator(with error: Error)
     
     /// Displays an message related to the application state using a `UserIndicator`. The message must be dimissed by calling the method `hideAppStateIndicator()`
-    func showAppStateIndicator(with text: String, icon: UIImage?)
+    func showAppStateIndicator(with text: String, icon: UIImage?, action: ToastViewState.Action?) // Tchap : add tap action
     
     /// Hide the message related to the application state currently displayed.
     func hideAppStateIndicator()

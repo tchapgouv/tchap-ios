@@ -2457,7 +2457,7 @@
 "create_room_suggest_room_footer" = "Les salons recommandés sont suggérés aux membres de l’espace comme salons de qualité.";
 "create_room_show_in_directory_footer" = "Ceci aidera les gens à le trouver et le rejoindre.";
 "network_offline_message" = "Vous êtes déconnecté, merci de vérifier votre connexion.";
-"network_offline_title" = "Vous êtes déconnecté";
+"network_offline_title" = "La connexion à Tchap n’est pas disponible pour le moment.\n\nTaper pour voir l’état du service."; // Tchap
 "room_access_settings_screen_upgrade_alert_upgrading" = "Mise à niveau du salon";
 "room_access_settings_screen_upgrade_alert_upgrade_button" = "Mettre à niveau";
 "room_access_settings_screen_upgrade_alert_note" = "Veuillez noter que la mise à niveau va créer une nouvelle version de ce salon. Tous les messages actuels vont rester dans ce salon archivé.";
