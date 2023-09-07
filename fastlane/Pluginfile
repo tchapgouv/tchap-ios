@@ -4,6 +4,6 @@
 
 gem 'fastlane-plugin-versioning'
 gem 'fastlane-plugin-xcodegen'
-gem 'fastlane-plugin-diawi'
+gem 'fastlane-plugin-diawireborn'
 gem 'fastlane-plugin-sentry'
 
