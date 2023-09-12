@@ -96,11 +96,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-<<<<<<< HEAD
-    RoomDataSourceDelegate/*, RoomCreationModalCoordinatorBridgePresenterDelegate*/, RoomInfoCoordinatorBridgePresenterDelegate/*, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate*/, VoiceMessageControllerDelegate /*, SpaceDetailPresenterDelegate*/, UserSuggestionCoordinatorBridgeDelegate/*, ThreadsCoordinatorBridgePresenterDelegate, ThreadsBetaCoordinatorBridgePresenterDelegate, MXThreadingServiceDelegate, RoomParticipantsInviteCoordinatorBridgePresenterDelegate*/, RoomInputToolbarViewDelegate/*, ComposerCreateActionListBridgePresenterDelegate*/>
-=======
-    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, CompletionSuggestionCoordinatorBridgeDelegate, ThreadsCoordinatorBridgePresenterDelegate, ThreadsBetaCoordinatorBridgePresenterDelegate, MXThreadingServiceDelegate, RoomParticipantsInviteCoordinatorBridgePresenterDelegate, RoomInputToolbarViewDelegate, ComposerCreateActionListBridgePresenterDelegate>
->>>>>>> v1.11.1
+    RoomDataSourceDelegate/*, RoomCreationModalCoordinatorBridgePresenterDelegate*/, RoomInfoCoordinatorBridgePresenterDelegate/*, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate*/, VoiceMessageControllerDelegate /*, SpaceDetailPresenterDelegate*/, CompletionSuggestionCoordinatorBridgeDelegate/*, ThreadsCoordinatorBridgePresenterDelegate, ThreadsBetaCoordinatorBridgePresenterDelegate, MXThreadingServiceDelegate, RoomParticipantsInviteCoordinatorBridgePresenterDelegate*/, RoomInputToolbarViewDelegate/*, ComposerCreateActionListBridgePresenterDelegate*/>
 {
     
     // The preview header
@@ -1089,13 +1085,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     [VoiceMessageMediaServiceProvider.sharedProvider setCurrentRoomSummary:dataSource.room.summary];
     _voiceMessageController.roomId = dataSource.roomId;
-<<<<<<< HEAD
-
-    _userSuggestionCoordinator = [[UserSuggestionCoordinatorBridge alloc] initWithMediaManager:self.roomDataSource.mxSession.mediaManager
-=======
     
     _completionSuggestionCoordinator = [[CompletionSuggestionCoordinatorBridge alloc] initWithMediaManager:self.roomDataSource.mxSession.mediaManager
->>>>>>> v1.11.1
                                                                                           room:dataSource.room
                                                                                         userID:self.roomDataSource.mxSession.myUserId];
     _completionSuggestionCoordinator.delegate = self;
@@ -2763,13 +2754,8 @@ static CGSize kThreadListBarButtonItemImageSize;
         return;
     }
     
-<<<<<<< HEAD
-    UIViewController *suggestionsViewController = self.userSuggestionCoordinator.toPresentable;
-
-=======
     UIViewController *suggestionsViewController = self.completionSuggestionCoordinator.toPresentable;
     
->>>>>>> v1.11.1
     if (!suggestionsViewController)
     {
         return;
@@ -2778,15 +2764,6 @@ static CGSize kThreadListBarButtonItemImageSize;
     [suggestionsViewController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
 
     [self addChildViewController:suggestionsViewController];
-<<<<<<< HEAD
-    [self.userSuggestionContainerView addSubview:suggestionsViewController.view];
-
-    [NSLayoutConstraint activateConstraints:@[[suggestionsViewController.view.topAnchor constraintEqualToAnchor:self.userSuggestionContainerView.topAnchor],
-                                              [suggestionsViewController.view.leadingAnchor constraintEqualToAnchor:self.userSuggestionContainerView.leadingAnchor],
-                                              [suggestionsViewController.view.trailingAnchor constraintEqualToAnchor:self.userSuggestionContainerView.trailingAnchor],
-                                              [suggestionsViewController.view.bottomAnchor constraintEqualToAnchor:self.userSuggestionContainerView.bottomAnchor],]];
-
-=======
     [self.completionSuggestionContainerView addSubview:suggestionsViewController.view];
     
     [NSLayoutConstraint activateConstraints:@[[suggestionsViewController.view.topAnchor constraintEqualToAnchor:self.completionSuggestionContainerView.topAnchor],
@@ -2794,7 +2771,6 @@ static CGSize kThreadListBarButtonItemImageSize;
                                               [suggestionsViewController.view.trailingAnchor constraintEqualToAnchor:self.completionSuggestionContainerView.trailingAnchor],
                                               [suggestionsViewController.view.bottomAnchor constraintEqualToAnchor:self.completionSuggestionContainerView.bottomAnchor],]];
     
->>>>>>> v1.11.1
     [suggestionsViewController didMoveToParentViewController:self];
 }
 
@@ -5251,7 +5227,6 @@ static CGSize kThreadListBarButtonItemImageSize;
 //    }];
 //}
 
-<<<<<<< HEAD
 //- (void)roomInputToolbarViewShowSendMediaActions:(MXKRoomInputToolbarView *)toolbarView
 //{
 //    NSMutableArray *actionItems = [NSMutableArray new];
@@ -5290,67 +5265,6 @@ static CGSize kThreadListBarButtonItemImageSize;
 //    self.composerCreateActionListBridgePresenter.delegate = self;
 //    [self.composerCreateActionListBridgePresenter presentFrom:self animated:YES];
 //}
-=======
-- (void)roomInputToolbarView:(MXKRoomInputToolbarView *)toolbarView sendCommand:(NSString *)commandText
-{
-    // Create before sending the message in case of a discussion (direct chat)
-    MXWeakify(self);
-    [self createDiscussionIfNeeded:^(BOOL readyToSend) {
-        MXStrongifyAndReturnIfNil(self);
-
-        if (readyToSend) {
-            if (![self sendAsIRCStyleCommandIfPossible:commandText])
-            {
-                // Display an error for unknown command
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
-                                                                               message:[VectorL10n roomCommandErrorUnknownCommand]
-                                                                        preferredStyle:UIAlertControllerStyleAlert];
-                [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok] style:UIAlertActionStyleDefault handler:nil]];
-                [self presentViewController:alert animated:YES completion:nil];
-            }
-        }
-    }];
-}
-
-- (void)roomInputToolbarViewShowSendMediaActions:(MXKRoomInputToolbarView *)toolbarView
-{
-    NSMutableArray *actionItems = [NSMutableArray new];
-    if (RiotSettings.shared.roomScreenAllowMediaLibraryAction)
-    {
-        [actionItems addObject:@(ComposerCreateActionPhotoLibrary)];
-    }
-    if (RiotSettings.shared.roomScreenAllowStickerAction && !self.isNewDirectChat)
-    {
-        [actionItems addObject:@(ComposerCreateActionStickers)];
-    }
-    if (RiotSettings.shared.roomScreenAllowFilesAction)
-    {
-        [actionItems addObject:@(ComposerCreateActionAttachments)];
-    }
-    if (RiotSettings.shared.enableVoiceBroadcast && !self.isNewDirectChat)
-    {
-        [actionItems addObject:@(ComposerCreateActionVoiceBroadcast)];
-    }
-    if (BuildSettings.pollsEnabled && self.displayConfiguration.sendingPollsEnabled && !self.isNewDirectChat)
-    {
-        [actionItems addObject:@(ComposerCreateActionPolls)];
-    }
-    if (BuildSettings.locationSharingEnabled && !self.isNewDirectChat)
-    {
-        [actionItems addObject:@(ComposerCreateActionLocation)];
-    }
-    if (RiotSettings.shared.roomScreenAllowCameraAction)
-    {
-        [actionItems addObject:@(ComposerCreateActionCamera)];
-    }
-    
-    self.composerCreateActionListBridgePresenter = [[ComposerCreateActionListBridgePresenter alloc] initWithActions:actionItems
-                                                                                                     wysiwygEnabled:RiotSettings.shared.enableWysiwygComposer
-                                                                                              textFormattingEnabled:RiotSettings.shared.enableWysiwygTextFormatting];
-    self.composerCreateActionListBridgePresenter.delegate = self;
-    [self.composerCreateActionListBridgePresenter presentFrom:self animated:YES];
-}
->>>>>>> v1.11.1
 
 - (void)roomInputToolbarView:(RoomInputToolbarView *)toolbarView sendAttributedTextMessage:(NSAttributedString *)attributedTextMessage
 {

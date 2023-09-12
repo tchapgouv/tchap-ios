@@ -92,39 +92,20 @@ extension SecretsResetCoordinator: SecretsResetViewModelCoordinatorDelegate {
 }
 
 // MARK: - ReauthenticationCoordinatorDelegate
-<<<<<<< HEAD
 // TODO: Tchap: Support Reauthentication (SecretsReset)
-//extension SecretsResetCoordinator: ReauthenticationCoordinatorDelegate {
-//
-//    func reauthenticationCoordinatorDidComplete(_ coordinator: ReauthenticationCoordinatorType, withAuthenticationParameters authenticationParameters: [String: Any]?) {
-//
-//        self.secretsResetViewModel.process(viewAction: .authenticationInfoEntered(authenticationParameters ?? [:]))
-//    }
-//
-//    func reauthenticationCoordinatorDidCancel(_ coordinator: ReauthenticationCoordinatorType) {
-//        self.remove(childCoordinator: coordinator)
-//    }
-//
-//    func reauthenticationCoordinator(_ coordinator: ReauthenticationCoordinatorType, didFailWithError error: Error) {
-//        self.secretsResetViewModel.update(viewState: .error(error))
-//        self.remove(childCoordinator: coordinator)
-//    }
-//}
-=======
-extension SecretsResetCoordinator: ReauthenticationCoordinatorDelegate {
-    
-    func reauthenticationCoordinatorDidComplete(_ coordinator: ReauthenticationCoordinatorType, withAuthenticationParameters authenticationParameters: [String: Any]?) {
-        self.secretsResetViewModel.process(viewAction: .authenticationInfoEntered(authenticationParameters ?? [:]))
-    }
-    
-    func reauthenticationCoordinatorDidCancel(_ coordinator: ReauthenticationCoordinatorType) {
-        self.secretsResetViewModel.process(viewAction: .authenticationCancelled)
-        self.remove(childCoordinator: coordinator)
-    }
-    
-    func reauthenticationCoordinator(_ coordinator: ReauthenticationCoordinatorType, didFailWithError error: Error) {
-        self.secretsResetViewModel.update(viewState: .error(error))
-        self.remove(childCoordinator: coordinator)
-    }
-}
->>>>>>> v1.11.1
+// extension SecretsResetCoordinator: ReauthenticationCoordinatorDelegate {
+//    
+//     func reauthenticationCoordinatorDidComplete(_ coordinator: ReauthenticationCoordinatorType, withAuthenticationParameters authenticationParameters: [String: Any]?) {
+//         self.secretsResetViewModel.process(viewAction: .authenticationInfoEntered(authenticationParameters ?? [:]))
+//     }
+//    
+//     func reauthenticationCoordinatorDidCancel(_ coordinator: ReauthenticationCoordinatorType) {
+//         self.secretsResetViewModel.process(viewAction: .authenticationCancelled)
+//         self.remove(childCoordinator: coordinator)
+//     }
+//    
+//     func reauthenticationCoordinator(_ coordinator: ReauthenticationCoordinatorType, didFailWithError error: Error) {
+//         self.secretsResetViewModel.update(viewState: .error(error))
+//         self.remove(childCoordinator: coordinator)
+//     }
+// }

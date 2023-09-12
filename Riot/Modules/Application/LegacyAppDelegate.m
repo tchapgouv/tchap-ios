@@ -2464,7 +2464,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                 case MXSessionStateSyncInProgress:
                     // Stay in launching during the first server sync if the store is empty.
                     isLaunching = (mainSession.rooms.count == 0 && launchAnimationContainerView);
-<<<<<<< HEAD
 // Tchap: Disable Cross Signing Managment.
 #ifdef CROSS_SIGNING
                     if (mainSession.crypto.crossSigning && mainSession.crypto.crossSigning.state == MXCrossSigningStateCrossSigningExists && [mainSession.crypto isKindOfClass:[MXLegacyCrypto class]])
@@ -2472,8 +2471,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                         [(MXLegacyCrypto *)mainSession.crypto setOutgoingKeyRequestsEnabled:NO onComplete:nil];
                     }
 #endif
-=======
->>>>>>> v1.11.1
                     break;
                 case MXSessionStateRunning:
                     self.clearingCache = NO;
@@ -2560,7 +2557,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 - (void)showLaunchAnimation
 {
-<<<<<<< HEAD
     // Tchap: Don't show Element Launch animation.
 //    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
 //
@@ -2589,27 +2585,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 //
 //        [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:MXTaskProfileNameStartupLaunchScreen];
 //    }
-=======
-    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-    
-    if (!launchAnimationContainerView && window)
-    {
-        MXLogDebug(@"[AppDelegate] showLaunchAnimation");
-        
-        MXSession *mainSession = self.mxSessions.firstObject;
-        LaunchLoadingView *launchLoadingView  = [LaunchLoadingView instantiateWithStartupProgress:mainSession.startupProgress];
-                
-        launchLoadingView.frame = window.bounds;
-        [launchLoadingView updateWithTheme:ThemeService.shared.theme];
-        launchLoadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        
-        [window addSubview:launchLoadingView];
-        
-        launchAnimationContainerView = launchLoadingView;
-        
-        [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:MXTaskProfileNameStartupLaunchScreen];
-    }
->>>>>>> v1.11.1
 }
 
 - (void)hideLaunchAnimation

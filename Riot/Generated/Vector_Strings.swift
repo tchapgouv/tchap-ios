@@ -6399,15 +6399,13 @@ public class VectorL10n: NSObject {
   public static var roomParticipantsInviteAnotherUser: String { 
     return VectorL10n.tr("Vector", "room_participants_invite_another_user") 
   }
-<<<<<<< HEAD:Riot/Generated/Vector_Strings.swift
   /// Search / invite by Name or email
-  public static var roomParticipantsInviteAnotherUserWithoutId: String { 
-    return VectorL10n.tr("Vector", "room_participants_invite_another_user_without_id") 
-=======
+  public static var roomParticipantsInviteAnotherUserWithoutId: String {
+      return VectorL10n.tr("Vector", "room_participants_invite_another_user_without_id")
+  }
   /// Invite anyway
   public static var roomParticipantsInviteAnyway: String { 
     return VectorL10n.tr("Vector", "room_participants_invite_anyway") 
->>>>>>> v1.11.1:Riot/Generated/Strings.swift
   }
   /// Malformed ID. Should be an email address or a Matrix ID like '@localpart:domain'
   public static var roomParticipantsInviteMalformedId: String { 

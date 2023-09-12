@@ -109,7 +109,6 @@ abstract_target 'TchapPods' do
     end
   end
 
-<<<<<<< HEAD
   target "Btchap" do
     import_MatrixSDK
     import_MatrixKit_pods
@@ -133,8 +132,6 @@ abstract_target 'TchapPods' do
     import_MatrixKit_pods
   end
 
-=======
->>>>>>> v1.11.1
   target "RiotSwiftUI" do
     import_SwiftUI_pods
   end
@@ -146,10 +143,6 @@ abstract_target 'TchapPods' do
   target "RiotNSE" do
     import_MatrixSDK
     import_MatrixKit_pods
-  end
-
-  target "BroadcastUploadExtension" do
-    import_MatrixSDK
   end
 
   # Disabled due to crypto corruption issues.

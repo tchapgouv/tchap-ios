@@ -48,15 +48,9 @@ NSString* const kSettingsViewControllerPhoneBookCountryCellId = @"kSettingsViewC
 
 typedef NS_ENUM(NSUInteger, SECTION_TAG)
 {
-<<<<<<< HEAD
 // Tchap : sign out moved to end of settings
 //    SECTION_TAG_SIGN_OUT = 0,
     SECTION_TAG_USER_SETTINGS = 0,
-=======
-    SECTION_TAG_SIGN_OUT = 0,
-    SECTION_TAG_USER_SETTINGS,
-    SECTION_TAG_ACCOUNT,
->>>>>>> v1.11.1
     SECTION_TAG_SENDING_MEDIA,
     SECTION_TAG_LINKS,
     SECTION_TAG_SECURITY,
@@ -436,17 +430,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     
     sectionUserSettings.headerTitle = [VectorL10n settingsUserSettings];
     [tmpSections addObject:sectionUserSettings];
-    
-    NSString *manageAccountURL = self.mainSession.homeserverWellknown.authentication.account;
-    if (manageAccountURL)
-    {
-        Section *account = [Section sectionWithTag: SECTION_TAG_ACCOUNT];
-        [account addRowWithTag:ACCOUNT_MANAGE_INDEX];
-        account.headerTitle = [VectorL10n settingsManageAccountTitle];
-        account.footerTitle = [VectorL10n settingsManageAccountDescription:manageAccountURL];
-        [tmpSections addObject:account];
-    }
-        
+            
     if (BuildSettings.settingsScreenShowConfirmMediaSize)
     {
         Section *sectionMedia = [Section sectionWithTag:SECTION_TAG_SENDING_MEDIA];
@@ -686,16 +670,12 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         }
     }
     
-<<<<<<< HEAD
     // Tchap : sign out moved to end of settings
     Section *sectionSignOut = [Section sectionWithTag:SECTION_TAG_SIGN_OUT];
     [sectionSignOut addRowWithTag:0];
     [tmpSections addObject:sectionSignOut];
     
-    if (BuildSettings.settingsScreenAllowDeactivatingAccount)
-=======
     if (BuildSettings.settingsScreenAllowDeactivatingAccount && !self.mainSession.homeserverWellknown.authentication)
->>>>>>> v1.11.1
     {
         Section *sectionDeactivate = [Section sectionWithTag:SECTION_TAG_DEACTIVATE_ACCOUNT];
         [sectionDeactivate addRowWithTag:0];
@@ -2745,7 +2725,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         
         cell = deactivateAccountBtnCell;
     }
-<<<<<<< HEAD
     else if (section == SECTION_TAG_PREFERENCES)
     {
         // Tchap: Add Preferences section
@@ -2783,17 +2762,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleShowProfileUpdateEvents:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = labelAndSwitchCell;
-=======
-    else if (section == SECTION_TAG_ACCOUNT)
-    {
-        switch (row)
-        {
-            case ACCOUNT_MANAGE_INDEX:
-                cell = [self getDefaultTableViewCell:tableView];
-                cell.textLabel.text = [VectorL10n settingsManageAccountAction];
-                [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
-                break;
->>>>>>> v1.11.1
         }
     }
 
@@ -3153,14 +3121,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
                     break;
                 case NOTIFICATION_SETTINGS_OTHER_SETTINGS_INDEX:
                     [self showNotificationSettings:NotificationSettingsScreenOther];
-                    break;
-            }
-        }
-        else if (section == SECTION_TAG_ACCOUNT)
-        {
-            switch(row) {
-                case ACCOUNT_MANAGE_INDEX:
-                    [self onManageAccountTap];
                     break;
             }
         }
@@ -4086,7 +4046,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     }
 }
 
-<<<<<<< HEAD
 // Tchap: Add import keys feature
 - (void)importEncryptionKeys:(UITapGestureRecognizer *)recognizer
 {
@@ -4161,13 +4120,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     if (keyExportsFile && [[NSFileManager defaultManager] fileExistsAtPath:keyExportsFile.path])
     {
         [[NSFileManager defaultManager] removeItemAtPath:keyExportsFile.path error:nil];
-=======
-- (void)onManageAccountTap
-{
-    NSURL *url = [NSURL URLWithString: self.mainSession.homeserverWellknown.authentication.account];
-    if (url) {
-        [UIApplication.sharedApplication openURL:url options:@{} completionHandler:nil];
->>>>>>> v1.11.1
     }
 }
 

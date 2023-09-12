@@ -73,32 +73,20 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-<<<<<<< HEAD
-        
-        // Tchap: bypass view offering choice between passphrase/key backup. Tchap only offers key backup option.
-//
-//        let rootViewController = self.createIntro()
-//
-//        if self.navigationRouter.modules.isEmpty == false {
-//            self.navigationRouter.push(rootViewController, animated: true, popCompletion: nil)
-//        } else {
-//            self.navigationRouter.setRootModule(rootViewController)
-//        }        
-        self.showSetupKey(passphraseOnly: false)
-        
-=======
         start(popCompletion: nil)
     }
+    
 
     func start(popCompletion: (() -> Void)?) {
-        let rootViewController = self.createIntro()
-        
-        if self.navigationRouter.modules.isEmpty == false {
-            self.navigationRouter.push(rootViewController, animated: true, popCompletion: popCompletion)
-        } else {
-            self.navigationRouter.setRootModule(rootViewController, popCompletion: popCompletion)
-        }
->>>>>>> v1.11.1
+        // Tchap: bypass view offering choice between passphrase/key backup. Tchap only offers key backup option.
+//        let rootViewController = self.createIntro()
+//        
+//        if self.navigationRouter.modules.isEmpty == false {
+//            self.navigationRouter.push(rootViewController, animated: true, popCompletion: popCompletion)
+//        } else {
+//            self.navigationRouter.setRootModule(rootViewController, popCompletion: popCompletion)
+//        }
+       self.showSetupKey(passphraseOnly: false)
     }
 
     func toPresentable() -> UIViewController {

@@ -33,50 +33,6 @@ platform :ios do
       options = { build_number: build_number }.merge(options)
     end
     build_release(options)
-<<<<<<< HEAD
-=======
-    upload_dsyms_to_sentry
-  end
-
-  desc "Builds an Alpha ipa for pull request branches"
-  lane :alpha do
-    # Check we have all the tokens and tools necessary
-    UI.user_error!("'DIAWI_API_TOKEN' environment variable should be set to use this lane") unless !ENV["DIAWI_API_TOKEN"].to_s.empty?
-            
-    # Generate the "Alpha" app variant    
-    setup_app_variant(name: "Alpha")    
-    # Builds an Ad Hoc IPA
-    adhoc
-    # Upload to Diawi
-    upload_to_diawi
-  end
-
-  desc "Upload IPA to Diawi"
-  lane :upload_to_diawi do
-    UI.user_error!("'DIAWI_API_TOKEN' environment variable should be set to use this lane") unless !ENV["DIAWI_API_TOKEN"].to_s.empty?
-
-    # Upload to Diawi
-    diawi(
-      token: ENV["DIAWI_API_TOKEN"],
-      wall_of_apps: false,
-      file: lane_context[SharedValues::IPA_OUTPUT_PATH]
-    )
-
-    # Get the Diawi link from Diawi action shared value
-    diawi_link = lane_context[SharedValues::UPLOADED_FILE_LINK_TO_DIAWI]
-    UI.command_output("Diawi link: " + diawi_link.to_s)
-
-    # Generate the Diawi QR code file link
-    diawi_app_id = URI(diawi_link).path.split('/').last
-    diawi_qr_code_link = "https://www.diawi.com/qrcode/link/#{diawi_app_id}"
-    UI.command_output("Diawi QR code link: " + diawi_qr_code_link.to_s)
-
-    # Set "DIAWI_FILE_LINK" to GitHub environment variables for Github actions
-    if is_ci 
-      sh("echo DIAWI_FILE_LINK=#{diawi_link} >> $GITHUB_ENV")
-      sh("echo DIAWI_QR_CODE_LINK=#{diawi_qr_code_link} >> $GITHUB_ENV")
-    end
->>>>>>> v1.11.1
   end
 
   desc "Builds the ipa for the AppStore, then uploads it"

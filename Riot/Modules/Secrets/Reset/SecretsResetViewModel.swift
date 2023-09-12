@@ -97,16 +97,9 @@ final class SecretsResetViewModel: SecretsResetViewModelType {
     }
     
     private func askAuthentication() {
-<<<<<<< HEAD
         // TODO: Tchap: Support Reauthentication (SecretsReset)
 //        let setupCrossSigningRequest = self.crossSigningService.setupCrossSigningRequest()
 //        self.coordinatorDelegate?.secretsResetViewModel(self, needsToAuthenticateWith: setupCrossSigningRequest)
-=======
-        self.update(viewState: .resetting)
-
-        let setupCrossSigningRequest = self.crossSigningService.setupCrossSigningRequest()
-        self.coordinatorDelegate?.secretsResetViewModel(self, needsToAuthenticateWith: setupCrossSigningRequest)
->>>>>>> v1.11.1
     }
     
     private func authenticationCancelled() {

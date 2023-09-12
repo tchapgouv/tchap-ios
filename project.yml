@@ -34,17 +34,10 @@ options:
   postGenCommand: sh Tools/XcodeGen/postGenCommand.sh
     
 include:
-<<<<<<< HEAD
   - path: Tchap/target.yml
   - path: RiotShareExtension/target.yml
   - path: RiotNSE/target.yml
   - path: TchapTests/target.yml
-=======
-  - path: Riot/target.yml
-  - path: RiotTests/target.yml
-  - path: RiotNSE/target.yml
-  - path: BroadcastUploadExtension/target.yml
->>>>>>> v1.11.1
   - path: DesignKit/target.yml
   - path: RiotSwiftUI/target.yml
   - path: RiotSwiftUI/targetUnitTests.yml

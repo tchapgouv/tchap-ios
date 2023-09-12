@@ -212,8 +212,12 @@ targetTemplates:
     - path: ../Riot/Modules/CrossSigning
     - path: ../Riot/Modules/DeepLink
     - path: ../Riot/Modules/DotsView
-    - path: ../Riot/Modules/EncryptionInfo/EncryptionInfoView.h
-    - path: ../Riot/Modules/EncryptionInfo/EncryptionInfoView.m
+    - path: ../Riot/Modules/Encryption/EncryptionInfo/EncryptionInfoView.h
+    - path: ../Riot/Modules/Encryption/EncryptionInfo/EncryptionInfoView.m
+    - path: ../Riot/Modules/Encryption/EncryptionTrustLevel.swift
+    - path: ../Riot/Modules/Encryption/EncryptionTrustLevelBadgeImageHelper.swift
+    - path: ../Riot/Modules/Encryption/RoomEncryptionTrustLevel.h
+    - path: ../Riot/Modules/Encryption/UserEncryptionTrustLevel.h
     - path: ../Riot/Modules/Favorites
     - path: ../Riot/Modules/Home/AllChats
     - path: ../Riot/Modules/Home/Fallback
@@ -253,8 +257,6 @@ targetTemplates:
         - "Views/BubbleCells/KeyVerification/SizingViewHeight.swift"
         - "Views/BubbleCells/Location"
         - "Views/BubbleCells/Poll"
-    - path: ../Riot/Modules/RoomKeyRequest/RoomKeyRequestViewController.h
-    - path: ../Riot/Modules/RoomKeyRequest/RoomKeyRequestViewController.m
     - path: ../Riot/Modules/Rooms
     - path: ../Riot/Modules/Secrets
     - path: ../Riot/Modules/SecureBackup
@@ -317,7 +319,7 @@ targetTemplates:
       buildPhase: resources
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.xib
       buildPhase: resources
-    - path: ../Riot/Modules/EncryptionInfo/EncryptionInfoView.xib
+    - path: ../Riot/Modules/Encryption/EncryptionInfo/EncryptionInfoView.xib
       buildPhase: resources
     - path: ../Riot/Modules/GlobalSearch/Files/Views/FilesSearchTableViewCell.xib
       buildPhase: resources
