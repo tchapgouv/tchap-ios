@@ -96,7 +96,11 @@ static CGSize kThreadListBarButtonItemImageSize;
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
+<<<<<<< HEAD
     RoomDataSourceDelegate/*, RoomCreationModalCoordinatorBridgePresenterDelegate*/, RoomInfoCoordinatorBridgePresenterDelegate/*, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate*/, VoiceMessageControllerDelegate /*, SpaceDetailPresenterDelegate*/, UserSuggestionCoordinatorBridgeDelegate/*, ThreadsCoordinatorBridgePresenterDelegate, ThreadsBetaCoordinatorBridgePresenterDelegate, MXThreadingServiceDelegate, RoomParticipantsInviteCoordinatorBridgePresenterDelegate*/, RoomInputToolbarViewDelegate/*, ComposerCreateActionListBridgePresenterDelegate*/>
+=======
+    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, CompletionSuggestionCoordinatorBridgeDelegate, ThreadsCoordinatorBridgePresenterDelegate, ThreadsBetaCoordinatorBridgePresenterDelegate, MXThreadingServiceDelegate, RoomParticipantsInviteCoordinatorBridgePresenterDelegate, RoomInputToolbarViewDelegate, ComposerCreateActionListBridgePresenterDelegate>
+>>>>>>> v1.11.1
 {
     
     // The preview header
@@ -221,8 +225,8 @@ static CGSize kThreadListBarButtonItemImageSize;
 @property (nonatomic, strong) ShareManager *shareManager;
 @property (nonatomic, strong) EventMenuBuilder *eventMenuBuilder;
 
-@property (nonatomic, strong) UserSuggestionCoordinatorBridge *userSuggestionCoordinator;
-@property (nonatomic, weak) IBOutlet UIView *userSuggestionContainerView;
+@property (nonatomic, strong) CompletionSuggestionCoordinatorBridge *completionSuggestionCoordinator;
+@property (nonatomic, weak) IBOutlet UIView *completionSuggestionContainerView;
 
 @property (nonatomic, readwrite) RoomDisplayConfiguration *displayConfiguration;
 
@@ -414,7 +418,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     [self setupActions];
     
-    [self setupUserSuggestionViewIfNeeded];
+    [self setupCompletionSuggestionViewIfNeeded];
     
     [self.topBannersStackView vc_removeAllSubviews];
 }
@@ -691,7 +695,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     {
         // Retrieve the potential message partially typed during last room display.
         // Note: We have to wait for viewDidAppear before updating growingTextView (viewWillAppear is too early)
-        self.inputToolbarView.attributedTextMessage = self.roomDataSource.partialAttributedTextMessage;
+        [self.inputToolbarView setPartialContent:self.roomDataSource.partialAttributedTextMessage];
     }
     
     [self setMaximisedToolbarIsHiddenIfNeeded: NO];
@@ -1085,13 +1089,20 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     [VoiceMessageMediaServiceProvider.sharedProvider setCurrentRoomSummary:dataSource.room.summary];
     _voiceMessageController.roomId = dataSource.roomId;
+<<<<<<< HEAD
 
     _userSuggestionCoordinator = [[UserSuggestionCoordinatorBridge alloc] initWithMediaManager:self.roomDataSource.mxSession.mediaManager
+=======
+    
+    _completionSuggestionCoordinator = [[CompletionSuggestionCoordinatorBridge alloc] initWithMediaManager:self.roomDataSource.mxSession.mediaManager
+>>>>>>> v1.11.1
                                                                                           room:dataSource.room
                                                                                         userID:self.roomDataSource.mxSession.myUserId];
-    _userSuggestionCoordinator.delegate = self;
+    _completionSuggestionCoordinator.delegate = self;
     
-    [self setupUserSuggestionViewIfNeeded];
+    [self setupCompletionSuggestionViewIfNeeded];
+
+    [self updateRoomInputToolbarViewClassIfNeeded];
     
     [self updateTopBanners];
 }
@@ -1192,6 +1203,12 @@ static CGSize kThreadListBarButtonItemImageSize;
 - (void)updateRoomInputToolbarViewClassIfNeeded
 {
     Class roomInputToolbarViewClass = [RoomViewController mainToolbarClass];
+
+    // If RTE is enabled, delay the toolbar setup until `completionSuggestionCoordinator` is ready.
+    if (roomInputToolbarViewClass == WysiwygInputToolbarView.class && _completionSuggestionCoordinator == nil)
+    {
+        return;
+    }
     
     BOOL shouldDismissContextualMenu = NO;
     
@@ -1281,6 +1298,8 @@ static CGSize kThreadListBarButtonItemImageSize;
 - (BOOL)sendAsIRCStyleCommandIfPossible:(NSString*)string
 {
     // Override the default behavior for `/join` command in order to open automatically the joined room
+
+    NSString* kMXKSlashCmdJoinRoom = [MXKSlashCommandsHelper commandNameFor:MXKSlashCommandJoinRoom];
     
     if ([string hasPrefix:kMXKSlashCmdJoinRoom])
     {
@@ -1317,7 +1336,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         else
         {
             // Display cmd usage in text input as placeholder
-            self.inputToolbarView.placeholder = @"Usage: /join <room_alias>";
+            self.inputToolbarView.placeholder = [MXKSlashCommandsHelper commandUsageFor:MXKSlashCommandJoinRoom];
         }
         return YES;
     }
@@ -2055,7 +2074,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         {
             [userPictureView vc_setRoomAvatarImageWith:self.directChatTargetUser.avatarUrl
                                                 roomId:self.directChatTargetUser.userId
-                                           displayName:self.directChatTargetUser.displayname
+                                           displayName:self.directChatTargetUser.displayname ?: self.directChatTargetUser.userId
                                           mediaManager:self.mainSession.mediaManager];
         }
     }
@@ -2738,14 +2757,19 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
 }
 
-- (void)setupUserSuggestionViewIfNeeded
+- (void)setupCompletionSuggestionViewIfNeeded
 {
     if(!self.isViewLoaded) {
         return;
     }
     
+<<<<<<< HEAD
     UIViewController *suggestionsViewController = self.userSuggestionCoordinator.toPresentable;
 
+=======
+    UIViewController *suggestionsViewController = self.completionSuggestionCoordinator.toPresentable;
+    
+>>>>>>> v1.11.1
     if (!suggestionsViewController)
     {
         return;
@@ -2754,6 +2778,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     [suggestionsViewController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
 
     [self addChildViewController:suggestionsViewController];
+<<<<<<< HEAD
     [self.userSuggestionContainerView addSubview:suggestionsViewController.view];
 
     [NSLayoutConstraint activateConstraints:@[[suggestionsViewController.view.topAnchor constraintEqualToAnchor:self.userSuggestionContainerView.topAnchor],
@@ -2761,6 +2786,15 @@ static CGSize kThreadListBarButtonItemImageSize;
                                               [suggestionsViewController.view.trailingAnchor constraintEqualToAnchor:self.userSuggestionContainerView.trailingAnchor],
                                               [suggestionsViewController.view.bottomAnchor constraintEqualToAnchor:self.userSuggestionContainerView.bottomAnchor],]];
 
+=======
+    [self.completionSuggestionContainerView addSubview:suggestionsViewController.view];
+    
+    [NSLayoutConstraint activateConstraints:@[[suggestionsViewController.view.topAnchor constraintEqualToAnchor:self.completionSuggestionContainerView.topAnchor],
+                                              [suggestionsViewController.view.leadingAnchor constraintEqualToAnchor:self.completionSuggestionContainerView.leadingAnchor],
+                                              [suggestionsViewController.view.trailingAnchor constraintEqualToAnchor:self.completionSuggestionContainerView.trailingAnchor],
+                                              [suggestionsViewController.view.bottomAnchor constraintEqualToAnchor:self.completionSuggestionContainerView.bottomAnchor],]];
+    
+>>>>>>> v1.11.1
     [suggestionsViewController didMoveToParentViewController:self];
 }
 
@@ -5176,22 +5210,22 @@ static CGSize kThreadListBarButtonItemImageSize;
  
 - (void)roomInputToolbarViewDidChangeTextMessage:(RoomInputToolbarView *)toolbarView
 {
-    [self.userSuggestionCoordinator processTextMessage:toolbarView.textMessage];
+    [self.completionSuggestionCoordinator processTextMessage:toolbarView.textMessage];
 }
 
 - (void)didDetectTextPattern:(SuggestionPatternWrapper *)suggestionPattern
 {
-    [self.userSuggestionCoordinator processSuggestionPattern:suggestionPattern];
+    [self.completionSuggestionCoordinator processSuggestionPattern:suggestionPattern];
 }
 
-- (UserSuggestionViewModelContextWrapper *)userSuggestionContext
+- (CompletionSuggestionViewModelContextWrapper *)completionSuggestionContext
 {
-    return [self.userSuggestionCoordinator sharedContext];
+    return [self.completionSuggestionCoordinator sharedContext];
 }
 
 - (MXMediaManager *)mediaManager
 {
-    return self.roomDataSource.mxSession.mediaManager;
+    return self.mainSession.mediaManager;
 }
 
 - (void)roomInputToolbarViewDidOpenActionMenu:(RoomInputToolbarView*)toolbarView
@@ -5217,6 +5251,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 //    }];
 //}
 
+<<<<<<< HEAD
 //- (void)roomInputToolbarViewShowSendMediaActions:(MXKRoomInputToolbarView *)toolbarView
 //{
 //    NSMutableArray *actionItems = [NSMutableArray new];
@@ -5255,6 +5290,67 @@ static CGSize kThreadListBarButtonItemImageSize;
 //    self.composerCreateActionListBridgePresenter.delegate = self;
 //    [self.composerCreateActionListBridgePresenter presentFrom:self animated:YES];
 //}
+=======
+- (void)roomInputToolbarView:(MXKRoomInputToolbarView *)toolbarView sendCommand:(NSString *)commandText
+{
+    // Create before sending the message in case of a discussion (direct chat)
+    MXWeakify(self);
+    [self createDiscussionIfNeeded:^(BOOL readyToSend) {
+        MXStrongifyAndReturnIfNil(self);
+
+        if (readyToSend) {
+            if (![self sendAsIRCStyleCommandIfPossible:commandText])
+            {
+                // Display an error for unknown command
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                               message:[VectorL10n roomCommandErrorUnknownCommand]
+                                                                        preferredStyle:UIAlertControllerStyleAlert];
+                [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok] style:UIAlertActionStyleDefault handler:nil]];
+                [self presentViewController:alert animated:YES completion:nil];
+            }
+        }
+    }];
+}
+
+- (void)roomInputToolbarViewShowSendMediaActions:(MXKRoomInputToolbarView *)toolbarView
+{
+    NSMutableArray *actionItems = [NSMutableArray new];
+    if (RiotSettings.shared.roomScreenAllowMediaLibraryAction)
+    {
+        [actionItems addObject:@(ComposerCreateActionPhotoLibrary)];
+    }
+    if (RiotSettings.shared.roomScreenAllowStickerAction && !self.isNewDirectChat)
+    {
+        [actionItems addObject:@(ComposerCreateActionStickers)];
+    }
+    if (RiotSettings.shared.roomScreenAllowFilesAction)
+    {
+        [actionItems addObject:@(ComposerCreateActionAttachments)];
+    }
+    if (RiotSettings.shared.enableVoiceBroadcast && !self.isNewDirectChat)
+    {
+        [actionItems addObject:@(ComposerCreateActionVoiceBroadcast)];
+    }
+    if (BuildSettings.pollsEnabled && self.displayConfiguration.sendingPollsEnabled && !self.isNewDirectChat)
+    {
+        [actionItems addObject:@(ComposerCreateActionPolls)];
+    }
+    if (BuildSettings.locationSharingEnabled && !self.isNewDirectChat)
+    {
+        [actionItems addObject:@(ComposerCreateActionLocation)];
+    }
+    if (RiotSettings.shared.roomScreenAllowCameraAction)
+    {
+        [actionItems addObject:@(ComposerCreateActionCamera)];
+    }
+    
+    self.composerCreateActionListBridgePresenter = [[ComposerCreateActionListBridgePresenter alloc] initWithActions:actionItems
+                                                                                                     wysiwygEnabled:RiotSettings.shared.enableWysiwygComposer
+                                                                                              textFormattingEnabled:RiotSettings.shared.enableWysiwygTextFormatting];
+    self.composerCreateActionListBridgePresenter.delegate = self;
+    [self.composerCreateActionListBridgePresenter presentFrom:self animated:YES];
+}
+>>>>>>> v1.11.1
 
 - (void)roomInputToolbarView:(RoomInputToolbarView *)toolbarView sendAttributedTextMessage:(NSAttributedString *)attributedTextMessage
 {
@@ -5266,7 +5362,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         if (readyToSend) {
             BOOL isMessageAHandledCommand = NO;
             // "/me" command is supported with Pills in RoomDataSource.
-            if (![attributedTextMessage.string hasPrefix:kMXKSlashCmdEmote])
+            if (![attributedTextMessage.string hasPrefix:[MXKSlashCommandsHelper commandNameFor:MXKSlashCommandEmote]])
             {
                 // Other commands currently work with identifiers (e.g. ban, invite, op, etc).
                 NSString *message;
@@ -5289,6 +5385,11 @@ static CGSize kThreadListBarButtonItemImageSize;
         }
         // Errors are handled at the request level. This should be improved in case of code rewriting.
     }];
+}
+
+- (void)roomInputToolbarView:(MXKRoomInputToolbarView *)toolbarView shouldStorePartialContent:(NSAttributedString *)partialAttributedTextMessage
+{
+    self.roomDataSource.partialAttributedTextMessage = partialAttributedTextMessage;
 }
 
 #pragma mark - MXKRoomMemberDetailsViewControllerDelegate
@@ -6133,7 +6234,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             if (self.saveProgressTextInput)
             {
                 // Restore the potential message partially typed before jump to last unread messages.
-                self.inputToolbarView.attributedTextMessage = roomDataSource.partialAttributedTextMessage;
+                [self.inputToolbarView setPartialContent:roomDataSource.partialAttributedTextMessage];
             }
         };
 
@@ -6387,21 +6488,10 @@ static CGSize kThreadListBarButtonItemImageSize;
                 self->currentAlert = nil;
                 
                 // Acknowledge the existence of all devices
-                [self startActivityIndicator];
+                self->unknownDevices = nil;
                 
-                if (![self.mainSession.crypto isKindOfClass:[MXLegacyCrypto class]])
-                {
-                    MXLogFailure(@"[RoomVC] eventDidChangeSentState: Only legacy crypto supports manual setting of known devices");
-                    return;
-                }
-                [(MXLegacyCrypto *)self.mainSession.crypto setDevicesKnown:self->unknownDevices complete:^{
-                    
-                    self->unknownDevices = nil;
-                    [self stopActivityIndicator];
-                    
-                    // And resend pending messages
-                    [self resendAllUnsentMessages];
-                }];
+                // And resend pending messages
+                [self resendAllUnsentMessages];
             }
             
         }]];
@@ -7522,23 +7612,47 @@ static CGSize kThreadListBarButtonItemImageSize;
         return;
     }
     
+    NSMutableArray<NSIndexPath *> *rowsToReload = [[NSMutableArray alloc] init];
+    // Get the current hightlighted event because we will need to reload it
+    NSString *currentHiglightedEventId = self.customizedRoomDataSource.highlightedEventId;
+    if (currentHiglightedEventId)
+    {
+        NSInteger currentHiglightedRow = [self.roomDataSource indexOfCellDataWithEventId:currentHiglightedEventId];
+        if (currentHiglightedRow != NSNotFound)
+        {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:currentHiglightedRow inSection:0];
+            if ([[self.bubblesTableView indexPathsForVisibleRows] containsObject:indexPath])
+            {
+                [rowsToReload addObject:indexPath];
+            }
+        }
+    }
+    
     self.customizedRoomDataSource.highlightedEventId = eventId;
     
+    // Add the new highligted event to the list of rows to reload
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
-    if ([[self.bubblesTableView indexPathsForVisibleRows] containsObject:indexPath])
+    BOOL indexPathIsVisible = [[self.bubblesTableView indexPathsForVisibleRows] containsObject:indexPath];
+    if (indexPathIsVisible)
     {
-        [self.bubblesTableView reloadRowsAtIndexPaths:@[indexPath]
+        [rowsToReload addObject:indexPath];
+    }
+    
+    // Reload rows
+    if (rowsToReload.count > 0)
+    {
+        [self.bubblesTableView reloadRowsAtIndexPaths:rowsToReload
                                      withRowAnimation:UITableViewRowAnimationNone];
-        [self.bubblesTableView scrollToRowAtIndexPath:indexPath
-                                     atScrollPosition:UITableViewScrollPositionMiddle
-                                             animated:YES];
     }
-    else if ([self.bubblesTableView vc_hasIndexPath:indexPath])
+    
+    // Scroll to the newly highlighted row
+    if (indexPathIsVisible || [self.bubblesTableView vc_hasIndexPath:indexPath])
     {
         [self.bubblesTableView scrollToRowAtIndexPath:indexPath
                                      atScrollPosition:UITableViewScrollPositionMiddle
                                              animated:YES];
     }
+
     if (completion)
     {
         completion();
@@ -8109,9 +8223,9 @@ static CGSize kThreadListBarButtonItemImageSize;
 //    [[LegacyAppDelegate theDelegate] openSpaceWithId:spaceId];
 //}
 
-#pragma mark - UserSuggestionCoordinatorBridgeDelegate
+#pragma mark - CompletionSuggestionCoordinatorBridgeDelegate
 
-- (void)userSuggestionCoordinatorBridge:(UserSuggestionCoordinatorBridge *)coordinator
+- (void)completionSuggestionCoordinatorBridge:(CompletionSuggestionCoordinatorBridge *)coordinator
              didRequestMentionForMember:(MXRoomMember *)member
                             textTrigger:(NSString *)textTrigger
 {
@@ -8119,16 +8233,32 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self mention:member];
 }
 
-- (void)userSuggestionCoordinatorBridgeDidRequestMentionForRoom:(UserSuggestionCoordinatorBridge *)coordinator
+- (void)completionSuggestionCoordinatorBridgeDidRequestMentionForRoom:(CompletionSuggestionCoordinatorBridge *)coordinator
                                                     textTrigger:(NSString *)textTrigger
 {
     [self removeTriggerTextFromComposer:textTrigger];
-    [self.inputToolbarView pasteText:[UserSuggestionID.room stringByAppendingString:@" "]];
+    [self.inputToolbarView pasteText:[CompletionSuggestionUserID.room stringByAppendingString:@" "]];
+}
+
+- (void)completionSuggestionCoordinatorBridge:(CompletionSuggestionCoordinatorBridge *)coordinator
+                           didRequestCommand:(NSString *)command
+                                 textTrigger:(NSString *)textTrigger
+{
+    [self removeTriggerTextFromComposer:textTrigger];
+    [self setCommand:command];
 }
 
 - (void)removeTriggerTextFromComposer:(NSString *)textTrigger
 {
     RoomInputToolbarView *toolbar = (RoomInputToolbarView *)self.inputToolbarView;
+    Class roomInputToolbarViewClass = [RoomViewController mainToolbarClass];
+
+    // RTE handles removing the text trigger by itself.
+    if (roomInputToolbarViewClass == WysiwygInputToolbarView.class && RiotSettings.shared.enableWysiwygTextFormatting)
+    {
+        return;
+    }
+
     if (toolbar && textTrigger.length) {
         NSMutableAttributedString *attributedTextMessage = [[NSMutableAttributedString alloc] initWithAttributedString:toolbar.attributedTextMessage];
         [[attributedTextMessage mutableString] replaceOccurrencesOfString:textTrigger
@@ -8139,11 +8269,11 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
 }
 
-- (void)userSuggestionCoordinatorBridge:(UserSuggestionCoordinatorBridge *)coordinator didUpdateViewHeight:(CGFloat)height
+- (void)completionSuggestionCoordinatorBridge:(CompletionSuggestionCoordinatorBridge *)coordinator didUpdateViewHeight:(CGFloat)height
 {
-    if (self.userSuggestionContainerHeightConstraint.constant != height)
+    if (self.completionSuggestionContainerHeightConstraint.constant != height)
     {
-        self.userSuggestionContainerHeightConstraint.constant = height;
+        self.completionSuggestionContainerHeightConstraint.constant = height;
 
         [self.view layoutIfNeeded];
     }

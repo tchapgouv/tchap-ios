@@ -3,7 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
+<<<<<<< HEAD:Tchap/SupportingFiles/Info.plist
 	<string>fr</string>
+=======
+	<string>en</string>
+	<key>RTCAppGroupIdentifier</key>
+	<string>$(APPLICATION_GROUP_IDENTIFIER)</string>
+	<key>RTCScreenSharingExtension</key>
+	<string>$(BROADCAST_UPLOAD_EXTENSION_BUNDLE_IDENTIFIER)</string>
+>>>>>>> v1.11.1:Riot/SupportingFiles/Info.plist
 	<key>CFBundleDisplayName</key>
 	<string>$(BUNDLE_DISPLAY_NAME)</string>
 	<key>CFBundleExecutable</key>

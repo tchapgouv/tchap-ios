@@ -48,9 +48,15 @@ NSString* const kSettingsViewControllerPhoneBookCountryCellId = @"kSettingsViewC
 
 typedef NS_ENUM(NSUInteger, SECTION_TAG)
 {
+<<<<<<< HEAD
 // Tchap : sign out moved to end of settings
 //    SECTION_TAG_SIGN_OUT = 0,
     SECTION_TAG_USER_SETTINGS = 0,
+=======
+    SECTION_TAG_SIGN_OUT = 0,
+    SECTION_TAG_USER_SETTINGS,
+    SECTION_TAG_ACCOUNT,
+>>>>>>> v1.11.1
     SECTION_TAG_SENDING_MEDIA,
     SECTION_TAG_LINKS,
     SECTION_TAG_SECURITY,
@@ -192,14 +198,18 @@ typedef NS_ENUM(NSUInteger, LABS_ENABLE)
     LABS_ENABLE_NEW_SESSION_MANAGER,
     LABS_ENABLE_NEW_CLIENT_INFO_FEATURE,
     LABS_ENABLE_WYSIWYG_COMPOSER,
-    LABS_ENABLE_VOICE_BROADCAST,
-    LABS_ENABLE_CRYPTO_SDK
+    LABS_ENABLE_VOICE_BROADCAST
 };
 
 typedef NS_ENUM(NSUInteger, SECURITY)
 {
     SECURITY_BUTTON_INDEX = 0,
     DEVICE_MANAGER_INDEX
+};
+
+typedef NS_ENUM(NSUInteger, ACCOUNT)
+{
+    ACCOUNT_MANAGE_INDEX = 0,
 };
 
 typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
@@ -405,7 +415,10 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     {
         [sectionUserSettings addRowWithTag: USER_SETTINGS_PHONENUMBERS_OFFSET + index];
     }
-    if (BuildSettings.settingsScreenAllowAddingEmailThreepids)
+    if (BuildSettings.settingsScreenAllowAddingEmailThreepids &&
+        // If the threePidChanges is nil we assume the capability to be true
+        (!self.mainSession.homeserverCapabilities.threePidChanges ||
+         self.mainSession.homeserverCapabilities.threePidChanges.enabled))
     {
         [sectionUserSettings addRowWithTag:USER_SETTINGS_ADD_EMAIL_INDEX];
     }
@@ -423,6 +436,16 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     
     sectionUserSettings.headerTitle = [VectorL10n settingsUserSettings];
     [tmpSections addObject:sectionUserSettings];
+    
+    NSString *manageAccountURL = self.mainSession.homeserverWellknown.authentication.account;
+    if (manageAccountURL)
+    {
+        Section *account = [Section sectionWithTag: SECTION_TAG_ACCOUNT];
+        [account addRowWithTag:ACCOUNT_MANAGE_INDEX];
+        account.headerTitle = [VectorL10n settingsManageAccountTitle];
+        account.footerTitle = [VectorL10n settingsManageAccountDescription:manageAccountURL];
+        [tmpSections addObject:account];
+    }
         
     if (BuildSettings.settingsScreenShowConfirmMediaSize)
     {
@@ -641,11 +664,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     if (BuildSettings.settingsScreenShowLabSettings)
     {
         Section *sectionLabs = [Section sectionWithTag:SECTION_TAG_LABS];
-        if ([CryptoSDKFeature.shared canManuallyEnableForUserId:self.mainSession.myUserId])
-        {
-            [sectionLabs addRowWithTag:LABS_ENABLE_CRYPTO_SDK];
-        }
-        
         [sectionLabs addRowWithTag:LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX];
         [sectionLabs addRowWithTag:LABS_ENABLE_THREADS_INDEX];
         [sectionLabs addRowWithTag:LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS];
@@ -668,12 +686,16 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         }
     }
     
+<<<<<<< HEAD
     // Tchap : sign out moved to end of settings
     Section *sectionSignOut = [Section sectionWithTag:SECTION_TAG_SIGN_OUT];
     [sectionSignOut addRowWithTag:0];
     [tmpSections addObject:sectionSignOut];
     
     if (BuildSettings.settingsScreenAllowDeactivatingAccount)
+=======
+    if (BuildSettings.settingsScreenAllowDeactivatingAccount && !self.mainSession.homeserverWellknown.authentication)
+>>>>>>> v1.11.1
     {
         Section *sectionDeactivate = [Section sectionWithTag:SECTION_TAG_DEACTIVATE_ACCOUNT];
         [sectionDeactivate addRowWithTag:0];
@@ -2680,18 +2702,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
             cell = labelAndSwitchCell;
         }
-        else if (row == LABS_ENABLE_CRYPTO_SDK)
-        {
-            MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-            BOOL isEnabled = MXSDKOptions.sharedInstance.enableCryptoSDK;
-            labelAndSwitchCell.mxkLabel.text = isEnabled ? VectorL10n.settingsLabsDisableCryptoSdk : VectorL10n.settingsLabsEnableCryptoSdk;
-            labelAndSwitchCell.mxkSwitch.on = isEnabled;
-            [labelAndSwitchCell.mxkSwitch setEnabled:!isEnabled];
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(enableCryptoSDKFeature:) forControlEvents:UIControlEventTouchUpInside];
-            
-            cell = labelAndSwitchCell;
-        }
     }
     else if (section == SECTION_TAG_SECURITY)
     {
@@ -2735,6 +2745,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         
         cell = deactivateAccountBtnCell;
     }
+<<<<<<< HEAD
     else if (section == SECTION_TAG_PREFERENCES)
     {
         // Tchap: Add Preferences section
@@ -2772,6 +2783,17 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleShowProfileUpdateEvents:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = labelAndSwitchCell;
+=======
+    else if (section == SECTION_TAG_ACCOUNT)
+    {
+        switch (row)
+        {
+            case ACCOUNT_MANAGE_INDEX:
+                cell = [self getDefaultTableViewCell:tableView];
+                cell.textLabel.text = [VectorL10n settingsManageAccountAction];
+                [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
+                break;
+>>>>>>> v1.11.1
         }
     }
 
@@ -3131,6 +3153,14 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
                     break;
                 case NOTIFICATION_SETTINGS_OTHER_SETTINGS_INDEX:
                     [self showNotificationSettings:NotificationSettingsScreenOther];
+                    break;
+            }
+        }
+        else if (section == SECTION_TAG_ACCOUNT)
+        {
+            switch(row) {
+                case ACCOUNT_MANAGE_INDEX:
+                    [self onManageAccountTap];
                     break;
             }
         }
@@ -3512,30 +3542,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 - (void)toggleEnableVoiceBroadcastFeature:(UISwitch *)sender
 {
     RiotSettings.shared.enableVoiceBroadcast = sender.isOn;
-}
-
-- (void)enableCryptoSDKFeature:(UISwitch *)sender
-{
-    [currentAlert dismissViewControllerAnimated:NO completion:nil];
-    UIAlertController *confirmationAlert = [UIAlertController alertControllerWithTitle:VectorL10n.settingsLabsEnableCryptoSdk
-                                                                             message:VectorL10n.settingsLabsConfirmCryptoSdk
-                                                                      preferredStyle:UIAlertControllerStyleAlert];
-
-    MXWeakify(self);
-    [confirmationAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
-        MXStrongifyAndReturnIfNil(self);
-        self->currentAlert = nil;
-
-        [sender setOn:NO animated:YES];
-    }]];
-
-    [confirmationAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n continue] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-        [CryptoSDKFeature.shared enable];
-        [[AppDelegate theDelegate] reloadMatrixSessions:YES];
-    }]];
-
-    [self presentViewController:confirmationAlert animated:YES completion:nil];
-    currentAlert = confirmationAlert;
 }
 
 - (void)togglePinRoomsWithMissedNotif:(UISwitch *)sender
@@ -4080,6 +4086,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     }
 }
 
+<<<<<<< HEAD
 // Tchap: Add import keys feature
 - (void)importEncryptionKeys:(UITapGestureRecognizer *)recognizer
 {
@@ -4154,6 +4161,13 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     if (keyExportsFile && [[NSFileManager defaultManager] fileExistsAtPath:keyExportsFile.path])
     {
         [[NSFileManager defaultManager] removeItemAtPath:keyExportsFile.path error:nil];
+=======
+- (void)onManageAccountTap
+{
+    NSURL *url = [NSURL URLWithString: self.mainSession.homeserverWellknown.authentication.account];
+    if (url) {
+        [UIApplication.sharedApplication openURL:url options:@{} completionHandler:nil];
+>>>>>>> v1.11.1
     }
 }
 
@@ -4517,6 +4531,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         || (language == nil && [NSBundle mxk_language]))
     {
         [NSBundle mxk_setLanguage:language];
+        UIApplication.sharedApplication.accessibilityLanguage = language;
 
         // Store user settings
         NSUserDefaults *sharedUserDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;

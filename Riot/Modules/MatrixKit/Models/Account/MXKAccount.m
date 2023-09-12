@@ -946,15 +946,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         [MXKRoomDataSourceManager removeSharedManagerForMatrixSession:mxSession];
 
         if (clearStore)
-        {
-            // Force a reload of device keys at the next session start, unless we are just about to migrate
-            // all data and device keys into CryptoSDK.
-            // This will fix potential UISIs other peoples receive for our messages.
-            if ([mxSession.crypto isKindOfClass:[MXLegacyCrypto class]] && !MXSDKOptions.sharedInstance.enableCryptoSDK)
-            {
-                [(MXLegacyCrypto *)mxSession.crypto resetDeviceKeys];
-            }
-            
+        {   
             // Clean other stores
             [mxSession.scanManager deleteAllAntivirusScans];
             [mxSession.aggregations resetData];
@@ -1720,70 +1712,6 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
                 }
             }];
         }];
-    }];
-}
-
-- (void)attemptDeviceDehydrationWithKeyData:(NSData *)keyData
-                                    success:(void (^)(void))success
-                                    failure:(void (^)(NSError *error))failure
-{
-    [self attemptDeviceDehydrationWithKeyData:keyData retry:YES success:success failure:failure];
-}
-
-- (void)attemptDeviceDehydrationWithKeyData:(NSData *)keyData
-                                      retry:(BOOL)retry
-                                    success:(void (^)(void))success
-                                    failure:(void (^)(NSError *error))failure
-{
-    if (keyData == nil)
-    {
-        MXLogWarning(@"[MXKAccount] attemptDeviceDehydrationWithRetry: no key provided for device dehydration");
-        
-        if (failure)
-        {
-            failure(nil);
-        }
-        
-        return;
-    }
-    
-    if (![mxSession.crypto.crossSigning isKindOfClass:[MXLegacyCrossSigning class]]) {
-        MXLogFailure(@"Device dehydratation is currently only supported by legacy cross signing, add support to all implementations");
-        if (failure)
-        {
-            failure(nil);
-        }
-        return;
-    }
-    MXLegacyCrossSigning *crossSigning = (MXLegacyCrossSigning *)mxSession.crypto.crossSigning;;
-    
-    MXLogDebug(@"[MXKAccount] attemptDeviceDehydrationWithRetry: starting device dehydration");
-    [[MXKAccountManager sharedManager].dehydrationService dehydrateDeviceWithMatrixRestClient:mxRestClient crossSigning:crossSigning dehydrationKey:keyData success:^(NSString *deviceId) {
-        MXLogDebug(@"[MXKAccount] attemptDeviceDehydrationWithRetry: device successfully dehydrated");
-        
-        if (success)
-        {
-            success();
-        }
-    } failure:^(NSError *error) {
-        if (retry)
-        {
-            [self attemptDeviceDehydrationWithKeyData:keyData retry:NO success:success failure:failure];
-            MXLogErrorDetails(@"[MXKAccount] attemptDeviceDehydrationWithRetry: device dehydration failed due to error: Retrying.", @{
-                @"error": error ?: @"unknown"
-            });
-        }
-        else
-        {
-            MXLogErrorDetails(@"[MXKAccount] attemptDeviceDehydrationWithRetry: device dehydration failed due to error", @{
-                @"error": error ?: @"unknown"
-            });
-            
-            if (failure)
-            {
-                failure(error);
-            }
-        }
     }];
 }
 

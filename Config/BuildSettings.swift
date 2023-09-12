@@ -105,10 +105,15 @@ final class BuildSettings: NSObject {
     
     // MARK: - Server configuration
     
-    // Default servers proposed on the authentication screen
+    /// Force the user to set a homeserver instead of using the default one
+    static let forceHomeserverSelection = false
+
+    /// Default server proposed on the authentication screen
     static let serverConfigDefaultHomeserverUrlString = "https://matrix.org"
-    static let serverConfigDefaultIdentityServerUrlString = "https://vector.im"
     
+    /// Default identity server
+    static let serverConfigDefaultIdentityServerUrlString = "https://vector.im"
+        
     static let serverConfigSygnalAPIUrlString = "https://matrix.org/_matrix/push/v1/notify"
     
     
@@ -193,7 +198,7 @@ final class BuildSettings: NSObject {
     #else
     /// The configuration to use for analytics. Set `isEnabled` to false to disable analytics.
     static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: BuildSettings.baseBundleIdentifier.starts(with: "im.vector.app"),
-                                                               host: "https://posthog.hss.element.io",
+                                                               host: "https://posthog.element.io",
                                                                apiKey: "phc_Jzsm6DTm6V2705zeU5dcNvQDlonOR68XvX2sh1sEOHO",
                                                                termsURL: URL(string: "https://element.io/cookie-policy")!)
     #endif

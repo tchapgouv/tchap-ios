@@ -98,6 +98,7 @@ targets:
         - "**/*.md" # excludes all files with the .md extension
     - path: ../Riot/Modules/Room/TimelineCells/Styles/RoomTimelineStyleIdentifier.swift
     - path: ../Riot/Modules/VoiceBroadcast/VoiceBroadcastSDK/MatrixSDK
+<<<<<<< HEAD
 
 
     # Tchap
@@ -113,3 +114,6 @@ targets:
     - path: ../Tchap/Managers/DisplayName
     - path: ../Tchap/Model
     - path: ../Tchap/Utils
+=======
+    - path: ../Riot/Modules/Encryption/EncryptionTrustLevel.swift
+>>>>>>> v1.11.1

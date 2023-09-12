@@ -49,6 +49,8 @@ final class SecretsResetViewModel: SecretsResetViewModelType {
             break
         case .reset:
             self.askAuthentication()
+        case .authenticationCancelled:
+            self.authenticationCancelled()
         case .authenticationInfoEntered(let authParameters):
             self.resetSecrets(with: authParameters)
         case .cancel:
@@ -68,7 +70,6 @@ final class SecretsResetViewModel: SecretsResetViewModelType {
         }
         MXLog.debug("[SecretsResetViewModel] resetSecrets")
 
-        self.update(viewState: .resetting)
         crossSigning.setup(withAuthParams: authParameters, success: { [weak self] in
             guard let self = self else {
                 return
@@ -96,8 +97,19 @@ final class SecretsResetViewModel: SecretsResetViewModelType {
     }
     
     private func askAuthentication() {
+<<<<<<< HEAD
         // TODO: Tchap: Support Reauthentication (SecretsReset)
 //        let setupCrossSigningRequest = self.crossSigningService.setupCrossSigningRequest()
 //        self.coordinatorDelegate?.secretsResetViewModel(self, needsToAuthenticateWith: setupCrossSigningRequest)
+=======
+        self.update(viewState: .resetting)
+
+        let setupCrossSigningRequest = self.crossSigningService.setupCrossSigningRequest()
+        self.coordinatorDelegate?.secretsResetViewModel(self, needsToAuthenticateWith: setupCrossSigningRequest)
+>>>>>>> v1.11.1
+    }
+    
+    private func authenticationCancelled() {
+        self.update(viewState: .resetCancelled)
     }
 }

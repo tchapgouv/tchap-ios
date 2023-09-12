@@ -146,5 +146,3 @@
 
 #import "MXKCountryPickerViewController.h"
 #import "MXKLanguagePickerViewController.h"
-
-#import "MXKSlashCommands.h"

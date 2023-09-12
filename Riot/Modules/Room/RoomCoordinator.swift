@@ -278,7 +278,6 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
                     self.stopLoading()
                     
                     self.parameters.session.store.store(user)
-                    
                     // Update RoomViewController with found target user
                     self.roomViewController.displayNewDirectChat(withTargetUser: user, session: self.parameters.session)
                 } failure: { [weak self] error in
@@ -288,10 +287,18 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
                     MXLog.error("[RoomCoordinator] User does not exist")
                     
                     // Alert user
-                    self.displayError(message: VectorL10n.roomCreationDmError) { [weak self] in
-                        guard let self = self else { return }
-                        self.delegate?.roomCoordinatorDidCancelNewDirectChat(self)
-                    }
+                    self.displayUserNotFoundPrompt(
+                        invite: { [weak self] in
+                            guard let self = self else { return }
+                            self.parameters.session.store.store(MXUser(userId: userId))
+                            // Update RoomViewController with target user anyway
+                            self.roomViewController.displayNewDirectChat(withTargetUser: user, session: self.parameters.session)
+                        },
+                        cancel: { [weak self] in
+                            guard let self = self else { return }
+                            self.delegate?.roomCoordinatorDidCancelNewDirectChat(self)
+                        }
+                    )
                 }
             }
         } else {
@@ -527,6 +534,22 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
             completion?()
         }
         alert.addAction(action)
+        toPresentable().present(alert, animated: true)
+    }
+    
+    private func displayUserNotFoundPrompt(invite: (() -> Void)? = nil, cancel: (() -> Void)? = nil) {
+        let title = VectorL10n.roomCreationUserNotFoundPromptTitle
+        let message = VectorL10n.roomCreationUserNotFoundPromptMessage
+
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: VectorL10n.cancel, style: .cancel) { _ in
+            cancel?()
+        }
+        let inviteAction = UIAlertAction(title: VectorL10n.roomCreationUserNotFoundPromptInviteAction, style: .default) { _ in
+            invite?()
+        }
+        alert.addAction(cancelAction)
+        alert.addAction(inviteAction)
         toPresentable().present(alert, animated: true)
     }
 }

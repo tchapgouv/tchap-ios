@@ -39,7 +39,6 @@
 #import "MXKEncryptionKeysImportView.h"
 
 #import "NSBundle+MatrixKit.h"
-#import "MXKSlashCommands.h"
 #import "MXKSwiftHeader.h"
 
 #import "MXKPreviewViewController.h"
@@ -361,7 +360,7 @@ static const CGFloat kCellVisibilityMinimumHeight = 8.0;
     {
         // Retrieve the potential message partially typed during last room display.
         // Note: We have to wait for viewDidAppear before updating growingTextView (viewWillAppear is too early)
-        inputToolbarView.attributedTextMessage = roomDataSource.partialAttributedTextMessage;
+        [inputToolbarView setPartialContent:roomDataSource.partialAttributedTextMessage];
     }
     
     if (!hasAppearedOnce)
@@ -1292,8 +1291,14 @@ static const CGFloat kCellVisibilityMinimumHeight = 8.0;
     
     // TODO: display an alert with the cmd usage in case of error or unrecognized cmd.
     NSString *cmdUsage;
+
+    NSString* kMXKSlashCmdChangeDisplayName = [MXKSlashCommandsHelper commandNameFor:MXKSlashCommandChangeDisplayName];
+    NSString* kMXKSlashCmdJoinRoom = [MXKSlashCommandsHelper commandNameFor:MXKSlashCommandJoinRoom];
+    NSString* kMXKSlashCmdPartRoom = [MXKSlashCommandsHelper commandNameFor:MXKSlashCommandPartRoom];
+    NSString* kMXKSlashCmdChangeRoomTopic = [MXKSlashCommandsHelper commandNameFor:MXKSlashCommandChangeRoomTopic];
+
     
-    if ([cmd isEqualToString:kMXKSlashCmdEmote])
+    if ([cmd isEqualToString:[MXKSlashCommandsHelper commandNameFor:MXKSlashCommandEmote]])
     {
         // send message as an emote
         [self sendTextMessage:string];
@@ -1328,7 +1333,7 @@ static const CGFloat kCellVisibilityMinimumHeight = 8.0;
         else
         {
             // Display cmd usage in text input as placeholder
-            cmdUsage = @"Usage: /nick <display_name>";
+            cmdUsage = [MXKSlashCommandsHelper commandUsageFor:MXKSlashCommandChangeDisplayName];
         }
     }
     else if ([string hasPrefix:kMXKSlashCmdJoinRoom])
@@ -1363,7 +1368,7 @@ static const CGFloat kCellVisibilityMinimumHeight = 8.0;
         else
         {
             // Display cmd usage in text input as placeholder
-            cmdUsage = @"Usage: /join <room_alias>";
+            cmdUsage = [MXKSlashCommandsHelper commandUsageFor:MXKSlashCommandJoinRoom];
         }
     }
     else if ([string hasPrefix:kMXKSlashCmdPartRoom])
@@ -1421,7 +1426,7 @@ static const CGFloat kCellVisibilityMinimumHeight = 8.0;
         else
         {
             // Display cmd usage in text input as placeholder
-            cmdUsage = @"Usage: /part [<room_alias>]";
+            cmdUsage = [MXKSlashCommandsHelper commandUsageFor:MXKSlashCommandPartRoom];
         }
     }
     else if ([string hasPrefix:kMXKSlashCmdChangeRoomTopic])
@@ -1453,10 +1458,10 @@ static const CGFloat kCellVisibilityMinimumHeight = 8.0;
         else
         {
             // Display cmd usage in text input as placeholder
-            cmdUsage = @"Usage: /topic <topic>";
+            cmdUsage = [MXKSlashCommandsHelper commandUsageFor:MXKSlashCommandChangeRoomTopic];
         }
     }
-    else if ([string hasPrefix:kMXKSlashCmdDiscardSession])
+    else if ([string hasPrefix:[MXKSlashCommandsHelper commandNameFor:MXKSlashCommandDiscardSession]])
     {
         [roomDataSource.mxSession.crypto discardOutboundGroupSessionForRoomWithRoomId:roomDataSource.roomId onComplete:^{
             MXLogDebug(@"[MXKRoomVC] Manually discarded outbound group session");
@@ -1478,7 +1483,7 @@ static const CGFloat kCellVisibilityMinimumHeight = 8.0;
             userId = nil;
         }
         
-        if ([cmd isEqualToString:kMXKSlashCmdInviteUser])
+        if ([cmd isEqualToString:[MXKSlashCommandsHelper commandNameFor:MXKSlashCommandInviteUser]])
         {
             if (userId)
             {
@@ -1497,10 +1502,10 @@ static const CGFloat kCellVisibilityMinimumHeight = 8.0;
             else
             {
                 // Display cmd usage in text input as placeholder
-                cmdUsage = @"Usage: /invite <userId>";
+                cmdUsage = [MXKSlashCommandsHelper commandUsageFor:MXKSlashCommandInviteUser];
             }
         }
-        else if ([cmd isEqualToString:kMXKSlashCmdKickUser])
+        else if ([cmd isEqualToString:[MXKSlashCommandsHelper commandNameFor:MXKSlashCommandKickUser]])
         {
             if (userId)
             {
@@ -1532,10 +1537,10 @@ static const CGFloat kCellVisibilityMinimumHeight = 8.0;
             else
             {
                 // Display cmd usage in text input as placeholder
-                cmdUsage = @"Usage: /kick <userId> [<reason>]";
+                cmdUsage = [MXKSlashCommandsHelper commandUsageFor:MXKSlashCommandKickUser];
             }
         }
-        else if ([cmd isEqualToString:kMXKSlashCmdBanUser])
+        else if ([cmd isEqualToString:[MXKSlashCommandsHelper commandNameFor:MXKSlashCommandBanUser]])
         {
             if (userId)
             {
@@ -1567,10 +1572,10 @@ static const CGFloat kCellVisibilityMinimumHeight = 8.0;
             else
             {
                 // Display cmd usage in text input as placeholder
-                cmdUsage = @"Usage: /ban <userId> [<reason>]";
+                cmdUsage = [MXKSlashCommandsHelper commandUsageFor:MXKSlashCommandBanUser];
             }
         }
-        else if ([cmd isEqualToString:kMXKSlashCmdUnbanUser])
+        else if ([cmd isEqualToString:[MXKSlashCommandsHelper commandNameFor:MXKSlashCommandUnbanUser]])
         {
             if (userId)
             {
@@ -1589,10 +1594,10 @@ static const CGFloat kCellVisibilityMinimumHeight = 8.0;
             else
             {
                 // Display cmd usage in text input as placeholder
-                cmdUsage = @"Usage: /unban <userId>";
+                cmdUsage = [MXKSlashCommandsHelper commandUsageFor:MXKSlashCommandUnbanUser];
             }
         }
-        else if ([cmd isEqualToString:kMXKSlashCmdSetUserPowerLevel])
+        else if ([cmd isEqualToString:[MXKSlashCommandsHelper commandNameFor:MXKSlashCommandSetUserPowerLevel]])
         {
             // Retrieve power level
             NSString *powerLevel = nil;
@@ -1625,10 +1630,10 @@ static const CGFloat kCellVisibilityMinimumHeight = 8.0;
             else
             {
                 // Display cmd usage in text input as placeholder
-                cmdUsage = @"Usage: /op <userId> <power level>";
+                cmdUsage = [MXKSlashCommandsHelper commandUsageFor:MXKSlashCommandSetUserPowerLevel];
             }
         }
-        else if ([cmd isEqualToString:kMXKSlashCmdResetUserPowerLevel])
+        else if ([cmd isEqualToString:[MXKSlashCommandsHelper commandNameFor:MXKSlashCommandResetUserPowerLevel]])
         {
             if (userId)
             {
@@ -1647,7 +1652,7 @@ static const CGFloat kCellVisibilityMinimumHeight = 8.0;
             else
             {
                 // Display cmd usage in text input as placeholder
-                cmdUsage = @"Usage: /deop <userId>";
+                cmdUsage = [MXKSlashCommandsHelper commandUsageFor:MXKSlashCommandResetUserPowerLevel];
             }
         }
         else

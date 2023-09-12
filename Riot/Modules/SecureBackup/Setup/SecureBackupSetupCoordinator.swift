@@ -73,6 +73,7 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     // MARK: - Public methods
     
     func start() {
+<<<<<<< HEAD
         
         // Tchap: bypass view offering choice between passphrase/key backup. Tchap only offers key backup option.
 //
@@ -85,8 +86,21 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
 //        }        
         self.showSetupKey(passphraseOnly: false)
         
+=======
+        start(popCompletion: nil)
     }
-    
+
+    func start(popCompletion: (() -> Void)?) {
+        let rootViewController = self.createIntro()
+        
+        if self.navigationRouter.modules.isEmpty == false {
+            self.navigationRouter.push(rootViewController, animated: true, popCompletion: popCompletion)
+        } else {
+            self.navigationRouter.setRootModule(rootViewController, popCompletion: popCompletion)
+        }
+>>>>>>> v1.11.1
+    }
+
     func toPresentable() -> UIViewController {
         return self.navigationRouter
             .toPresentable()
@@ -105,8 +119,21 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
         return introViewController
     }
     
+    private var dehydrationService: DehydrationService? {
+        if self.session.vc_homeserverConfiguration().encryption.deviceDehydrationEnabled {
+            return self.session.crypto.dehydrationService
+        }
+        
+        return nil
+    }
+    
     private func showSetupKey(passphraseOnly: Bool, passphrase: String? = nil) {
-        let coordinator = SecretsSetupRecoveryKeyCoordinator(recoveryService: self.recoveryService, passphrase: passphrase, passphraseOnly: passphraseOnly, allowOverwrite: allowOverwrite, cancellable: self.cancellable)
+        let coordinator = SecretsSetupRecoveryKeyCoordinator(recoveryService: self.recoveryService,
+                                                             passphrase: passphrase,
+                                                             passphraseOnly: passphraseOnly,
+                                                             allowOverwrite: allowOverwrite,
+                                                             cancellable: self.cancellable,
+                                                             dehydrationService: dehydrationService)
         coordinator.delegate = self
         coordinator.start()
         

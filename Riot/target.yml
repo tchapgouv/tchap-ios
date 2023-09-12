@@ -34,9 +34,12 @@ targets:
     platform: iOS
 
     dependencies:
-    - target: RiotShareExtension
-    - target: SiriIntents
+    # Disabled due to crypto corruption issues.
+    # https://github.com/vector-im/element-ios/issues/7618
+    # - target: RiotShareExtension
+    # - target: SiriIntents
     - target: RiotNSE
+    - target: BroadcastUploadExtension
     - target: DesignKit
     - target: CommonKit
     - package: AnalyticsEvents
