@@ -86,14 +86,28 @@ final class SecretsRecoveryCoordinator: SecretsRecoveryCoordinatorType {
     
     // MARK: - Private
     
+    private var dehydrationService: DehydrationService? {
+        if self.session.vc_homeserverConfiguration().encryption.deviceDehydrationEnabled {
+            return self.session.crypto.dehydrationService
+        }
+        
+        return nil
+    }
+    
     private func createRecoverFromKeyCoordinator() -> SecretsRecoveryWithKeyCoordinator {
-        let coordinator = SecretsRecoveryWithKeyCoordinator(recoveryService: self.session.crypto.recoveryService, recoveryGoal: self.recoveryGoal, cancellable: self.cancellable)
+        let coordinator = SecretsRecoveryWithKeyCoordinator(recoveryService: self.session.crypto.recoveryService,
+                                                            recoveryGoal: self.recoveryGoal,
+                                                            cancellable: self.cancellable,
+                                                            dehydrationService: dehydrationService)
         coordinator.delegate = self
         return coordinator
     }
     
     private func createRecoverFromPassphraseCoordinator() -> SecretsRecoveryWithPassphraseCoordinator {
-        let coordinator = SecretsRecoveryWithPassphraseCoordinator(recoveryService: self.session.crypto.recoveryService, recoveryGoal: self.recoveryGoal, cancellable: self.cancellable)
+        let coordinator = SecretsRecoveryWithPassphraseCoordinator(recoveryService: self.session.crypto.recoveryService,
+                                                                   recoveryGoal: self.recoveryGoal,
+                                                                   cancellable: self.cancellable,
+                                                                   dehydrationService: dehydrationService)
         coordinator.delegate = self
         return coordinator
     }
@@ -122,11 +136,12 @@ final class SecretsRecoveryCoordinator: SecretsRecoveryCoordinatorType {
     private func showSecureBackupSetup(checkKeyBackup: Bool) {
         let coordinator = SecureBackupSetupCoordinator(session: self.session, checkKeyBackup: checkKeyBackup, navigationRouter: self.navigationRouter, cancellable: self.cancellable)
         coordinator.delegate = self
-        coordinator.start()
-        
-        self.navigationRouter.push(coordinator.toPresentable(), animated: true, popCompletion: { [weak self] in
+        // Fix: calling coordinator.start() will update the navigationRouter without a popCompletion
+        coordinator.start(popCompletion: { [weak self] in
             self?.remove(childCoordinator: coordinator)
         })
+        // Fix: do not push the presentable from the coordinator to the navigation router as this has already been done by coordinator.start().
+        //      Also, coordinator.toPresentable() returns a navigation controller, which cannot be pushed into a navigation router.
         self.add(childCoordinator: coordinator)
     }
 }

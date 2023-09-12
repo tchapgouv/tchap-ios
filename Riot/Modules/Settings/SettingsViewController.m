@@ -192,14 +192,18 @@ typedef NS_ENUM(NSUInteger, LABS_ENABLE)
     LABS_ENABLE_NEW_SESSION_MANAGER,
     LABS_ENABLE_NEW_CLIENT_INFO_FEATURE,
     LABS_ENABLE_WYSIWYG_COMPOSER,
-    LABS_ENABLE_VOICE_BROADCAST,
-    LABS_ENABLE_CRYPTO_SDK
+    LABS_ENABLE_VOICE_BROADCAST
 };
 
 typedef NS_ENUM(NSUInteger, SECURITY)
 {
     SECURITY_BUTTON_INDEX = 0,
     DEVICE_MANAGER_INDEX
+};
+
+typedef NS_ENUM(NSUInteger, ACCOUNT)
+{
+    ACCOUNT_MANAGE_INDEX = 0,
 };
 
 typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
@@ -405,7 +409,10 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     {
         [sectionUserSettings addRowWithTag: USER_SETTINGS_PHONENUMBERS_OFFSET + index];
     }
-    if (BuildSettings.settingsScreenAllowAddingEmailThreepids)
+    if (BuildSettings.settingsScreenAllowAddingEmailThreepids &&
+        // If the threePidChanges is nil we assume the capability to be true
+        (!self.mainSession.homeserverCapabilities.threePidChanges ||
+         self.mainSession.homeserverCapabilities.threePidChanges.enabled))
     {
         [sectionUserSettings addRowWithTag:USER_SETTINGS_ADD_EMAIL_INDEX];
     }
@@ -423,7 +430,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     
     sectionUserSettings.headerTitle = [VectorL10n settingsUserSettings];
     [tmpSections addObject:sectionUserSettings];
-        
+            
     if (BuildSettings.settingsScreenShowConfirmMediaSize)
     {
         Section *sectionMedia = [Section sectionWithTag:SECTION_TAG_SENDING_MEDIA];
@@ -641,11 +648,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     if (BuildSettings.settingsScreenShowLabSettings)
     {
         Section *sectionLabs = [Section sectionWithTag:SECTION_TAG_LABS];
-        if ([CryptoSDKFeature.shared canManuallyEnableForUserId:self.mainSession.myUserId])
-        {
-            [sectionLabs addRowWithTag:LABS_ENABLE_CRYPTO_SDK];
-        }
-        
         [sectionLabs addRowWithTag:LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX];
         [sectionLabs addRowWithTag:LABS_ENABLE_THREADS_INDEX];
         [sectionLabs addRowWithTag:LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS];
@@ -673,7 +675,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     [sectionSignOut addRowWithTag:0];
     [tmpSections addObject:sectionSignOut];
     
-    if (BuildSettings.settingsScreenAllowDeactivatingAccount)
+    if (BuildSettings.settingsScreenAllowDeactivatingAccount && !self.mainSession.homeserverWellknown.authentication)
     {
         Section *sectionDeactivate = [Section sectionWithTag:SECTION_TAG_DEACTIVATE_ACCOUNT];
         [sectionDeactivate addRowWithTag:0];
@@ -2680,18 +2682,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
             cell = labelAndSwitchCell;
         }
-        else if (row == LABS_ENABLE_CRYPTO_SDK)
-        {
-            MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-            BOOL isEnabled = MXSDKOptions.sharedInstance.enableCryptoSDK;
-            labelAndSwitchCell.mxkLabel.text = isEnabled ? VectorL10n.settingsLabsDisableCryptoSdk : VectorL10n.settingsLabsEnableCryptoSdk;
-            labelAndSwitchCell.mxkSwitch.on = isEnabled;
-            [labelAndSwitchCell.mxkSwitch setEnabled:!isEnabled];
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(enableCryptoSDKFeature:) forControlEvents:UIControlEventTouchUpInside];
-            
-            cell = labelAndSwitchCell;
-        }
     }
     else if (section == SECTION_TAG_SECURITY)
     {
@@ -3512,30 +3502,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 - (void)toggleEnableVoiceBroadcastFeature:(UISwitch *)sender
 {
     RiotSettings.shared.enableVoiceBroadcast = sender.isOn;
-}
-
-- (void)enableCryptoSDKFeature:(UISwitch *)sender
-{
-    [currentAlert dismissViewControllerAnimated:NO completion:nil];
-    UIAlertController *confirmationAlert = [UIAlertController alertControllerWithTitle:VectorL10n.settingsLabsEnableCryptoSdk
-                                                                             message:VectorL10n.settingsLabsConfirmCryptoSdk
-                                                                      preferredStyle:UIAlertControllerStyleAlert];
-
-    MXWeakify(self);
-    [confirmationAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
-        MXStrongifyAndReturnIfNil(self);
-        self->currentAlert = nil;
-
-        [sender setOn:NO animated:YES];
-    }]];
-
-    [confirmationAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n continue] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-        [CryptoSDKFeature.shared enable];
-        [[AppDelegate theDelegate] reloadMatrixSessions:YES];
-    }]];
-
-    [self presentViewController:confirmationAlert animated:YES completion:nil];
-    currentAlert = confirmationAlert;
 }
 
 - (void)togglePinRoomsWithMissedNotif:(UISwitch *)sender
@@ -4517,6 +4483,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         || (language == nil && [NSBundle mxk_language]))
     {
         [NSBundle mxk_setLanguage:language];
+        UIApplication.sharedApplication.accessibilityLanguage = language;
 
         // Store user settings
         NSUserDefaults *sharedUserDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;

@@ -386,6 +386,8 @@ internal enum TchapL10n {
   internal static let searchNoResult = TchapL10n.tr("Tchap", "search_no_result", fallback: "Aucun résultat")
   /// Clé copiée
   internal static let secretsSetupRecoveryKeyExportActionDone = TchapL10n.tr("Tchap", "secrets_setup_recovery_key_export_action_done", fallback: "Clé copiée")
+  /// Attention : c'est la seule fois que votre code est affiché !
+  internal static let secretsSetupRecoveryKeyWarning = TchapL10n.tr("Tchap", "secrets_setup_recovery_key_warning", fallback: "Attention : c'est la seule fois que votre code est affiché !")
   /// Changer le mot de passe réinitialise les clés de chiffrement sur tous les appareils, rendant l’historique des discussions illisible: pensez d'abord à exporter vos clés pour pouvoir les ré-importer après le changement de mot de passe.
   internal static let settingsChangePwdCaution = TchapL10n.tr("Tchap", "settings_change_pwd_caution", fallback: "Changer le mot de passe réinitialise les clés de chiffrement sur tous les appareils, rendant l’historique des discussions illisible: pensez d'abord à exporter vos clés pour pouvoir les ré-importer après le changement de mot de passe.")
   /// Je vais patienter

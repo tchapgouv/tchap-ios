@@ -112,7 +112,9 @@ final class BuildSettings: NSObject {
     // MARK: - Server configuration
     // Tchap sygnal server url
     static let serverConfigSygnalAPIUrlString = "https://sygnal.tchap.incubateur.net/_matrix/push/v1/notify"
-    
+    /// Force the user to set a homeserver instead of using the default one
+    static let forceHomeserverSelection = false
+
     // MARK: - Legal URLs
 
     // Note: Set empty strings to hide the related entry in application settings

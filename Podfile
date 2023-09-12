@@ -16,7 +16,7 @@ use_frameworks!
 # - `{ :specHash => {sdk spec hash}` to depend on specific pod options (:git => …, :podspec => …) for MatrixSDK repo. Used by Fastfile during CI
 #
 # Warning: our internal tooling depends on the name of this variable name, so be sure not to change it
-$matrixSDKVersion = '= 0.26.9'
+$matrixSDKVersion = '= 0.27.1'
 # $matrixSDKVersion = :local
 # $matrixSDKVersion = { :branch => 'develop'}
 # $matrixSDKVersion = { :specHash => { git: 'https://git.io/fork123', branch: 'fix' } }
@@ -134,7 +134,7 @@ abstract_target 'TchapPods' do
 
   target "RiotSwiftUI" do
     import_SwiftUI_pods
-  end 
+  end
 
   target "RiotSwiftUITests" do
     import_SwiftUI_pods
@@ -144,6 +144,18 @@ abstract_target 'TchapPods' do
     import_MatrixSDK
     import_MatrixKit_pods
   end
+
+  # Disabled due to crypto corruption issues.
+  # https://github.com/vector-im/element-ios/issues/7618
+  # target "RiotShareExtension" do
+  #   import_MatrixSDK
+  #   import_MatrixKit_pods
+  # end
+  #
+  # target "SiriIntents" do
+  #   import_MatrixSDK
+  #   import_MatrixKit_pods
+  # end
 
 end
 

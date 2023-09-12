@@ -1,3 +1,101 @@
+## Changes in 1.11.1 (2023-08-29)
+
+✨ Features
+
+- New settings cell to manage your account through MAS if the home server allows it. ([#7653](https://github.com/vector-im/element-ios/issues/7653))
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.27.1](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.27.1)).
+
+🐛 Bugfixes
+
+- Prevent mention crashes when room members are missing display names (objc interop) ([#7649](https://github.com/vector-im/element-ios/pull/7649))
+- Add email UI is hidden if the 3 pid changes capability is disabled. ([#7645](https://github.com/vector-im/element-ios/issues/7645))
+- You can now log out from other sessions using MAS on supported OIDC home servers. ([#7646](https://github.com/vector-im/element-ios/issues/7646))
+- Deactivate account is hidden for servers with OIDC auth. ([#7648](https://github.com/vector-im/element-ios/issues/7648))
+- Prevent pill crashes when room members are missing display names (objc interop) ([#7651](https://github.com/vector-im/element-ios/issues/7651))
+
+
+## Changes in 1.11.0 (2023-08-15)
+
+✨ Features
+
+- Integrate Device Dehydration v2 through the Crypto SDK ([#7630](https://github.com/vector-im/element-ios/pull/7630))
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.27.0](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.27.0)).
+- Disable Siri, Share and Reply (from NSE) Extensions. ([#7618](https://github.com/vector-im/element-ios/issues/7618))
+
+🐛 Bugfixes
+
+- Fix bug in SSO URL generation that was non-compliant with the spec. ([#7639](https://github.com/vector-im/element-ios/pull/7639))
+- Fix a crash when opening v11 rooms. ([#7633](https://github.com/vector-im/element-ios/issues/7633))
+
+
+## Changes in 1.10.14 (2023-06-21)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.26.12](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.26.12)).
+
+
+## Changes in 1.10.13 (2023-06-13)
+
+✨ Features
+
+- Increase max. length of voice message recordings to 5m ([#7582](https://github.com/vector-im/element-ios/pull/7582))
+- Broadcast Upload Extension added to the app targets to allow Jitsi screen sharing feature. ([#7566](https://github.com/vector-im/element-ios/issues/7566))
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.26.11](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.26.11)).
+- Prompt the user when the invited MatrixId is not recognized ([#7558](https://github.com/vector-im/element-ios/issues/7558))
+- MSC3987 implementation: the 'dont_notify' action for a push_rule is now deprecated and replaced by an empty action list. ([#7576](https://github.com/vector-im/element-ios/issues/7576))
+
+🐛 Bugfixes
+
+- Device manager: fix offline state for user's sessions overview. ([#7562](https://github.com/vector-im/element-ios/pull/7562))
+- Prevents user avatar from disappearing due to incorrect width. ([#7587](https://github.com/vector-im/element-ios/pull/7587))
+- App crashes when we make audio and video calls ([#7529](https://github.com/vector-im/element-ios/issues/7529))
+- Timeline: Room creation intro cell now correctly adjusts to light / dark theme changes. ([#7554](https://github.com/vector-im/element-ios/issues/7554))
+- Labs: Fix RTE sometimes inserting characters in wrong locations after multiple new lines ([#7570](https://github.com/vector-im/element-ios/issues/7570))
+- Labs: RTE: Fix a crash when creating a new direct chat ([#7577](https://github.com/vector-im/element-ios/issues/7577))
+- Fixed crashes when mentioning users without display names ([#7579](https://github.com/vector-im/element-ios/issues/7579))
+
+
+## Changes in 1.10.12 (2023-05-16)
+
+✨ Features
+
+- Add composer suggestions for slash commands ([#7493](https://github.com/vector-im/element-ios/issues/7493))
+
+🙌 Improvements
+
+- Crypto: Deprecate MXLegacyCrypto ([#7508](https://github.com/vector-im/element-ios/pull/7508))
+- Add a flag in the build settings to force the user to define a homeserver instead of using the default one. ([#7541](https://github.com/vector-im/element-ios/pull/7541))
+- Upgrade MatrixSDK version ([v0.26.10](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.26.10)).
+- Add an audio alert when the voice broadcast recording is automatically paused ([#7504](https://github.com/vector-im/element-ios/issues/7504))
+- Timeline: Remove the matrix ID displayed when someone has changed its display name. ([#7517](https://github.com/vector-im/element-ios/issues/7517))
+
+🐛 Bugfixes
+
+- Fix an issue where the Secrets Reset screen would open twice. ([#7404](https://github.com/vector-im/element-ios/pull/7404))
+- Make sure to use the chosen language for the VoiceOver voice too. ([#7493](https://github.com/vector-im/element-ios/pull/7493))
+- Fix the position of the send confirmation icon. ([#7512](https://github.com/vector-im/element-ios/pull/7512))
+- Disable accessibility for emojis during session verification. ([#7521](https://github.com/vector-im/element-ios/pull/7521))
+- Fix accessibility when entering the PIN to unlock the app. ([#7522](https://github.com/vector-im/element-ios/pull/7522))
+- Fix voiceover order of room creation header and message composer. ([#7543](https://github.com/vector-im/element-ios/pull/7543))
+- Fix: The last event description text color now matches the active theme. ([#7545](https://github.com/vector-im/element-ios/pull/7545))
+- Fix mention pills display in thread list ([#7322](https://github.com/vector-im/element-ios/issues/7322))
+- Poll: The timeline sometimes displayed closed polls in the wrong order. ([#7497](https://github.com/vector-im/element-ios/issues/7497))
+- Fix a flickering issue when the timeline datasource is reloaded. ([#7523](https://github.com/vector-im/element-ios/issues/7523))
+- Fix the position of the marker highlighting an event. ([#7526](https://github.com/vector-im/element-ios/issues/7526))
+- Fix application crashing when opening a thread with RTE enabled ([#7530](https://github.com/vector-im/element-ios/issues/7530))
+- Labs: Rich Text Editor: Fix partial text messages not being saved for each room ([#7535](https://github.com/vector-im/element-ios/issues/7535))
+
+
 ## Changes in 1.10.11 (2023-04-18)
 
 🙌 Improvements

@@ -3667,6 +3667,14 @@ public class VectorL10n: NSObject {
   public static var manageSessionNotTrusted: String { 
     return VectorL10n.tr("Vector", "manage_session_not_trusted") 
   }
+  /// You will be redirected to your server's authentication provider to complete sign out.
+  public static var manageSessionRedirect: String { 
+    return VectorL10n.tr("Vector", "manage_session_redirect") 
+  }
+  /// Functionality currently unavailable. Please contact your homeserver admin
+  public static var manageSessionRedirectError: String { 
+    return VectorL10n.tr("Vector", "manage_session_redirect_error") 
+  }
   /// Rename session
   public static var manageSessionRename: String { 
     return VectorL10n.tr("Vector", "manage_session_rename") 
@@ -3898,6 +3906,10 @@ public class VectorL10n: NSObject {
   /// You changed your display name from %@ to %@
   public static func noticeDisplayNameChangedFromByYou(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "notice_display_name_changed_from_by_you", p1, p2)
+  }
+  /// %@ changed their display name to %@
+  public static func noticeDisplayNameChangedTo(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "notice_display_name_changed_to", p1, p2)
   }
   /// %@ removed their display name
   public static func noticeDisplayNameRemoved(_ p1: String) -> String {
@@ -4923,6 +4935,10 @@ public class VectorL10n: NSObject {
   public static var pollTimelineEndedText: String { 
     return VectorL10n.tr("Vector", "poll_timeline_ended_text") 
   }
+  /// Loading...
+  public static var pollTimelineLoading: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_loading") 
+  }
   /// Please try again
   public static var pollTimelineNotClosedSubtitle: String { 
     return VectorL10n.tr("Vector", "poll_timeline_not_closed_subtitle") 
@@ -5211,6 +5227,58 @@ public class VectorL10n: NSObject {
   public static var roomAvatarViewAccessibilityLabel: String { 
     return VectorL10n.tr("Vector", "room_avatar_view_accessibility_label") 
   }
+  /// Bans user with given id
+  public static var roomCommandBanUserDescription: String { 
+    return VectorL10n.tr("Vector", "room_command_ban_user_description") 
+  }
+  /// Changes your display nickname
+  public static var roomCommandChangeDisplayNameDescription: String { 
+    return VectorL10n.tr("Vector", "room_command_change_display_name_description") 
+  }
+  /// Sets the room topic
+  public static var roomCommandChangeRoomTopicDescription: String { 
+    return VectorL10n.tr("Vector", "room_command_change_room_topic_description") 
+  }
+  /// Forces the current outbound group session in an encrypted room to be discarded
+  public static var roomCommandDiscardSessionDescription: String { 
+    return VectorL10n.tr("Vector", "room_command_discard_session_description") 
+  }
+  /// Displays action
+  public static var roomCommandEmoteDescription: String { 
+    return VectorL10n.tr("Vector", "room_command_emote_description") 
+  }
+  /// Invalid or unhandled command
+  public static var roomCommandErrorUnknownCommand: String { 
+    return VectorL10n.tr("Vector", "room_command_error_unknown_command") 
+  }
+  /// Invites user with given id to current room
+  public static var roomCommandInviteUserDescription: String { 
+    return VectorL10n.tr("Vector", "room_command_invite_user_description") 
+  }
+  /// Joins room with given address
+  public static var roomCommandJoinRoomDescription: String { 
+    return VectorL10n.tr("Vector", "room_command_join_room_description") 
+  }
+  /// Removes user with given id from this room
+  public static var roomCommandKickUserDescription: String { 
+    return VectorL10n.tr("Vector", "room_command_kick_user_description") 
+  }
+  /// Leave room
+  public static var roomCommandPartRoomDescription: String { 
+    return VectorL10n.tr("Vector", "room_command_part_room_description") 
+  }
+  /// Deops user with given id
+  public static var roomCommandResetUserPowerLevelDescription: String { 
+    return VectorL10n.tr("Vector", "room_command_reset_user_power_level_description") 
+  }
+  /// Define the power level of a user
+  public static var roomCommandSetUserPowerLevelDescription: String { 
+    return VectorL10n.tr("Vector", "room_command_set_user_power_level_description") 
+  }
+  /// Unbans user with given id
+  public static var roomCommandUnbanUserDescription: String { 
+    return VectorL10n.tr("Vector", "room_command_unban_user_description") 
+  }
   /// You need permission to manage conference call in this room
   public static var roomConferenceCallNoPower: String { 
     return VectorL10n.tr("Vector", "room_conference_call_no_power") 
@@ -5314,6 +5382,18 @@ public class VectorL10n: NSObject {
   /// New Chat
   public static var roomCreationTitle: String { 
     return VectorL10n.tr("Vector", "room_creation_title") 
+  }
+  /// Start DM anyway
+  public static var roomCreationUserNotFoundPromptInviteAction: String { 
+    return VectorL10n.tr("Vector", "room_creation_user_not_found_prompt_invite_action") 
+  }
+  /// Unable to find profiles for this Matrix ID. Would you like to start a DM anyway?
+  public static var roomCreationUserNotFoundPromptMessage: String { 
+    return VectorL10n.tr("Vector", "room_creation_user_not_found_prompt_message") 
+  }
+  /// Confirmation
+  public static var roomCreationUserNotFoundPromptTitle: String { 
+    return VectorL10n.tr("Vector", "room_creation_user_not_found_prompt_title") 
   }
   /// A room is already being created. Please wait.
   public static var roomCreationWaitForCreation: String { 
@@ -6320,8 +6400,12 @@ public class VectorL10n: NSObject {
     return VectorL10n.tr("Vector", "room_participants_invite_another_user") 
   }
   /// Search / invite by Name or email
-  public static var roomParticipantsInviteAnotherUserWithoutId: String { 
-    return VectorL10n.tr("Vector", "room_participants_invite_another_user_without_id") 
+  public static var roomParticipantsInviteAnotherUserWithoutId: String {
+      return VectorL10n.tr("Vector", "room_participants_invite_another_user_without_id")
+  }
+  /// Invite anyway
+  public static var roomParticipantsInviteAnyway: String { 
+    return VectorL10n.tr("Vector", "room_participants_invite_anyway") 
   }
   /// Malformed ID. Should be an email address or a Matrix ID like '@localpart:domain'
   public static var roomParticipantsInviteMalformedId: String { 
@@ -6342,6 +6426,10 @@ public class VectorL10n: NSObject {
   /// Are you sure you want to invite %@ to %@?
   public static func roomParticipantsInvitePromptToMsg(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "room_participants_invite_prompt_to_msg", p1, p2)
+  }
+  /// Unable to find profiles for this Matrix ID. Are you sure you want to invite %@ to %@?
+  public static func roomParticipantsInviteUnknownParticipantPromptToMsg(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "room_participants_invite_unknown_participant_prompt_to_msg", p1, p2)
   }
   /// INVITED
   public static var roomParticipantsInvitedSection: String { 
@@ -7655,17 +7743,9 @@ public class VectorL10n: NSObject {
   public static var settingsLabs: String { 
     return VectorL10n.tr("Vector", "settings_labs") 
   }
-  /// Please be advised that as this feature is still in its experimental stage, it may not function as expected and could potentially have unintended consequences. To revert the feature, simply log out and log back in. Use at your own discretion and with caution.
-  public static var settingsLabsConfirmCryptoSdk: String { 
-    return VectorL10n.tr("Vector", "settings_labs_confirm_crypto_sdk") 
-  }
   /// Create conference calls with jitsi
   public static var settingsLabsCreateConferenceWithJitsi: String { 
     return VectorL10n.tr("Vector", "settings_labs_create_conference_with_jitsi") 
-  }
-  /// Rust end-to-end encryption (log out to disable)
-  public static var settingsLabsDisableCryptoSdk: String { 
-    return VectorL10n.tr("Vector", "settings_labs_disable_crypto_sdk") 
   }
   /// End-to-End Encryption
   public static var settingsLabsE2eEncryption: String { 
@@ -7678,10 +7758,6 @@ public class VectorL10n: NSObject {
   /// Auto Report Decryption Errors
   public static var settingsLabsEnableAutoReportDecryptionErrors: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_auto_report_decryption_errors") 
-  }
-  /// Rust end-to-end encryption
-  public static var settingsLabsEnableCryptoSdk: String { 
-    return VectorL10n.tr("Vector", "settings_labs_enable_crypto_sdk") 
   }
   /// Live location sharing - share current location (active development, and temporarily, locations persist in room history)
   public static var settingsLabsEnableLiveLocationSharing: String { 
@@ -7730,6 +7806,18 @@ public class VectorL10n: NSObject {
   /// LINKS
   public static var settingsLinks: String { 
     return VectorL10n.tr("Vector", "settings_links") 
+  }
+  /// Manage account
+  public static var settingsManageAccountAction: String { 
+    return VectorL10n.tr("Vector", "settings_manage_account_action") 
+  }
+  /// Manage your account at %@
+  public static func settingsManageAccountDescription(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_manage_account_description", p1)
+  }
+  /// Account
+  public static var settingsManageAccountTitle: String { 
+    return VectorL10n.tr("Vector", "settings_manage_account_title") 
   }
   /// Mark all messages as read
   public static var settingsMarkAllAsRead: String { 
