@@ -53,6 +53,8 @@ enum
     ROOM_SETTINGS_MAIN_SECTION_ROW_TAG,
     ROOM_SETTINGS_MAIN_SECTION_ROW_DIRECT_CHAT,
     ROOM_SETTINGS_MAIN_SECTION_ROW_MUTE_NOTIFICATIONS,
+    // Tchap : remove "Leave Room" button
+//    ROOM_SETTINGS_MAIN_SECTION_ROW_LEAVE,
     //Tchap: Specific rows in room settings
     ROOM_SETTINGS_MAIN_SECTION_ROW_ACCESS_BY_LINK,
     ROOM_SETTINGS_MAIN_SECTION_ROW_ACCESS_RULE
@@ -525,6 +527,8 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     }
     [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_ACCESS_BY_LINK];
     [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_ACCESS_RULE];
+    // Tchap : remove "Leave Room" button
+//    [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_LEAVE];
     [tmpSections addObject:sectionMain];
     
     if (RiotSettings.shared.roomSettingsScreenAllowChangingAccessSettings)
@@ -2412,6 +2416,23 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
         }
     }
+    // Tchap : remove "Leave Room" button
+//    else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_LEAVE)
+//    {
+//        MXKTableViewCellWithButton *leaveCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier] forIndexPath:indexPath];
+//        
+//        NSString* title = [VectorL10n leave];
+//        
+//        [leaveCell.mxkButton setTitle:title forState:UIControlStateNormal];
+//        [leaveCell.mxkButton setTitle:title forState:UIControlStateHighlighted];
+//        [leaveCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
+//        leaveCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
+//        
+//        [leaveCell.mxkButton  removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+//        [leaveCell.mxkButton addTarget:self action:@selector(onLeave:) forControlEvents:UIControlEventTouchUpInside];
+//        
+//        cell = leaveCell;
+//    }
     else if (section == SECTION_TAG_ACCESS)
     {
         if (row == ROOM_SETTINGS_ROOM_ACCESS_DIRECTORY_VISIBILITY)
