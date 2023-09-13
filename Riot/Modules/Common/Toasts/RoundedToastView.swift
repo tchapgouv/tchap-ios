@@ -31,6 +31,7 @@ class RoundedToastView: UIView, Themable {
         static let imageViewSize = CGFloat(15)
         static let lightShadow = ShadowStyle(offset: .init(width: 0, height: 4), radius: 12, opacity: 0.1)
         static let darkShadow = ShadowStyle(offset: .init(width: 0, height: 4), radius: 4, opacity: 0.2)
+        static let cornerRadius = CGFloat(16.0) // Tchap
     }
     
     private lazy var activityIndicator: UIActivityIndicatorView = {
@@ -54,15 +55,24 @@ class RoundedToastView: UIView, Themable {
     private let stackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
-        stack.alignment = .center
+        stack.alignment = .top // Tchap
         stack.spacing = 5
         return stack
     }()
     
-    private let label: UILabel = {
-        return UILabel()
+    private lazy var label: UILabel = {
+        // Tchap : allow multiline text
+        let lbl = UILabel()
+        lbl.numberOfLines = 0
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            lbl.widthAnchor.constraint(lessThanOrEqualToConstant: UIScreen.main.bounds.width * 0.67)
+        ])
+        return lbl
     }()
 
+    private var action: ToastViewState.Action? // Tchap tap action
+    
     init(viewState: ToastViewState) {
         super.init(frame: .zero)
         setup(viewState: viewState)
@@ -77,6 +87,20 @@ class RoundedToastView: UIView, Themable {
         stackView.addArrangedSubview(toastView(for: viewState.style))
         stackView.addArrangedSubview(label)
         label.text = viewState.label
+        
+        // Tchap : handle tap action
+        action = viewState.action
+        
+        if let _ = viewState.action {
+            let tapAction = UITapGestureRecognizer(target: self, action: #selector(tapAction))
+            self.addGestureRecognizer(tapAction)
+        }
+    }
+    
+    // Tchap : handle tap action
+    @objc private func tapAction() {
+        guard let action = self.action else { return }
+        action()
     }
     
     private func setupStackView() {
@@ -92,7 +116,7 @@ class RoundedToastView: UIView, Themable {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        layer.cornerRadius = layer.frame.height / 2
+        layer.cornerRadius = Constants.cornerRadius // Tchap : don't rely on box height to evaluate corner radius.
     }
     
     override func willMove(toSuperview newSuperview: UIView?) {

@@ -121,6 +121,7 @@ final class BuildSettings: NSObject {
     static let applicationTermsConditionsUrlString = "https://www.tchap.incubateur.net/tac.html"
     static let clientConfigURL = "https://www.tchap.incubateur.net/client/config/agent/ios"
     static let applicationHelpUrlString = "https://www.tchap.incubateur.net/faq"
+    static let applicationServicesStatusUrlString = "https://status.tchap.numerique.gouv.fr/"
     static let applicationAcceptableUsePolicyUrlString = ""
 
     

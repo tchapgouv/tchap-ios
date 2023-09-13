@@ -24,7 +24,7 @@ enum UserIndicatorType {
     case loading(label: String, isInteractionBlocking: Bool)
     case success(label: String)
     case failure(label: String)
-    case custom(label: String, icon: UIImage?)
+    case custom(label: String, icon: UIImage?, action: ToastViewState.Action?) // Tchap : add tap action
 }
 
 /// A presenter which can handle `UserIndicatorType` by creating the underlying `UserIndicator`
@@ -67,6 +67,7 @@ class UserIndicatorTypePresenter: UserIndicatorTypePresenterProtocol {
         return queue.add(request)
     }
     
+    // Tchap : add tap action
     private func userIndicatorRequest(for type: UserIndicatorType) -> UserIndicatorRequest {
         switch type {
         case .loading(let label, let isInteractionBlocking):
@@ -79,8 +80,8 @@ class UserIndicatorTypePresenter: UserIndicatorTypePresenterProtocol {
             return successRequest(label: label)
         case .failure(let label):
             return failureRequest(label: label)
-        case .custom(let label, let icon):
-            return customRequest(label: label, icon: icon)
+        case .custom(let label, let icon, let action): // Tchap : add tap action
+            return customRequest(label: label, icon: icon, action: action)
         }
     }
     
@@ -88,7 +89,8 @@ class UserIndicatorTypePresenter: UserIndicatorTypePresenterProtocol {
         let presenter = ToastViewPresenter(
             viewState: .init(
                 style: .loading,
-                label: label
+                label: label,
+                action: nil // Tchap : add tap action
             ),
             presentationContext: presentationContext
         )
@@ -113,7 +115,8 @@ class UserIndicatorTypePresenter: UserIndicatorTypePresenterProtocol {
         let presenter = ToastViewPresenter(
             viewState: .init(
                 style: .success,
-                label: label
+                label: label,
+                action: nil // Tchap : add tap action
             ),
             presentationContext: presentationContext
         )
@@ -127,7 +130,8 @@ class UserIndicatorTypePresenter: UserIndicatorTypePresenterProtocol {
         let presenter = ToastViewPresenter(
             viewState: .init(
                 style: .failure,
-                label: label
+                label: label,
+                action: nil // Tchap : add tap action
             ),
             presentationContext: presentationContext
         )
@@ -137,11 +141,13 @@ class UserIndicatorTypePresenter: UserIndicatorTypePresenterProtocol {
         )
     }
     
-    private func customRequest(label: String, icon: UIImage?) -> UserIndicatorRequest {
+    // Tchap : add tap action
+    private func customRequest(label: String, icon: UIImage?, action: ToastViewState.Action?) -> UserIndicatorRequest {
         let presenter = ToastViewPresenter(
             viewState: .init(
                 style: .custom(icon: icon),
-                label: label
+                label: label,
+                action: action // Tchap : add tap action
             ),
             presentationContext: presentationContext
         )

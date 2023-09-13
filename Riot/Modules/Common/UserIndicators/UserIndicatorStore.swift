@@ -80,7 +80,7 @@ import CommonKit
     ///
     /// Note: This is a convenience function callable by objective-c code
     @objc func presentCustom(label: String, icon: UIImage?) -> UserIndicatorCancel {
-        let indicator = presenter.present(.custom(label: label, icon: icon))
+        let indicator = presenter.present(.custom(label: label, icon: icon, action: nil)) // Tchap : add tap action
         indicators.append(indicator)
         return {
             indicator.cancel()
