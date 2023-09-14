@@ -51,6 +51,8 @@ typedef NS_ENUM(NSUInteger, SECTION_TAG)
 // Tchap : sign out moved to end of settings
 //    SECTION_TAG_SIGN_OUT = 0,
     SECTION_TAG_USER_SETTINGS = 0,
+// Tchap : no account web access
+//    SECTION_TAG_ACCOUNT,
     SECTION_TAG_SENDING_MEDIA,
     SECTION_TAG_LINKS,
     SECTION_TAG_SECURITY,
@@ -431,6 +433,18 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     sectionUserSettings.headerTitle = [VectorL10n settingsUserSettings];
     [tmpSections addObject:sectionUserSettings];
             
+    
+    // Tchap : no account web access
+//    NSString *manageAccountURL = self.mainSession.homeserverWellknown.authentication.account;
+//    if (manageAccountURL)
+//    {
+//        Section *account = [Section sectionWithTag: SECTION_TAG_ACCOUNT];
+//        [account addRowWithTag:ACCOUNT_MANAGE_INDEX];
+//        account.headerTitle = [VectorL10n settingsManageAccountTitle];
+//        account.footerTitle = [VectorL10n settingsManageAccountDescription:manageAccountURL];
+//        [tmpSections addObject:account];
+//    }
+    
     if (BuildSettings.settingsScreenShowConfirmMediaSize)
     {
         Section *sectionMedia = [Section sectionWithTag:SECTION_TAG_SENDING_MEDIA];
@@ -2764,6 +2778,18 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             cell = labelAndSwitchCell;
         }
     }
+    // Tchap : no Account web access
+//    else if (section == SECTION_TAG_ACCOUNT)
+//    {
+//        switch (row)
+//        {
+//            case ACCOUNT_MANAGE_INDEX:
+//                cell = [self getDefaultTableViewCell:tableView];
+//                cell.textLabel.text = [VectorL10n settingsManageAccountAction];
+//                [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
+//                break;
+//        }
+//    }
 
     return cell;
 }
@@ -3124,6 +3150,15 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
                     break;
             }
         }
+        // Tchap : no account web access
+//        else if (section == SECTION_TAG_ACCOUNT)
+//        {
+//            switch(row) {
+//                case ACCOUNT_MANAGE_INDEX:
+//                    [self onManageAccountTap];
+//                    break;
+//            }
+//        }
         
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
@@ -4123,6 +4158,15 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     }
 }
 
+// Tchap : no account web access
+//- (void)onManageAccountTap
+//{
+//    NSURL *url = [NSURL URLWithString: self.mainSession.homeserverWellknown.authentication.account];
+//    if (url) {
+//        [UIApplication.sharedApplication openURL:url options:@{} completionHandler:nil];
+//    }
+//}
+    
 - (void)showThemePicker
 {
     __weak typeof(self) weakSelf = self;
