@@ -48,6 +48,7 @@ targets:
     - path: ../Riot/Categories/MXEvent.swift
     - path: ../Riot/Managers/Theme/
     - path: ../Riot/Utils/AvatarGenerator.m
+    - path: ../Config/MDMSettings.swift
     - path: ../Riot/Categories/Character.swift
     - path: ../Riot/Categories/MXKImageView.swift
     - path: ../Riot/Categories/MXRoom+Riot.m
