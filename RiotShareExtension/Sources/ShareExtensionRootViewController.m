@@ -64,7 +64,8 @@
                                                                          shareItemProvider:shareItemProvider];
     
     _shareManager = [[ShareManager alloc] initWithShareItemSender:shareItemSender
-                                                             type:ShareManagerTypeSend];
+                                                             type:ShareManagerTypeSend
+                                                          session:nil]; // Tchap : pass nil session to force 'checkUserAccount' as before
     
     MXWeakify(self);
     [_shareManager setCompletionCallback:^(ShareManagerResult result) {
