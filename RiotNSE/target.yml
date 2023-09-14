@@ -43,6 +43,11 @@ targets:
     sources: 
     - path: .
     - path: ../Riot/Managers/Settings/RiotSettings.swift
+<<<<<<< HEAD
+=======
+    - path: ../Config/BuildSettings.swift
+    - path: ../Config/MDMSettings.swift
+>>>>>>> v1.11.2
     - path: ../Riot/Utils/DataProtectionHelper.swift
     - path: ../Config/CommonConfiguration.swift
     - path: ../Riot/Experiments/
