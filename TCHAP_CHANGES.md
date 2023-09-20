@@ -1,3 +1,17 @@
+## Changes in 2.4.8 (2023-09-20)
+
+✨ Features
+
+- Le message d'erreur de connexion affiche un lien vers la page de status des services ([#864](https://github.com/tchapgouv/tchap-ios/issues/864))
+
+🙌 Improvements
+
+- En thème sombre, les titres de section des paramètres sont illisibles ([#856](https://github.com/tchapgouv/tchap-ios/issues/856))
+- Changer "session" pour "appareil" ([#860](https://github.com/tchapgouv/tchap-ios/issues/860))
+- iOS Rebase Element 1.11.1 ([#865](https://github.com/tchapgouv/tchap-ios/issues/865))
+- Fix after Rebase iOS 1.11.1 merged too quickly ([#871](https://github.com/tchapgouv/tchap-ios/issues/871))
+
+
 ## Changes in 2.4.7 (2023-06-28)
 
 🙌 Improvements
