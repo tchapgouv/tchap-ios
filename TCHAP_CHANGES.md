@@ -10,6 +10,7 @@
 - Changer "session" pour "appareil" ([#860](https://github.com/tchapgouv/tchap-ios/issues/860))
 - iOS Rebase Element 1.11.1 ([#865](https://github.com/tchapgouv/tchap-ios/issues/865))
 - Fix after Rebase iOS 1.11.1 merged too quickly ([#871](https://github.com/tchapgouv/tchap-ios/issues/871))
+- iOS Rebase Element 1.11.2 ([#873](https://github.com/tchapgouv/tchap-ios/issues/873))
 
 
 ## Changes in 2.4.7 (2023-06-28)
