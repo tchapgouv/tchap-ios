@@ -3286,39 +3286,39 @@ static CGSize kThreadListBarButtonItemImageSize;
             }
         }
     }
-//    else if (bubbleData.tag == RoomBubbleCellDataTagPoll)
-//    {
-//        if (bubbleData.isIncoming)
-//        {
-//            if (bubbleData.isPaginationFirstBubble)
-//            {
-//                cellIdentifier = RoomTimelineCellIdentifierIncomingPollWithPaginationTitle;
-//            }
-//            else if (bubbleData.shouldHideSenderInformation)
-//            {
-//                cellIdentifier = RoomTimelineCellIdentifierIncomingPollWithoutSenderInfo;
-//            }
-//            else
-//            {
-//                cellIdentifier = RoomTimelineCellIdentifierIncomingPoll;
-//            }
-//        }
-//        else
-//        {
-//            if (bubbleData.isPaginationFirstBubble)
-//            {
-//                cellIdentifier = RoomTimelineCellIdentifierOutgoingPollWithPaginationTitle;
-//            }
-//            else if (bubbleData.shouldHideSenderInformation)
-//            {
-//                cellIdentifier = RoomTimelineCellIdentifierOutgoingPollWithoutSenderInfo;
-//            }
-//            else
-//            {
-//                cellIdentifier = RoomTimelineCellIdentifierOutgoingPoll;
-//            }
-//        }
-//    }
+    else if (bubbleData.tag == RoomBubbleCellDataTagPoll)
+    {
+        if (bubbleData.isIncoming)
+        {
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingPollWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingPollWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingPoll;
+            }
+        }
+        else
+        {
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingPollWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingPollWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingPoll;
+            }
+        }
+    }
 //    else if (bubbleData.tag == RoomBubbleCellDataTagLocation || bubbleData.tag == RoomBubbleCellDataTagLiveLocation)
 //    {
 //        if (bubbleData.isIncoming)

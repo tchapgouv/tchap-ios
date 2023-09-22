@@ -92,8 +92,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         
         self.roomViewController.parentSpaceId = parameters.parentSpaceId
 
-        // Tchap: Disable Polls
-//        TimelinePollProvider.shared.session = parameters.session
+        TimelinePollProvider.shared.session = parameters.session
         VoiceBroadcastPlaybackProvider.shared.session = parameters.session
         VoiceBroadcastRecorderProvider.shared.session = parameters.session
         
@@ -479,22 +478,22 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     
     private func startEditPollCoordinator(startEvent: MXEvent? = nil) {
         // Tchap: Feature unavailable
-//        let parameters = PollEditFormCoordinatorParameters(room: roomViewController.roomDataSource.room, pollStartEvent: startEvent)
-//        let coordinator = PollEditFormCoordinator(parameters: parameters)
-//
-//        coordinator.completion = { [weak self, weak coordinator] in
-//            guard let self = self, let coordinator = coordinator else {
-//                return
-//            }
-//            
-//            self.navigationRouter?.dismissModule(animated: true, completion: nil)
-//            self.remove(childCoordinator: coordinator)
-//        }
-//
-//        add(childCoordinator: coordinator)
-//
-//        navigationRouter?.present(coordinator, animated: true)
-//        coordinator.start()
+        let parameters = PollEditFormCoordinatorParameters(room: roomViewController.roomDataSource.room, pollStartEvent: startEvent)
+        let coordinator = PollEditFormCoordinator(parameters: parameters)
+
+        coordinator.completion = { [weak self, weak coordinator] in
+            guard let self = self, let coordinator = coordinator else {
+                return
+            }
+            
+            self.navigationRouter?.dismissModule(animated: true, completion: nil)
+            self.remove(childCoordinator: coordinator)
+        }
+
+        add(childCoordinator: coordinator)
+
+        navigationRouter?.present(coordinator, animated: true)
+        coordinator.start()
     }
     
     private func startLoading() {
@@ -650,20 +649,19 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     }
     
     func roomViewController(_ roomViewController: RoomViewController, canEndPollWithEventIdentifier eventIdentifier: String) -> Bool {
-        return /*TimelinePollProvider.shared.timelinePollCoordinatorForEventIdentifier(eventIdentifier)?.canEndPoll() ??*/ false
+        return TimelinePollProvider.shared.timelinePollCoordinatorForEventIdentifier(eventIdentifier)?.canEndPoll() ?? false
     }
     
     func roomViewController(_ roomViewController: RoomViewController, endPollWithEventIdentifier eventIdentifier: String) {
-        // Tchap: Disable polls
-//        TimelinePollProvider.shared.timelinePollCoordinatorForEventIdentifier(eventIdentifier)?.endPoll()
+        TimelinePollProvider.shared.timelinePollCoordinatorForEventIdentifier(eventIdentifier)?.endPoll()
     }
     
     func roomViewController(_ roomViewController: RoomViewController, canEditPollWithEventIdentifier eventIdentifier: String) -> Bool {
-        return /*TimelinePollProvider.shared.timelinePollCoordinatorForEventIdentifier(eventIdentifier)?.canEditPoll() ??*/ false
+        return TimelinePollProvider.shared.timelinePollCoordinatorForEventIdentifier(eventIdentifier)?.canEditPoll() ?? false
     }
     
     func roomViewController(_ roomViewController: RoomViewController, didRequestEditForPollWithStart startEvent: MXEvent) {
-//        startEditPollCoordinator(startEvent: startEvent)
+        startEditPollCoordinator(startEvent: startEvent)
     }
     
     func roomViewControllerDidStartLoading(_ roomViewController: RoomViewController) {

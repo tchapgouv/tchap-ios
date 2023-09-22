@@ -261,9 +261,9 @@
 
 - (void)registerPollCellsForTableView:(UITableView*)tableView
 {
-//    [tableView registerClass:PollPlainCell.class forCellReuseIdentifier:PollPlainCell.defaultReuseIdentifier];
-//    [tableView registerClass:PollWithoutSenderInfoPlainCell.class forCellReuseIdentifier:PollWithoutSenderInfoPlainCell.defaultReuseIdentifier];
-//    [tableView registerClass:PollWithPaginationTitlePlainCell.class forCellReuseIdentifier:PollWithPaginationTitlePlainCell.defaultReuseIdentifier];
+    [tableView registerClass:PollPlainCell.class forCellReuseIdentifier:PollPlainCell.defaultReuseIdentifier];
+    [tableView registerClass:PollWithoutSenderInfoPlainCell.class forCellReuseIdentifier:PollWithoutSenderInfoPlainCell.defaultReuseIdentifier];
+    [tableView registerClass:PollWithPaginationTitlePlainCell.class forCellReuseIdentifier:PollWithPaginationTitlePlainCell.defaultReuseIdentifier];
 }
 
 - (void)registerLocationCellsForTableView:(UITableView*)tableView
@@ -566,13 +566,13 @@
 {
     return @{
         // Incoming
-//        @(RoomTimelineCellIdentifierIncomingPoll) : PollPlainCell.class,
-//        @(RoomTimelineCellIdentifierIncomingPollWithoutSenderInfo) : PollWithoutSenderInfoPlainCell.class,
-//        @(RoomTimelineCellIdentifierIncomingPollWithPaginationTitle) : PollWithPaginationTitlePlainCell.class,
+        @(RoomTimelineCellIdentifierIncomingPoll) : PollPlainCell.class,
+        @(RoomTimelineCellIdentifierIncomingPollWithoutSenderInfo) : PollWithoutSenderInfoPlainCell.class,
+        @(RoomTimelineCellIdentifierIncomingPollWithPaginationTitle) : PollWithPaginationTitlePlainCell.class,
         // Outoing
-//        @(RoomTimelineCellIdentifierOutgoingPoll) : PollPlainCell.class,
-//        @(RoomTimelineCellIdentifierOutgoingPollWithoutSenderInfo) : PollWithoutSenderInfoPlainCell.class,
-//        @(RoomTimelineCellIdentifierOutgoingPollWithPaginationTitle) : PollWithPaginationTitlePlainCell.class
+        @(RoomTimelineCellIdentifierOutgoingPoll) : PollPlainCell.class,
+        @(RoomTimelineCellIdentifierOutgoingPollWithoutSenderInfo) : PollWithoutSenderInfoPlainCell.class,
+        @(RoomTimelineCellIdentifierOutgoingPollWithPaginationTitle) : PollWithPaginationTitlePlainCell.class
     };
 }
 
