@@ -42,11 +42,11 @@ protocol RoomTimelineCellDecorator {
                              contentViewPositionY: CGFloat,
                              upperDecorationView: UIView?)
 
-//    func addThreadSummaryView(_ threadSummaryView: ThreadSummaryView,
-//                              toCell cell: MXKRoomBubbleTableViewCell,
-//                              cellData: RoomBubbleCellData,
-//                              contentViewPositionY: CGFloat,
-//                              upperDecorationView: UIView?)
+    func addThreadSummaryView(_ threadSummaryView: ThreadSummaryView,
+                              toCell cell: MXKRoomBubbleTableViewCell,
+                              cellData: RoomBubbleCellData,
+                              contentViewPositionY: CGFloat,
+                              upperDecorationView: UIView?)
     
     func addSendStatusView(toCell cell: MXKRoomBubbleTableViewCell,
                            withFailedEventIds failedEventIds: Set<AnyHashable>)

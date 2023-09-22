@@ -1,0 +1,1 @@
+Activer l'affichage en thread

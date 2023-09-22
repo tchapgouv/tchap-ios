@@ -266,47 +266,46 @@ const CGFloat kTypingCellHeight = 24;
 
 - (BOOL)shouldQueueEventForProcessing:(MXEvent *)event roomState:(MXRoomState *)roomState direction:(MXTimelineDirection)direction
 {
-    // Tchap: Disable Threads
-//    if (self.threadId)
-//    {
-//        //  if in a thread, ignore non-root event or events from other threads
-//        if (![event.eventId isEqualToString:self.threadId] && ![event.threadId isEqualToString:self.threadId])
-//        {
-//            //  Ignore the event
-//            return NO;
-//        }
-//        //  also ignore events related to un-threaded or events from other threads
-//        if (!event.isInThread && event.relatesTo.eventId)
-//        {
-//            MXEvent *relatedEvent = [self.mxSession.store eventWithEventId:event.relatesTo.eventId
-//                                                                    inRoom:event.roomId];
-//            if (![relatedEvent.threadId isEqualToString:self.threadId])
-//            {
-//                //  ignore the event
-//                return NO;
-//            }
-//        }
-//    }
-//    else if (RiotSettings.shared.enableThreads)
-//    {
-//        //  if not in a thread, ignore all threaded events
-//        if (event.isInThread)
-//        {
-//            //  ignore the event
-//            return NO;
-//        }
-//        //  also ignore events related to threaded events
-//        if (event.relatesTo.eventId)
-//        {
-//            MXEvent *relatedEvent = [self.mxSession.store eventWithEventId:event.relatesTo.eventId
-//                                                                    inRoom:event.roomId];
-//            if (relatedEvent.isInThread)
-//            {
-//                //  ignore the event
-//                return NO;
-//            }
-//        }
-//    }
+    if (self.threadId)
+    {
+        //  if in a thread, ignore non-root event or events from other threads
+        if (![event.eventId isEqualToString:self.threadId] && ![event.threadId isEqualToString:self.threadId])
+        {
+            //  Ignore the event
+            return NO;
+        }
+        //  also ignore events related to un-threaded or events from other threads
+        if (!event.isInThread && event.relatesTo.eventId)
+        {
+            MXEvent *relatedEvent = [self.mxSession.store eventWithEventId:event.relatesTo.eventId
+                                                                    inRoom:event.roomId];
+            if (![relatedEvent.threadId isEqualToString:self.threadId])
+            {
+                //  ignore the event
+                return NO;
+            }
+        }
+    }
+    else if (RiotSettings.shared.enableThreads)
+    {
+        //  if not in a thread, ignore all threaded events
+        if (event.isInThread)
+        {
+            //  ignore the event
+            return NO;
+        }
+        //  also ignore events related to threaded events
+        if (event.relatesTo.eventId)
+        {
+            MXEvent *relatedEvent = [self.mxSession.store eventWithEventId:event.relatesTo.eventId
+                                                                    inRoom:event.roomId];
+            if (relatedEvent.isInThread)
+            {
+                //  ignore the event
+                return NO;
+            }
+        }
+    }
     
     return [super shouldQueueEventForProcessing:event roomState:roomState direction:direction];
 }
@@ -478,26 +477,25 @@ const CGFloat kTypingCellHeight = 24;
                                               cellData:cellData contentViewPositionY:bottomPositionY upperDecorationView:urlPreviewView];
                     }
                     
-                    // Tchap: Disable Threads
-//                    ThreadSummaryView *threadSummaryView;
-//                    
-//                    //  display thread summary view if the component has a thread in the room timeline
-//                    if (RiotSettings.shared.enableThreads && component.thread && !self.threadId)
-//                    {
-//                        threadSummaryView = [[ThreadSummaryView alloc] initWithThread:component.thread
-//                                                                              session:self.mxSession];
-//                        threadSummaryView.delegate = self;
-//                        threadSummaryView.tag = index;
-//                        
-//                        [temporaryViews addObject:threadSummaryView];
-//                        UIView *upperDecorationView = reactionsView ?: urlPreviewView;
-//
-//                        [cellDecorator addThreadSummaryView:threadSummaryView
-//                                                     toCell:bubbleCell
-//                                                   cellData:cellData
-//                                       contentViewPositionY:bottomPositionY
-//                                        upperDecorationView:upperDecorationView];
-//                    }
+                    ThreadSummaryView *threadSummaryView;
+                    
+                    //  display thread summary view if the component has a thread in the room timeline
+                    if (RiotSettings.shared.enableThreads && component.thread && !self.threadId)
+                    {
+                        threadSummaryView = [[ThreadSummaryView alloc] initWithThread:component.thread
+                                                                              session:self.mxSession];
+                        threadSummaryView.delegate = self;
+                        threadSummaryView.tag = index;
+                        
+                        [temporaryViews addObject:threadSummaryView];
+                        UIView *upperDecorationView = reactionsView ?: urlPreviewView;
+
+                        [cellDecorator addThreadSummaryView:threadSummaryView
+                                                     toCell:bubbleCell
+                                                   cellData:cellData
+                                       contentViewPositionY:bottomPositionY
+                                        upperDecorationView:upperDecorationView];
+                    }
                     
                     MXKReceiptSendersContainer* avatarsContainer;
                     
@@ -1213,12 +1211,11 @@ const CGFloat kTypingCellHeight = 24;
 
 #pragma mark - ThreadSummaryViewDelegate
 
-// Tchap: Disable Threads
-//- (void)threadSummaryViewTapped:(ThreadSummaryView *)summaryView
-//{
-//    [self.roomDataSourceDelegate roomDataSource:self
-//                                   didTapThread:summaryView.thread];
-//}
+- (void)threadSummaryViewTapped:(ThreadSummaryView *)summaryView
+{
+    [self.roomDataSourceDelegate roomDataSource:self
+                                   didTapThread:summaryView.thread];
+}
 
 #pragma mark - Location sharing
 

@@ -322,8 +322,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
 @property (nonatomic, strong) UserInteractiveAuthenticationService *userInteractiveAuthenticationService;
 
-// Tchap: Threads are disabled
-//@property (nonatomic, strong) ThreadsBetaCoordinatorBridgePresenter *threadsBetaBridgePresenter;
+@property (nonatomic, strong) ThreadsBetaCoordinatorBridgePresenter *threadsBetaBridgePresenter;
 @property (nonatomic, strong) ChangePasswordCoordinatorBridgePresenter *changePasswordBridgePresenter;
 @property (nonatomic, strong) UserSessionsFlowCoordinatorBridgePresenter *userSessionsFlowCoordinatorBridgePresenter;
 
@@ -3486,26 +3485,25 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
 - (void)toggleEnableThreads:(UISwitch *)sender
 {
-    // Tchap: Disable Threads
-//    if (sender.isOn && !self.mainSession.store.supportedMatrixVersions.supportsThreads)
-//    {
-//        //  user wants to turn on the threads setting but the server does not support it
-//        if (self.threadsBetaBridgePresenter)
-//        {
-//            [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:nil];
-//            self.threadsBetaBridgePresenter = nil;
-//        }
-//
-//        self.threadsBetaBridgePresenter = [[ThreadsBetaCoordinatorBridgePresenter alloc] initWithThreadId:@""
-//                                                                                                 infoText:VectorL10n.threadsDiscourageInformation1
-//                                                                                           additionalText:VectorL10n.threadsDiscourageInformation2];
-//        self.threadsBetaBridgePresenter.delegate = self;
-//
-//        [self.threadsBetaBridgePresenter presentFrom:self.presentedViewController?:self animated:YES];
-//        return;
-//    }
-//
-//    [self enableThreads:sender.isOn];
+    if (sender.isOn && !self.mainSession.store.supportedMatrixVersions.supportsThreads)
+    {
+        //  user wants to turn on the threads setting but the server does not support it
+        if (self.threadsBetaBridgePresenter)
+        {
+            [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:nil];
+            self.threadsBetaBridgePresenter = nil;
+        }
+
+        self.threadsBetaBridgePresenter = [[ThreadsBetaCoordinatorBridgePresenter alloc] initWithThreadId:@""
+                                                                                                 infoText:VectorL10n.threadsDiscourageInformation1
+                                                                                           additionalText:VectorL10n.threadsDiscourageInformation2];
+        self.threadsBetaBridgePresenter.delegate = self;
+
+        [self.threadsBetaBridgePresenter presentFrom:self.presentedViewController?:self animated:YES];
+        return;
+    }
+
+    [self enableThreads:sender.isOn];
 }
 
 - (void)enableThreads:(BOOL)enable
@@ -4960,24 +4958,23 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 }
 
 #pragma mark - ThreadsBetaCoordinatorBridgePresenterDelegate
-// Tchap: Disable Threads
-//- (void)threadsBetaCoordinatorBridgePresenterDelegateDidTapEnable:(ThreadsBetaCoordinatorBridgePresenter *)coordinatorBridgePresenter
-//{
-//    MXWeakify(self);
-//    [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:^{
-//        MXStrongifyAndReturnIfNil(self);
-//        [self enableThreads:YES];
-//    }];
-//}
-//
-//- (void)threadsBetaCoordinatorBridgePresenterDelegateDidTapCancel:(ThreadsBetaCoordinatorBridgePresenter *)coordinatorBridgePresenter
-//{
-//    MXWeakify(self);
-//    [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:^{
-//        MXStrongifyAndReturnIfNil(self);
-//        [self updateSections];
-//    }];
-//}
+- (void)threadsBetaCoordinatorBridgePresenterDelegateDidTapEnable:(ThreadsBetaCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    MXWeakify(self);
+    [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:^{
+        MXStrongifyAndReturnIfNil(self);
+        [self enableThreads:YES];
+    }];
+}
+
+- (void)threadsBetaCoordinatorBridgePresenterDelegateDidTapCancel:(ThreadsBetaCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    MXWeakify(self);
+    [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:^{
+        MXStrongifyAndReturnIfNil(self);
+        [self updateSections];
+    }];
+}
 
 #pragma mark - ChangePasswordCoordinatorBridgePresenterDelegate
 

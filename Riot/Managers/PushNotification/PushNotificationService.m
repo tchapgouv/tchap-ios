@@ -487,28 +487,28 @@ Matrix session observer used to detect new opened sessions.
             //  initialize data source for a thread or a room
             __block MXKRoomDataSource *dataSource;
             dispatch_group_t dispatchGroupDataSource = dispatch_group_create();
-            // Tchap: Disable Threads
-//            if (RiotSettings.shared.enableThreads && threadId)
-//            {
-//                dispatch_group_enter(dispatchGroupDataSource);
-//                [ThreadDataSource loadRoomDataSourceWithRoomId:roomId
-//                                                initialEventId:nil
-//                                                      threadId:threadId
-//                                              andMatrixSession:mxSession
-//                                                    onComplete:^(MXKRoomDataSource *threadDataSource) {
-//                    dataSource = threadDataSource;
-//                    dispatch_group_leave(dispatchGroupDataSource);
-//                }];
-//            }
-//            else
-//            {
+            
+            if (RiotSettings.shared.enableThreads && threadId)
+            {
+                dispatch_group_enter(dispatchGroupDataSource);
+                [ThreadDataSource loadRoomDataSourceWithRoomId:roomId
+                                                initialEventId:nil
+                                                      threadId:threadId
+                                              andMatrixSession:mxSession
+                                                    onComplete:^(MXKRoomDataSource *threadDataSource) {
+                    dataSource = threadDataSource;
+                    dispatch_group_leave(dispatchGroupDataSource);
+                }];
+            }
+            else
+            {
                 dispatch_group_enter(dispatchGroupDataSource);
                 MXKRoomDataSourceManager *manager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
                 [manager roomDataSourceForRoom:roomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
                     dataSource = roomDataSource;
                     dispatch_group_leave(dispatchGroupDataSource);
                 }];
-//            }
+            }
 
             dispatch_group_notify(dispatchGroupDataSource, dispatch_get_main_queue(), ^{
                 if (responseText != nil && responseText.length != 0)
