@@ -477,7 +477,6 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
 //    }
     
     private func startEditPollCoordinator(startEvent: MXEvent? = nil) {
-        // Tchap: Feature unavailable
         let parameters = PollEditFormCoordinatorParameters(room: roomViewController.roomDataSource.room, pollStartEvent: startEvent)
         let coordinator = PollEditFormCoordinator(parameters: parameters)
 
