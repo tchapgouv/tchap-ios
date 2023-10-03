@@ -2488,11 +2488,15 @@
 // Mark: - Space Selector
 
 "space_selector_title" = "Mes espaces";
-"room_invites_empty_view_information" = "C’est ici que vos invitations apparaîtront.";
 
 // Mark: - Room invites
 
 "room_invites_empty_view_title" = "Rien de neuf.";
+"room_invites_empty_view_information" = "C’est ici que vos invitations apparaîtront.";
+
+"room_waiting_other_participants_title" = "En attente d'invités sur %@"; // Tchap
+"room_waiting_other_participants_message" = "Dès que les invités auront rejoint %@, vous pourrez discuter avec eux et le salon sera chiffré de bout en bout."; // Tchap
+
 "all_chats_edit_menu_space_settings" = "Paramètres de l’espace";
 "all_chats_edit_menu_leave_space" = "Quitter %@";
 "all_chats_user_menu_settings" = "Paramètres utilisateur";
