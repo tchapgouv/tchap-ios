@@ -1218,6 +1218,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
             [self muteEditedRoomNotifications:!isMuted];
         }
         
+        self->editedRoomId = nil; // Tchap: Reset editedRoomId else UI content does not refresh anymore.
         
         completionHandler(YES);
     }];
@@ -1258,6 +1259,9 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                                            handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
         NSString *favouriteTag = isFavourite ? nil : kMXRoomTagFavourite;
         [self updateEditedRoomTag:favouriteTag];
+        
+        self->editedRoomId = nil; // Tchap: Reset editedRoomId else UI content does not refresh anymore.
+        
         completionHandler(YES);
     }];
     favouriteAction.backgroundColor = actionBackgroundColor;
