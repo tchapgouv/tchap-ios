@@ -112,6 +112,7 @@ targetTemplates:
         - "**/*.strings" # Exclude all strings files
         - "**/*.cer"
     - path: ../Tchap/Generated/Images_Riot.swift
+    - path: ../Tchap/Generated/Strings.swift
     - path: ../Tchap/Modules/Application/VersionUpdate
     - path: ../Tchap/Modules/Room/Views/BubbleCells/Antivirus
 

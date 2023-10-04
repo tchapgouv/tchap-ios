@@ -119,6 +119,7 @@ typedef NS_ENUM(NSUInteger, NOTIFICATION_SETTINGS)
     NOTIFICATION_SETTINGS_DEFAULT_SETTINGS_INDEX,
     NOTIFICATION_SETTINGS_MENTION_AND_KEYWORDS_SETTINGS_INDEX,
     NOTIFICATION_SETTINGS_OTHER_SETTINGS_INDEX,
+    NOTIFICATION_SETTINGS_ENABLE_BY_EMAIL_INDEX, // Tchap: allow notifications by email
 };
 
 typedef NS_ENUM(NSUInteger, CALLS_ENABLE_STUN_SERVER)
@@ -483,6 +484,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_SHOW_DECODED_CONTENT];
     }
 
+    [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_ENABLE_BY_EMAIL_INDEX];
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX];
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_PIN_UNREAD_INDEX];
     
@@ -2195,6 +2197,27 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             
             cell = labelAndSwitchCell;
         }
+        else if (row == NOTIFICATION_SETTINGS_ENABLE_BY_EMAIL_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+    
+            labelAndSwitchCell.mxkLabel.text = TchapL10n.settingsNotificationEmail;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleNotificationsByEmail:) forControlEvents:UIControlEventTouchUpInside];
+            
+//            BOOL isPushEnabled = account.pushNotificationServiceIsActive;
+//
+//            // Even if push is enabled for the account, the user may have turned off notifications in system settings
+//            if (isPushEnabled && self.systemNotificationSettings)
+//            {
+//                isPushEnabled = self.systemNotificationSettings.authorizationStatus == UNAuthorizationStatusAuthorized;
+//            }
+            
+            labelAndSwitchCell.mxkSwitch.on = !labelAndSwitchCell.mxkSwitch.on;
+            
+            cell = labelAndSwitchCell;
+        }
         else if (row == NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
@@ -3378,6 +3401,11 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             }];
         }
     }
+}
+
+- (void)toggleNotificationsByEmail:(UISwitch *)sender
+{
+    NSLog(@"toggleNotificationsByEmail");
 }
 
 - (void)toggleShowInAppNotifications:(UISwitch *)sender
