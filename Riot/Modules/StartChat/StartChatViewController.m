@@ -257,6 +257,13 @@
     [self.contactsTableView vc_relayoutHeaderView];
 }
 
+// Tchap: automatically give focus to searchBar field to invoke keyboard when view did appear.
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [_searchBarView becomeFirstResponder];
+}
+
 #pragma mark -
 
 - (void)setIsAddParticipantSearchBarEditing:(BOOL)isAddParticipantSearchBarEditing

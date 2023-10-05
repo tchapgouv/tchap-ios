@@ -1,0 +1,1 @@
+Activation de la zone de saisie email à l'apparition de la vue de création de salon DM
