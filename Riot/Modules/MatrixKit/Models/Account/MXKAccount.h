@@ -313,7 +313,7 @@ typedef BOOL (^MXKAccountOnCertificateChange)(MXKAccount *mxAccount, NSData *cer
  @param success A block object called when the operation succeeds.
  @param failure A block object called when the operation fails.
  */
-- (void)loadCurrentPusher:(nullable void (^)(void))success failure:(nullable void (^)(NSError *error))failure;
+- (void)loadCurrentApnsPusher:(nullable void (^)(void))success failure:(nullable void (^)(NSError *error))failure;
 
 /**
  Load the current device information for this account.

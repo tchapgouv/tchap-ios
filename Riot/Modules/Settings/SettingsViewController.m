@@ -1418,7 +1418,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     // Update notification access
     [self refreshSystemNotificationSettings];
     
-    [[MXKAccountManager sharedManager].activeAccounts.firstObject loadCurrentPusher:nil failure:nil];
+    [[MXKAccountManager sharedManager].activeAccounts.firstObject loadCurrentApnsPusher:nil failure:nil];
 }
 
 - (void)refreshSystemNotificationSettings

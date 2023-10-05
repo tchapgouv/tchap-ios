@@ -84,7 +84,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     // Observe NSCurrentLocaleDidChangeNotification to refresh MXRoomSummaries on time formatting change.
     id NSCurrentLocaleDidChangeNotificationObserver;
     
-    MXPusher *currentPusher;
+    MXPusher *currentApnsPusher;
 }
 
 /// Will be true if the session is not in a pauseable state or we requested for the session to pause but not finished yet. Will be reverted to false again after `resume` called.
@@ -148,7 +148,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         
         // Refresh device information
         [self loadDeviceInformation:nil failure:nil];
-        [self loadCurrentPusher:nil failure:nil];
+        [self loadCurrentApnsPusher:nil failure:nil];
 
         [self registerAccountDataDidChangeIdentityServerNotification];
         [self registerIdentityServiceDidChangeAccessTokenNotification];
@@ -184,7 +184,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         
         // Refresh device information
         [self loadDeviceInformation:nil failure:nil];
-        [self loadCurrentPusher:nil failure:nil];
+        [self loadCurrentApnsPusher:nil failure:nil];
     }
     
     return self;
@@ -304,10 +304,10 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 
 - (BOOL)pushNotificationServiceIsActive
 {
-    if (currentPusher && currentPusher.enabled)
+    if (currentApnsPusher && currentApnsPusher.enabled)
     {
-        MXLogDebug(@"[MXKAccount][Push] pushNotificationServiceIsActive: currentPusher.enabled %@", currentPusher.enabled);
-        return currentPusher.enabled.boolValue;
+        MXLogDebug(@"[MXKAccount][Push] pushNotificationServiceIsActive: currentPusher.enabled %@", currentApnsPusher.enabled);
+        return currentApnsPusher.enabled.boolValue;
     }
     
     BOOL pushNotificationServiceIsActive = ([[MXKAccountManager sharedManager] isAPNSAvailable] && self.hasPusherForPushNotifications && mxSession);
@@ -324,22 +324,22 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 
     if (enable)
     {
-        if (currentPusher && currentPusher.enabled && !currentPusher.enabled.boolValue)
+        if (currentApnsPusher && currentApnsPusher.enabled && !currentApnsPusher.enabled.boolValue)
         {
-            [self.mxSession.matrixRestClient setPusherWithPushkey:currentPusher.pushkey
-                                                             kind:currentPusher.kind
-                                                            appId:currentPusher.appId
-                                                   appDisplayName:currentPusher.appDisplayName
-                                                deviceDisplayName:currentPusher.deviceDisplayName
-                                                       profileTag:currentPusher.profileTag
-                                                             lang:currentPusher.lang
-                                                             data:currentPusher.data.JSONDictionary
+            [self.mxSession.matrixRestClient setPusherWithPushkey:currentApnsPusher.pushkey
+                                                             kind:currentApnsPusher.kind
+                                                            appId:currentApnsPusher.appId
+                                                   appDisplayName:currentApnsPusher.appDisplayName
+                                                deviceDisplayName:currentApnsPusher.deviceDisplayName
+                                                       profileTag:currentApnsPusher.profileTag
+                                                             lang:currentApnsPusher.lang
+                                                             data:currentApnsPusher.data.JSONDictionary
                                                            append:NO
                                                           enabled:enable
                                                           success:^{
                 
                 MXLogDebug(@"[MXKAccount][Push] enablePushNotifications: remotely enabled Push: Success");
-                [self loadCurrentPusher:^{
+                [self loadCurrentApnsPusher:^{
                     if (success)
                     {
                         success();
@@ -398,7 +398,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
             }
         }
     }
-    else if (self.hasPusherForPushNotifications || currentPusher)
+    else if (self.hasPusherForPushNotifications || currentApnsPusher)
     {
         MXLogDebug(@"[MXKAccount][Push] enablePushNotifications: Disable APNS for %@ account", self.mxCredentials.userId);
         
@@ -670,7 +670,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     }];
 }
 
-- (void)loadCurrentPusher:(void (^)(void))success failure:(void (^)(NSError *error))failure
+- (void)loadCurrentApnsPusher:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
     if (!self.mxSession.myDeviceId)
     {
@@ -699,13 +699,13 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
             MXPusher *ownPusher;
             for (MXPusher *pusher in pushers)
             {
-                if ([pusher.deviceId isEqualToString:self.mxSession.myDeviceId])
+                if ([pusher.kind isEqualToString:@"http"] && [pusher.deviceId isEqualToString:self.mxSession.myDeviceId])
                 {
                     ownPusher = pusher;
                 }
             }
             
-            self->currentPusher = ownPusher;
+            self->currentApnsPusher = ownPusher;
             
             if (success)
             {
@@ -876,7 +876,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         [MXKContactManager.sharedManager validateSyncLocalContactsStateForSession:self.mxSession];
         
         // Refresh pusher state
-        [self loadCurrentPusher:^{
+        [self loadCurrentApnsPusher:^{
             [self refreshAPNSPusher];
         } failure:nil];
         [self refreshPushKitPusher];
@@ -1206,7 +1206,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 {
     MXLogDebug(@"[MXKAccount][Push] refreshAPNSPusher");
     
-    if (currentPusher)
+    if (currentApnsPusher)
     {
         MXLogDebug(@"[MXKAccount][Push] refreshAPNSPusher aborted as a pusher has been found");
         return;
@@ -1272,7 +1272,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         
         if (enabled)
         {
-            [self loadCurrentPusher:^{
+            [self loadCurrentApnsPusher:^{
                 if (success)
                 {
                     success();
@@ -1290,7 +1290,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         }
         else
         {
-            self->currentPusher = nil;
+            self->currentApnsPusher = nil;
             
             if (success)
             {
