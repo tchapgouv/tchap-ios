@@ -85,6 +85,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     id NSCurrentLocaleDidChangeNotificationObserver;
     
     MXPusher *currentApnsPusher;
+    MXPusher *currentEmailPusher; // Tchap: email notifications
 }
 
 /// Will be true if the session is not in a pauseable state or we requested for the session to pause but not finished yet. Will be reverted to false again after `resume` called.
@@ -149,6 +150,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         // Refresh device information
         [self loadDeviceInformation:nil failure:nil];
         [self loadCurrentApnsPusher:nil failure:nil];
+        [self loadCurrentEmailPusher:nil failure:nil]; // Tchap: email notifications
 
         [self registerAccountDataDidChangeIdentityServerNotification];
         [self registerIdentityServiceDidChangeAccessTokenNotification];
@@ -185,6 +187,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         // Refresh device information
         [self loadDeviceInformation:nil failure:nil];
         [self loadCurrentApnsPusher:nil failure:nil];
+        [self loadCurrentEmailPusher:nil failure:nil]; // Tchap: email notifications
     }
     
     return self;
@@ -301,6 +304,8 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     
     return userTintColor;
 }
+
+#pragma mark - Notification Pusher
 
 - (BOOL)pushNotificationServiceIsActive
 {
@@ -421,6 +426,117 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
                        }];
     }
 }
+
+#pragma mark - Tchap Email Pusher
+
+// Tchap: email notifications
+- (BOOL)emailNotificationServiceIsActive
+{
+    if (currentEmailPusher && currentEmailPusher.enabled)
+    {
+        MXLogDebug(@"[MXKAccount][Push] emailNotificationServiceIsActive: currentPusher.enabled %@", currentEmailPusher.enabled);
+        return currentEmailPusher.enabled.boolValue;
+    }
+    
+    BOOL emailNotificationServiceIsActive = (self.hasPusherForEmailNotifications && mxSession);
+    MXLogDebug(@"[MXKAccount][Push] emailNotificationServiceIsActive: %@", @(emailNotificationServiceIsActive));
+
+    return emailNotificationServiceIsActive;
+}
+
+// Tchap: email notifications
+- (void)enableEmailNotifications:(BOOL)enable
+                        success:(void (^)(void))success
+                        failure:(void (^)(NSError *))failure
+{
+    MXLogDebug(@"[MXKAccount][Push] enableEmailNotifications: %@", @(enable));
+
+    if (enable)
+    {
+        if (currentEmailPusher && currentEmailPusher.enabled && !currentEmailPusher.enabled.boolValue)
+        {
+            [self.mxSession.matrixRestClient setPusherWithPushkey:currentEmailPusher.pushkey
+                                                             kind:currentEmailPusher.kind
+                                                            appId:currentEmailPusher.appId
+                                                   appDisplayName:currentEmailPusher.appDisplayName
+                                                deviceDisplayName:currentEmailPusher.deviceDisplayName
+                                                       profileTag:currentEmailPusher.profileTag
+                                                             lang:currentEmailPusher.lang
+                                                             data:currentEmailPusher.data.JSONDictionary
+                                                           append:NO
+                                                          enabled:enable
+                                                          success:^{
+                
+                MXLogDebug(@"[MXKAccount][Push] enableEmailNotifications: remotely enabled Email notifications: Success");
+                [self loadCurrentEmailPusher:^{
+                    if (success)
+                    {
+                        success();
+                    }
+                } failure:^(NSError *error) {
+                    
+                    MXLogWarning(@"[MXKAccount][Push] enableEmailNotifications: load current pusher failed with error: %@", error);
+                    if (failure)
+                    {
+                        failure(error);
+                    }
+                }];
+            } failure:^(NSError *error) {
+
+                MXLogWarning(@"[MXKAccount][Push] enableEmailNotifications: remotely enable Email notifications failed with error: %@", error);
+                if (failure)
+                {
+                    failure(error);
+                }
+            }];
+        }
+        else
+        {
+            MXLogDebug(@"[MXKAccount][Push] enableEmailNotifications: Enable Email for %@ account", self.mxCredentials.userId);
+
+            // Create/restore the pusher
+            [self enableEmailPusher:YES success:^{
+
+                MXLogDebug(@"[MXKAccount][Push] enableEmailNotifications: Enable Email: Success");
+                if (success)
+                {
+                    success();
+                }
+            } failure:^(NSError *error) {
+
+                MXLogDebug(@"[MXKAccount][Push] enableEmailNotifications: Enable Email: Error: %@", error);
+                if (failure)
+                {
+                    failure(error);
+                }
+            }];
+        }
+    }
+    else if (self.hasPusherForEmailNotifications || currentEmailPusher)
+    {
+        MXLogDebug(@"[MXKAccount][Push] enableEmailNotifications: Disable Email notifications for %@ account", self.mxCredentials.userId);
+        
+        // Delete the pusher, report the new value only on success.
+        [self enableEmailPusher:NO
+                       success:^{
+
+                           MXLogDebug(@"[MXKAccount][Push] enableEmailNotifications: Disable Push: Success");
+                           if (success)
+                           {
+                               success();
+                           }
+                       } failure:^(NSError *error) {
+
+                           MXLogDebug(@"[MXKAccount][Push] enableEmailNotifications: Disable Push: Error: %@", error);
+                           if (failure)
+                           {
+                               failure(error);
+                           }
+                       }];
+    }
+}
+
+#pragma mark - Push Kit Pusher
 
 - (BOOL)isPushKitNotificationActive
 {
@@ -674,7 +790,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 {
     if (!self.mxSession.myDeviceId)
     {
-        MXLogWarning(@"[MXKAccount] loadPusher: device ID not found");
+        MXLogWarning(@"[MXKAccount] loadApnsPusher: device ID not found");
         if (failure)
         {
             failure([NSError errorWithDomain:kMXKAccountErrorDomain code:0 userInfo:nil]);
@@ -685,7 +801,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     [self.mxSession supportedMatrixVersions:^(MXMatrixVersions *matrixVersions) {
         if (!matrixVersions.supportsRemotelyTogglingPushNotifications)
         {
-            MXLogDebug(@"[MXKAccount] loadPusher: remotely toggling push notifications not supported");
+            MXLogDebug(@"[MXKAccount] loadApnsPusher: remotely toggling push notifications not supported");
             
             if (success)
             {
@@ -696,23 +812,25 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         }
         
         [self.mxSession.matrixRestClient pushers:^(NSArray<MXPusher *> *pushers) {
-            MXPusher *ownPusher;
+            MXPusher *apnsPusher;
             for (MXPusher *pusher in pushers)
             {
-                if ([pusher.kind isEqualToString:@"http"] && [pusher.deviceId isEqualToString:self.mxSession.myDeviceId])
-                {
-                    ownPusher = pusher;
+                if ([pusher.deviceId isEqualToString:self.mxSession.myDeviceId]) {
+                    if ([pusher.kind isEqualToString:@"http"])
+                    {
+                        apnsPusher = pusher;
+                    }
                 }
             }
             
-            self->currentApnsPusher = ownPusher;
+            self->currentApnsPusher = apnsPusher;
             
             if (success)
             {
                 success();
             }
         } failure:^(NSError *error) {
-            MXLogWarning(@"[MXKAccount] loadPusher: get pushers failed due to error %@", error);
+            MXLogWarning(@"[MXKAccount] loadApnsPusher: get pushers failed due to error %@", error);
             
             if (failure)
             {
@@ -720,7 +838,71 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
             }
         }];
     } failure:^(NSError *error) {
-        MXLogWarning(@"[MXKAccount] loadPusher: supportedMatrixVersions failed due to error %@", error);
+        MXLogWarning(@"[MXKAccount] loadApnsPusher: supportedMatrixVersions failed due to error %@", error);
+        
+        if (failure)
+        {
+            failure(error);
+        }
+   }];
+}
+
+// Tchap: email notifications
+- (void)loadCurrentEmailPusher:(void (^)(void))success failure:(void (^)(NSError *error))failure
+{
+    // DeviceId not needed nor present for Email pusher
+//    if (!self.mxSession.myDeviceId)
+//    {
+//        MXLogWarning(@"[MXKAccount] loadEmailPusher: device ID not found");
+//        if (failure)
+//        {
+//            failure([NSError errorWithDomain:kMXKAccountErrorDomain code:0 userInfo:nil]);
+//        }
+//        return;
+//    }
+    
+    [self.mxSession supportedMatrixVersions:^(MXMatrixVersions *matrixVersions) {
+        // Tchpa: TODO check for supportsRemotelyTogglingEmailNotifications
+//        if (!matrixVersions.supportsRemotelyTogglingPushNotifications)
+//        {
+//            MXLogDebug(@"[MXKAccount] loadEmailPusher: remotely toggling push notifications not supported");
+//
+//            if (success)
+//            {
+//                success();
+//            }
+//
+//            return;
+//        }
+        
+        [self.mxSession.matrixRestClient pushers:^(NSArray<MXPusher *> *pushers) {
+            MXPusher *emailPusher;
+            for (MXPusher *pusher in pushers)
+            {
+//                if ([pusher.deviceId isEqualToString:self.mxSession.myDeviceId]) {
+                    if ([pusher.kind isEqualToString:@"email"])
+                    {
+                        emailPusher = pusher;
+                    }
+//                }
+            }
+            
+            self->currentEmailPusher = emailPusher;
+            
+            if (success)
+            {
+                success();
+            }
+        } failure:^(NSError *error) {
+            MXLogWarning(@"[MXKAccount] loadEmailPusher: get pushers failed due to error %@", error);
+            
+            if (failure)
+            {
+                failure(error);
+            }
+        }];
+    } failure:^(NSError *error) {
+        MXLogWarning(@"[MXKAccount] loadEmailPusher: supportedMatrixVersions failed due to error %@", error);
         
         if (failure)
         {
@@ -880,7 +1062,13 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
             [self refreshAPNSPusher];
         } failure:nil];
         [self refreshPushKitPusher];
-        
+       
+        // Tchap: email notifications
+        // Refresh Email pusher state
+        [self loadCurrentEmailPusher:^{
+            [self refreshEmailPusher];
+        } failure:nil];
+ 
         // Launch server sync
         [self launchInitialServerSync];
         
@@ -1158,6 +1346,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
                 [self setUserPresence:self.preferredSyncPresence andStatusMessage:nil completion:nil];
 
                 [self refreshAPNSPusher];
+                [self refreshEmailPusher]; // Tchap: email notifications
                 [self refreshPushKitPusher];
             }];
 
@@ -1170,6 +1359,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
             [self launchInitialServerSync];
 
             [self refreshAPNSPusher];
+            [self refreshEmailPusher]; // Tchap: email notifications
             [self refreshPushKitPusher];
 
             break;
@@ -1177,6 +1367,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         case MXSessionStateSyncInProgress:
         {
             [self refreshAPNSPusher];
+            [self refreshEmailPusher]; // Tchap: email notifications
             [self refreshPushKitPusher];
 
             break;
@@ -1327,6 +1518,142 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         else
         {
             MXLogDebug(@"[MXKAccount][Push] enableAPNSPusher: Failed to send APNS token for %@! (%@)", self.mxCredentials.userId, error);
+        }
+        
+        if (failure)
+        {
+            failure(error);
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountAPNSActivityDidChangeNotification object:self.mxCredentials.userId];
+    }];
+}
+
+// Tchap: handle Email notification
+// Refresh the Email pusher state for this account on this device.
+- (void)refreshEmailPusher
+{
+    MXLogDebug(@"[MXKAccount][Email] refreshEmailPusher");
+    
+    if (currentEmailPusher)
+    {
+        MXLogDebug(@"[MXKAccount][Email] refreshEmailPusher aborted as a pusher has been found");
+        return;
+    }
+
+    // Check the conditions required to run the pusher
+    if (self.emailNotificationServiceIsActive)
+    {
+        MXLogDebug(@"[MXKAccount][Email] refreshEmailPusher: Refresh APNS pusher for %@ account", self.mxCredentials.userId);
+        
+        // Create/restore the pusher
+        [self enableEmailPusher:YES
+                        success:nil
+                        failure:^(NSError *error) {
+                           MXLogDebug(@"[MXKAccount][Email] ;: Error: %@", error);
+                       }];
+    }
+    else if (_hasPusherForEmailNotifications)
+    {
+        if (mxSession)
+        {
+            // Turn off pusher if user denied remote notification.
+            MXLogDebug(@"[MXKAccount][Email] refreshEmailPusher: Disable Email pusher for %@ account (notifications are denied)", self.mxCredentials.userId);
+            [self enableAPNSPusher:NO success:nil failure:nil];
+        }
+    }
+}
+
+// Tchap: handle Email notification
+// Enable/Disable the Email pusher for this account on this device on the homeserver.
+- (void)enableEmailPusher:(BOOL)enabled success:(void (^)(void))success failure:(void (^)(NSError *))failure
+{
+    MXLogDebug(@"[MXKAccount][Push] enableEmailPusher: %@", @(enabled));
+
+    NSString *accountUserEmail = self.linkedEmails.firstObject;
+    
+    if (accountUserEmail == nil)
+    {
+        MXLogDebug(@"[MXKAccount][Email] refreshEmailPusher aborted as user account has no email defined.");
+        return;
+    }
+    
+    NSData *accountUserEmailAsData = [accountUserEmail dataUsingEncoding:NSUTF8StringEncoding];
+    
+    if (accountUserEmailAsData == nil)
+    {
+        MXLogDebug(@"[MXKAccount][Email] refreshEmailPusher aborted as user account email can't be converted to NSData : %@.", accountUserEmail);
+        return;
+    }
+
+    NSString *appId = @"m.email";
+    
+    NSDictionary *pushData = @{}; // No data for Email notifications
+    
+    [self enablePusher:enabled appId:appId token:accountUserEmailAsData pushData:pushData success:^{
+        
+        MXLogDebug(@"[MXKAccount][Push] enableEmailPusher: Succeeded to update Email pusher for %@ (%d)", self.mxCredentials.userId, enabled);
+
+        self->_hasPusherForEmailNotifications = enabled;
+        [[MXKAccountManager sharedManager] saveAccounts];
+        
+        if (enabled)
+        {
+            [self loadCurrentEmailPusher:^{
+                if (success)
+                {
+                    success();
+                }
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountAPNSActivityDidChangeNotification object:self.mxCredentials.userId];
+            } failure:^(NSError *error) {
+                if (success)
+                {
+                    success();
+                }
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountAPNSActivityDidChangeNotification object:self.mxCredentials.userId];
+            }];
+        }
+        else
+        {
+            self->currentApnsPusher = nil;
+            
+            if (success)
+            {
+                success();
+            }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountAPNSActivityDidChangeNotification object:self.mxCredentials.userId];
+        }
+        
+    } failure:^(NSError *error) {
+        
+        // Ignore error if the client try to disable an unknown token
+        if (!enabled)
+        {
+            // Check whether the token was unknown
+            MXError *mxError = [[MXError alloc] initWithNSError:error];
+            if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringUnknown])
+            {
+                MXLogDebug(@"[MXKAccount][Push] enableEmailPusher: Email was already disabled for %@!", self.mxCredentials.userId);
+                
+                // Ignore the error
+                if (success)
+                {
+                    success();
+                }
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountAPNSActivityDidChangeNotification object:self.mxCredentials.userId];
+                
+                return;
+            }
+            
+            MXLogDebug(@"[MXKAccount][Push] enableEmailPusher: Failed to disable Email %@! (%@)", self.mxCredentials.userId, error);
+        }
+        else
+        {
+            MXLogDebug(@"[MXKAccount][Push] enableEmailPusher: Failed to send Email for %@! (%@)", self.mxCredentials.userId, error);
         }
         
         if (failure)
@@ -1503,8 +1830,6 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     
     NSString *appDisplayName = [NSString stringWithFormat:@"%@ (iOS)", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"]];
     
-    NSString *b64Token = [token base64EncodedStringWithOptions:0];
-    
     NSString *deviceLang = [NSLocale preferredLanguages][0];
     
     NSString * profileTag = [[NSUserDefaults standardUserDefaults] valueForKey:@"pusherProfileTag"];
@@ -1525,7 +1850,25 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         MXLogDebug(@"[MXKAccount][Push] enablePusher: Using existing profile tag: %@", profileTag);
     }
     
-    NSObject *kind = enabled ? @"http" : [NSNull null];
+    NSObject *kind = [NSNull null];
+    
+    // PushKey will be Base64 APNStoken if kind is "http".
+    // It will be user's email id kind is "email".
+    NSString *pushKey = nil;
+    
+    // Tchap[: handle 'http' and 'email' notifications
+    if( enabled ) {
+        if( [@"m.email" isEqualToString:appId] )
+        {
+            kind = @"email";
+            pushKey = [[NSString alloc] initWithData:token encoding:NSUTF8StringEncoding];
+        }
+        else
+        {
+            kind = @"http";
+            pushKey = [token base64EncodedStringWithOptions:0];
+        }
+    }
     
     // Use the append flag to handle multiple accounts registration.
     BOOL append = NO;
@@ -1543,7 +1886,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     
     MXRestClient *restCli = self.mxRestClient;
     
-    [restCli setPusherWithPushkey:b64Token kind:kind appId:appId appDisplayName:appDisplayName deviceDisplayName:[[UIDevice currentDevice] name] profileTag:profileTag lang:deviceLang data:pushData append:append enabled:enabled success:success failure:failure];
+    [restCli setPusherWithPushkey:pushKey kind:kind appId:appId appDisplayName:appDisplayName deviceDisplayName:[[UIDevice currentDevice] name] profileTag:profileTag lang:deviceLang data:pushData append:append enabled:enabled success:success failure:failure];
 }
 
 #pragma mark - InApp notifications

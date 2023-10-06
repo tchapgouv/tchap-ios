@@ -1419,6 +1419,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     [self refreshSystemNotificationSettings];
     
     [[MXKAccountManager sharedManager].activeAccounts.firstObject loadCurrentApnsPusher:nil failure:nil];
+    [[MXKAccountManager sharedManager].activeAccounts.firstObject loadCurrentEmailPusher:nil failure:nil]; // Tchap: email notifications
 }
 
 - (void)refreshSystemNotificationSettings
@@ -3403,9 +3404,22 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     }
 }
 
+// Tchap: email notifications
 - (void)toggleNotificationsByEmail:(UISwitch *)sender
 {
-    NSLog(@"toggleNotificationsByEmail");
+    if ([MXKAccountManager sharedManager].activeAccounts.count)
+    {
+        [self startActivityIndicator];
+        
+        MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
+        MXKAccount* account = accountManager.activeAccounts.firstObject;
+        
+        [account enableEmailNotifications:sender.isOn success:^{
+            [self stopActivityIndicator];
+        } failure:^(NSError *error) {
+            [self stopActivityIndicator];
+        }];
+    }
 }
 
 - (void)toggleShowInAppNotifications:(UISwitch *)sender

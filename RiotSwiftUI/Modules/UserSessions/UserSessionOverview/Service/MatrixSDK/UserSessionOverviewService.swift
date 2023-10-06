@@ -100,7 +100,7 @@ class UserSessionOverviewService: UserSessionOverviewServiceProtocol {
             switch response {
             case .success:
                 if let account = MXKAccountManager.shared().activeAccounts.first, account.device?.deviceId == pusher.deviceId {
-                    account.loadCurrentPusher(nil)
+                    account.loadCurrentApnsPusher(nil) // Tchap adaptation on call name
                 }
                 
                 self.loadPushers { [weak self] pushers in

@@ -307,13 +307,37 @@ typedef BOOL (^MXKAccountOnCertificateChange)(MXKAccount *mxAccount, NSData *cer
 - (void)load3PIDs:(void (^)(void))success failure:(void (^)(NSError *error))failure;
 
 /**
- Loads the pusher instance linked to this account.
+ Loads theAPNS pusher instance linked to this account.
  This method must be called to refresh self.pushNotificationServiceIsActive
 
  @param success A block object called when the operation succeeds.
  @param failure A block object called when the operation fails.
  */
 - (void)loadCurrentApnsPusher:(nullable void (^)(void))success failure:(nullable void (^)(NSError *error))failure;
+
+// Tchap: email notifications
+/**
+ Enable Email notification.
+
+ This method creates or removes a pusher on the homeserver.
+
+ @param enable YES to enable it.
+ @param success A block object called when the operation succeeds.
+ @param failure A block object called when the operation fails.
+ */
+- (void)enableEmailNotifications:(BOOL)enable
+                        success:(void (^)(void))success
+                         failure:(void (^)(NSError *))failure;
+
+// Tchap: email notifications
+/**
+ Loads the Email pusher instance linked to this account.
+ This method must be called to refresh self.emailNotificationServiceIsActive
+
+ @param success A block object called when the operation succeeds.
+ @param failure A block object called when the operation fails.
+ */
+- (void)loadCurrentEmailPusher:(nullable void (^)(void))success failure:(nullable void (^)(NSError *error))failure;
 
 /**
  Load the current device information for this account.

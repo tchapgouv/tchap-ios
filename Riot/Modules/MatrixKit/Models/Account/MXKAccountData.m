@@ -73,6 +73,7 @@
         
         _hasPusherForPushNotifications = [coder decodeBoolForKey:@"_enablePushNotifications"];
         _hasPusherForPushKitNotifications = [coder decodeBoolForKey:@"enablePushKitNotifications"];
+        _hasPusherForEmailNotifications = [coder decodeBoolForKey:@"enableEmailNotifications"]; // Tchap: email notifications
         _enableInAppNotifications = [coder decodeBoolForKey:@"enableInAppNotifications"];
         
         _disabled = [coder decodeBoolForKey:@"disabled"];
@@ -146,6 +147,7 @@
     
     [coder encodeBool:_hasPusherForPushNotifications forKey:@"_enablePushNotifications"];
     [coder encodeBool:_hasPusherForPushKitNotifications forKey:@"enablePushKitNotifications"];
+    [coder encodeBool:_hasPusherForEmailNotifications forKey:@"enableEmailNotifications"]; // Tchap: email notifications
     [coder encodeBool:_enableInAppNotifications forKey:@"enableInAppNotifications"];
     
     [coder encodeBool:_disabled forKey:@"disabled"];
