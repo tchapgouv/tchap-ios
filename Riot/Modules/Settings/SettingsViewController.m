@@ -2195,10 +2195,9 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             labelAndSwitchCell.mxkSwitch.enabled = account.pushNotificationServiceIsActive;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleShowDecodedContent:) forControlEvents:UIControlEventTouchUpInside];
             
-            
             cell = labelAndSwitchCell;
         }
-        else if (row == NOTIFICATION_SETTINGS_ENABLE_BY_EMAIL_INDEX)
+        else if (row == NOTIFICATION_SETTINGS_ENABLE_BY_EMAIL_INDEX) // Tchap: email notifications
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
     
@@ -2207,15 +2206,9 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleNotificationsByEmail:) forControlEvents:UIControlEventTouchUpInside];
             
-//            BOOL isPushEnabled = account.pushNotificationServiceIsActive;
-//
-//            // Even if push is enabled for the account, the user may have turned off notifications in system settings
-//            if (isPushEnabled && self.systemNotificationSettings)
-//            {
-//                isPushEnabled = self.systemNotificationSettings.authorizationStatus == UNAuthorizationStatusAuthorized;
-//            }
+            BOOL isPushEnabled = account.emailNotificationServiceIsActive;
             
-            labelAndSwitchCell.mxkSwitch.on = !labelAndSwitchCell.mxkSwitch.on;
+            labelAndSwitchCell.mxkSwitch.on = isPushEnabled;
             
             cell = labelAndSwitchCell;
         }

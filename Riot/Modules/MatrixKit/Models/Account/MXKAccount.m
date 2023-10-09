@@ -1559,7 +1559,13 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         {
             // Turn off pusher if user denied remote notification.
             MXLogDebug(@"[MXKAccount][Email] refreshEmailPusher: Disable Email pusher for %@ account (notifications are denied)", self.mxCredentials.userId);
-            [self enableAPNSPusher:NO success:nil failure:nil];
+            [self enableEmailPusher:NO success:nil failure:nil];
+        }
+        else
+        {
+            MXLogDebug(@"[MXKAccount][Email] refreshEmailPusher: Reset locally Email pusher for %@ account becasue no Session is active. Reset _hasPusherForEmailNotifications", self.mxCredentials.userId);
+            _hasPusherForEmailNotifications = NO;
+            [[MXKAccountManager sharedManager] saveAccounts];
         }
     }
 }
@@ -1617,7 +1623,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         }
         else
         {
-            self->currentApnsPusher = nil;
+            self->currentEmailPusher = nil;
             
             if (success)
             {
@@ -1854,19 +1860,27 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     
     // PushKey will be Base64 APNStoken if kind is "http".
     // It will be user's email id kind is "email".
+    // It is always required.
     NSString *pushKey = nil;
     
-    // Tchap[: handle 'http' and 'email' notifications
+    if( [@"m.email" isEqualToString:appId] )
+    {
+        pushKey = [[NSString alloc] initWithData:token encoding:NSUTF8StringEncoding];
+    }
+    else
+    {
+        pushKey = [token base64EncodedStringWithOptions:0];
+    }
+
+    // Tchap: handle 'http' and 'email' notifications
     if( enabled ) {
         if( [@"m.email" isEqualToString:appId] )
         {
             kind = @"email";
-            pushKey = [[NSString alloc] initWithData:token encoding:NSUTF8StringEncoding];
         }
         else
         {
             kind = @"http";
-            pushKey = [token base64EncodedStringWithOptions:0];
         }
     }
     

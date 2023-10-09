@@ -307,7 +307,7 @@ typedef BOOL (^MXKAccountOnCertificateChange)(MXKAccount *mxAccount, NSData *cer
 - (void)load3PIDs:(void (^)(void))success failure:(void (^)(NSError *error))failure;
 
 /**
- Loads theAPNS pusher instance linked to this account.
+ Loads the APNS pusher instance linked to this account.
  This method must be called to refresh self.pushNotificationServiceIsActive
 
  @param success A block object called when the operation succeeds.
@@ -330,6 +330,11 @@ typedef BOOL (^MXKAccountOnCertificateChange)(MXKAccount *mxAccount, NSData *cer
                          failure:(void (^)(NSError *))failure;
 
 // Tchap: email notifications
+/**
+ The Email Notification Service activity for this account. YES when Email notification service is turned on (locally available and synced with server).
+ */
+@property (nonatomic, readonly) BOOL emailNotificationServiceIsActive;
+
 /**
  Loads the Email pusher instance linked to this account.
  This method must be called to refresh self.emailNotificationServiceIsActive
