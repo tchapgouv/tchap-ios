@@ -33,6 +33,13 @@ extern NSString *const kMXKAccountUserInfoDidChangeNotification;
  */
 extern NSString *const kMXKAccountAPNSActivityDidChangeNotification;
 
+// Tchap: email notifications
+/**
+ Posted when the activity of the Email Notification Service has been changed.
+ The notification object is the matrix user id of the account.
+ */
+extern NSString *const kMXKAccountEmailActivityDidChangeNotification;
+
 /**
  Posted when the activity of the Push notification based on PushKit has been changed.
  The notification object is the matrix user id of the account.

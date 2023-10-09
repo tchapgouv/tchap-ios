@@ -231,7 +231,8 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     __weak id removedAccountObserver;
     __weak id accountUserInfoObserver;
     __weak id pushInfoUpdateObserver;
-    
+    __weak id emailInfoUpdateObserver; // Tchap: Email notification
+ 
     __weak id notificationCenterWillUpdateObserver;
     __weak id notificationCenterDidUpdateObserver;
     __weak id notificationCenterDidFailObserver;
@@ -375,6 +376,21 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     is3PIDBindingInProgress = NO;
     
     self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenSettings];
+}
+
+- (void)dealloc {
+    // Remove observers
+    if (pushInfoUpdateObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:pushInfoUpdateObserver name:kMXKAccountAPNSActivityDidChangeNotification object:nil];
+        pushInfoUpdateObserver = nil;
+    }
+    
+    if (emailInfoUpdateObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:emailInfoUpdateObserver name:kMXKAccountEmailActivityDidChangeNotification object:nil];
+        emailInfoUpdateObserver = nil;
+    }
 }
 
 - (void)updateSections
@@ -762,6 +778,17 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         
     }];
 
+    // Tchap: Email notification. Add observer to push settings
+    emailInfoUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountEmailActivityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self stopActivityIndicator];
+        
+        [self refreshSettings];
+        
+    }];
+
     [self registerAccountDataDidChangeIdentityServerNotification];
     
     // Add each matrix session, to update the view controller appearance according to mx sessions state
@@ -942,6 +969,8 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
         kAppDelegateDidTapStatusBarNotificationObserver = nil;
     }
+    
+    
 }
 
 #pragma mark - Internal methods

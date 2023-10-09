@@ -40,6 +40,7 @@
 
 NSString *const kMXKAccountUserInfoDidChangeNotification = @"kMXKAccountUserInfoDidChangeNotification";
 NSString *const kMXKAccountAPNSActivityDidChangeNotification = @"kMXKAccountAPNSActivityDidChangeNotification";
+NSString *const kMXKAccountEmailActivityDidChangeNotification = @"kMXKAccountEmailActivityDidChangeNotification"; // Tchap: email notifications
 NSString *const kMXKAccountPushKitActivityDidChangeNotification = @"kMXKAccountPushKitActivityDidChangeNotification";
 
 NSString *const kMXKAccountErrorDomain = @"kMXKAccountErrorDomain";
@@ -1611,14 +1612,14 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
                     success();
                 }
                 
-                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountAPNSActivityDidChangeNotification object:self.mxCredentials.userId];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountEmailActivityDidChangeNotification object:self.mxCredentials.userId];
             } failure:^(NSError *error) {
                 if (success)
                 {
                     success();
                 }
                 
-                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountAPNSActivityDidChangeNotification object:self.mxCredentials.userId];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountEmailActivityDidChangeNotification object:self.mxCredentials.userId];
             }];
         }
         else
@@ -1630,7 +1631,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
                 success();
             }
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountAPNSActivityDidChangeNotification object:self.mxCredentials.userId];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountEmailActivityDidChangeNotification object:self.mxCredentials.userId];
         }
         
     } failure:^(NSError *error) {
@@ -1650,7 +1651,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
                     success();
                 }
                 
-                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountAPNSActivityDidChangeNotification object:self.mxCredentials.userId];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountEmailActivityDidChangeNotification object:self.mxCredentials.userId];
                 
                 return;
             }
@@ -1667,7 +1668,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
             failure(error);
         }
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountAPNSActivityDidChangeNotification object:self.mxCredentials.userId];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountEmailActivityDidChangeNotification object:self.mxCredentials.userId];
     }];
 }
 
