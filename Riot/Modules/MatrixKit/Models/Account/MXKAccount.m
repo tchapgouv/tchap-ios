@@ -851,44 +851,32 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 // Tchap: email notifications
 - (void)loadCurrentEmailPusher:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
-    // DeviceId not needed nor present for Email pusher
-//    if (!self.mxSession.myDeviceId)
-//    {
-//        MXLogWarning(@"[MXKAccount] loadEmailPusher: device ID not found");
-//        if (failure)
-//        {
-//            failure([NSError errorWithDomain:kMXKAccountErrorDomain code:0 userInfo:nil]);
-//        }
-//        return;
-//    }
-    
     [self.mxSession supportedMatrixVersions:^(MXMatrixVersions *matrixVersions) {
-        // Tchpa: TODO check for supportsRemotelyTogglingEmailNotifications
-//        if (!matrixVersions.supportsRemotelyTogglingPushNotifications)
-//        {
-//            MXLogDebug(@"[MXKAccount] loadEmailPusher: remotely toggling push notifications not supported");
-//
-//            if (success)
-//            {
-//                success();
-//            }
-//
-//            return;
-//        }
         
         [self.mxSession.matrixRestClient pushers:^(NSArray<MXPusher *> *pushers) {
             MXPusher *emailPusher;
             for (MXPusher *pusher in pushers)
             {
-//                if ([pusher.deviceId isEqualToString:self.mxSession.myDeviceId]) {
-                    if ([pusher.kind isEqualToString:@"email"])
-                    {
-                        emailPusher = pusher;
-                    }
-//                }
+                if ([pusher.kind isEqualToString:@"email"])
+                {
+                    emailPusher = pusher;
+                }
             }
             
+            // On application launch, if email notification is activated on the back-end
+            // emailPusher is not nil here.
             self->currentEmailPusher = emailPusher;
+            
+            if (self->currentEmailPusher == nil)
+            {
+                self->_hasPusherForEmailNotifications = NO;
+                [[MXKAccountManager sharedManager] saveAccounts];
+            }
+            else
+            {
+                self->_hasPusherForEmailNotifications = YES;
+                [[MXKAccountManager sharedManager] saveAccounts];
+            }
             
             if (success)
             {
@@ -1531,7 +1519,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 }
 
 // Tchap: handle Email notification
-// Refresh the Email pusher state for this account on this device.
+// Refresh the Email pusher state for this account.
 - (void)refreshEmailPusher
 {
     MXLogDebug(@"[MXKAccount][Email] refreshEmailPusher");
