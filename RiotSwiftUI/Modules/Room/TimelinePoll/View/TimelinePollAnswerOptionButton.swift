@@ -51,7 +51,7 @@ struct TimelinePollAnswerOptionButton: View {
         VStack(alignment: .leading, spacing: 12.0) {
             HStack(alignment: .top, spacing: 8.0) {
                 if !poll.closed {
-                    Image(uiImage: answerOption.selected ? Asset.Images.pollCheckboxSelected.image : Asset.Images.pollCheckboxDefault.image)
+                    Image(uiImage: answerOption.selected ? Asset_tchap.Images.tchapPollCheckboxSelected.image : Asset_tchap.Images.tchapPollCheckboxDefault.image)
                 }
                 
                 Text(answerOption.text)
@@ -62,7 +62,7 @@ struct TimelinePollAnswerOptionButton: View {
                 
                 HStack(spacing: 6) {
                     if poll.closed, answerOption.winner {
-                        Image(uiImage: Asset.Images.pollWinnerIcon.image)
+                        Image(uiImage: Asset_tchap.Images.tchapPollWinnerIcon.image)
                     }
                     
                     if poll.shouldDiscloseResults {
