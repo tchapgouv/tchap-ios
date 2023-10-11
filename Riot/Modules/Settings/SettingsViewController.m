@@ -378,19 +378,9 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenSettings];
 }
 
+// Tchap: fix for destroy not being called (https://github.com/vector-im/element-ios/pull/7697)
 - (void)dealloc {
-    // Remove observers
-    if (pushInfoUpdateObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:pushInfoUpdateObserver name:kMXKAccountAPNSActivityDidChangeNotification object:nil];
-        pushInfoUpdateObserver = nil;
-    }
-    
-    if (emailInfoUpdateObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:emailInfoUpdateObserver name:kMXKAccountEmailActivityDidChangeNotification object:nil];
-        emailInfoUpdateObserver = nil;
-    }
+    [self destroy];
 }
 
 - (void)updateSections
@@ -1031,6 +1021,13 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     {
         [[NSNotificationCenter defaultCenter] removeObserver:pushInfoUpdateObserver];
         pushInfoUpdateObserver = nil;
+    }
+    
+    // Tchap: remove Email notification update observer
+    if (emailInfoUpdateObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:emailInfoUpdateObserver name:kMXKAccountEmailActivityDidChangeNotification object:nil];
+        emailInfoUpdateObserver = nil;
     }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
