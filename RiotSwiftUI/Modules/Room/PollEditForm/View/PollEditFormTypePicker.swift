@@ -77,9 +77,9 @@ private struct PollEditFormTypeButton: View {
     
     private var selectionImage: UIImage {
         if type == selectedType {
-            return Asset.Images.pollTypeCheckboxSelected.image
+            return Asset_tchap.Images.tchapPollTypeCheckboxSelected.image
         } else {
-            return Asset.Images.pollTypeCheckboxDefault.image
+            return Asset_tchap.Images.tchapPollTypeCheckboxDefault.image
         }
     }
 }
