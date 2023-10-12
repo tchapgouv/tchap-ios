@@ -1,3 +1,17 @@
+## Changes in 2.5.0 (2023-10-12)
+
+✨ Features
+
+- Activer/désactiver les notifications par email ([#882](https://github.com/tchapgouv/tchap-ios/issues/882))
+- Activation de la zone de saisie email à l'apparition de la vue de création de salon DM ([#884](https://github.com/tchapgouv/tchap-ios/issues/884))
+
+🐛 Bugfixes
+
+- Réparer la fonctionnalité “Inviter à rejoindre Tchap” ([#837](https://github.com/tchapgouv/tchap-ios/issues/837))
+- La gestion des favoris depuis la liste générale des salons ne fonctionne pas ([#867](https://github.com/tchapgouv/tchap-ios/issues/867))
+- Suppression du masquage des salons de messagerie direct (DM) avec externes pendant l'attente de l'inscription des correspondants ([#876](https://github.com/tchapgouv/tchap-ios/issues/876))
+
+
 ## Changes in 2.4.8 (2023-09-20)
 
 ✨ Features
