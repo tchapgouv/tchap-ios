@@ -32,6 +32,7 @@
 @protected BOOL _isSoftLogout;
 @protected BOOL _hasPusherForPushNotifications;
 @protected BOOL _hasPusherForPushKitNotifications;
+@protected BOOL _hasPusherForEmailNotifications; // Tchap: email notifications
 @protected MXPresence _preferredSyncPresence;
 }
 
@@ -78,6 +79,12 @@
  Flag to indicate that an APNS pusher has been set on the homeserver for this device.
  */
 @property (nonatomic, readonly) BOOL hasPusherForPushNotifications;
+
+// Tchap: email notifications
+/**
+ Flag to indicate that an Email pusher has been set on the homeserver for this device.
+ */
+@property (nonatomic, readonly) BOOL hasPusherForEmailNotifications;
 
 /**
  The Push notification activity (based on PushKit) for this account.

@@ -33,10 +33,11 @@ ib:
 strings:
   inputs: Tchap/Assets/Localizations/fr.lproj/Tchap.strings
   outputs:
-    - templateName: flat-swift4
+      templatePath: Templates/Strings/flat-swift4-vector.stencil
       output: Tchap/Generated/Strings.swift
       params:
-        enumName: TchapL10n
+        className: TchapL10n
+        publicAccess: true
 xcassets:  
   - inputs:
       - Tchap/Assets/Images.xcassets  

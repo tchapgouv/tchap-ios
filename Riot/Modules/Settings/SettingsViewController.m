@@ -119,6 +119,7 @@ typedef NS_ENUM(NSUInteger, NOTIFICATION_SETTINGS)
     NOTIFICATION_SETTINGS_DEFAULT_SETTINGS_INDEX,
     NOTIFICATION_SETTINGS_MENTION_AND_KEYWORDS_SETTINGS_INDEX,
     NOTIFICATION_SETTINGS_OTHER_SETTINGS_INDEX,
+    NOTIFICATION_SETTINGS_ENABLE_BY_EMAIL_INDEX, // Tchap: allow notifications by email
 };
 
 typedef NS_ENUM(NSUInteger, CALLS_ENABLE_STUN_SERVER)
@@ -230,7 +231,8 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     __weak id removedAccountObserver;
     __weak id accountUserInfoObserver;
     __weak id pushInfoUpdateObserver;
-    
+    __weak id emailInfoUpdateObserver; // Tchap: Email notification
+ 
     __weak id notificationCenterWillUpdateObserver;
     __weak id notificationCenterDidUpdateObserver;
     __weak id notificationCenterDidFailObserver;
@@ -376,6 +378,11 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenSettings];
 }
 
+// Tchap: fix for destroy not being called (https://github.com/vector-im/element-ios/pull/7697)
+- (void)dealloc {
+    [self destroy];
+}
+
 - (void)updateSections
 {
     NSMutableArray<Section*> *tmpSections = [NSMutableArray arrayWithCapacity:SECTION_TAG_DEACTIVATE_ACCOUNT + 1];
@@ -483,6 +490,10 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_SHOW_DECODED_CONTENT];
     }
 
+    // Tchap: allow enabling email notifications only for DINUM homeserver
+    if ([account.identityServerURL isEqualToString:[BuildSettings.serverUrlPrefix stringByAppendingString:@"agent.dinum.tchap.gouv.fr"]]) {
+        [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_ENABLE_BY_EMAIL_INDEX];
+    }
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX];
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_PIN_UNREAD_INDEX];
     
@@ -760,6 +771,17 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         
     }];
 
+    // Tchap: Email notification. Add observer to push settings
+    emailInfoUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountEmailActivityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self stopActivityIndicator];
+        
+        [self refreshSettings];
+        
+    }];
+
     [self registerAccountDataDidChangeIdentityServerNotification];
     
     // Add each matrix session, to update the view controller appearance according to mx sessions state
@@ -940,6 +962,8 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
         kAppDelegateDidTapStatusBarNotificationObserver = nil;
     }
+    
+    
 }
 
 #pragma mark - Internal methods
@@ -1000,6 +1024,13 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     {
         [[NSNotificationCenter defaultCenter] removeObserver:pushInfoUpdateObserver];
         pushInfoUpdateObserver = nil;
+    }
+    
+    // Tchap: remove Email notification update observer
+    if (emailInfoUpdateObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:emailInfoUpdateObserver name:kMXKAccountEmailActivityDidChangeNotification object:nil];
+        emailInfoUpdateObserver = nil;
     }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -1416,7 +1447,8 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     // Update notification access
     [self refreshSystemNotificationSettings];
     
-    [[MXKAccountManager sharedManager].activeAccounts.firstObject loadCurrentPusher:nil failure:nil];
+    [[MXKAccountManager sharedManager].activeAccounts.firstObject loadCurrentApnsPusher:nil failure:nil];
+    [[MXKAccountManager sharedManager].activeAccounts.firstObject loadCurrentEmailPusher:nil failure:nil]; // Tchap: email notifications
 }
 
 - (void)refreshSystemNotificationSettings
@@ -2192,6 +2224,20 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             labelAndSwitchCell.mxkSwitch.enabled = account.pushNotificationServiceIsActive;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleShowDecodedContent:) forControlEvents:UIControlEventTouchUpInside];
             
+            cell = labelAndSwitchCell;
+        }
+        else if (row == NOTIFICATION_SETTINGS_ENABLE_BY_EMAIL_INDEX) // Tchap: email notifications
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+    
+            labelAndSwitchCell.mxkLabel.text = TchapL10n.settingsNotificationEmail;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleNotificationsByEmail:) forControlEvents:UIControlEventTouchUpInside];
+            
+            BOOL isPushEnabled = account.emailNotificationServiceIsActive;
+            
+            labelAndSwitchCell.mxkSwitch.on = isPushEnabled;
             
             cell = labelAndSwitchCell;
         }
@@ -3377,6 +3423,24 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
                 }
             }];
         }
+    }
+}
+
+// Tchap: email notifications
+- (void)toggleNotificationsByEmail:(UISwitch *)sender
+{
+    if ([MXKAccountManager sharedManager].activeAccounts.count)
+    {
+        [self startActivityIndicator];
+        
+        MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
+        MXKAccount* account = accountManager.activeAccounts.firstObject;
+        
+        [account enableEmailNotifications:sender.isOn success:^{
+            [self stopActivityIndicator];
+        } failure:^(NSError *error) {
+            [self stopActivityIndicator];
+        }];
     }
 }
 
