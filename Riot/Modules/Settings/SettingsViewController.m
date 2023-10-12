@@ -490,7 +490,10 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_SHOW_DECODED_CONTENT];
     }
 
-    [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_ENABLE_BY_EMAIL_INDEX];
+    // Tchap: allow enabling email notifications only for DINUM homeserver
+    if ([account.identityServerURL isEqualToString:[BuildSettings.serverUrlPrefix stringByAppendingString:@"agent.dinum.tchap.gouv.fr"]]) {
+        [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_ENABLE_BY_EMAIL_INDEX];
+    }
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX];
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_PIN_UNREAD_INDEX];
     
