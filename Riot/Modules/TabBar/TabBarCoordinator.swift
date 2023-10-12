@@ -236,12 +236,6 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         appSateIndicator = nil
     }
     
-    func presentInvitePeople() {
-        promptUserToFillAnEmailToInvite { [weak self] email in
-
-        }
-    }
-    
     // MARK: - SplitViewMasterPresentable
     
     var selectedNavigationRouter: NavigationRouterType? {
@@ -260,10 +254,12 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     }
     
     private func showInviteFriends(from sourceView: UIView?) {
-        let myUserId = self.parameters.userSessionsService.mainUserSession?.userId ?? ""
-        
-        let inviteFriendsPresenter = InviteFriendsPresenter()
-        inviteFriendsPresenter.present(for: myUserId, from: self.navigationRouter.toPresentable(), sourceView: sourceView, animated: true)
+// Tchap: commented because Tchap now uses Element Direct Message mechanism
+
+//        let myUserId = self.parameters.userSessionsService.mainUserSession?.userId ?? ""
+//        
+//        let inviteFriendsPresenter = InviteFriendsPresenter()
+//        inviteFriendsPresenter.present(for: myUserId, from: self.navigationRouter.toPresentable(), sourceView: sourceView, animated: true)
     }
     
     private func showBugReport() {
@@ -795,7 +791,7 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         var subMenuActions: [UIAction] = []
         if BuildSettings.sideMenuShowInviteFriends {
             subMenuActions.append(UIAction(title: VectorL10n.inviteTo(AppInfo.current.displayName), image: UIImage(systemName: "envelope")) { [weak self] action in
-                        self?.showInviteFriends(from: nil)
+                self?.showInviteFriends(from: nil)
             })
         }
 

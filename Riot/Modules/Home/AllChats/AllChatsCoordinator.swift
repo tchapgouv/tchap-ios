@@ -30,11 +30,6 @@ class AllChatsCoordinatorParameters {
 }
 
 class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
-    func presentInvitePeople() {
-        //
-    }
-    
-    
     // MARK: Properties
     
     // MARK: Private
@@ -641,6 +636,15 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
 //        return versionCheckCoordinator
 //    }
     
+    private func showInviteFriends(from sourceView: UIView?) {
+ // Tchap: commented because Tchap now uses Element Direct Message mechanism
+         
+ //        let myUserId = self.parameters.userSessionsService.mainUserSession?.userId ?? ""
+ //
+ //        let inviteFriendsPresenter = InviteFriendsPresenter()
+ //        inviteFriendsPresenter.present(for: myUserId, from: self.navigationRouter.toPresentable(), sourceView: sourceView, animated: true)
+     }
+
     private func showBugReport() {
         let bugReportViewController = BugReportViewController()
         

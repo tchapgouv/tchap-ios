@@ -166,10 +166,6 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
     func showAppStateIndicator(with text: String, icon: UIImage?) {
         masterCoordinator?.showAppStateIndicator(with: text, icon: icon)
     }
-
-    func presentInvitePeople() {
-        masterCoordinator?.presentInvitePeople()
-    }
     
     // MARK: - Private methods
     
