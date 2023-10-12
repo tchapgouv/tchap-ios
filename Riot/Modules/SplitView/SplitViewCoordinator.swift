@@ -167,10 +167,6 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
     func showAppStateIndicator(with text: String, icon: UIImage?, action: ToastViewState.Action? = nil) {
         masterCoordinator?.showAppStateIndicator(with: text, icon: icon, action: action) // Tchap : add tap action
     }
-
-    func presentInvitePeople() {
-        masterCoordinator?.presentInvitePeople()
-    }
     
     // MARK: - Private methods
     

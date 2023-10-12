@@ -239,6 +239,8 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     }
 
     private func showInviteFriends(from sourceView: UIView?) {
+// Tchap: commented because Tchap now uses Element Direct Message mechanism
+
 //        let myUserId = self.parameters.userSessionsService.mainUserSession?.userId ?? ""
 //
 //        let inviteFriendsPresenter = InviteFriendsPresenter()

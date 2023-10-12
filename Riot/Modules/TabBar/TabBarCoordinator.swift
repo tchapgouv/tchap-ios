@@ -70,8 +70,6 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     }
     
     private var indicators = [UserIndicator]()
-    // Tchap: Add invite service for user invitation
-    private var inviteService: InviteServiceType?
     private var errorPresenter: ErrorPresenter?
     private weak var currentAlertController: UIAlertController?
     
@@ -239,12 +237,6 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         appSateIndicator = nil
     }
     
-    func presentInvitePeople() {
-        promptUserToFillAnEmailToInvite { [weak self] email in
-            self?.sendEmailInvite(to: email)
-        }
-    }
-    
     // MARK: - SplitViewMasterPresentable
     
     var selectedNavigationRouter: NavigationRouterType? {
@@ -263,10 +255,12 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     }
     
     private func showInviteFriends(from sourceView: UIView?) {
-        let myUserId = self.parameters.userSessionsService.mainUserSession?.userId ?? ""
-        
-        let inviteFriendsPresenter = InviteFriendsPresenter()
-        inviteFriendsPresenter.present(for: myUserId, from: self.navigationRouter.toPresentable(), sourceView: sourceView, animated: true)
+// Tchap: commented because Tchap now uses Element Direct Message mechanism
+
+//        let myUserId = self.parameters.userSessionsService.mainUserSession?.userId ?? ""
+//        
+//        let inviteFriendsPresenter = InviteFriendsPresenter()
+//        inviteFriendsPresenter.present(for: myUserId, from: self.navigationRouter.toPresentable(), sourceView: sourceView, animated: true)
     }
     
     private func showBugReport() {
@@ -798,7 +792,7 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         var subMenuActions: [UIAction] = []
         if BuildSettings.sideMenuShowInviteFriends {
             subMenuActions.append(UIAction(title: VectorL10n.inviteTo(AppInfo.current.displayName), image: UIImage(systemName: "envelope")) { [weak self] action in
-                        self?.showInviteFriends(from: nil)
+                self?.showInviteFriends(from: nil)
             })
         }
 
@@ -1018,73 +1012,6 @@ extension TabBarCoordinator {
         self.currentAlertController = alertController
         
         masterTabBarController.present(alertController, animated: true)
-    }
-    
-    private func sendEmailInvite(to email: String) {
-        guard let session = self.currentMatrixSession else { return }
-        if self.inviteService == nil {
-            self.inviteService = InviteService(session: session)
-        }
-        guard let inviteService = self.inviteService else { return }
-        
-        self.activityIndicatorPresenter.presentActivityIndicator(on: masterTabBarController.view, animated: true)
-        inviteService.sendEmailInvite(to: email) { [weak self] (response) in
-            guard let sself = self else {
-                return
-            }
-            
-            sself.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
-            switch response {
-            case .success(let result):
-                var message: String
-                var discoveredUserID: String?
-                switch result {
-                case .inviteHasBeenSent(roomID: _):
-                    message = TchapL10n.inviteSendingSucceeded
-                case .inviteAlreadySent(roomID: _):
-                    message = TchapL10n.inviteAlreadySentByEmail(email)
-                case .inviteIgnoredForDiscoveredUser(userID: let userID):
-                    discoveredUserID = userID
-                    message = TchapL10n.inviteNotSentForDiscoveredUser
-                case .inviteIgnoredForUnauthorizedEmail:
-                    message = TchapL10n.inviteNotSentForUnauthorizedEmail(email)
-                }
-                
-                sself.currentAlertController?.dismiss(animated: false)
-                
-                let alert = UIAlertController(title: TchapL10n.inviteInformationTitle, message: message, preferredStyle: .alert)
-                
-                let okTitle = VectorL10n.ok
-                let okAction = UIAlertAction(title: okTitle, style: .default, handler: { action in
-                    if let userID = discoveredUserID {
-                        // Open the discussion
-                        AppDelegate.theDelegate().startDirectChat(withUserId: userID, completion: nil)
-                    }
-                })
-                alert.addAction(okAction)
-                sself.currentAlertController = alert
-                
-                sself.masterTabBarController.present(alert, animated: true, completion: nil)
-            case .failure(let error):
-                let errorPresentable = sself.inviteErrorPresentable(from: error)
-                sself.errorPresenter?.present(errorPresentable: errorPresentable, animated: true)
-            }
-        }
-    }
-    
-    private func inviteErrorPresentable(from error: Error) -> ErrorPresentable {
-        let errorTitle = TchapL10n.inviteSendingFailedTitle
-        let errorMessage: String
-        
-        let nsError = error as NSError
-        
-        if let message = nsError.userInfo[NSLocalizedDescriptionKey] as? String {
-            errorMessage = message
-        } else {
-            errorMessage = TchapL10n.errorMessageDefault
-        }
-        
-        return ErrorPresentableImpl(title: errorTitle, message: errorMessage)
     }
 }
 

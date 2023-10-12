@@ -45,8 +45,4 @@ protocol SplitViewCoordinatorType: Coordinator, Presentable {
     
     /// Hide the message related to the application state currently displayed.
     func hideAppStateIndicator()
-    
-    // Tchap: redirect to invite people alert
-    /// Present invite people alert (with textField)
-    func presentInvitePeople()
 }
