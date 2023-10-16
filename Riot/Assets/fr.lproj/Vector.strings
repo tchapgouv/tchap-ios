@@ -2792,5 +2792,5 @@
 // Contacts
 "local_contacts_access_discovery_warning" = "Afin d’afficher qui parmi vos contacts utilise déjà Tchap, nous pouvons exploiter les adresses e-mails de votre carnet d'adresse. Ces données ne seront pas mémorisées. Pour plus d'informations, veuillez consulter les Termes et Conditions disponibles dans les paramètres de l'application.";
 // Events formatter
-"notice_crypto_unable_to_decrypt" = "** Echec de déchiffrement : %@ **";
-"notice_crypto_error_unknown_inbound_session_id" = "Veuillez ouvrir Tchap sur vos autres appareils afin d'autoriser le partage de clés.";
+"notice_crypto_unable_to_decrypt" = "Message verrouillé."; // Tchap
+"notice_crypto_error_unknown_inbound_session_id" = "Ouvrez Tchap sur un autre appareil pour récupérer vos messages."; // Tchap

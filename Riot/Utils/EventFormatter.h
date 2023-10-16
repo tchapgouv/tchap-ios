@@ -32,6 +32,11 @@ FOUNDATION_EXPORT NSString *const EventFormatterLinkActionSeparator;
 FOUNDATION_EXPORT NSString *const EventFormatterEditedEventLinkAction;
 
 /**
+ Link string used in attributed strings to mark a Tchap FAQ article event action.
+ */
+FOUNDATION_EXPORT NSString *const EventFormatterFaqLinkAction; // Tchap
+
+/**
  `EventFormatter` class inherits from `MXKEventFormatter` to define Vector formatting
  */
 @interface EventFormatter : MXKEventFormatter
