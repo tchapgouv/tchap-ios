@@ -31,9 +31,8 @@
 @class UniversalLinkParameters;
 @protocol RoomViewControllerDelegate;
 @class RoomDisplayConfiguration;
-// Tchap: Disable Threads
+@class ThreadsCoordinatorBridgePresenter;
 // Tchap: Disable Live location sharing
-//@class ThreadsCoordinatorBridgePresenter;
 //@class LiveLocationSharingBannerView;
 @class VoiceBroadcastService;
 @class ComposerLinkActionBridgePresenter;
@@ -355,8 +354,7 @@ didRequestEditForPollWithStartEvent:(MXEvent *)startEvent;
 - (void)roomViewControllerDidTapLiveLocationSharingBanner:(RoomViewController *)roomViewController;
 
 /// Request a threads coordinator for a given threadId, used to open a thread from within a room.
-// Tchap: Disable Threads
-//- (nullable ThreadsCoordinatorBridgePresenter *)threadsCoordinatorForRoomViewController:(RoomViewController *)roomViewController threadId:(nullable NSString *)threadId;
+- (nullable ThreadsCoordinatorBridgePresenter *)threadsCoordinatorForRoomViewController:(RoomViewController *)roomViewController threadId:(nullable NSString *)threadId;
 
 @end
 

@@ -208,9 +208,9 @@ static CGSize kThreadListBarButtonItemImageSize;
 @property (nonatomic, strong) RoomInfoCoordinatorBridgePresenter *roomInfoCoordinatorBridgePresenter;
 //@property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
 @property (nonatomic, strong) RoomParticipantsInviteCoordinatorBridgePresenter *participantsInvitePresenter;
-//@property (nonatomic, strong) ThreadsCoordinatorBridgePresenter *threadsBridgePresenter;
-//@property (nonatomic, strong) ThreadsBetaCoordinatorBridgePresenter *threadsBetaBridgePresenter;
-//@property (nonatomic, strong) SlidingModalPresenter *threadsNoticeModalPresenter;
+@property (nonatomic, strong) ThreadsCoordinatorBridgePresenter *threadsBridgePresenter;
+@property (nonatomic, strong) ThreadsBetaCoordinatorBridgePresenter *threadsBetaBridgePresenter;
+@property (nonatomic, strong) SlidingModalPresenter *threadsNoticeModalPresenter;
 @property (nonatomic, getter=isActivitiesViewExpanded) BOOL activitiesViewExpanded;
 @property (nonatomic, getter=isScrollToBottomHidden) BOOL scrollToBottomHidden;
 @property (nonatomic, getter=isMissedDiscussionsBadgeHidden) BOOL missedDiscussionsBadgeHidden;
@@ -6164,20 +6164,18 @@ static CGSize kThreadListBarButtonItemImageSize;
             }
         };
 
-        // Tchap: Disable Threads
-//        if (self.roomDataSource.threadId)
-//        {
-//            [ThreadDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
-//                                            initialEventId:nil
-//                                                  threadId:self.roomDataSource.threadId
-//                                          andMatrixSession:self.mainSession
-//                                                onComplete:^(ThreadDataSource *threadDataSource)
-//             {
-//                continueBlock(threadDataSource, YES);
-//            }];
-//        }
-//        else
-        if (self.roomDataSource.roomId)
+        if (self.roomDataSource.threadId)
+        {
+            [ThreadDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
+                                            initialEventId:nil
+                                                  threadId:self.roomDataSource.threadId
+                                          andMatrixSession:self.mainSession
+                                                onComplete:^(ThreadDataSource *threadDataSource)
+             {
+                continueBlock(threadDataSource, YES);
+            }];
+        }
+        else if (self.roomDataSource.roomId)
         {
             if (self.isContextPreview)
             {
@@ -7043,9 +7041,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     [items addObject:[self replyMenuItemWithEvent:event]];
     if (showThreadOption)
     {
-        // Tchap: Disable Threads
         //  add "Thread" option only if not already in a thread
-//        [items addObject:[self replyInThreadMenuItemWithEvent:event]];
+        [items addObject:[self replyInThreadMenuItemWithEvent:event]];
     }
     [items addObject:[self editMenuItemWithEvent:event]];
     if (!showThreadOption)
@@ -7451,63 +7448,60 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)showThreadsNotice
 {
-    // Tchap: Disable Threads
-//    if (!self.threadsNoticeModalPresenter)
-//    {
-//        self.threadsNoticeModalPresenter = [SlidingModalPresenter new];
-//    }
-//
-//    [self.threadsNoticeModalPresenter dismissWithAnimated:NO completion:nil];
-//
-//    ThreadsNoticeViewController *threadsNoticeVC = [ThreadsNoticeViewController instantiate];
-//
-//    MXWeakify(self);
-//
-//    threadsNoticeVC.didTapDoneButton = ^{
-//
-//        MXStrongifyAndReturnIfNil(self);
-//
-//        [self.threadsNoticeModalPresenter dismissWithAnimated:YES completion:^{
-//            RiotSettings.shared.threadsNoticeDisplayed = YES;
-//        }];
-//    };
-//
-//    [self.threadsNoticeModalPresenter present:threadsNoticeVC
-//                                         from:self.presentedViewController?:self
-//                                     animated:YES
-//                                      options:SlidingModalPresenter.SpanningOption
-//                                   completion:nil];
+    if (!self.threadsNoticeModalPresenter)
+    {
+        self.threadsNoticeModalPresenter = [SlidingModalPresenter new];
+    }
+
+    [self.threadsNoticeModalPresenter dismissWithAnimated:NO completion:nil];
+
+    ThreadsNoticeViewController *threadsNoticeVC = [ThreadsNoticeViewController instantiate];
+
+    MXWeakify(self);
+
+    threadsNoticeVC.didTapDoneButton = ^{
+
+        MXStrongifyAndReturnIfNil(self);
+
+        [self.threadsNoticeModalPresenter dismissWithAnimated:YES completion:^{
+            RiotSettings.shared.threadsNoticeDisplayed = YES;
+        }];
+    };
+
+    [self.threadsNoticeModalPresenter present:threadsNoticeVC
+                                         from:self.presentedViewController?:self
+                                     animated:YES
+                                      options:SlidingModalPresenter.SpanningOption
+                                   completion:nil];
 }
 
 - (void)showThreadsBetaForEvent:(MXEvent *)event
 {
-    // Tchap: Disable Threads
-//    if (self.threadsBetaBridgePresenter)
-//    {
-//        [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:nil];
-//        self.threadsBetaBridgePresenter = nil;
-//    }
-//
-//    self.threadsBetaBridgePresenter = [[ThreadsBetaCoordinatorBridgePresenter alloc] initWithThreadId:event.eventId
-//                                                                                             infoText:VectorL10n.threadsBetaInformation
-//                                                                                       additionalText:nil];
-//    self.threadsBetaBridgePresenter.delegate = self;
-//
-//    [self.threadsBetaBridgePresenter presentFrom:self.presentedViewController?:self animated:YES];
+    if (self.threadsBetaBridgePresenter)
+    {
+        [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:nil];
+        self.threadsBetaBridgePresenter = nil;
+    }
+
+    self.threadsBetaBridgePresenter = [[ThreadsBetaCoordinatorBridgePresenter alloc] initWithThreadId:event.eventId
+                                                                                             infoText:VectorL10n.threadsBetaInformation
+                                                                                       additionalText:nil];
+    self.threadsBetaBridgePresenter.delegate = self;
+
+    [self.threadsBetaBridgePresenter presentFrom:self.presentedViewController?:self animated:YES];
 }
 
 - (void)openThreadWithId:(NSString *)threadId
 {
-    // Tchap: Disable Threads
-//    if (self.threadsBridgePresenter)
-//    {
-//        [self.threadsBridgePresenter dismissWithAnimated:YES completion:nil];
-//        self.threadsBridgePresenter = nil;
-//    }
-//
-//    self.threadsBridgePresenter = [self.delegate threadsCoordinatorForRoomViewController:self threadId:threadId];
-//    self.threadsBridgePresenter.delegate = self;
-//    [self.threadsBridgePresenter pushFrom:self.navigationController animated:YES];
+    if (self.threadsBridgePresenter)
+    {
+        [self.threadsBridgePresenter dismissWithAnimated:YES completion:nil];
+        self.threadsBridgePresenter = nil;
+    }
+
+    self.threadsBridgePresenter = [self.delegate threadsCoordinatorForRoomViewController:self threadId:threadId];
+    self.threadsBridgePresenter.delegate = self;
+    [self.threadsBridgePresenter pushFrom:self.navigationController animated:YES];
 }
 
 - (void)highlightAndDisplayEvent:(NSString *)eventId completion:(void (^)(void))completion
@@ -8206,51 +8200,49 @@ static CGSize kThreadListBarButtonItemImageSize;
 }
 
 #pragma mark - ThreadsCoordinatorBridgePresenterDelegate
-// Tchap: Disable Threads
-//- (void)threadsCoordinatorBridgePresenterDelegateDidComplete:(ThreadsCoordinatorBridgePresenter *)coordinatorBridgePresenter
-//{
-//    self.threadsBridgePresenter = nil;
-//}
-//
-//- (void)threadsCoordinatorBridgePresenterDelegateDidSelect:(ThreadsCoordinatorBridgePresenter *)coordinatorBridgePresenter roomId:(NSString *)roomId eventId:(NSString *)eventId
-//{
-//    MXWeakify(self);
-//    [self.threadsBridgePresenter dismissWithAnimated:YES completion:^{
-//        MXStrongifyAndReturnIfNil(self);
-//
-//        if (eventId)
-//        {
-//            [self highlightAndDisplayEvent:eventId completion:nil];
-//        }
-//    }];
-//}
-//
-//- (void)threadsCoordinatorBridgePresenterDidDismissInteractively:(ThreadsCoordinatorBridgePresenter *)coordinatorBridgePresenter
-//{
-//    self.threadsBridgePresenter = nil;
-//}
+- (void)threadsCoordinatorBridgePresenterDelegateDidComplete:(ThreadsCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    self.threadsBridgePresenter = nil;
+}
+
+- (void)threadsCoordinatorBridgePresenterDelegateDidSelect:(ThreadsCoordinatorBridgePresenter *)coordinatorBridgePresenter roomId:(NSString *)roomId eventId:(NSString *)eventId
+{
+    MXWeakify(self);
+    [self.threadsBridgePresenter dismissWithAnimated:YES completion:^{
+        MXStrongifyAndReturnIfNil(self);
+
+        if (eventId)
+        {
+            [self highlightAndDisplayEvent:eventId completion:nil];
+        }
+    }];
+}
+
+- (void)threadsCoordinatorBridgePresenterDidDismissInteractively:(ThreadsCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    self.threadsBridgePresenter = nil;
+}
 
 #pragma mark - ThreadsBetaCoordinatorBridgePresenterDelegate
-// Tchap: Disable Threads
-//- (void)threadsBetaCoordinatorBridgePresenterDelegateDidTapEnable:(ThreadsBetaCoordinatorBridgePresenter *)coordinatorBridgePresenter
-//{
-//    MXWeakify(self);
-//    [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:^{
-//        MXStrongifyAndReturnIfNil(self);
-//        [self cancelEventSelection];
-//        [self.roomDataSource reload];
-//        [self openThreadWithId:coordinatorBridgePresenter.threadId];
-//    }];
-//}
-//
-//- (void)threadsBetaCoordinatorBridgePresenterDelegateDidTapCancel:(ThreadsBetaCoordinatorBridgePresenter *)coordinatorBridgePresenter
-//{
-//    MXWeakify(self);
-//    [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:^{
-//        MXStrongifyAndReturnIfNil(self);
-//        [self cancelEventSelection];
-//    }];
-//}
+- (void)threadsBetaCoordinatorBridgePresenterDelegateDidTapEnable:(ThreadsBetaCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    MXWeakify(self);
+    [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:^{
+        MXStrongifyAndReturnIfNil(self);
+        [self cancelEventSelection];
+        [self.roomDataSource reload];
+        [self openThreadWithId:coordinatorBridgePresenter.threadId];
+    }];
+}
+
+- (void)threadsBetaCoordinatorBridgePresenterDelegateDidTapCancel:(ThreadsBetaCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    MXWeakify(self);
+    [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:^{
+        MXStrongifyAndReturnIfNil(self);
+        [self cancelEventSelection];
+    }];
+}
 
 #pragma mark - MXThreadingServiceDelegate
 

@@ -204,78 +204,78 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
         }
     }
     
-//    override func addThreadSummaryView(_ threadSummaryView: ThreadSummaryView,
-//                              toCell cell: MXKRoomBubbleTableViewCell,
-//                              cellData: RoomBubbleCellData,
-//                              contentViewPositionY: CGFloat,
-//                              upperDecorationView: UIView?) {
-//
-//        if let threadSummaryDisplayable = cell as? RoomCellThreadSummaryDisplayable {
-//            threadSummaryDisplayable.addThreadSummaryView(threadSummaryView)
-//        } else {
-//            
-//            cell.addTemporarySubview(threadSummaryView)
-//            threadSummaryView.translatesAutoresizingMaskIntoConstraints = false
-//
-//            let cellContentView = cell.contentView
-//
-//            cellContentView.addSubview(threadSummaryView)
-//            
-//            var rightMargin: CGFloat
-//            var leftMargin: CGFloat
-//            
-//            let leadingConstraint: NSLayoutConstraint
-//            let trailingConstraint: NSLayoutConstraint
-//                        
-//            // Incoming message
-//            if cellData.isIncoming {
-//
-//                leftMargin = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left
-//                if cellData.containsBubbleComponentWithEncryptionBadge {
-//                    leftMargin += PlainRoomCellLayoutConstants.encryptedContentLeftMargin
-//                }
-//                
-//                rightMargin = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
-//                
-//                leadingConstraint = threadSummaryView.leadingAnchor.constraint(equalTo: cellContentView.leadingAnchor,
-//                                                           constant: leftMargin)
-//                trailingConstraint = threadSummaryView.trailingAnchor.constraint(lessThanOrEqualTo: cellContentView.trailingAnchor,
-//                                                                                 constant: -rightMargin)
-//            } else {
-//                // Outgoing message
-//                                
-//                leftMargin = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.left
-//                rightMargin = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
-//                
-//                leadingConstraint = threadSummaryView.leadingAnchor.constraint(greaterThanOrEqualTo: cellContentView.leadingAnchor,
-//                                                           constant: leftMargin)
-//                trailingConstraint = threadSummaryView.trailingAnchor.constraint(equalTo: cellContentView.trailingAnchor,
-//                                                                                 constant: -rightMargin)
-//            }
-//            
-//            let topMargin = PlainRoomCellLayoutConstants.threadSummaryViewTopMargin
-//            
-//            let height = ThreadSummaryView.contentViewHeight(forThread: threadSummaryView.thread,
-//                                                             fitting: cellData.maxTextViewWidth)
-//
-//            // The top constraint may need to include the URL preview view
-//            let topConstraint: NSLayoutConstraint
-//            if let upperDecorationView = upperDecorationView {
-//                topConstraint = threadSummaryView.topAnchor.constraint(equalTo: upperDecorationView.bottomAnchor,
-//                                                                       constant: topMargin)
-//            } else {
-//                topConstraint = threadSummaryView.topAnchor.constraint(equalTo: cellContentView.topAnchor,
-//                                                                       constant: contentViewPositionY + topMargin)
-//            }
-//
-//            NSLayoutConstraint.activate([
-//                leadingConstraint,
-//                trailingConstraint,
-//                threadSummaryView.heightAnchor.constraint(equalToConstant: height),
-//                topConstraint
-//            ])
-//        }
-//    }
+    override func addThreadSummaryView(_ threadSummaryView: ThreadSummaryView,
+                              toCell cell: MXKRoomBubbleTableViewCell,
+                              cellData: RoomBubbleCellData,
+                              contentViewPositionY: CGFloat,
+                              upperDecorationView: UIView?) {
+
+        if let threadSummaryDisplayable = cell as? RoomCellThreadSummaryDisplayable {
+            threadSummaryDisplayable.addThreadSummaryView(threadSummaryView)
+        } else {
+            
+            cell.addTemporarySubview(threadSummaryView)
+            threadSummaryView.translatesAutoresizingMaskIntoConstraints = false
+
+            let cellContentView = cell.contentView
+
+            cellContentView.addSubview(threadSummaryView)
+            
+            var rightMargin: CGFloat
+            var leftMargin: CGFloat
+            
+            let leadingConstraint: NSLayoutConstraint
+            let trailingConstraint: NSLayoutConstraint
+                        
+            // Incoming message
+            if cellData.isIncoming {
+
+                leftMargin = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left
+                if cellData.containsBubbleComponentWithEncryptionBadge {
+                    leftMargin += PlainRoomCellLayoutConstants.encryptedContentLeftMargin
+                }
+                
+                rightMargin = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
+                
+                leadingConstraint = threadSummaryView.leadingAnchor.constraint(equalTo: cellContentView.leadingAnchor,
+                                                           constant: leftMargin)
+                trailingConstraint = threadSummaryView.trailingAnchor.constraint(lessThanOrEqualTo: cellContentView.trailingAnchor,
+                                                                                 constant: -rightMargin)
+            } else {
+                // Outgoing message
+                                
+                leftMargin = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.left
+                rightMargin = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
+                
+                leadingConstraint = threadSummaryView.leadingAnchor.constraint(greaterThanOrEqualTo: cellContentView.leadingAnchor,
+                                                           constant: leftMargin)
+                trailingConstraint = threadSummaryView.trailingAnchor.constraint(equalTo: cellContentView.trailingAnchor,
+                                                                                 constant: -rightMargin)
+            }
+            
+            let topMargin = PlainRoomCellLayoutConstants.threadSummaryViewTopMargin
+            
+            let height = ThreadSummaryView.contentViewHeight(forThread: threadSummaryView.thread,
+                                                             fitting: cellData.maxTextViewWidth)
+
+            // The top constraint may need to include the URL preview view
+            let topConstraint: NSLayoutConstraint
+            if let upperDecorationView = upperDecorationView {
+                topConstraint = threadSummaryView.topAnchor.constraint(equalTo: upperDecorationView.bottomAnchor,
+                                                                       constant: topMargin)
+            } else {
+                topConstraint = threadSummaryView.topAnchor.constraint(equalTo: cellContentView.topAnchor,
+                                                                       constant: contentViewPositionY + topMargin)
+            }
+
+            NSLayoutConstraint.activate([
+                leadingConstraint,
+                trailingConstraint,
+                threadSummaryView.heightAnchor.constraint(equalToConstant: height),
+                topConstraint
+            ])
+        }
+    }
     
     // MARK: - Private
     

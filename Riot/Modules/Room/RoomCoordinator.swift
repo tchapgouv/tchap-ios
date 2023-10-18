@@ -80,13 +80,12 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         self.selectedEventId = parameters.eventId
         self.userIndicatorStore = UserIndicatorStore(presenter: parameters.userIndicatorPresenter)
         
-        // Tchap: Disable Threads
-//        if let threadId = parameters.threadId {
-//            self.roomViewController = ThreadViewController.instantiate(withThreadId: threadId,
-//                                                                       configuration: parameters.displayConfiguration)
-//        } else {
+        if let threadId = parameters.threadId {
+            self.roomViewController = ThreadViewController.instantiate(withThreadId: threadId,
+                                                                       configuration: parameters.displayConfiguration)
+        } else {
             self.roomViewController = RoomViewController.instantiate(with: parameters.displayConfiguration)
-//        }
+        }
         self.roomViewController.userIndicatorStore = userIndicatorStore
         self.roomViewController.showSettingsInitially = parameters.showSettingsInitially
         

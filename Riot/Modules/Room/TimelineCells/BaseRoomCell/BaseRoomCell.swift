@@ -359,16 +359,16 @@ class BaseRoomCell: MXKRoomBubbleTableViewCell, BaseRoomCellProtocol {
 
     // MARK: - RoomCellThreadSummaryDisplayable
 
-//    func addThreadSummaryView(_ threadSummaryView: ThreadSummaryView) {
-//        self.roomCellContentView?.addThreadSummaryView(threadSummaryView)
-//
-//        // tmpSubviews is used for touch detection in MXKRoomBubbleTableViewCell
-//        self.addTemporarySubview(threadSummaryView)
-//    }
-//
-//    func removeThreadSummaryView() {
-//        self.roomCellContentView?.removeThreadSummaryView()
-//    }
+    func addThreadSummaryView(_ threadSummaryView: ThreadSummaryView) {
+        self.roomCellContentView?.addThreadSummaryView(threadSummaryView)
+
+        // tmpSubviews is used for touch detection in MXKRoomBubbleTableViewCell
+        self.addTemporarySubview(threadSummaryView)
+    }
+
+    func removeThreadSummaryView() {
+        self.roomCellContentView?.removeThreadSummaryView()
+    }
     
     // MARK: - RoomCellReadMarkerDisplayable
             

@@ -152,54 +152,54 @@ class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
         }
     }
 
-//    func addThreadSummaryView(_ threadSummaryView: ThreadSummaryView,
-//                              toCell cell: MXKRoomBubbleTableViewCell,
-//                              cellData: RoomBubbleCellData,
-//                              contentViewPositionY: CGFloat,
-//                              upperDecorationView: UIView?) {
-//
-//        cell.addTemporarySubview(threadSummaryView)
-//
-//        if let threadSummaryDisplayable = cell as? RoomCellThreadSummaryDisplayable {
-//            threadSummaryDisplayable.addThreadSummaryView(threadSummaryView)
-//        } else {
-//            threadSummaryView.translatesAutoresizingMaskIntoConstraints = false
-//
-//            let cellContentView = cell.contentView
-//
-//            cellContentView.addSubview(threadSummaryView)
-//
-//            var leftMargin = PlainRoomCellLayoutConstants.reactionsViewLeftMargin
-//
-//            if cellData.containsBubbleComponentWithEncryptionBadge {
-//                leftMargin += PlainRoomCellLayoutConstants.encryptedContentLeftMargin
-//            }
-//
-//            let rightMargin = PlainRoomCellLayoutConstants.reactionsViewRightMargin
-//            let topMargin = PlainRoomCellLayoutConstants.threadSummaryViewTopMargin
-//            let height = ThreadSummaryView.contentViewHeight(forThread: threadSummaryView.thread,
-//                                                             fitting: cellData.maxTextViewWidth)
-//
-//            // The top constraint may need to include the URL preview view
-//            let topConstraint: NSLayoutConstraint
-//            if let upperDecorationView = upperDecorationView {
-//                topConstraint = threadSummaryView.topAnchor.constraint(equalTo: upperDecorationView.bottomAnchor,
-//                                                                       constant: topMargin)
-//            } else {
-//                topConstraint = threadSummaryView.topAnchor.constraint(equalTo: cellContentView.topAnchor,
-//                                                                       constant: contentViewPositionY + topMargin)
-//            }
-//
-//            NSLayoutConstraint.activate([
-//                threadSummaryView.leadingAnchor.constraint(equalTo: cellContentView.leadingAnchor,
-//                                                           constant: leftMargin),
-//                threadSummaryView.trailingAnchor.constraint(lessThanOrEqualTo: cellContentView.trailingAnchor,
-//                                                            constant: -rightMargin),
-//                threadSummaryView.heightAnchor.constraint(equalToConstant: height),
-//                topConstraint
-//            ])
-//        }
-//    }
+    func addThreadSummaryView(_ threadSummaryView: ThreadSummaryView,
+                              toCell cell: MXKRoomBubbleTableViewCell,
+                              cellData: RoomBubbleCellData,
+                              contentViewPositionY: CGFloat,
+                              upperDecorationView: UIView?) {
+
+        cell.addTemporarySubview(threadSummaryView)
+
+        if let threadSummaryDisplayable = cell as? RoomCellThreadSummaryDisplayable {
+            threadSummaryDisplayable.addThreadSummaryView(threadSummaryView)
+        } else {
+            threadSummaryView.translatesAutoresizingMaskIntoConstraints = false
+
+            let cellContentView = cell.contentView
+
+            cellContentView.addSubview(threadSummaryView)
+
+            var leftMargin = PlainRoomCellLayoutConstants.reactionsViewLeftMargin
+
+            if cellData.containsBubbleComponentWithEncryptionBadge {
+                leftMargin += PlainRoomCellLayoutConstants.encryptedContentLeftMargin
+            }
+
+            let rightMargin = PlainRoomCellLayoutConstants.reactionsViewRightMargin
+            let topMargin = PlainRoomCellLayoutConstants.threadSummaryViewTopMargin
+            let height = ThreadSummaryView.contentViewHeight(forThread: threadSummaryView.thread,
+                                                             fitting: cellData.maxTextViewWidth)
+
+            // The top constraint may need to include the URL preview view
+            let topConstraint: NSLayoutConstraint
+            if let upperDecorationView = upperDecorationView {
+                topConstraint = threadSummaryView.topAnchor.constraint(equalTo: upperDecorationView.bottomAnchor,
+                                                                       constant: topMargin)
+            } else {
+                topConstraint = threadSummaryView.topAnchor.constraint(equalTo: cellContentView.topAnchor,
+                                                                       constant: contentViewPositionY + topMargin)
+            }
+
+            NSLayoutConstraint.activate([
+                threadSummaryView.leadingAnchor.constraint(equalTo: cellContentView.leadingAnchor,
+                                                           constant: leftMargin),
+                threadSummaryView.trailingAnchor.constraint(lessThanOrEqualTo: cellContentView.trailingAnchor,
+                                                            constant: -rightMargin),
+                threadSummaryView.heightAnchor.constraint(equalToConstant: height),
+                topConstraint
+            ])
+        }
+    }
 
     func addSendStatusView(toCell cell: MXKRoomBubbleTableViewCell, withFailedEventIds failedEventIds: Set<AnyHashable>) {
         cell.updateTickView(withFailedEventIds: failedEventIds)

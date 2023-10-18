@@ -240,43 +240,43 @@ extension RoomCellContentView: RoomCellReactionsDisplayable {
 // MARK: - RoomCellThreadSummaryDisplayable
 extension RoomCellContentView: RoomCellThreadSummaryDisplayable {
     
-//    func addThreadSummaryView(_ threadSummaryView: ThreadSummaryView) {
-//        
-//        guard let containerView = self.threadSummaryContentView else {
-//            return
-//        }
-//        
-//        containerView.vc_removeAllSubviews()
-//        
-//        containerView.translatesAutoresizingMaskIntoConstraints = false
-//        containerView.addSubview(threadSummaryView)
-//        
-//        let leadingConstraint: NSLayoutConstraint
-//        let trailingConstraint: NSLayoutConstraint
-//        
-//        if self.decorationViewsAlignment == .right {
-//            leadingConstraint = threadSummaryView.leadingAnchor.constraint(greaterThanOrEqualTo: containerView.leadingAnchor)
-//            trailingConstraint = threadSummaryView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
-//        } else {
-//            leadingConstraint = threadSummaryView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor)
-//            trailingConstraint =             threadSummaryView.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor)
-//        }
-//        
-//        NSLayoutConstraint.activate([
-//            leadingConstraint,
-//            threadSummaryView.topAnchor.constraint(equalTo: containerView.topAnchor),
-//            threadSummaryView.heightAnchor.constraint(equalToConstant: PlainRoomCellLayoutConstants.threadSummaryViewHeight),
-//            threadSummaryView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-//            trailingConstraint
-//        ])
-//        
-//        self.showThreadSummary = true
-//    }
-//
-//    func removeThreadSummaryView() {
-//        self.showThreadSummary = false
-//        self.threadSummaryContentView.vc_removeAllSubviews()
-//    }
+    func addThreadSummaryView(_ threadSummaryView: ThreadSummaryView) {
+        
+        guard let containerView = self.threadSummaryContentView else {
+            return
+        }
+        
+        containerView.vc_removeAllSubviews()
+        
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(threadSummaryView)
+        
+        let leadingConstraint: NSLayoutConstraint
+        let trailingConstraint: NSLayoutConstraint
+        
+        if self.decorationViewsAlignment == .right {
+            leadingConstraint = threadSummaryView.leadingAnchor.constraint(greaterThanOrEqualTo: containerView.leadingAnchor)
+            trailingConstraint = threadSummaryView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
+        } else {
+            leadingConstraint = threadSummaryView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor)
+            trailingConstraint =             threadSummaryView.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor)
+        }
+        
+        NSLayoutConstraint.activate([
+            leadingConstraint,
+            threadSummaryView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            threadSummaryView.heightAnchor.constraint(equalToConstant: PlainRoomCellLayoutConstants.threadSummaryViewHeight),
+            threadSummaryView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            trailingConstraint
+        ])
+        
+        self.showThreadSummary = true
+    }
+
+    func removeThreadSummaryView() {
+        self.showThreadSummary = false
+        self.threadSummaryContentView.vc_removeAllSubviews()
+    }
 }
 
 // MARK: - RoomCellURLPreviewDisplayable

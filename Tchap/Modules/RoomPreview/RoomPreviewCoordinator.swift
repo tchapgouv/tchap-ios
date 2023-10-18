@@ -305,8 +305,7 @@ extension RoomPreviewCoordinator: RoomViewControllerDelegate {
         //
     }
 
-    // Tchap: Disable Threads
-//    func threadsCoordinator(for roomViewController: RoomViewController, threadId: String?) -> ThreadsCoordinatorBridgePresenter? {
-//        return nil
-//    }
+    func threadsCoordinator(for roomViewController: RoomViewController, threadId: String?) -> ThreadsCoordinatorBridgePresenter? {
+        return nil
+    }
 }
