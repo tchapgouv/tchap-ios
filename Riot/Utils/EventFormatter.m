@@ -32,6 +32,7 @@
 NSString *const EventFormatterOnReRequestKeysLinkAction = @"EventFormatterOnReRequestKeysLinkAction";
 NSString *const EventFormatterLinkActionSeparator = @"/";
 NSString *const EventFormatterEditedEventLinkAction = @"EventFormatterEditedEventLinkAction";
+NSString *const EventFormatterFaqLinkAction = @"EventFormatterFaqLinkAction"; // Tchap
 
 NSString *const FunctionalMembersStateEventType = @"io.element.functional_members";
 NSString *const FunctionalMembersServiceMembersKey = @"service_members";
@@ -340,31 +341,50 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 
         if (event.decryptionError.code == MXDecryptingErrorUnknownInboundSessionIdCode)
         {
+            // Tchap: remove english message coming from server
+            // and add to custom message with a clickable part with a link to FAQ.
+            
             // Append to the displayed error an attibuted string with a tappable link
             // so that the user can try to fix the UTD
+//            NSMutableAttributedString *attributedStringWithRerequestMessage = [attributedString mutableCopy];
+//            [attributedStringWithRerequestMessage appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
+//
+//            NSString *linkActionString = [NSString stringWithFormat:@"%@%@%@", EventFormatterOnReRequestKeysLinkAction,
+//                                          EventFormatterLinkActionSeparator,
+//                                          event.eventId];
+//
+//            [attributedStringWithRerequestMessage appendAttributedString:
+//             [[NSAttributedString alloc] initWithString:[VectorL10n eventFormatterRerequestKeysPart1Link]
+//                                             attributes:@{
+//                                                          NSLinkAttributeName: linkActionString,
+//                                                          NSForegroundColorAttributeName: self.sendingTextColor,
+//                                                          NSFontAttributeName: self.encryptedMessagesTextFont,
+//                                                          NSUnderlineStyleAttributeName: [NSNumber numberWithInt:NSUnderlineStyleSingle]
+//                                                          }]];
+//
+//            [attributedStringWithRerequestMessage appendAttributedString:
+//             [[NSAttributedString alloc] initWithString:[VectorL10n eventFormatterRerequestKeysPart2]
+//                                             attributes:@{
+//                                                          NSForegroundColorAttributeName: self.sendingTextColor,
+//                                                          NSFontAttributeName: self.encryptedMessagesTextFont
+//                                                          }]];
+
             NSMutableAttributedString *attributedStringWithRerequestMessage = [attributedString mutableCopy];
-            [attributedStringWithRerequestMessage appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
-
-            NSString *linkActionString = [NSString stringWithFormat:@"%@%@%@", EventFormatterOnReRequestKeysLinkAction,
+            
+            [attributedStringWithRerequestMessage appendString:[NSString stringWithFormat:@" %@\n", VectorL10n.noticeCryptoErrorUnknownInboundSessionId]];
+            NSString *linkActionString = [NSString stringWithFormat:@"%@%@%@", EventFormatterFaqLinkAction,
                                           EventFormatterLinkActionSeparator,
-                                          event.eventId];
-
+                                          @"https://aide.tchap.beta.gouv.fr/fr/article/dechiffrement-impossible-de-mes-messages-comment-y-remedier-iphone-xotgv1"];
+            
             [attributedStringWithRerequestMessage appendAttributedString:
-             [[NSAttributedString alloc] initWithString:[VectorL10n eventFormatterRerequestKeysPart1Link]
+             [[NSAttributedString alloc] initWithString: [TchapL10n roomDecryptionErrorFaqLinkMessage]
                                              attributes:@{
-                                                          NSLinkAttributeName: linkActionString,
-                                                          NSForegroundColorAttributeName: self.sendingTextColor,
-                                                          NSFontAttributeName: self.encryptedMessagesTextFont,
-                                                          NSUnderlineStyleAttributeName: [NSNumber numberWithInt:NSUnderlineStyleSingle] 
-                                                          }]];
-
-            [attributedStringWithRerequestMessage appendAttributedString:
-             [[NSAttributedString alloc] initWithString:[VectorL10n eventFormatterRerequestKeysPart2]
-                                             attributes:@{
-                                                          NSForegroundColorAttributeName: self.sendingTextColor,
-                                                          NSFontAttributeName: self.encryptedMessagesTextFont
-                                                          }]];
-
+                NSLinkAttributeName: linkActionString,
+                NSForegroundColorAttributeName: self.sendingTextColor,
+                NSFontAttributeName: self.encryptedMessagesTextFont,
+                NSUnderlineStyleAttributeName: [NSNumber numberWithInt:NSUnderlineStyleSingle]
+             }]];
+            
             attributedString = attributedStringWithRerequestMessage;
         }
     }

@@ -302,6 +302,10 @@
 "side_menu_action_invite_friends" = "Inviter à rejoindre Tchap";
 
 ////////////////////////////////////////////////////////////////////////////////
-// MARK: Device verification
+// MARK: Secret Setup Recovery Key
 "secrets_setup_recovery_key_export_action_done" = "Clé copiée";
 "secrets_setup_recovery_key_warning" = "Attention : c'est la seule fois que votre code est affiché !"; // Tchap
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Room Decryption error
+"room_decryption_error_faq_link_message" = "Sinon, consulter cet article de FAQ.";

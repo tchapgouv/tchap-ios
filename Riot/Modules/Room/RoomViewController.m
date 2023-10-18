@@ -4714,6 +4714,17 @@ static CGSize kThreadListBarButtonItemImageSize;
             }
             shouldDoAction = NO;
         }
+        else if ([absoluteURLString hasPrefix:EventFormatterFaqLinkAction]) // Tchap: custom Link to FAQ in case of crypto error on room's messages
+        {
+            NSArray<NSString*> *arguments = [absoluteURLString componentsSeparatedByString:EventFormatterLinkActionSeparator];
+            if (arguments.count > 1)
+            {
+                NSString *faqUrl = [[arguments subarrayWithRange:NSMakeRange(1, arguments.count-1)] componentsJoinedByString:@"/"];
+                WebSheetViewController *webCtrl = [[WebSheetViewController alloc] initWithTargetUrl:[NSURL URLWithString:faqUrl]];
+                [self presentViewController:webCtrl animated:YES completion:nil];
+            }
+            shouldDoAction = NO;
+        }
         else if (url && urlItemInteractionValue)
         {
             // Fallback case for external links

@@ -16,7 +16,7 @@
 
 import Foundation
 
-class WebSheetViewController: UIViewController, WKUIDelegate {
+@objc class WebSheetViewController: UIViewController, WKUIDelegate {
     
     private lazy var webview: WKWebView = { [unowned self] in
         let conf = WKWebViewConfiguration()
@@ -69,7 +69,7 @@ class WebSheetViewController: UIViewController, WKUIDelegate {
         self.closeButtonIsHidden = false
     }
     
-    convenience init(targetUrl: URL) {
+    @objc convenience init(targetUrl: URL) {
         self.init()
         // set targetUrl before configuring else viewDidLoad will be called with an empty targetUrl.
         self.targetUrl = targetUrl
@@ -141,13 +141,12 @@ extension WebSheetViewController: WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         // Decides whether to allow or cancel a navigation.
-//        print("webView decidePolicyFor navigationAction: " + (webView.url?.absoluteString ?? "???"))
         
         // Test if target is _blank
         if navigationAction.targetFrame == nil {
             // If target is _blank, open page in external navigator
             if let targetUrl = navigationAction.request.url {
-                UIApplication.shared.openURL(targetUrl)
+                UIApplication.shared.open(targetUrl, options: [:], completionHandler: nil)
             }
             decisionHandler(.cancel)
         } else {
