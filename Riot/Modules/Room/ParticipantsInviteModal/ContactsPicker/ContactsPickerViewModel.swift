@@ -128,7 +128,7 @@ class ContactsPickerViewModel: NSObject, ContactsPickerViewModelProtocol {
         contactsViewController.showSearch(true)
         // Tchap: Replace string by removing user ID
         contactsViewController.searchBar.placeholder = VectorL10n.roomParticipantsInviteAnotherUserWithoutId
-        // Tchap: don't make searchbar rersign as first responder.
+        // Tchap: don't make searchbar resign as first responder.
         // Let it becomes first responder to activate the input field and deploy the keyboard when the controller comes to screen.
 //        contactsViewController.searchBar.resignFirstResponder()
         
