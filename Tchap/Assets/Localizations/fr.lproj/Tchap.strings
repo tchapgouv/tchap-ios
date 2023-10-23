@@ -309,3 +309,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room Decryption error
 "room_decryption_error_faq_link_message" = "Sinon, consulter cet article de FAQ.";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Room Invite
+"room_invite_error_action_forbidden" = "Cet utilisateur n'est pas autorisé à rejoindre ce salon.";
