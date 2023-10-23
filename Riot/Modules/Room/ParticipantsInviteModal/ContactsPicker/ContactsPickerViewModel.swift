@@ -128,7 +128,9 @@ class ContactsPickerViewModel: NSObject, ContactsPickerViewModelProtocol {
         contactsViewController.showSearch(true)
         // Tchap: Replace string by removing user ID
         contactsViewController.searchBar.placeholder = VectorL10n.roomParticipantsInviteAnotherUserWithoutId
-        contactsViewController.searchBar.resignFirstResponder()
+        // Tchap: don't make searchbar resign as first responder.
+        // Let it becomes first responder to activate the input field and deploy the keyboard when the controller comes to screen.
+//        contactsViewController.searchBar.resignFirstResponder()
         
         // Apply the search pattern if any
         if currentSearchText != nil {
@@ -246,7 +248,15 @@ extension ContactsPickerViewModel: ContactsTableViewControllerDelegate {
                     self.coordinatorDelegate?.contactsPickerViewModelDidEndInvite(self)
                 case .failure:
                     MXLog.error("[ContactsPickerViewModel] Failed to invite participant", context: response.error)
-                    self.coordinatorDelegate?.contactsPickerViewModel(self, inviteFailedWithError: response.error)
+                    // Tchap: make error message clearer and in french when a member can't be invited to a room
+                    if let mxError = MXError(nsError: response.error),
+                       mxError.errcode == kMXErrCodeStringForbidden,
+                       let tchapErrorCannotInvite = MXError(errorCode: mxError.errcode, error: TchapL10n.roomInviteErrorActionForbidden, userInfo: mxError.userInfo) {
+                        self.coordinatorDelegate?.contactsPickerViewModel(self, inviteFailedWithError: tchapErrorCannotInvite.createNSError())
+                    }
+                    else {
+                        self.coordinatorDelegate?.contactsPickerViewModel(self, inviteFailedWithError: response.error)
+                    }
                 }
             }
         } else {
