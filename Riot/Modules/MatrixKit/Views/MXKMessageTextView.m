@@ -27,6 +27,29 @@
 
 @implementation MXKMessageTextView
 
+// Tchap: automatically adjust message font size dynamically when user change the setting.
+- (id)initWithFrame:(CGRect)frame textContainer:(NSTextContainer *)textContainer
+{
+    self = [super initWithFrame:frame textContainer:textContainer];
+    
+    if (self) {
+        [self setAdjustsFontForContentSizeCategory:YES];
+    }
+    
+    return self;
+}
+
+// Tchap: automatically adjust message font size dynamically when user change the setting.
+- (id)initWithCoder:(NSCoder *)coder {
+    self = [super initWithCoder:coder];
+    
+    if (self) {
+        [self setAdjustsFontForContentSizeCategory:YES];
+    }
+    
+    return self;
+}
+
 - (BOOL)canBecomeFirstResponder
 {
     return NO;
