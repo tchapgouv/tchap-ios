@@ -352,7 +352,7 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
             // Tchap: Fix title for invite button, and manage invite users
             if let userID = UserSessionsService.shared.mainUserSession?.userId,
                 !UserService.isExternalUser(for: userID) {
-                subMenuActions.append(UIAction(title: TchapL10n.sideMenuActionInviteFriends, image: UIImage(systemName: "square.and.arrow.up.fill")) { [weak self] action in
+                subMenuActions.append(UIAction(title: SideMenuItem.inviteFriends.title, image: UIImage(systemName: "square.and.arrow.up.fill")) { [weak self] action in
                     guard let self = self else { return }
                     self.allChatsViewController.startChat()
                 })
@@ -368,6 +368,11 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
             self?.showBugReport()
         })
         
+        // Tchap : Terms and Conditions in User menu
+        subMenuActions.append(UIAction(title: SideMenuItem.termsAndConditions.title, image: UIImage(systemName: "text.badge.checkmark")) { [weak self] action in
+            self?.showTermsAndConditions()
+        })
+
         actions.append(UIMenu(title: "", options: .displayInline, children: subMenuActions))
         // Tchap: Hide Disconnect button
 //        actions.append(UIMenu(title: "", options: .displayInline, children: [
@@ -667,6 +672,11 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     // Tchap : help access in User menu
     private func showHelp() {
         self.allChatsViewController.present(WebSheetViewController(targetUrl: URL(string: BuildSettings.applicationHelpUrlString)!), animated: true)
+    }
+    
+    // Tchap : Terms and Conditions in User menu
+    private func showTermsAndConditions() {
+        self.allChatsViewController.present(WebSheetViewController(targetUrl: URL(string: BuildSettings.applicationTermsConditionsUrlString)!), animated: true)
     }
     
     private func userAvatarViewData(from mxSession: MXSession?) -> UserAvatarViewData? {

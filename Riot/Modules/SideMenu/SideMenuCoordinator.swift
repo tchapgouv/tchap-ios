@@ -215,6 +215,19 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         self.sideMenuNavigationViewController.present(safariViewController, animated: true, completion: nil)
     }
     
+    // Tchap: access Terms and Conditions
+    private func showTermsAndConditions() {
+        guard let helpURL = URL(string: BuildSettings.applicationTermsConditionsUrlString) else {
+            return
+        }
+        
+        let safariViewController = SFSafariViewController(url: helpURL)
+        
+        // Show in fullscreen to animate presentation along side menu dismiss
+        safariViewController.modalPresentationStyle = .fullScreen
+        self.sideMenuNavigationViewController.present(safariViewController, animated: true, completion: nil)
+    }
+    
     private func showExploreRooms(spaceId: String, session: MXSession) {
 //        let exploreRoomCoordinator = ExploreRoomCoordinator(session: session, spaceId: spaceId)
 //        exploreRoomCoordinator.delegate = self
@@ -396,6 +409,9 @@ extension SideMenuCoordinator: SideMenuViewModelCoordinatorDelegate {
             self.showHelp()
         case .feedback:
             self.showBugReport()
+        // Tchap: terms and conditions
+        case .termsAndConditions:
+            self.showTermsAndConditions()
         }
         
         self.delegate?.sideMenuCoordinator(self, didTapMenuItem: menuItem, fromSourceView: sourceView)

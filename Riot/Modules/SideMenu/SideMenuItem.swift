@@ -22,6 +22,7 @@ enum SideMenuItem {
     case settings
     case help
     case feedback
+    case termsAndConditions // Tchap:
 }
 
 extension SideMenuItem {
@@ -38,6 +39,8 @@ extension SideMenuItem {
             title = VectorL10n.sideMenuActionHelp
         case .feedback:
             title = VectorL10n.sideMenuActionFeedback
+        case .termsAndConditions: // Tchap:
+            title = TchapL10n.sideMenuActionTermsAndConditions
         }
 
         return title
@@ -54,6 +57,8 @@ extension SideMenuItem {
         case .help:
             icon = Asset.Images.sideMenuActionIconHelp.image
         case .feedback:
+            icon = Asset.Images.sideMenuActionIconFeedback.image
+        case .termsAndConditions: // Tchap:
             icon = Asset.Images.sideMenuActionIconFeedback.image
         }
 
