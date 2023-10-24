@@ -78,6 +78,9 @@
         // forcing the layoutManager to redraw the glyphs at all NSAttachment positions.
         [self vc_invalidateTextAttachmentsDisplay];
     }
+    
+    // Tchap: set text type to prefered font to rerspect user text size
+    self.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
 }
 
 - (void)registerPillView:(UIView *)pillView
