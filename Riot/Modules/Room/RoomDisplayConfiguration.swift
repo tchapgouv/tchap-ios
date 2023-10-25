@@ -38,7 +38,7 @@ class RoomDisplayConfiguration: NSObject {
         super.init()
     }
     
-    static let `default`: RoomDisplayConfiguration = RoomDisplayConfiguration(callsEnabled: true,
+    static let `default`: RoomDisplayConfiguration = RoomDisplayConfiguration(callsEnabled: false, // Tchap: don't allow calls.
                                                                               integrationsEnabled: true,
                                                                               jitsiWidgetRemoverEnabled: true,
                                                                               sendingPollsEnabled: true)
