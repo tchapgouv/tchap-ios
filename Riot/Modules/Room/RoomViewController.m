@@ -261,7 +261,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 {
     RoomViewController *controller = [[[self class] alloc] initWithNibName:NSStringFromClass(self.class)
                                                                     bundle:[NSBundle bundleForClass:self.class]];
-//    controller.displayConfiguration = [RoomDisplayConfiguration default];
+    controller.displayConfiguration = [RoomDisplayConfiguration default];
     return controller;
 }
 
@@ -270,7 +270,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
     NSString *storyboardId = [NSString stringWithFormat:@"%@StoryboardId", self.className];
     RoomViewController *controller = [storyboard instantiateViewControllerWithIdentifier:storyboardId];
-//    controller.displayConfiguration = configuration;
+    controller.displayConfiguration = configuration;
     return controller;
 }
 
