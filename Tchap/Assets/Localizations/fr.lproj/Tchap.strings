@@ -314,3 +314,4 @@
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room Invite
 "room_invite_error_action_forbidden" = "Cet utilisateur n'est pas autorisé à rejoindre ce salon.";
+"room_invite_search_consign" = "Veuillez saisir le nom d'un correspondant pour le rechercher dans l'annuaire";
