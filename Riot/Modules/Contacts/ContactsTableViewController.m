@@ -46,6 +46,8 @@
 
 @property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
 
+@property (nonatomic, strong) UILabel *consignView; // Tchap: view to display consign when searchBar is empty.
+
 @end
 
 @implementation ContactsTableViewController
@@ -137,6 +139,8 @@
     self.view.backgroundColor = self.contactsTableView.backgroundColor;
     self.contactsTableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
     
+    self.consignView.textColor = ThemeService.shared.theme.textSecondaryColor; // Tchap
+    
     if (self.contactsTableView.dataSource)
     {
         [self refreshContactsTable];
@@ -188,6 +192,7 @@
     
     // Show the contacts access footer if necessary.
     [self updateFooterViewVisibility];
+    [self updateConsignViewVisibility]; // Tchap
     [self.screenTracker trackScreen];
 }
 
@@ -229,6 +234,62 @@
     self.findYourContactsFooterView = footerView;
     
     return footerView;
+}
+
+// Tchap: init consign view
+- (UILabel *)_getConsignView
+{
+    UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectZero];
+    lbl.numberOfLines = 0;
+    lbl.textAlignment = NSTextAlignmentCenter;
+    lbl.text = TchapL10n.roomInviteSearchConsign;
+    lbl.font = ThemeService.shared.theme.fonts.title3;
+    lbl.textColor = ThemeService.shared.theme.textSecondaryColor;
+    
+    return lbl;
+}
+
+// Tchap: access consign view
+- (UILabel *)consignView
+{
+    if (self->_consignView == nil )
+    {
+        self->_consignView = [self _getConsignView];
+    }
+    
+    return self->_consignView;
+}
+
+// Tchap: layout consign view in superview
+- (void)layoutConsignView
+{
+    if (self.consignView.superview == nil)
+    {
+        return;
+    }
+
+    UIView *sv = self.consignView.superview;
+
+    self.consignView.bounds = CGRectMake(0.0, 0.0, sv.bounds.size.width * 0.75, 0.0);
+    [self.consignView sizeToFit];
+    
+    // Center consignView horizontally. Make it a bit above of centerY because the keyboard is displayed below.
+    self.consignView.center = CGPointMake(CGRectGetMidX(sv.bounds), CGRectGetMidY(sv.bounds)*0.5);
+}
+
+// Tchap: update consign view visibility if searchBar depending on active filtering
+- (void)updateConsignViewVisibility
+{
+    // Tchap: install consign view if necessary
+    if (self.contactsAreFilteredWithSearch)
+    {
+        [self.consignView removeFromSuperview];
+    }
+    else
+    {
+        [self.contactsTableView addSubview:self.consignView];
+        [self layoutConsignView];
+    }
 }
 
 /**
@@ -392,6 +453,7 @@
     {
         _contactsAreFilteredWithSearch = contactsAreFilteredWithSearch;
         [self updateFooterViewVisibility];
+        [self updateConsignViewVisibility]; // Tchap
     }
 }
 
