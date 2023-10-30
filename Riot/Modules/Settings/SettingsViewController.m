@@ -221,14 +221,9 @@ SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinator
 SettingsIdentityServerCoordinatorBridgePresenterDelegate,
 ServiceTermsModalCoordinatorBridgePresenterDelegate,
 TableViewSectionsDelegate,
-<<<<<<< HEAD
 /*ThreadsBetaCoordinatorBridgePresenterDelegate,*/
-ChangePasswordCoordinatorBridgePresenterDelegate>
-=======
-ThreadsBetaCoordinatorBridgePresenterDelegate,
-ChangePasswordCoordinatorBridgePresenterDelegate,
-SSOAuthenticationPresenterDelegate>
->>>>>>> v1.11.4
+ChangePasswordCoordinatorBridgePresenterDelegate/*,
+SSOAuthenticationPresenterDelegate*/>
 {
     // Current alert (if any).
     __weak UIAlertController *currentAlert;
@@ -4157,7 +4152,6 @@ SSOAuthenticationPresenterDelegate>
 // Tchap: Add import keys feature
 - (void)importEncryptionKeys:(UITapGestureRecognizer *)recognizer
 {
-<<<<<<< HEAD
     self->currentAlert = nil;
     
     MXKDocumentPickerPresenter *documentPickerPresenter = [MXKDocumentPickerPresenter new];
@@ -4229,16 +4223,6 @@ SSOAuthenticationPresenterDelegate>
     if (keyExportsFile && [[NSFileManager defaultManager] fileExistsAtPath:keyExportsFile.path])
     {
         [[NSFileManager defaultManager] removeItemAtPath:keyExportsFile.path error:nil];
-=======
-    NSURL *url = [NSURL URLWithString: self.mainSession.homeserverWellknown.authentication.account];
-    if (url) {
-        SSOAccountService *service = [[SSOAccountService alloc] initWithAccountURL:url];
-        SSOAuthenticationPresenter *presenter = [[SSOAuthenticationPresenter alloc] initWithSsoAuthenticationService:service];
-        presenter.delegate = self;
-        self.ssoAuthenticationPresenter = presenter;
-        
-        [presenter presentForIdentityProvider:nil with:@"" from:self animated:YES];
->>>>>>> v1.11.4
     }
 }
 

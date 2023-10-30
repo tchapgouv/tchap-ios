@@ -301,11 +301,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-<<<<<<< HEAD
-  cocoapods (~> 1.11.3)
-=======
   cocoapods (~> 1.13.0)
->>>>>>> v1.11.4
   fastlane
   fastlane-plugin-diawi!
   fastlane-plugin-sentry
