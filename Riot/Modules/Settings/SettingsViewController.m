@@ -221,8 +221,14 @@ SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinator
 SettingsIdentityServerCoordinatorBridgePresenterDelegate,
 ServiceTermsModalCoordinatorBridgePresenterDelegate,
 TableViewSectionsDelegate,
+<<<<<<< HEAD
 /*ThreadsBetaCoordinatorBridgePresenterDelegate,*/
 ChangePasswordCoordinatorBridgePresenterDelegate>
+=======
+ThreadsBetaCoordinatorBridgePresenterDelegate,
+ChangePasswordCoordinatorBridgePresenterDelegate,
+SSOAuthenticationPresenterDelegate>
+>>>>>>> v1.11.4
 {
     // Current alert (if any).
     __weak UIAlertController *currentAlert;
@@ -336,6 +342,8 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 @property (nonatomic) BOOL serviceTermsModalShouldCheckAccessForContactsOnAccept;
 @property (nonatomic) BOOL isPreparingIdentityService;
 @property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
+
+@property (nonatomic, strong) SSOAuthenticationPresenter *ssoAuthenticationPresenter;
 
 @property (nonatomic) AnalyticsScreenTracker *screenTracker;
 
@@ -4149,6 +4157,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 // Tchap: Add import keys feature
 - (void)importEncryptionKeys:(UITapGestureRecognizer *)recognizer
 {
+<<<<<<< HEAD
     self->currentAlert = nil;
     
     MXKDocumentPickerPresenter *documentPickerPresenter = [MXKDocumentPickerPresenter new];
@@ -4220,6 +4229,16 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     if (keyExportsFile && [[NSFileManager defaultManager] fileExistsAtPath:keyExportsFile.path])
     {
         [[NSFileManager defaultManager] removeItemAtPath:keyExportsFile.path error:nil];
+=======
+    NSURL *url = [NSURL URLWithString: self.mainSession.homeserverWellknown.authentication.account];
+    if (url) {
+        SSOAccountService *service = [[SSOAccountService alloc] initWithAccountURL:url];
+        SSOAuthenticationPresenter *presenter = [[SSOAuthenticationPresenter alloc] initWithSsoAuthenticationService:service];
+        presenter.delegate = self;
+        self.ssoAuthenticationPresenter = presenter;
+        
+        [presenter presentForIdentityProvider:nil with:@"" from:self animated:YES];
+>>>>>>> v1.11.4
     }
 }
 
@@ -5087,6 +5106,28 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     self.userSessionsFlowCoordinatorBridgePresenter = userSessionsFlowCoordinatorBridgePresenter;
 
     [self.userSessionsFlowCoordinatorBridgePresenter pushFrom:self.navigationController animated:YES];
+}
+
+#pragma mark - SSOAuthenticationPresenterDelegate
+
+- (void)ssoAuthenticationPresenterDidCancel:(SSOAuthenticationPresenter *)presenter
+{
+    self.ssoAuthenticationPresenter = nil;
+    MXLogDebug(@"OIDC account management complete.")
+}
+
+- (void)ssoAuthenticationPresenter:(SSOAuthenticationPresenter *)presenter authenticationDidFailWithError:(NSError *)error
+{
+    self.ssoAuthenticationPresenter = nil;
+    MXLogError(@"OIDC account management failed.")
+}
+
+- (void)ssoAuthenticationPresenter:(SSOAuthenticationPresenter *)presenter
+  authenticationSucceededWithToken:(NSString *)token
+             usingIdentityProvider:(SSOIdentityProvider *)identityProvider
+{
+    self.ssoAuthenticationPresenter = nil;
+    MXLogWarning(@"Unexpected callback after OIDC account management.")
 }
 
 @end
