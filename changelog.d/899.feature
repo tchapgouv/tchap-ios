@@ -1,1 +1,0 @@
-Donner la possibilité de créer un sondage depuis l'iPhone

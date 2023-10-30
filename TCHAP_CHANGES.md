@@ -1,3 +1,17 @@
+## Changes in 2.5.1 (2023-10-30)
+
+✨ Features
+
+- Donner la possibilité de créer un sondage depuis l'iPhone ([#899](https://github.com/tchapgouv/tchap-ios/issues/899))
+
+🙌 Improvements
+
+- Ajout d’un accès aux Termes et Conditions dans le menu utilisateur ([#850](https://github.com/tchapgouv/tchap-ios/issues/850))
+- Affichage d'une consigne de recherche plus explicite sur l'écran d'ajout de membre à un salon. ([#868](https://github.com/tchapgouv/tchap-ios/issues/868))
+- Mettre un message d'erreur explicite en français lors de l'échec de l'invitation d'un externe dans un salon ([#870](https://github.com/tchapgouv/tchap-ios/issues/870))
+- Le texte des messages dans un salon respecte le réglage de taille de texte de l’utilisateur (possibilité de zoom) ([#896](https://github.com/tchapgouv/tchap-ios/issues/896))
+
+
 ## Changes in 2.5.0 (2023-10-12)
 
 ✨ Features
