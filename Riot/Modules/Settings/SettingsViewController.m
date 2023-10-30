@@ -222,8 +222,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate,
 ServiceTermsModalCoordinatorBridgePresenterDelegate,
 TableViewSectionsDelegate,
 /*ThreadsBetaCoordinatorBridgePresenterDelegate,*/
-ChangePasswordCoordinatorBridgePresenterDelegate/*,
-SSOAuthenticationPresenterDelegate*/>
+ChangePasswordCoordinatorBridgePresenterDelegate>
 {
     // Current alert (if any).
     __weak UIAlertController *currentAlert;
@@ -338,7 +337,7 @@ SSOAuthenticationPresenterDelegate*/>
 @property (nonatomic) BOOL isPreparingIdentityService;
 @property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
 
-@property (nonatomic, strong) SSOAuthenticationPresenter *ssoAuthenticationPresenter;
+//@property (nonatomic, strong) SSOAuthenticationPresenter *ssoAuthenticationPresenter; // Tchap: comment
 
 @property (nonatomic) AnalyticsScreenTracker *screenTracker;
 
@@ -4231,7 +4230,12 @@ SSOAuthenticationPresenterDelegate*/>
 //{
 //    NSURL *url = [NSURL URLWithString: self.mainSession.homeserverWellknown.authentication.account];
 //    if (url) {
-//        [UIApplication.sharedApplication openURL:url options:@{} completionHandler:nil];
+//        SSOAccountService *service = [[SSOAccountService alloc] initWithAccountURL:url];
+//        SSOAuthenticationPresenter *presenter = [[SSOAuthenticationPresenter alloc] initWithSsoAuthenticationService:service];
+//        presenter.delegate = self;
+//        self.ssoAuthenticationPresenter = presenter;
+//        
+//        [presenter presentForIdentityProvider:nil with:@"" from:self animated:YES];
 //    }
 //}
     
@@ -5092,26 +5096,27 @@ SSOAuthenticationPresenterDelegate*/>
     [self.userSessionsFlowCoordinatorBridgePresenter pushFrom:self.navigationController animated:YES];
 }
 
-#pragma mark - SSOAuthenticationPresenterDelegate
-
-- (void)ssoAuthenticationPresenterDidCancel:(SSOAuthenticationPresenter *)presenter
-{
-    self.ssoAuthenticationPresenter = nil;
-    MXLogDebug(@"OIDC account management complete.")
-}
-
-- (void)ssoAuthenticationPresenter:(SSOAuthenticationPresenter *)presenter authenticationDidFailWithError:(NSError *)error
-{
-    self.ssoAuthenticationPresenter = nil;
-    MXLogError(@"OIDC account management failed.")
-}
-
-- (void)ssoAuthenticationPresenter:(SSOAuthenticationPresenter *)presenter
-  authenticationSucceededWithToken:(NSString *)token
-             usingIdentityProvider:(SSOIdentityProvider *)identityProvider
-{
-    self.ssoAuthenticationPresenter = nil;
-    MXLogWarning(@"Unexpected callback after OIDC account management.")
-}
+// Tchap: comment
+//#pragma mark - SSOAuthenticationPresenterDelegate
+//
+//- (void)ssoAuthenticationPresenterDidCancel:(SSOAuthenticationPresenter *)presenter
+//{
+//    self.ssoAuthenticationPresenter = nil;
+//    MXLogDebug(@"OIDC account management complete.")
+//}
+//
+//- (void)ssoAuthenticationPresenter:(SSOAuthenticationPresenter *)presenter authenticationDidFailWithError:(NSError *)error
+//{
+//    self.ssoAuthenticationPresenter = nil;
+//    MXLogError(@"OIDC account management failed.")
+//}
+//
+//- (void)ssoAuthenticationPresenter:(SSOAuthenticationPresenter *)presenter
+//  authenticationSucceededWithToken:(NSString *)token
+//             usingIdentityProvider:(SSOIdentityProvider *)identityProvider
+//{
+//    self.ssoAuthenticationPresenter = nil;
+//    MXLogWarning(@"Unexpected callback after OIDC account management.")
+//}
 
 @end
