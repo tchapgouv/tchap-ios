@@ -138,7 +138,6 @@
         // Display date for each message
         [bubbleCell addDateLabel];
 
-        // Threads are disabled in Tchap
         if (RiotSettings.shared.enableThreads)
         {
             RoomBubbleCellData *cellData = (RoomBubbleCellData*)[self cellDataAtIndex:indexPath.row];

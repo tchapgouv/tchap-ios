@@ -682,6 +682,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     self.showSettingsInitially = NO;
 
+// Tchap: don't show thread notice (pop-up saying "Threads no longer experimental")
 //    if (!RiotSettings.shared.threadsNoticeDisplayed && RiotSettings.shared.enableThreads)
 //    {
 //        [self showThreadsNotice];

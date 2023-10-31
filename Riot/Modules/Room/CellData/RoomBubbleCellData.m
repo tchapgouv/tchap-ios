@@ -838,7 +838,6 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         //  component is not a thread root
         return 0;
     }
-//    return 0; // Threads are disabled in Tchap
     return PlainRoomCellLayoutConstants.threadSummaryViewTopMargin +
         [ThreadSummaryView contentViewHeightForThread:component.thread fitting:self.maxTextViewWidth];
 }
