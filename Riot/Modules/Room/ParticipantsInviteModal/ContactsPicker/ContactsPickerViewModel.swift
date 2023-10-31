@@ -291,7 +291,14 @@ extension ContactsPickerViewModel: ContactsTableViewControllerDelegate {
                         if let error = response.error as NSError?, error.domain == kMXRestClientErrorDomain, error.code == MXRestClientErrorMissingIdentityServer {
                             self.coordinatorDelegate?.contactsPickerViewModel(self, inviteFailedWithError: nil)
                             AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.errorInvite3pidWithNoIdentityServer, message: nil)
-                        } else {
+                        }
+                        // Tchap: make error message clearer and in french when a member can't be invited to a room
+                        else if let mxError = MXError(nsError: response.error),
+                           mxError.errcode == kMXErrCodeStringForbidden,
+                           let tchapErrorCannotInvite = MXError(errorCode: mxError.errcode, error: TchapL10n.roomInviteErrorActionForbidden, userInfo: mxError.userInfo) {
+                            self.coordinatorDelegate?.contactsPickerViewModel(self, inviteFailedWithError: tchapErrorCannotInvite.createNSError())
+                        }
+                        else {
                             self.coordinatorDelegate?.contactsPickerViewModel(self, inviteFailedWithError: response.error)
                         }
                     }
