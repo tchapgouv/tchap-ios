@@ -1,0 +1,12 @@
+
+
+
+"NSFaceIDUsageDescription" = "Face ID brukes til å få tilgang til appen din.";
+"NSCalendarsUsageDescription" = "Se de planlagte møtene dine i appen.";
+"NSContactsUsageDescription" = "De vil bli delt med din identitets-tjener for hjelpe å finne dine kontakter.";
+"NSMicrophoneUsageDescription" = "Appen trenger tilgang til mikrofonen for samtaler, og for å spille inn video og lydmeldinger.";
+"NSPhotoLibraryUsageDescription" = "Tillat tilgang til å laste opp bilder og videoer fra fotobiblioteket.";
+// Permissions usage explanations
+"NSCameraUsageDescription" = "Kameraet brukes til videosamtaler, og til å ta og laste opp bilder og videoer.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Når du deler din lokasjon men noen trenger appen tilganger til å vise dem et kart.";
+"NSLocationWhenInUseUsageDescription" = "Når du deler din lokasjon men noen trenger appen tilganger til å vise dem et kart.";

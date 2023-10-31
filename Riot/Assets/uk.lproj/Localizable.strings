@@ -1,0 +1,123 @@
+/* New message from a specific person, not referencing a room */
+"MSG_FROM_USER" = "%@ надсилає повідомлення";
+/* New message from a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM" = "%@ пише в %@";
+/* New message from a specific person, not referencing a room. Content included. */
+"MSG_FROM_USER_WITH_CONTENT" = "%@: %@";
+/* New message from a specific person in a named room. Content included. */
+"MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@ в %@: %@";
+/* New action message from a specific person, not referencing a room. */
+"ACTION_FROM_USER" = "* %@ %@";
+/* New action message from a specific person in a named room. */
+"ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
+/* New action message from a specific person, not referencing a room. */
+/* New action message from a specific person in a named room. */
+"IMAGE_FROM_USER_IN_ROOM" = "%@ оприлюднює зображення %@ в %@";
+/* A single unread message in a room */
+"SINGLE_UNREAD_IN_ROOM" = "Ви отримали повідомлення в %@";
+/* A single unread message */
+"SINGLE_UNREAD" = "Ви отримали повідомлення";
+/* Multiple unread messages in a room */
+"UNREAD_IN_ROOM" = "%@ нових повідомлень у %@";
+/* Multiple unread messages from a specific person, not referencing a room */
+"MSGS_FROM_USER" = "%@ нових повідомлень у %@";
+/* Multiple unread messages from two people */
+"MSGS_FROM_TWO_USERS" = "%@ нових повідомлень від %@ і %@";
+/* Multiple unread messages from three people */
+"MSGS_FROM_THREE_USERS" = "%@ нових повідомлень від %@, %@ і %@";
+/* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
+"MSGS_FROM_TWO_PLUS_USERS" = "%@ нових повідомлень від %@, %@ та інших";
+/* Multiple messages in two rooms */
+"MSGS_IN_TWO_ROOMS" = "%@ нових повідомлень у %@ і %@";
+/* Look, stuff's happened, alright? Just open the app. */
+"MSGS_IN_TWO_PLUS_ROOMS" = "%@ нових повідомлень у %@, %@ та інших";
+/* A user has invited you to a chat */
+"USER_INVITE_TO_CHAT" = "%@ запрошує вас до чату";
+/* A user has invited you to an (unamed) group chat */
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ запрошує вас до групового чату";
+/* A user has invited you to a named room */
+"USER_INVITE_TO_NAMED_ROOM" = "%@ запрошує вас до %@";
+/* Incoming one-to-one voice call */
+"VOICE_CALL_FROM_USER" = "Виклик від %@";
+/* Incoming one-to-one video call */
+"VIDEO_CALL_FROM_USER" = "Відеовиклик від %@";
+/* Incoming unnamed voice conference invite from a specific person */
+"VOICE_CONF_FROM_USER" = "Груповий виклик від %@";
+/* Incoming unnamed video conference invite from a specific person */
+"VIDEO_CONF_FROM_USER" = "Груповий відеовиклик від %@";
+/* Incoming named voice conference invite from a specific person */
+"VOICE_CONF_NAMED_FROM_USER" = "Груповий виклик від %@: '%@'";
+/* Incoming named video conference invite from a specific person */
+"VIDEO_CONF_NAMED_FROM_USER" = "Груповий відеовиклик від %@: '%@'";
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ в %@";
+/* Sticker from a specific person, not referencing a room. */
+"STICKER_FROM_USER" = "%@ надсилає наліпку";
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ бажає звіритись";
+/* New message indicator on unknown room */
+"MESSAGE" = "Повідомлення";
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "Повідомлення від %@";
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "Повідомлення у %@";
+"MESSAGE_PROTECTED" = "Нове повідомлення";
+
+/* Group call from user, CallKit caller name */
+"GROUP_CALL_FROM_USER" = "%@ (Груповий виклик)";
+
+/* A user added a Jitsi call to a room */
+"GROUP_CALL_STARTED" = "Груповий виклик розпочато";
+
+/* A user's membership has updated in an unknown way */
+"USER_MEMBERSHIP_UPDATED" = "%@ оновлює свій профіль";
+
+/* A user has change their avatar */
+"USER_UPDATED_AVATAR" = "%@ змінює свій аватар";
+
+/* A user has change their name to a new name which we don't know */
+"GENERIC_USER_UPDATED_DISPLAYNAME" = "%@ змінює своє ім'я";
+
+/** Membership Updates **/
+
+/* A user has change their name to a new name */
+"USER_UPDATED_DISPLAYNAME" = "%@ змінює своє ім'я на %@";
+
+/* A user has reacted to a message, but the reaction content is unknown */
+"GENERIC_REACTION_FROM_USER" = "%@ надсилає реакцію";
+
+/** Reactions **/
+
+/* A user has reacted to a message, including the reaction e.g. "Alice reacted 👍". */
+"REACTION_FROM_USER" = "%@ реагує %@";
+
+/* New file message from a specific person, not referencing a room. */
+"FILE_FROM_USER" = "%@ надсилає файл %@";
+
+/* New voice message from a specific person, not referencing a room. */
+"VOICE_MESSAGE_FROM_USER" = "%@ надсилає голосове повідомлення";
+
+/* New audio message from a specific person, not referencing a room. */
+"AUDIO_FROM_USER" = "%@ надсилає звуковий файл %@";
+
+/* New video message from a specific person, not referencing a room. */
+"VIDEO_FROM_USER" = "%@ надсилає відео";
+
+/** Media Messages **/
+
+/* New image message from a specific person, not referencing a room. */
+"PICTURE_FROM_USER" = "%@ надсилає зображення";
+
+/* New message reply from a specific person in a named room. */
+"REPLY_FROM_USER_IN_ROOM_TITLE" = "%@ відповідає в %@";
+
+/* New message reply from a specific person, not referencing a room. */
+"REPLY_FROM_USER_TITLE" = "%@ відповідає";
+/** General **/
+
+"Notification" = "Сповіщення";
+
+/* New file message from a specific person, not referencing a room. */
+"LOCATION_FROM_USER" = "%@ надсилає дані про своє місцеперебування";
+
+/* New voice broadcast from a specific person, not referencing a room. */
+"VOICE_BROADCAST_FROM_USER" = "%@ розпочинає голосову трансляцію";

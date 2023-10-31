@@ -1,0 +1,9 @@
+"NSPhotoLibraryUsageDescription" = "Ge åtkomst till bilder för att ladda upp bilder och videor från ditt bibliotek.";
+"NSCalendarsUsageDescription" = "Se dina schemalagda möten i appen.";
+// Permissions usage explanations
+"NSCameraUsageDescription" = "Kameran används för att ringa videosamtal, eller att ta och ladda upp bilder och videor.";
+"NSMicrophoneUsageDescription" = "Element behöver åtkomst till din mikrofon för att kunna ringa och ta emot samtal samt spela in video och röstmeddelanden.";
+"NSContactsUsageDescription" = "De kommer att delas med din identitetsserver för att hjälpa dig att hitta dina kontakter på Matrix.";
+"NSFaceIDUsageDescription" = "Face ID används för att komma åt appen.";
+"NSLocationWhenInUseUsageDescription" = "När du delar din plats med folk så behöver Element åtkomst för att visa dem en karta.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "När du delar din plats med folk så behöver Element åtkomst för att visa dem en karta.";

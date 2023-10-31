@@ -1,0 +1,128 @@
+/* New message from a specific person, not referencing a room */
+"MSG_FROM_USER" = "%@ envió un mensaje";
+/* New message from a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM" = "%@ publicó en %@";
+/* New message from a specific person, not referencing a room. Content included. */
+"MSG_FROM_USER_WITH_CONTENT" = "%@: %@";
+/* New message from a specific person in a named room. Content included. */
+"MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@ en %@: %@";
+/* New action message from a specific person, not referencing a room. */
+"ACTION_FROM_USER" = "* %@ %@";
+/* New action message from a specific person in a named room. */
+"ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
+/* New action message from a specific person, not referencing a room. */
+/* New action message from a specific person in a named room. */
+"IMAGE_FROM_USER_IN_ROOM" = "%@ publicó una imagen %@ en %@";
+/* A single unread message in a room */
+"SINGLE_UNREAD_IN_ROOM" = "Recibiste un mensaje en %@";
+/* A single unread message */
+"SINGLE_UNREAD" = "Recibiste un mensaje";
+/* Multiple unread messages in a room */
+"UNREAD_IN_ROOM" = "%@ mensajes nuevos en %@";
+/* Multiple unread messages from a specific person, not referencing a room */
+"MSGS_FROM_USER" = "%@ mensajes nuevos en %@";
+/* Multiple unread messages from two people */
+"MSGS_FROM_TWO_USERS" = "%@ mensajes nuevos de %@ y %@";
+/* Multiple unread messages from three people */
+"MSGS_FROM_THREE_USERS" = "%@ mensajes nuevos de %@, %@ y %@";
+/* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
+"MSGS_FROM_TWO_PLUS_USERS" = "%@ mensajes nuevos de %@, %@ y otros";
+/* Multiple messages in two rooms */
+"MSGS_IN_TWO_ROOMS" = "%@ mensajes nuevos en %@ y %@";
+/* Look, stuff's happened, alright? Just open the app. */
+"MSGS_IN_TWO_PLUS_ROOMS" = "%@ mensajes nuevos en %@, %@ y otros";
+/* A user has invited you to a chat */
+"USER_INVITE_TO_CHAT" = "%@ te invitó a conversar";
+/* A user has invited you to an (unamed) group chat */
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ te invitó a una conversación en grupo";
+/* A user has invited you to a named room */
+"USER_INVITE_TO_NAMED_ROOM" = "%@ te invitó a %@";
+/* Incoming one-to-one voice call */
+"VOICE_CALL_FROM_USER" = "Llamada de %@";
+/* Incoming one-to-one video call */
+"VIDEO_CALL_FROM_USER" = "Llamada de vídeo de %@";
+/* Incoming unnamed voice conference invite from a specific person */
+"VOICE_CONF_FROM_USER" = "Llamada en grupo de %@";
+/* Incoming unnamed video conference invite from a specific person */
+"VIDEO_CONF_FROM_USER" = "Llamada de vídeo en grupo de %@";
+/* Incoming named voice conference invite from a specific person */
+"VOICE_CONF_NAMED_FROM_USER" = "Llamada en grupo de %@: '%@'";
+/* Incoming named video conference invite from a specific person */
+"VIDEO_CONF_NAMED_FROM_USER" = "Llamada de vídeo en grupo de %@: '%@'";
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ en %@";
+/* Sticker from a specific person, not referencing a room. */
+"STICKER_FROM_USER" = "%@ envió una pegatina";
+
+/** Key verification **/
+
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ quiere verificar";
+
+/** Notification messages **/
+
+/* New message indicator on unknown room */
+"MESSAGE" = "Mensaje";
+
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "Mensaje de %@";
+
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "Mensaje en %@";
+"MESSAGE_PROTECTED" = "Nuevo mensaje";
+
+/* Group call from user, CallKit caller name */
+"GROUP_CALL_FROM_USER" = "%@ (llamada en grupo)";
+
+/* A user added a Jitsi call to a room */
+"GROUP_CALL_STARTED" = "Llamada en grupo empezada";
+
+/* A user's membership has updated in an unknown way */
+"USER_MEMBERSHIP_UPDATED" = "%@ ha actualizado su perfil";
+
+/* A user has change their avatar */
+"USER_UPDATED_AVATAR" = "%@ ha cambiado su foto de perfil";
+
+/* A user has change their name to a new name which we don't know */
+"GENERIC_USER_UPDATED_DISPLAYNAME" = "%@ ha cambiado su nombre";
+
+/** Membership Updates **/
+
+/* A user has change their name to a new name */
+"USER_UPDATED_DISPLAYNAME" = "%@ ha cambiado su nombre a %@";
+
+/* A user has reacted to a message, but the reaction content is unknown */
+"GENERIC_REACTION_FROM_USER" = "%@ ha enviado una reacción";
+
+/** Reactions **/
+
+/* A user has reacted to a message, including the reaction e.g. "Alice reacted 👍". */
+"REACTION_FROM_USER" = "%@ ha reaccionado %@";
+
+/* New file message from a specific person, not referencing a room. */
+"LOCATION_FROM_USER" = "%@ ha compartido su ubicación";
+
+/* New file message from a specific person, not referencing a room. */
+"FILE_FROM_USER" = "%@ ha enviado un archivo %@";
+
+/* New voice message from a specific person, not referencing a room. */
+"VOICE_MESSAGE_FROM_USER" = "%@ ha enviado un mensaje de voz";
+
+/* New audio message from a specific person, not referencing a room. */
+"AUDIO_FROM_USER" = "%@ ha enviado un audio %@";
+
+/* New video message from a specific person, not referencing a room. */
+"VIDEO_FROM_USER" = "%@ ha enviado un vídeo";
+
+/** Media Messages **/
+
+/* New image message from a specific person, not referencing a room. */
+"PICTURE_FROM_USER" = "%@ ha enviado una imagen";
+
+/* New message reply from a specific person in a named room. */
+"REPLY_FROM_USER_IN_ROOM_TITLE" = "%@ ha respondido en %@";
+
+/* New message reply from a specific person, not referencing a room. */
+"REPLY_FROM_USER_TITLE" = "%@ ha respondido";
+/** General **/
+
+"Notification" = "Notificación";

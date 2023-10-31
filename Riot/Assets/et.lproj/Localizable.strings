@@ -1,0 +1,123 @@
+/* New message from a specific person, not referencing a room */
+"MSG_FROM_USER" = "%@ saatis sõnumi";
+/* New message from a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM" = "%@ kirjutas jututoas %@";
+/* New message from a specific person, not referencing a room. Content included. */
+"MSG_FROM_USER_WITH_CONTENT" = "%@: %@";
+/* New message from a specific person in a named room. Content included. */
+"MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@ kirjutas jututoas %@: %@";
+/* New action message from a specific person, not referencing a room. */
+/* A single unread message in a room */
+"SINGLE_UNREAD_IN_ROOM" = "Sa said sõnumi jututoas %@";
+/* A single unread message */
+"SINGLE_UNREAD" = "Sa said sõnumi";
+/* Sticker from a specific person, not referencing a room. */
+"STICKER_FROM_USER" = "%@ saatis kleepsu";
+/* New message indicator on unknown room */
+"MESSAGE" = "Sõnum";
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "Sõnum kasutajalt %@";
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "Sõnum jututoas %@";
+/* Multiple unread messages in a room */
+"UNREAD_IN_ROOM" = "%@ lugemata sõnumit jututoas %@";
+/* Multiple unread messages from a specific person, not referencing a room */
+"MSGS_FROM_USER" = "%@ lugemata sõnumit jututoas %@";
+/* Multiple unread messages from two people */
+"MSGS_FROM_TWO_USERS" = "%@ lugemata sõnumit kasutajatelt %@ ja %@";
+/* Multiple unread messages from three people */
+"MSGS_FROM_THREE_USERS" = "%@ lugemata sõnumit kasutajatelt %@, %@ ja %@";
+/* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
+"MSGS_FROM_TWO_PLUS_USERS" = "%@ lugemata sõnumit kasutajatelt %@, %@ ja veel teisteltki";
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ soovib verifitseerida";
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ jututoas %@";
+/* New action message from a specific person, not referencing a room. */
+"ACTION_FROM_USER" = "* %@ %@";
+/* New action message from a specific person in a named room. */
+"ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
+/* New action message from a specific person in a named room. */
+"IMAGE_FROM_USER_IN_ROOM" = "%@ saatis pildi %@ jututoas %@";
+/* Multiple messages in two rooms */
+"MSGS_IN_TWO_ROOMS" = "%@ uut sõnumit jututubades %@ ja %@";
+/* Look, stuff's happened, alright? Just open the app. */
+"MSGS_IN_TWO_PLUS_ROOMS" = "%@ uut sõnumit %@, %@ ja muudes jututubades";
+/* A user has invited you to a chat */
+"USER_INVITE_TO_CHAT" = "%@ kutsus sind vestlema";
+/* A user has invited you to an (unamed) group chat */
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ kutsus sind rühmavestlusele";
+/* A user has invited you to a named room */
+"USER_INVITE_TO_NAMED_ROOM" = "%@ kutsus sind %@ jututuppa";
+/* Incoming one-to-one voice call */
+"VOICE_CALL_FROM_USER" = "Kõne kasutajalt %@";
+/* Incoming one-to-one video call */
+"VIDEO_CALL_FROM_USER" = "Videokõne kasutajalt %@";
+/* Incoming unnamed voice conference invite from a specific person */
+"VOICE_CONF_FROM_USER" = "Rühmakõne kasutajalt %@";
+/* Incoming unnamed video conference invite from a specific person */
+"VIDEO_CONF_FROM_USER" = "Video rühmakõne kasutajalt %@";
+/* Incoming named voice conference invite from a specific person */
+"VOICE_CONF_NAMED_FROM_USER" = "Rühmakõne kasutajalt %@: „%@“";
+/* Incoming named video conference invite from a specific person */
+"VIDEO_CONF_NAMED_FROM_USER" = "Video rühmakõne kasutajalt %@: „%@“";
+"MESSAGE_PROTECTED" = "Uus sõnum";
+
+/* Group call from user, CallKit caller name */
+"GROUP_CALL_FROM_USER" = "%@ (rühmakõne)";
+
+/* A user added a Jitsi call to a room */
+"GROUP_CALL_STARTED" = "Rühmakõne algas";
+
+/* A user's membership has updated in an unknown way */
+"USER_MEMBERSHIP_UPDATED" = "%@ muutis oma kasutajaprofiili";
+
+/* A user has change their avatar */
+"USER_UPDATED_AVATAR" = "%@ muutis oma tunnuspilti";
+
+/* A user has change their name to a new name which we don't know */
+"GENERIC_USER_UPDATED_DISPLAYNAME" = "%@ muutis oma nime";
+
+/** Membership Updates **/
+
+/* A user has change their name to a new name */
+"USER_UPDATED_DISPLAYNAME" = "%@ muutis oma nimeks %@";
+
+/* A user has reacted to a message, but the reaction content is unknown */
+"GENERIC_REACTION_FROM_USER" = "%@ reageeris";
+
+/** Reactions **/
+
+/* A user has reacted to a message, including the reaction e.g. "Alice reacted 👍". */
+"REACTION_FROM_USER" = "%@ reageeris %@";
+
+/* New file message from a specific person, not referencing a room. */
+"FILE_FROM_USER" = "%@ saatis faili %@";
+
+/* New voice message from a specific person, not referencing a room. */
+"VOICE_MESSAGE_FROM_USER" = "%@ saatis häälsõnumi";
+
+/* New audio message from a specific person, not referencing a room. */
+"AUDIO_FROM_USER" = "%@ saatis helifaili %@";
+
+/* New video message from a specific person, not referencing a room. */
+"VIDEO_FROM_USER" = "%@ saatis videofaili";
+
+/** Media Messages **/
+
+/* New image message from a specific person, not referencing a room. */
+"PICTURE_FROM_USER" = "%@ saatis pildi";
+
+/* New message reply from a specific person in a named room. */
+"REPLY_FROM_USER_IN_ROOM_TITLE" = "%@ vastas %@ jututoas";
+
+/* New message reply from a specific person, not referencing a room. */
+"REPLY_FROM_USER_TITLE" = "%@ vastas";
+/** General **/
+
+"Notification" = "Teavitus";
+
+/* New file message from a specific person, not referencing a room. */
+"LOCATION_FROM_USER" = "%@ jagas oma asukohta";
+
+/* New voice broadcast from a specific person, not referencing a room. */
+"VOICE_BROADCAST_FROM_USER" = "%@ alustas ringhäälingukõnet";
