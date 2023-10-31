@@ -1766,34 +1766,34 @@ static CGSize kThreadListBarButtonItemImageSize;
 //
 //    return item;
 //}
-//
-//- (UIBarButtonItem *)threadMoreBarButtonItem
-//{
-//    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:AssetImages.roomContextMenuMore.image
-//                                                             style:UIBarButtonItemStylePlain
-//                                                            target:self
-//                                                            action:@selector(onButtonPressed:)];
-//    item.accessibilityLabel = [VectorL10n roomAccessibilityThreadMore];
-//
-//    return item;
-//}
-//
-//- (UIBarButtonItem *)threadListBarButtonItem
-//{
-//    UIButton *button = [UIButton new];
-//    button.contentEdgeInsets = kThreadListBarButtonItemContentInsetsNoDot;
-//    button.imageView.contentMode = UIViewContentModeScaleAspectFit;
-//    [button setImage:[AssetImages.threadsIcon.image vc_resizedWith:kThreadListBarButtonItemImageSize]
-//            forState:UIControlStateNormal];
-//    [button addTarget:self
-//               action:@selector(onThreadListTapped:)
-//     forControlEvents:UIControlEventTouchUpInside];
-//    button.accessibilityLabel = [VectorL10n roomAccessibilityThreads];
-//
-//    UIBarButtonItem *result = [[UIBarButtonItem alloc] initWithCustomView:button];
-//    result.tag = kThreadListBarButtonItemTag;
-//    return result;
-//}
+
+- (UIBarButtonItem *)threadMoreBarButtonItem
+{
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:AssetImages.roomContextMenuMore.image
+                                                             style:UIBarButtonItemStylePlain
+                                                            target:self
+                                                            action:@selector(onButtonPressed:)];
+    item.accessibilityLabel = [VectorL10n roomAccessibilityThreadMore];
+
+    return item;
+}
+
+- (UIBarButtonItem *)threadListBarButtonItem
+{
+    UIButton *button = [UIButton new];
+    button.contentEdgeInsets = kThreadListBarButtonItemContentInsetsNoDot;
+    button.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    [button setImage:[AssetImages.threadsIcon.image vc_resizedWith:kThreadListBarButtonItemImageSize]
+            forState:UIControlStateNormal];
+    [button addTarget:self
+               action:@selector(onThreadListTapped:)
+     forControlEvents:UIControlEventTouchUpInside];
+    button.accessibilityLabel = [VectorL10n roomAccessibilityThreads];
+
+    UIBarButtonItem *result = [[UIBarButtonItem alloc] initWithCustomView:button];
+    result.tag = kThreadListBarButtonItemTag;
+    return result;
+}
 
 - (void)setupRemoveJitsiWidgetRemoveView
 {
@@ -2034,24 +2034,24 @@ static CGSize kThreadListBarButtonItemImageSize;
         
         if (RiotSettings.shared.enableThreads && !_isWaitingForOtherParticipants)
         {
-//            if (self.roomDataSource.threadId)
-//            {
-//                //  in a thread
-//                if (rightBarButtonItems == nil)
-//                {
-//                    rightBarButtonItems = [NSMutableArray new];
-//                }
-//                UIBarButtonItem *itemThreadMore = [self threadMoreBarButtonItem];
-//                [rightBarButtonItems insertObject:itemThreadMore atIndex:0];
-//            }
-//            else
-//            {
-//                //  in a regular timeline
-//                UIBarButtonItem *itemThreadList = [self threadListBarButtonItem];
-//                [self updateThreadListBarButtonItem:itemThreadList
-//                                               with:self.mainSession.threadingService];
-//                [rightBarButtonItems insertObject:itemThreadList atIndex:0];
-//            }
+            if (self.roomDataSource.threadId)
+            {
+                //  in a thread
+                if (rightBarButtonItems == nil)
+                {
+                    rightBarButtonItems = [NSMutableArray new];
+                }
+                UIBarButtonItem *itemThreadMore = [self threadMoreBarButtonItem];
+                [rightBarButtonItems insertObject:itemThreadMore atIndex:0];
+            }
+            else
+            {
+                //  in a regular timeline
+                UIBarButtonItem *itemThreadList = [self threadListBarButtonItem];
+                [self updateThreadListBarButtonItem:itemThreadList
+                                               with:self.mainSession.threadingService];
+                [rightBarButtonItems insertObject:itemThreadList atIndex:0];
+            }
         }
     }
     else if (self.isNewDirectChat)
@@ -5356,11 +5356,11 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (IBAction)onThreadListTapped:(id)sender
 {
-//    self.threadsBridgePresenter = [self.delegate threadsCoordinatorForRoomViewController:self threadId:nil];
-//    self.threadsBridgePresenter.delegate = self;
-//    [self.threadsBridgePresenter pushFrom:self.navigationController animated:YES];
-//
-//    [Analytics.shared trackInteraction:AnalyticsUIElementRoomThreadListButton];
+    self.threadsBridgePresenter = [self.delegate threadsCoordinatorForRoomViewController:self threadId:nil];
+    self.threadsBridgePresenter.delegate = self;
+    [self.threadsBridgePresenter pushFrom:self.navigationController animated:YES];
+
+    [Analytics.shared trackInteraction:AnalyticsUIElementRoomThreadListButton];
 }
 
 - (IBAction)onIntegrationsPressed:(id)sender
