@@ -2298,8 +2298,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 // Tchap: helpers
 #pragma mark - Tchap Helpers
 
-- (BOOL)belongToHomeServer:(nonnull NSString  *)homeServer {
-    // Tchap: allow enabling email notifications only for DINUM homeserver
+- (BOOL)belongsToHomeServer:(nonnull NSString  *)homeServer {
     return [self.identityServerURL isEqualToString:[BuildSettings.serverUrlPrefix stringByAppendingString:homeServer]];
 }
 

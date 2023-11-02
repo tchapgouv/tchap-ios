@@ -369,6 +369,6 @@ typedef BOOL (^MXKAccountOnCertificateChange)(MXKAccount *mxAccount, NSData *cer
 // Tchap: helpers
 #pragma mark - Tchap Helpers
 
-- (BOOL)belongToHomeServer:(nonnull NSString  *)homeServer;
+- (BOOL)belongsToHomeServer:(nonnull NSString  *)homeServer;
     
 @end

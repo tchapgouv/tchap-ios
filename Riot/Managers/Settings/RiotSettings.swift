@@ -176,7 +176,7 @@ final class RiotSettings: NSObject {
         get {
             // only allow true for DINUM agent
             let account = MXKAccountManager.shared().activeAccounts.first
-            return (account?.belong(toHomeServer:"agent.dinum.tchap.gouv.fr") ?? false) && _enableThreads
+            return (account?.belongs(toHomeServer:"agent.dinum.tchap.gouv.fr") ?? false) && _enableThreads
         }
         set {
            _enableThreads = newValue
