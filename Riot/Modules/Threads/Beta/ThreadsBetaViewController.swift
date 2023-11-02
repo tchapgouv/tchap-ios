@@ -104,10 +104,11 @@ class ThreadsBetaViewController: UIViewController {
         }
         let attributedString = NSMutableAttributedString(string: infoText,
                                                          attributes: [.font: font])
-        let link = NSAttributedString(string: VectorL10n.threadsBetaInformationLink,
-                                      attributes: [.link: Constants.learnMoreLink,
-                                                   .font: font])
-        attributedString.append(link)
+        // Tchap: don't append thread information link that redirect to Element web page.
+//        let link = NSAttributedString(string: VectorL10n.threadsBetaInformationLink,
+//                                      attributes: [.link: Constants.learnMoreLink,
+//                                                   .font: font])
+//        attributedString.append(link)
 
         if let additionalText = additionalText {
             attributedString.append(NSAttributedString(string: additionalText,
