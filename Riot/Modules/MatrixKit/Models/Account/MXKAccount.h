@@ -100,7 +100,7 @@ typedef BOOL (^MXKAccountOnCertificateChange)(MXKAccount *mxAccount, NSData *cer
 
 /**
  The account user's presence (`MXPresenceUnknown` by default, available if matrix session `mxSession` is opened).
- The notification `kMXKAccountUserInfoDidChangeNotification` is posted in case of change of this property.      
+ The notification `kMXKAccountUserInfoDidChangeNotification` is posted in case of change of this property.
  */
 @property (nonatomic, readonly) MXPresence userPresence;
 
@@ -364,4 +364,11 @@ typedef BOOL (^MXKAccountOnCertificateChange)(MXKAccount *mxAccount, NSData *cer
  Handle unauthenticated errors from  the server triggering hard/soft logouts as appropriate.
  */
 - (void)handleUnauthenticatedWithError:(MXError *)error isSoftLogout:(BOOL)isSoftLogout isRefreshTokenAuth:(BOOL)isRefreshTokenAuth andCompletion:(void (^)(void))completion;
+
+
+// Tchap: helpers
+#pragma mark - Tchap Helpers
+
+- (BOOL)belongToHomeServer:(nonnull NSString  *)homeServer;
+    
 @end

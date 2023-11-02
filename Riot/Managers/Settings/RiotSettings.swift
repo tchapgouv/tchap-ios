@@ -167,8 +167,21 @@ final class RiotSettings: NSObject {
     var enableRingingForGroupCalls
     
     /// Indicates if threads enabled in the timeline.
+    // Tchap: hijack property to allow thread only for DINUM agents
+//    @UserDefault(key: "enableThreads", defaultValue: false, storage: defaults)
+//    var enableThreads
     @UserDefault(key: "enableThreads", defaultValue: false, storage: defaults)
-    var enableThreads
+    var _enableThreads
+    var enableThreads: Bool {
+        get {
+            // only allow true for DINUM agent
+            let account = MXKAccountManager.shared().activeAccounts.first
+            return (account?.belong(toHomeServer:"agent.dinum.tchap.gouv.fr") ?? false) && _enableThreads
+        }
+        set {
+           _enableThreads = newValue
+        }
+    }
     
     /// Indicates if threads should be forced enabled in the timeline.
     @UserDefault(key: "forceThreadsEnabled", defaultValue: true, storage: defaults)
