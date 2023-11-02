@@ -147,7 +147,10 @@ extension ThreadsBetaViewController: Themable {
         self.informationTextView.textColor = theme.textPrimaryColor
 
         self.enableButton.vc_setBackgroundColor(theme.tintColor, for: .normal)
-        self.enableButton.setTitleColor(theme.baseTextPrimaryColor, for: .normal)
+        // Tchap: modify label color to be visible
+        self.enableButton.setTitleColor(theme.textQuinaryColor, for: .normal)
+        self.enableButton.backgroundColor = nil // Tchap: remove real background color to have classic behavior when tapping button
+        
         self.cancelButton.vc_setBackgroundColor(.clear, for: .normal)
         self.cancelButton.setTitleColor(theme.tintColor, for: .normal)
     }
