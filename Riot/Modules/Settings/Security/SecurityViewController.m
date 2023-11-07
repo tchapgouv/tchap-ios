@@ -849,7 +849,7 @@ MXKDocumentPickerPresenterDelegate>
 
 - (void)setupCrossSigning:(id)sender
 {
-    [self setupCrossSigningWithTitle:@"Activer la signature croisée" // Tchap quick fix    // TODO
+    [self setupCrossSigningWithTitle:TchapL10n.securityCrossSigningSetupTitle // Tchap
                              message:[VectorL10n securitySettingsUserPasswordDescription]
                              success:^{
                              } failure:^(NSError *error) {
@@ -902,11 +902,11 @@ MXKDocumentPickerPresenterDelegate>
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
     // Double confirmation
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Êtes-vous sur ?" // Tchap quick fix // TODO
-                                                                             message:@"Faites cette opération seulement si vous avez perdu tous vos autres appareils vérifiés." // Tchap quick fix    // TODO
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:TchapL10n.securityCrossSigningResetTitle // Tchap
+                                                                             message:TchapL10n.securityCrossSigningResetMessage // Tchap
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     
-    [alertController addAction:[UIAlertAction actionWithTitle:@"Réinitialiser" // Tchap quick fix
+    [alertController addAction:[UIAlertAction actionWithTitle:TchapL10n.securityCrossSigningResetActionTitle // Tchap
                                                         style:UIAlertActionStyleDefault
                                                       handler:^(UIAlertAction * action)
                                 {
