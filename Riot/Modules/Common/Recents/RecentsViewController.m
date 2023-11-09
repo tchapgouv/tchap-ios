@@ -1293,6 +1293,9 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                                                    title:title
                                                                                  handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
         [self leaveEditedRoom];
+
+        self->editedRoomId = nil; // Tchap: Reset editedRoomId else UI content does not refresh anymore.
+
         completionHandler(YES);
     }];
     leaveAction.backgroundColor = actionBackgroundColor;
