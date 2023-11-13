@@ -96,11 +96,11 @@ final class BuildSettings: NSObject {
     // Tchap servers
     static let serverUrlPrefix = "https://matrix."
     static let preferredIdentityServerNames = [
-        "agent1.tchap.incubateur.net",
-        "agent2.tchap.incubateur.net"
+        "dev01.tchap.incubateur.net",
+        "dev02.tchap.incubateur.net"
     ]
     static let otherIdentityServerNames: [String] = [
-        "externe.tchap.incubateur.net"
+        "ext01.tchap.incubateur.net"
     ]
     
     // Tchap-Web instance for the app
@@ -148,8 +148,8 @@ final class BuildSettings: NSObject {
     // MARK: -  Public rooms Directory
     // List of homeservers for the public rooms directory
     static let publicRoomsDirectoryServers = [
-        "agent1.tchap.incubateur.net",
-        "agent2.tchap.incubateur.net"
+        "dev01.tchap.incubateur.net",
+        "dev02.tchap.incubateur.net"
     ]
     
     // MARK: -  Rooms Screen
@@ -188,7 +188,7 @@ final class BuildSettings: NSObject {
     
     // MARK: - Bug report
     static let bugReportEndpointUrlString = ""
-    static let bugReportDefaultHost = "agent1.tchap.incubateur.net"
+    static let bugReportDefaultHost = "dev01.tchap.incubateur.net"
     static let bugReportEndpointUrlSuffix = "/bugreports"
     // Use the name allocated by the bug report server
     static let bugReportApplicationId = "devtchap-ios"
