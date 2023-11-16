@@ -2507,10 +2507,12 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             && mainSession.state == MXSessionStateRunning
             && mainSession.vc_canSetupSecureBackup)
         {
-            // This only happens at the first login
-            // Or when migrating an existing user
-            MXLogDebug(@"[AppDelegate] handleAppState: Force SSSS setup");
-            [self presentSecureBackupSetupForSession:mainSession];
+                // This only happens at the first login
+                // Or when migrating an existing user
+                MXLogDebug(@"[AppDelegate] handleAppState: Force SSSS setup");
+            // Tchap: invite user to activate Secure Backup, if needed.
+//                [self presentSecureBackupSetupForSession:mainSession];
+                [self presentSecureBackupSetupInviteIfNeeded];
         }
         
         void (^finishAppLaunch)(void) = ^{
@@ -2553,6 +2555,53 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             self.roomListDataReadyCompletion = finishAppLaunch;
         }
     }
+}
+
+// Tchap:
+- (void)presentSecureBackupSetupInviteIfNeeded
+{
+    BOOL timeHasComeToPresentSecureBackupSetup = [NSDate.now timeIntervalSinceDate:RiotSettings.shared.tchapSecureBackupNextDisplayDate] >= 0.0;
+    
+    if (!timeHasComeToPresentSecureBackupSetup)
+    {
+        return;
+    }
+    
+    MXSession *mainSession = self.mxSessions.firstObject;
+    
+    if (!mainSession)
+    {
+        return;
+    }
+    
+    UIAlertController *secureBackupAlert = [UIAlertController alertControllerWithTitle:@"Secure Backup please"
+                                                                               message:@"You really should setup Secure Backup…"
+                                                                        preferredStyle:UIAlertControllerStyleAlert];
+    
+    __weak typeof(self) weakSelf = self;
+    
+    [secureBackupAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
+                                                          style:UIAlertActionStyleDefault
+                                                        handler:^(UIAlertAction * action) {
+        
+        // Set next invite in the future.
+        RiotSettings.shared.tchapSecureBackupNextDisplayDate = [NSDate.now dateByAddingTimeInterval:60];
+        
+    }]];
+    
+    [secureBackupAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
+                                                          style:UIAlertActionStyleDefault
+                                                        handler:^(UIAlertAction * action) {
+        
+        if (weakSelf)
+        {
+            typeof(self) self = weakSelf;
+            [self presentSecureBackupSetupForSession:mainSession];
+        }
+
+    }]];
+    
+    [self showNotificationAlert:secureBackupAlert];
 }
 
 - (void)showLaunchAnimation
