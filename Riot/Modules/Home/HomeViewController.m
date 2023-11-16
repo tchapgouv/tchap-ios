@@ -38,6 +38,9 @@
     // The content offset of the collection in which the edited room is displayed.
     // We store this value to prevent the collection view from scrolling to the beginning (observed on iOS < 10).
     CGFloat selectedCollectionViewContentOffset;
+    
+    // Tchap: initial sync done listener
+    id tchapInitialSyncDoneListener;
 }
 
 @property (nonatomic, strong) SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter;
@@ -101,6 +104,18 @@
 
     // Change the table data source. It must be the home view controller itself.
     self.recentsTableView.dataSource = self;
+    
+    // Tchap: listen to Tchap InitialSyncDone notification added by Tchap in Matrix SDK.
+    if (tchapInitialSyncDoneListener == nil)
+    {
+        tchapInitialSyncDoneListener = [NSNotificationCenter.defaultCenter addObserverForName:kTchapMXSessionInitialSyncDone
+                                                                                       object:nil
+                                                                                        queue:NSOperationQueue.mainQueue
+                                                                                   usingBlock:^(NSNotification * _Nonnull notification) {
+            // Try to force activate cross-signing after initial sync.
+            [self showCrossSigningSetup];
+        }];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -138,6 +153,14 @@
 
 - (void)destroy
 {
+    // Tchap: remove intial sync done listener
+    if (tchapInitialSyncDoneListener)
+    {
+        [NSNotificationCenter.defaultCenter removeObserver:tchapInitialSyncDoneListener
+                                                      name:kTchapMXSessionInitialSyncDone
+                                                    object:nil];
+        tchapInitialSyncDoneListener = nil;
+    }
     [super destroy];
 }
 
