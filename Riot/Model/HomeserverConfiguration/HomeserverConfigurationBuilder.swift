@@ -40,7 +40,9 @@ final class HomeserverConfigurationBuilder: NSObject {
         // Enable E2EE by default when there is no value
         let isE2EEByDefaultEnabled = vectorWellKnownEncryptionConfiguration?.isE2EEByDefaultEnabled ?? true
         // Disable mandatory secure backup when there is no value
-        let isSecureBackupRequired = vectorWellKnownEncryptionConfiguration?.isSecureBackupRequired ?? false
+        // Tchap: force secureBackupRequired if well-known doesn't define it.
+//        let isSecureBackupRequired = vectorWellKnownEncryptionConfiguration?.isSecureBackupRequired ?? false
+        let isSecureBackupRequired = vectorWellKnownEncryptionConfiguration?.isSecureBackupRequired ?? true
         // Default to `MXKKeyPreSharingWhenTyping` when there is no value
         let outboundKeysPreSharingMode = vectorWellKnownEncryptionConfiguration?.outboundKeysPreSharingMode ?? .whenTyping
         // Defaults to all secure backup methods available when there is no value
