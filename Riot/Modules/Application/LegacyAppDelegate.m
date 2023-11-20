@@ -2585,7 +2585,8 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                                                         handler:^(UIAlertAction * action) {
         
         // Set next invite in the future.
-        RiotSettings.shared.tchapSecureBackupNextDisplayDate = [NSDate.now dateByAddingTimeInterval:60];
+        NSTimeInterval timeIntervalBeforeNextPresentation = 7*3600; // Propose to activate Secure Backup no more than once a week.
+        RiotSettings.shared.tchapSecureBackupNextDisplayDate = [NSDate.now dateByAddingTimeInterval:timeIntervalBeforeNextPresentation];
         
     }]];
     
