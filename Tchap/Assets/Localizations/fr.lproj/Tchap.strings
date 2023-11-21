@@ -306,10 +306,13 @@
 // MARK: Secret Setup Recovery Key
 "secrets_setup_recovery_key_export_action_done" = "Clé copiée";
 "secrets_setup_recovery_key_warning" = "Attention : c'est la seule fois que votre code est affiché !";
+"secrets_setup_recovery_key_invite_title" = "Sauvegarde automatique des messages";
+"secrets_setup_recovery_key_invite_message" = "Activez cette fonction pour ne jamais perdre l’accès à vos messages suite à une déconnexion.";
+"secrets_setup_recovery_key_invite_button_ok" = "Activer.";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Key Verification Self Verify
-"device_verification_self_verify_no_other_verified_session_available" = "Si vous n'avez accès à aucun autre appareil vérifié de votre compte, vous pouvez essayer d'activer la signature croisée dans vos paramètres.";
+"device_verification_self_verify_no_other_verified_session_available" = "Si vous n'avez accès à aucun autre appareil, vous pouvez essayer d'activer la signature croisée dans vos paramètres.";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room Decryption error

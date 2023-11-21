@@ -2574,13 +2574,13 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         return;
     }
     
-    UIAlertController *secureBackupAlert = [UIAlertController alertControllerWithTitle:@"Secure Backup please"
-                                                                               message:@"You really should setup Secure Backup…"
+    UIAlertController *secureBackupAlert = [UIAlertController alertControllerWithTitle:TchapL10n.secretsSetupRecoveryKeyInviteTitle
+                                                                               message:TchapL10n.secretsSetupRecoveryKeyInviteMessage
                                                                         preferredStyle:UIAlertControllerStyleAlert];
     
     __weak typeof(self) weakSelf = self;
     
-    [secureBackupAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
+    [secureBackupAlert addAction:[UIAlertAction actionWithTitle:VectorL10n.cancel
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action) {
         
@@ -2590,7 +2590,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         
     }]];
     
-    [secureBackupAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
+    [secureBackupAlert addAction:[UIAlertAction actionWithTitle:TchapL10n.secretsSetupRecoveryKeyInviteButtonOk
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action) {
         
