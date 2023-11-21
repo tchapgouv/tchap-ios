@@ -361,8 +361,9 @@ MXKDocumentPickerPresenterDelegate>
 #ifdef SECURE_BACKUP
     Section *secureBackupSection = nil; // Tchap
 
-    if (!isSecureBackupRequired)
-    {
+    // Tchap: always display Secure backup section to allow message recovery option
+//    if (!isSecureBackupRequired)
+//    {
         secureBackupSection = [Section sectionWithTag:SECTION_SECURE_BACKUP];
         secureBackupSection.headerTitle = [VectorL10n securitySettingsSecureBackup];
         secureBackupSection.footerTitle = VectorL10n.securitySettingsSecureBackupDescription;
@@ -370,7 +371,7 @@ MXKDocumentPickerPresenterDelegate>
         [secureBackupSection addRowsWithCount:self->secureBackupSection.numberOfRows];
 
         [sections addObject:secureBackupSection];
-    }
+//    }
 #endif
     
     // Cross-Signing

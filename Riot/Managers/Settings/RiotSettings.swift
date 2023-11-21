@@ -431,6 +431,14 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "allChatsOnboardingHasBeenDisplayed", defaultValue: false, storage: defaults)
     var allChatsOnboardingHasBeenDisplayed
     
+    // MARK: - Tchap: invite to activate Secure Backup
+    
+    // Tchap periodically invite user to activate Secure Backup if not activated.
+    // This date is the next Date after which the invite should be presented.
+    // Start with epoch time 0 to force the presentation of modal if other conditions are ok.
+    @UserDefault(key: "tchapSecureBackupNextDisplayDate", defaultValue: Date.init(timeIntervalSince1970: 0), storage: defaults)
+    var tchapSecureBackupNextDisplayDate
+    
 }
 
 // MARK: - RiotSettings notification constants

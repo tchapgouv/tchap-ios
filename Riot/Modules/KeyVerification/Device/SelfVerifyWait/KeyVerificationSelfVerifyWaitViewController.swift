@@ -43,6 +43,16 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     @IBOutlet private weak var recoverSecretsButton: RoundedButton!
     @IBOutlet private weak var recoverSecretsAdditionalInformationLabel: UILabel!
     
+    // Tchap: UI to enable user to cancel this view if no recover secrets method is available
+    // It can happen on an account created before setting `secureBackupRequired` to true.
+    // This account can have cross-signing activated but no more session connected (all devices disconnected).
+    // The application will ask the user to verifiy the session with another device because cross-signing is activated.
+    // But as no other device is still connected, the user has no way to perform the verification, 
+    // because SecureBackup is not activated: we are in the process of activating it.
+    @IBOutlet weak var tchapNoRecoverSecretsMethodAvailableContainerView: UIView!
+    @IBOutlet weak var tchapNoRecoverSecretsMethodAvailableInformationLabel: UILabel!
+    @IBOutlet weak var tchapNoRecoverSecretsMethodAvailableButton: RoundedButton!
+    
     // MARK: Private
 
     private var viewModel: KeyVerificationSelfVerifyWaitViewModelType!
@@ -101,6 +111,10 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         self.mobileClientImageView.tintColor = theme.tintColor
         self.recoverSecretsAvailabilityLoadingLabel.textColor = theme.textSecondaryColor
         self.recoverSecretsAvailabilityActivityIndicatorView.color = theme.tintColor
+        
+        // Tchap:
+        self.tchapNoRecoverSecretsMethodAvailableInformationLabel.textColor = theme.textSecondaryColor
+        
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -188,6 +202,19 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         self.recoverSecretsAvailabilityActivityIndicatorView.stopAnimating()
         self.recoverSecretsContainerView.isHidden = hideRecoverSecrets
         self.recoverSecretsButton.setTitle(recoverSecretsButtonTitle, for: .normal)
+        
+        // Tchap: show no recovery secrets method available only if hideRecoverSecrets is true.
+        // The UI will propose the user to verify is session with another device.
+        // Offer the user to cancel if no device is available to him.
+        self.tchapNoRecoverSecretsMethodAvailableContainerView.isHidden = !hideRecoverSecrets
+        self.tchapNoRecoverSecretsMethodAvailableInformationLabel.text = TchapL10n.deviceVerificationSelfVerifyNoOtherVerifiedSessionAvailable
+        self.tchapNoRecoverSecretsMethodAvailableButton.setTitle(VectorL10n.cancel, for: .normal)
+        
+        if (hideRecoverSecrets)
+        {
+            self.tchapNoRecoverSecretsMethodAvailableButton.addTarget(self, action: #selector(cancelButtonAction), for: .touchUpInside)
+        }
+        
     }
     
     private func renderCancelled(reason: MXTransactionCancelCode) {
@@ -217,7 +244,7 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     
     // MARK: - Actions
     
-    private func cancelButtonAction() {
+    @objc private func cancelButtonAction() {
         self.viewModel.process(viewAction: .cancel)
     }
     
