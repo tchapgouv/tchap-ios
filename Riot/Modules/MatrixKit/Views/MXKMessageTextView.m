@@ -94,6 +94,10 @@
     if (@available(iOS 15.0, *)) {
         [self flushPills];
     }
+
+    // Tchap: set text type to prefered font to rerspect user text size
+    attributedText = [self respectPreferredFontForAttributedString:attributedText];
+
     [super setAttributedText:attributedText];
 
     if (@available(iOS 15.0, *)) {
@@ -101,9 +105,26 @@
         // forcing the layoutManager to redraw the glyphs at all NSAttachment positions.
         [self vc_invalidateTextAttachmentsDisplay];
     }
+}
+
+// Tchap: Update font size using preferred font settings but keeping other attributes
+- (NSAttributedString *)respectPreferredFontForAttributedString:(NSAttributedString *)sourceString
+{
+    UIFont *preferredFont = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     
-    // Tchap: set text type to prefered font to rerspect user text size
-    self.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    NSMutableAttributedString *workString = [sourceString mutableCopy];
+    
+    [workString beginEditing];
+    [workString enumerateAttribute:NSFontAttributeName
+                           inRange:NSMakeRange(0, workString.length)
+                           options:0
+                        usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
+        [workString removeAttribute:NSFontAttributeName range:range];
+        [workString addAttribute:NSFontAttributeName value:[(UIFont *)value fontWithSize:preferredFont.pointSize] range:range];
+    }];
+    [workString endEditing];
+    
+    return workString;
 }
 
 - (void)registerPillView:(UIView *)pillView
