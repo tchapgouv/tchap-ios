@@ -119,8 +119,11 @@
                            inRange:NSMakeRange(0, workString.length)
                            options:0
                         usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
-        [workString removeAttribute:NSFontAttributeName range:range];
-        [workString addAttribute:NSFontAttributeName value:[(UIFont *)value fontWithSize:preferredFont.pointSize] range:range];
+        if ([value isKindOfClass:UIFont.class])
+        {
+            [workString removeAttribute:NSFontAttributeName range:range];
+            [workString addAttribute:NSFontAttributeName value:[(UIFont *)value fontWithSize:preferredFont.pointSize] range:range];
+        }
     }];
     [workString endEditing];
     
