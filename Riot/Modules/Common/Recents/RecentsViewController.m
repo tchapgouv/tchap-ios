@@ -1424,6 +1424,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                              
                                                          }]];
         
+        // Tchap: handle last admin alert
         [room tc_isCurrentUserLastAdministrator:^(BOOL isLastAdmin) {
             [self stopActivityIndicator];
             
@@ -1435,11 +1436,11 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
             }
             
             MXWeakify(self);
-            self->currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomParticipantsLeavePromptTitle]
+            UIAlertController *lastAdminAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomParticipantsLeavePromptTitle]
                                                                      message:promptMessage
                                                               preferredStyle:UIAlertControllerStyleAlert];
             
-            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
+            [lastAdminAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                                    style:UIAlertActionStyleCancel
                                                                  handler:^(UIAlertAction * action) {
                                                                      
@@ -1448,7 +1449,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                                      
                                                                  }]];
             
-            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n leave]
+            [lastAdminAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n leave]
                                                                    style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                                        
                                                                        MXStrongifyAndReturnIfNil(self);
@@ -1502,8 +1503,9 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                                        
                                                                    }]];
             
-            [self->currentAlert mxk_setAccessibilityIdentifier:@"LeaveEditedRoomAlert"];
-            [self presentViewController:self->currentAlert animated:YES completion:nil];
+            [lastAdminAlert mxk_setAccessibilityIdentifier:@"LeaveEditedRoomAlert"];
+            [self presentViewController:lastAdminAlert animated:YES completion:nil];
+            self->currentAlert = lastAdminAlert;
         }];
     }
 }
