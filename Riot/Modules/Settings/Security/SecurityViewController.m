@@ -853,6 +853,7 @@ MXKDocumentPickerPresenterDelegate>
     [self setupCrossSigningWithTitle:TchapL10n.securityCrossSigningSetupTitle // Tchap
                              message:[VectorL10n securitySettingsUserPasswordDescription]
                              success:^{
+                                [self loadCrossSigning]; // Tchap: reload cross-signing state after activation
                              } failure:^(NSError *error) {
                              }];
 }
@@ -1079,7 +1080,8 @@ MXKDocumentPickerPresenterDelegate>
         [self setupCrossSigningWithTitle:[VectorL10n secureKeyBackupSetupIntroTitle]
                                  message:[VectorL10n securitySettingsUserPasswordDescription]
                                  success:^{
-                                     [self setupSecureBackup2];
+                                    [self loadCrossSigning]; // Tchap: reload cross-signing state after activation
+                                    [self setupSecureBackup2];
                                  } failure:^(NSError *error) {
                                  }];
     }
