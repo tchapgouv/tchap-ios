@@ -1,4 +1,4 @@
-## Changes in 2.5.2 (2023-11-27)
+## Changes in 2.6.0 (2023-11-27)
 
 ✨ Features
 
