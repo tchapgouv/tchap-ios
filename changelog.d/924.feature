@@ -1,1 +1,0 @@
-Activer la signature croisée automatiquement à la création de compte

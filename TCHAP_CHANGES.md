@@ -1,3 +1,26 @@
+## Changes in 2.5.2 (2023-11-27)
+
+✨ Features
+
+- Activer la signature croisée automatiquement à la création de compte ([#924](https://github.com/tchapgouv/tchap-ios/issues/924))
+
+🙌 Improvements
+
+- Actualiser l'état de la signature croisée dans l'interface des réglages de sécurité après son activation ([#840](https://github.com/tchapgouv/tchap-ios/issues/840))
+- Rebase sur Element 1.11.4 ([#903](https://github.com/tchapgouv/tchap-ios/issues/903))
+- Message d'erreur en FR lors de l'échec d'invitation dans un salon d'un externe non présent dans l'annuaire ([#908](https://github.com/tchapgouv/tchap-ios/issues/908))
+- Inciter l'activation de la sauvegarde automatique ([#915](https://github.com/tchapgouv/tchap-ios/issues/915))
+- Changer les Endpoints pour la version DEV ([#921](https://github.com/tchapgouv/tchap-ios/issues/921))
+- Désactiver la taille de police dynamique si l'affichage en bulle n'est pas activé ([#934](https://github.com/tchapgouv/tchap-ios/issues/934))
+
+🐛 Bugfixes
+
+- La liste des salons se fige si on quitte un salon depuis le glissement sur la cellule ([#919](https://github.com/tchapgouv/tchap-ios/issues/919))
+- Conserver les enrichissements de texte quand on respecte le réglage de la taille de texte de l'utilisateur ([#927](https://github.com/tchapgouv/tchap-ios/issues/927))
+- Depuis la gestion dynamique de taille d'affichage dans les salons, l'application plante quand le salon contient un message supprimé. ([#929](https://github.com/tchapgouv/tchap-ios/issues/929))
+- Crash de l'application quand on quitte un salon dont on est le dernier administrateur depuis le menu d'actions rapides ([#931](https://github.com/tchapgouv/tchap-ios/issues/931))
+
+
 ## Changes in 2.5.1 (2023-10-30)
 
 ✨ Features
