@@ -40,7 +40,7 @@
     CGFloat selectedCollectionViewContentOffset;
     
     // Tchap: initial sync done listener
-    id tchapInitialSyncDoneListener;
+    id tchapSyncDoneListener;
 }
 
 @property (nonatomic, strong) SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter;
@@ -104,17 +104,52 @@
 
     // Change the table data source. It must be the home view controller itself.
     self.recentsTableView.dataSource = self;
-    
-    // Tchap: listen to Tchap InitialSyncDone notification added by Tchap in Matrix SDK.
-    if (tchapInitialSyncDoneListener == nil)
+}
+
+// Tchap: set-up cross-signing auto-activation
+- (void)tchapSetupCrossSigningAutoActivation
+{
+    // Tchap: listen to Tchap syncDone notification to check the status of the cross-signing after account info are updated.
+    if (tchapSyncDoneListener == nil)
     {
-        tchapInitialSyncDoneListener = [NSNotificationCenter.defaultCenter addObserverForName:kTchapMXSessionInitialSyncDone
-                                                                                       object:nil
-                                                                                        queue:NSOperationQueue.mainQueue
-                                                                                   usingBlock:^(NSNotification * _Nonnull notification) {
-            // Try to force activate cross-signing after initial sync.
-            [self showCrossSigningSetup];
+        __weak typeof(self) weakSelf = self;
+        
+        tchapSyncDoneListener = [NSNotificationCenter.defaultCenter addObserverForName:kMXSessionDidSyncNotification
+                                                                                object:nil
+                                                                                 queue:NSOperationQueue.mainQueue
+                                                                            usingBlock:^(NSNotification * _Nonnull notification) {
+            
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            MXSession *session = strongSelf.mainSession;
+            
+            // Remove listener after first invocation.
+            [self tchapUnsetupCrossSigningAutoActivation];
+            
+            // Try to force activate cross-signing after sync if:
+            //   - device is the only one listed on the account (no risk of conflict with other devices)
+            //   - Cross-signing is not enabled for this account.
+            //   - or Cross-signing exists on the account but is not trusted by this device. The account password can be asked to activate cross-signing in this case.
+            NSString *currentUserId = session.myUserId;
+            MXCrossSigningState state = session.crypto.crossSigning.state;
+            if (currentUserId != nil
+                && [session.crypto devicesForUser:currentUserId].count < 2
+                && (session.crypto.crossSigning.state == MXCrossSigningStateNotBootstrapped || session.crypto.crossSigning.state == MXCrossSigningStateCrossSigningExists) )
+            {
+                [strongSelf showCrossSigningSetup];
+            }
         }];
+    }
+}
+
+// Tchap: remove intial sync done listener
+- (void)tchapUnsetupCrossSigningAutoActivation
+{
+    if (tchapSyncDoneListener)
+    {
+        [NSNotificationCenter.defaultCenter removeObserver:tchapSyncDoneListener
+                                                      name:kMXSessionDidSyncNotification
+                                                    object:nil];
+        tchapSyncDoneListener = nil;
     }
 }
 
@@ -138,6 +173,10 @@
         [recentsDataSource searchWithPatterns:nil];
         [self.recentsSearchBar setText:nil];
     }
+    
+    // Tchap: set-up cross-signing auto-activation in viewWillAppear rather than in viewDidLoad
+    // because this controller is only created once and never released!
+    [self tchapSetupCrossSigningAutoActivation];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
@@ -154,13 +193,8 @@
 - (void)destroy
 {
     // Tchap: remove intial sync done listener
-    if (tchapInitialSyncDoneListener)
-    {
-        [NSNotificationCenter.defaultCenter removeObserver:tchapInitialSyncDoneListener
-                                                      name:kTchapMXSessionInitialSyncDone
-                                                    object:nil];
-        tchapInitialSyncDoneListener = nil;
-    }
+    [self tchapUnsetupCrossSigningAutoActivation];
+    
     [super destroy];
 }
 
