@@ -130,7 +130,6 @@
             //   - Cross-signing is not enabled for this account.
             //   - or Cross-signing exists on the account but is not trusted by this device. The account password can be asked to activate cross-signing in this case.
             NSString *currentUserId = session.myUserId;
-            MXCrossSigningState state = session.crypto.crossSigning.state;
             if (currentUserId != nil
                 && [session.crypto devicesForUser:currentUserId].count < 2
                 && (session.crypto.crossSigning.state == MXCrossSigningStateNotBootstrapped || session.crypto.crossSigning.state == MXCrossSigningStateCrossSigningExists) )
