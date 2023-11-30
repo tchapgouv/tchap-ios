@@ -96,7 +96,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate/*, RoomCreationModalCoordinatorBridgePresenterDelegate*/, RoomInfoCoordinatorBridgePresenterDelegate/*, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate*/, VoiceMessageControllerDelegate /*, SpaceDetailPresenterDelegate*/, CompletionSuggestionCoordinatorBridgeDelegate/*, ThreadsCoordinatorBridgePresenterDelegate, ThreadsBetaCoordinatorBridgePresenterDelegate, MXThreadingServiceDelegate, RoomParticipantsInviteCoordinatorBridgePresenterDelegate*/, RoomInputToolbarViewDelegate/*, ComposerCreateActionListBridgePresenterDelegate*/>
+    RoomDataSourceDelegate/*, RoomCreationModalCoordinatorBridgePresenterDelegate*/, RoomInfoCoordinatorBridgePresenterDelegate/*, DialpadViewControllerDelegate*/, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate /*, SpaceDetailPresenterDelegate*/, CompletionSuggestionCoordinatorBridgeDelegate/*, ThreadsCoordinatorBridgePresenterDelegate, ThreadsBetaCoordinatorBridgePresenterDelegate, MXThreadingServiceDelegate, RoomParticipantsInviteCoordinatorBridgePresenterDelegate*/, RoomInputToolbarViewDelegate/*, ComposerCreateActionListBridgePresenterDelegate*/>
 {
     
     // The preview header
@@ -189,7 +189,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     __weak id roomMemberEventListener;
 }
 
-//@property (nonatomic, strong) RemoveJitsiWidgetView *removeJitsiWidgetView;
+@property (nonatomic, strong) RemoveJitsiWidgetView *removeJitsiWidgetView;
 
 
 @property (nonatomic, strong) RoomContextualMenuViewController *roomContextualMenuViewController;
@@ -445,7 +445,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
-//    [self.removeJitsiWidgetView updateWithTheme:ThemeService.shared.theme];
+    [self.removeJitsiWidgetView updateWithTheme:ThemeService.shared.theme];
     
     // Prepare jump to last unread banner
     self.jumpToLastUnreadImageView.tintColor = ThemeService.shared.theme.tintColor;
@@ -1733,39 +1733,39 @@ static CGSize kThreadListBarButtonItemImageSize;
     return item;
 }
 
-// Tchap: Jisti is disabled in Tchap
-//- (UIBarButtonItem *)joinJitsiBarButtonItem
-//{
-//    CallTileActionButton *button = [CallTileActionButton new];
-//    [button setImage:AssetImages.callVideoIcon.image
-//            forState:UIControlStateNormal];
-//    [button setTitle:[VectorL10n roomJoinGroupCall]
-//            forState:UIControlStateNormal];
-//    [button addTarget:self
-//               action:@selector(onVideoCallPressed:)
-//     forControlEvents:UIControlEventTouchUpInside];
-//    button.contentEdgeInsets = UIEdgeInsetsMake(4, 12, 4, 12);
-//
-//    UIBarButtonItem *item;
-//
-//    if (RiotSettings.shared.enableThreads)
-//    {
-//        // Add some spacing when there is a threads button
-//        UIView *buttonContainer = [[UIView alloc] initWithFrame:CGRectZero];
-//        [buttonContainer vc_addSubViewMatchingParent:button withInsets:UIEdgeInsetsMake(0, 0, 0, -12)];
-//
-//        item = [[UIBarButtonItem alloc] initWithCustomView:buttonContainer];
-//    }
-//    else
-//    {
-//        item = [[UIBarButtonItem alloc] initWithCustomView:button];
-//    }
-//
-//    item.accessibilityLabel = [VectorL10n roomAccessibilityVideoCall];
-//
-//    return item;
-//}
-//
+- (UIBarButtonItem *)joinJitsiBarButtonItem
+{
+    CallTileActionButton *button = [CallTileActionButton new];
+    [button setImage:AssetImages.callVideoIcon.image
+            forState:UIControlStateNormal];
+    [button setTitle:[VectorL10n roomJoinGroupCall]
+            forState:UIControlStateNormal];
+    [button addTarget:self
+               action:@selector(onVideoCallPressed:)
+     forControlEvents:UIControlEventTouchUpInside];
+    button.contentEdgeInsets = UIEdgeInsetsMake(4, 12, 4, 12);
+
+    UIBarButtonItem *item;
+
+    if (RiotSettings.shared.enableThreads)
+    {
+        // Add some spacing when there is a threads button
+        UIView *buttonContainer = [[UIView alloc] initWithFrame:CGRectZero];
+        [buttonContainer vc_addSubViewMatchingParent:button withInsets:UIEdgeInsetsMake(0, 0, 0, -12)];
+
+        item = [[UIBarButtonItem alloc] initWithCustomView:buttonContainer];
+    }
+    else
+    {
+        item = [[UIBarButtonItem alloc] initWithCustomView:button];
+    }
+
+    item.accessibilityLabel = [VectorL10n roomAccessibilityVideoCall];
+
+    return item;
+}
+
+// Tchap: Threads is disabled in Tchap
 //- (UIBarButtonItem *)threadMoreBarButtonItem
 //{
 //    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:AssetImages.roomContextMenuMore.image
@@ -1796,19 +1796,19 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)setupRemoveJitsiWidgetRemoveView
 {
-//    if (!self.displayConfiguration.jitsiWidgetRemoverEnabled)
-//    {
-//        return;
-//    }
-//
-//    self.removeJitsiWidgetView = [RemoveJitsiWidgetView instantiate];
-//    self.removeJitsiWidgetView.delegate = self;
-//
-//    [self.removeJitsiWidgetContainer vc_addSubViewMatchingParent:self.removeJitsiWidgetView];
-//
-//    self.removeJitsiWidgetContainer.hidden = YES;
-//
-//    [self refreshRemoveJitsiWidgetView];
+    if (!self.displayConfiguration.jitsiWidgetRemoverEnabled)
+    {
+        return;
+    }
+
+    self.removeJitsiWidgetView = [RemoveJitsiWidgetView instantiate];
+    self.removeJitsiWidgetView.delegate = self;
+
+    [self.removeJitsiWidgetContainer vc_addSubViewMatchingParent:self.removeJitsiWidgetView];
+
+    self.removeJitsiWidgetContainer.hidden = YES;
+
+    [self refreshRemoveJitsiWidgetView];
 }
 
 - (void)forceLayoutRefresh
@@ -2814,25 +2814,25 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 #pragma mark - Jitsi
 
-//- (void)showJitsiCallWithWidget:(Widget*)widget
-//{
-//    [[AppDelegate theDelegate].callPresenter displayJitsiCallWithWidget:widget];
-//}
-//
-//- (void)endActiveJitsiCall
-//{
-//    [[AppDelegate theDelegate].callPresenter endActiveJitsiCall];
-//}
-//
-//- (BOOL)isRoomHavingAJitsiCall
-//{
-//    return [self isRoomHavingAJitsiCallForWidgetId:self.roomDataSource.roomId];
-//}
-//
-//- (BOOL)isRoomHavingAJitsiCallForWidgetId:(NSString*)widgetId
-//{
-//    return [[AppDelegate theDelegate].callPresenter.jitsiVC.widget.roomId isEqualToString:widgetId];
-//}
+- (void)showJitsiCallWithWidget:(Widget*)widget
+{
+    [[AppDelegate theDelegate].callPresenter displayJitsiCallWithWidget:widget];
+}
+
+- (void)endActiveJitsiCall
+{
+    [[AppDelegate theDelegate].callPresenter endActiveJitsiCall];
+}
+
+- (BOOL)isRoomHavingAJitsiCall
+{
+    return [self isRoomHavingAJitsiCallForWidgetId:self.roomDataSource.roomId];
+}
+
+- (BOOL)isRoomHavingAJitsiCallForWidgetId:(NSString*)widgetId
+{
+    return [[AppDelegate theDelegate].callPresenter.jitsiVC.widget.roomId isEqualToString:widgetId];
+}
 
 #pragma mark - Dialpad
 
@@ -3849,37 +3849,37 @@ static CGSize kThreadListBarButtonItemImageSize;
                 [self showEmojiPickerForEventId:tappedEventId];
             }
         }
-//        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusCell.callBackAction])
-//        {
-//            MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
-//            MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
-//
-//            [self placeCallWithVideo2:eventContent.isVideoCall];
-//        }
-//        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusCell.declineAction])
-//        {
-//            MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
-//            MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
-//
-//            MXCall *call = [self.mainSession.callManager callWithCallId:eventContent.callId];
-//            [call hangup];
-//        }
-//        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusCell.answerAction])
-//        {
-//            MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
-//            MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
-//
-//            MXCall *call = [self.mainSession.callManager callWithCallId:eventContent.callId];
-//            [call answer];
-//        }
-//        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusCell.endCallAction])
-//        {
-//            MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
-//            MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
-//
-//            MXCall *call = [self.mainSession.callManager callWithCallId:eventContent.callId];
-//            [call hangup];
-//        }
+        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusCell.callBackAction])
+        {
+            MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
+            MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
+
+            [self placeCallWithVideo2:eventContent.isVideoCall];
+        }
+        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusCell.declineAction])
+        {
+            MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
+            MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
+
+            MXCall *call = [self.mainSession.callManager callWithCallId:eventContent.callId];
+            [call hangup];
+        }
+        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusCell.answerAction])
+        {
+            MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
+            MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
+
+            MXCall *call = [self.mainSession.callManager callWithCallId:eventContent.callId];
+            [call answer];
+        }
+        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusCell.endCallAction])
+        {
+            MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
+            MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
+
+            MXCall *call = [self.mainSession.callManager callWithCallId:eventContent.callId];
+            [call hangup];
+        }
 //        else if ([actionIdentifier isEqualToString:RoomGroupCallStatusCell.joinAction] ||
 //                 [actionIdentifier isEqualToString:RoomGroupCallStatusCell.answerAction])
 //        {
@@ -6635,21 +6635,21 @@ static CGSize kThreadListBarButtonItemImageSize;
         
         if (jitsiWidget && self.canEditJitsiWidget)
         {
-//            [self.removeJitsiWidgetView reset];
+            [self.removeJitsiWidgetView reset];
             self.removeJitsiWidgetContainer.hidden = NO;
-//            self.removeJitsiWidgetView.delegate = self;
+            self.removeJitsiWidgetView.delegate = self;
         }
         else
         {
             self.removeJitsiWidgetContainer.hidden = YES;
-//            self.removeJitsiWidgetView.delegate = nil;
+            self.removeJitsiWidgetView.delegate = nil;
         }
     }
     else
     {
-//        [self.removeJitsiWidgetView reset];
+        [self.removeJitsiWidgetView reset];
         self.removeJitsiWidgetContainer.hidden = YES;
-//        self.removeJitsiWidgetView.delegate = self;
+        self.removeJitsiWidgetView.delegate = self;
     }
 }
 
@@ -8041,36 +8041,36 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 #pragma mark - RemoveJitsiWidgetViewDelegate
 
-//- (void)removeJitsiWidgetViewDidCompleteSliding:(RemoveJitsiWidgetView *)view
-//{
-//    view.delegate = nil;
-//    Widget *jitsiWidget = [self.customizedRoomDataSource jitsiWidget];
-//
-//    [self startActivityIndicator];
-//
-//    //  close the widget
-//    MXWeakify(self);
-//
-//    [[WidgetManager sharedManager] closeWidget:jitsiWidget.widgetId
-//                                        inRoom:self.roomDataSource.room
-//                                       success:^{
-//        MXStrongifyAndReturnIfNil(self);
-//        [self stopActivityIndicator];
-//        //  we can wait for kWidgetManagerDidUpdateWidgetNotification, but we want to be faster
-//        self.removeJitsiWidgetContainer.hidden = YES;
-//        self.removeJitsiWidgetView.delegate = nil;
-//
-//        //  end active call if exists
-//        if ([self isRoomHavingAJitsiCallForWidgetId:jitsiWidget.widgetId])
-//        {
-//            [self endActiveJitsiCall];
-//        }
-//    } failure:^(NSError *error) {
-//        MXStrongifyAndReturnIfNil(self);
-//        [self showJitsiErrorAsAlert:error];
-//        [self stopActivityIndicator];
-//    }];
-//}
+- (void)removeJitsiWidgetViewDidCompleteSliding:(RemoveJitsiWidgetView *)view
+{
+    view.delegate = nil;
+    Widget *jitsiWidget = [self.customizedRoomDataSource jitsiWidget];
+
+    [self startActivityIndicator];
+
+    //  close the widget
+    MXWeakify(self);
+
+    [[WidgetManager sharedManager] closeWidget:jitsiWidget.widgetId
+                                        inRoom:self.roomDataSource.room
+                                       success:^{
+        MXStrongifyAndReturnIfNil(self);
+        [self stopActivityIndicator];
+        //  we can wait for kWidgetManagerDidUpdateWidgetNotification, but we want to be faster
+        self.removeJitsiWidgetContainer.hidden = YES;
+        self.removeJitsiWidgetView.delegate = nil;
+
+        //  end active call if exists
+        if ([self isRoomHavingAJitsiCallForWidgetId:jitsiWidget.widgetId])
+        {
+            [self endActiveJitsiCall];
+        }
+    } failure:^(NSError *error) {
+        MXStrongifyAndReturnIfNil(self);
+        [self showJitsiErrorAsAlert:error];
+        [self stopActivityIndicator];
+    }];
+}
 
 #pragma mark - VoiceMessageControllerDelegate
 
