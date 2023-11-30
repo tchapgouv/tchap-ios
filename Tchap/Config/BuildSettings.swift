@@ -339,7 +339,7 @@ final class BuildSettings: NSObject {
     // MARK: - Room Screen
     
     static let roomScreenAllowVoIPForDirectRoom: Bool = true
-    static let roomScreenAllowVoIPForNonDirectRoom: Bool = true
+    static let roomScreenAllowVoIPForNonDirectRoom: Bool = false // Tchap: no Voip in non-direct rooms.
     static let roomScreenAllowCameraAction: Bool = true
     static let roomScreenAllowMediaLibraryAction: Bool = true
     static let roomScreenAllowStickerAction: Bool = false

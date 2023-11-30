@@ -138,6 +138,15 @@ targetTemplates:
     - path: ../Riot/Managers/AppInfo
     - path: ../Riot/Managers/BugReport
     - path: ../Riot/Managers/Call/AsyncOperation.swift
+    - path: ../Riot/Managers/Call/CallPresenter.swift
+    - path: ../Riot/Managers/Call/CallPresenterDelegate.swift
+    - path: ../Riot/Managers/Call/PipView.swift
+    - path: ../Riot/Managers/Call/PipAnimator.swift
+    - path: ../Riot/Managers/Call/PictureInPicturable.swift
+    - path: ../Riot/Managers/Call/Operations/CallVCPresentOperation.swift
+    - path: ../Riot/Managers/Call/Operations/CallVCDismissOperation.swift
+    - path: ../Riot/Managers/Call/Operations/CallVCEnterPipOperation.swift
+    - path: ../Riot/Managers/Call/Operations/CallVCExitPipOperation.swift
     - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
     - path: ../Riot/Managers/KeyValueStorage
     - path: ../Riot/Managers/LocalAuthentication
