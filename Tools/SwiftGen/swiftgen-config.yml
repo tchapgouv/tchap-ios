@@ -7,6 +7,8 @@ ib:
       - templateName: scenes-swift4
         output: Tchap/Generated/Storyboards.swift
   - inputs: 
+      - Riot/Modules/Call/Dialpad
+      - Riot/Modules/CallTransfer
       - Riot/Modules/ContextMenu
       - Riot/Modules/CreateRoom
       - Riot/Modules/CrossSigning
