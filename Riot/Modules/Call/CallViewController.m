@@ -29,11 +29,11 @@
 #import "IncomingCallView.h"
 
 // TODO: Tchap: VoIP support
-@interface CallViewController () /*<
+@interface CallViewController () <
 PictureInPicturable,
 DialpadViewControllerDelegate,
 CallTransferMainViewControllerDelegate,
-CallAudioRouteMenuViewDelegate> */
+CallAudioRouteMenuViewDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
@@ -46,11 +46,11 @@ CallAudioRouteMenuViewDelegate> */
 
 @property (nonatomic, strong) id<Theme> overriddenTheme;
 @property (nonatomic, assign) BOOL inPiP;
-//@property (nonatomic, strong) CallPiPView *pipView;
+@property (nonatomic, strong) CallPiPView *pipView;
 
-//@property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
+@property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
 @property (nonatomic, strong) SlidingModalPresenter *slidingModalPresenter;
-//@property (nonatomic, strong) CallAudioRouteMenuView *audioRoutesMenuView;
+@property (nonatomic, strong) CallAudioRouteMenuView *audioRoutesMenuView;
 
 @end
 
@@ -230,40 +230,40 @@ CallAudioRouteMenuViewDelegate> */
     return incomingCallView;
 }
 
-//- (void)showAudioDeviceOptions
-//{
-//    MXiOSAudioOutputRouter *router = self.mxCall.audioOutputRouter;
-//    if (router.isAnyExternalDeviceConnected)
-//    {
-//        self.slidingModalPresenter = [SlidingModalPresenter new];
-//
-//        _audioRoutesMenuView = [[CallAudioRouteMenuView alloc] initWithRoutes:router.availableOutputRoutes
-//                                                                 currentRoute:router.currentRoute];
-//        _audioRoutesMenuView.delegate = self;
-//
-//        [self.slidingModalPresenter presentView:_audioRoutesMenuView
-//                                           from:self
-//                                       animated:true
-//                                        options:SlidingModalPresenter.CenterInScreenOption
-//                                     completion:nil];
-//    }
-//    else
-//    {
-//        //  toggle between built-in and loud speakers
-//        switch (router.currentRoute.routeType)
-//        {
-//            case MXiOSAudioOutputRouteTypeBuiltIn:
-//                [router changeCurrentRouteTo:router.loudSpeakersRoute];
-//                break;
-//            case MXiOSAudioOutputRouteTypeLoudSpeakers:
-//                [router changeCurrentRouteTo:router.builtInRoute];
-//                break;
-//            default:
-//                break;
-//        }
-//
-//    }
-//}
+- (void)showAudioDeviceOptions
+{
+    MXiOSAudioOutputRouter *router = self.mxCall.audioOutputRouter;
+    if (router.isAnyExternalDeviceConnected)
+    {
+        self.slidingModalPresenter = [SlidingModalPresenter new];
+
+        _audioRoutesMenuView = [[CallAudioRouteMenuView alloc] initWithRoutes:router.availableOutputRoutes
+                                                                 currentRoute:router.currentRoute];
+        _audioRoutesMenuView.delegate = self;
+
+        [self.slidingModalPresenter presentView:_audioRoutesMenuView
+                                           from:self
+                                       animated:true
+                                        options:SlidingModalPresenter.CenterInScreenOption
+                                     completion:nil];
+    }
+    else
+    {
+        //  toggle between built-in and loud speakers
+        switch (router.currentRoute.routeType)
+        {
+            case MXiOSAudioOutputRouteTypeBuiltIn:
+                [router changeCurrentRouteTo:router.loudSpeakersRoute];
+                break;
+            case MXiOSAudioOutputRouteTypeLoudSpeakers:
+                [router changeCurrentRouteTo:router.builtInRoute];
+                break;
+            default:
+                break;
+        }
+
+    }
+}
 
 - (void)configureSpeakerButton
 {
@@ -292,7 +292,7 @@ CallAudioRouteMenuViewDelegate> */
 {
     [super call:call stateDidChange:state reason:event];
     
-//    [self configurePiPView];
+    [self configurePiPView];
 
     [self checkStunServerFallbackWithCallState:state];
 }
@@ -441,21 +441,21 @@ CallAudioRouteMenuViewDelegate> */
     return _overriddenTheme;
 }
 
-//- (CallPiPView *)pipView
-//{
-//    if (_pipView == nil)
-//    {
-//        _pipView = [CallPiPView instantiateWithSession:self.mainSession];
-//        [_pipView updateWithTheme:self.overriddenTheme];
-//    }
-//    return _pipView;
-//}
+- (CallPiPView *)pipView
+{
+    if (_pipView == nil)
+    {
+        _pipView = [CallPiPView instantiateWithSession:self.mainSession];
+        [_pipView updateWithTheme:self.overriddenTheme];
+    }
+    return _pipView;
+}
 
 - (void)setMxCallOnHold:(MXCall *)mxCallOnHold
 {
     [super setMxCallOnHold:mxCallOnHold];
     
-//    [self configurePiPView];
+    [self configurePiPView];
 }
 
 - (UIImage*)picturePlaceholder
@@ -545,230 +545,230 @@ CallAudioRouteMenuViewDelegate> */
 
 #pragma mark - Actions
 
-//- (IBAction)onButtonPressed:(id)sender
-//{
-//    if (sender == _chatButton)
-//    {
-//        if (self.delegate)
-//        {
-//            // Dismiss the view controller whereas the call is still running
-//            [self.delegate dismissCallViewController:self completion:^{
-//                
-//                if (self.mxCall.room)
-//                {
-//                    // Open the room page
-//                    Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerInCall;
-//                    [[AppDelegate theDelegate] showRoom:self.mxCall.room.roomId andEventId:nil withMatrixSession:self.mxCall.room.mxSession];
-//                }
-//                
-//            }];
-//        }
-//    }
-//    else
-//    {
-//        [super onButtonPressed:sender];
-//    }
-//}
-//
-//- (void)setInPiP:(BOOL)inPiP
-//{
-//    _inPiP = inPiP;
-//    
-//    if (_inPiP)
-//    {
-//        self.overlayContainerView.hidden = YES;
-//        self.callerImageView.hidden = YES;
-//        self.callerNameLabel.hidden = YES;
-//        self.callStatusLabel.hidden = YES;
-//        self.localPreviewContainerView.hidden = YES;
-//        self.localPreviewActivityView.hidden = YES;
-//        
-//        if (self.pipViewContainer.subviews.count == 0)
-//        {
-//            [self.pipViewContainer vc_addSubViewMatchingParent:self.pipView];
-//        }
-//        [self configurePiPView];
-//        self.pipViewContainer.hidden = NO;
-//    }
-//    else
-//    {
-//        self.pipViewContainer.hidden = YES;
-//        self.localPreviewContainerView.hidden = !self.mxCall.isVideoCall;
-//        self.callerImageView.hidden = self.mxCall.isVideoCall && self.mxCall.state == MXCallStateConnected;
-//        self.callerNameLabel.hidden = NO;
-//        self.callStatusLabel.hidden = NO;
-//        
-//        //  show controls when coming back from PiP mode
-//        [self showOverlayContainer:YES];
-//    }
-//}
-//
-//- (void)showOverlayContainer:(BOOL)isShown
-//{
-//    if (self.inPiP)
-//    {
-//        return;
-//    }
-//    
-//    [super showOverlayContainer:isShown];
-//}
-//
-//#pragma mark - DTMF
-//
-//- (void)openDialpad
-//{
-//    DialpadConfiguration *config = [[DialpadConfiguration alloc] initWithShowsTitle:YES
-//                                                                   showsCloseButton:YES
-//                                                               showsBackspaceButton:NO
-//                                                                    showsCallButton:NO
-//                                                                  formattingEnabled:NO
-//                                                                     editingEnabled:NO
-//                                                                          playTones:YES];
-//    DialpadViewController *controller = [DialpadViewController instantiateWithConfiguration:config];
-//    controller.delegate = self;
-//    self.customSizedPresentationController = [[CustomSizedPresentationController alloc] initWithPresentedViewController:controller presentingViewController:self];
-//    self.customSizedPresentationController.dismissOnBackgroundTap = NO;
-//    self.customSizedPresentationController.cornerRadius = 16;
-//    
-//    controller.transitioningDelegate = self.customSizedPresentationController;
-//    [self presentViewController:controller animated:YES completion:nil];
-//}
-//
-//#pragma mark - Call Transfer
-//
-//- (void)openCallTransfer
-//{
-//    CallTransferMainViewController *controller = [CallTransferMainViewController instantiateWithSession:self.mainSession ignoredUserIds:@[self.peer.userId]];
-//    controller.delegate = self;
-//    UINavigationController *navController = [[RiotNavigationController alloc] initWithRootViewController:controller];
-//    [self.mxCall hold:YES];
-//    [self presentViewController:navController animated:YES completion:nil];
-//}
-//
-//#pragma mark - DialpadViewControllerDelegate
-//
-//- (void)dialpadViewControllerDidTapClose:(DialpadViewController *)viewController
-//{
-//    [viewController dismissViewControllerAnimated:YES completion:nil];
-//    self.customSizedPresentationController = nil;
-//}
-//
-//- (void)dialpadViewControllerDidTapDigit:(DialpadViewController *)viewController digit:(NSString *)digit
-//{
-//    if (digit.length == 0)
-//    {
-//        return;
-//    }
-//    BOOL result = [self.mxCall sendDTMF:digit];
-//    
-//    MXLogDebug(@"[CallViewController] Sending DTMF tones %@", result ? @"succeeded": @"failed");
-//}
-//
-//#pragma mark - CallTransferMainViewControllerDelegate
-//
-//- (void)callTransferMainViewControllerDidComplete:(CallTransferMainViewController *)viewController consult:(BOOL)consult contact:(MXKContact *)contact phoneNumber:(NSString *)phoneNumber
-//{
-//    [viewController dismissViewControllerAnimated:YES completion:nil];
-//    
-//    void(^failureBlock)(NSError *_Nullable) = ^(NSError *error) {
-//        [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
-//        
-//        MXWeakify(self);
-//        
-//        self->currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n callTransferErrorTitle]
-//                                                                 message:[VectorL10n callTransferErrorMessage]
-//                                                          preferredStyle:UIAlertControllerStyleAlert];
-//        
-//        [self->currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
-//                                                               style:UIAlertActionStyleDefault
-//                                                             handler:^(UIAlertAction * action) {
-//            
-//            MXStrongifyAndReturnIfNil(self);
-//            self->currentAlert = nil;
-//        }]];
-//        
-//        [self presentViewController:self->currentAlert animated:YES completion:nil];
-//    };
-//    
-//    void(^continueBlock)(NSString *_Nonnull) = ^(NSString *targetUserId) {
-//        MXUserModel *targetUser = [[MXUserModel alloc] initWithUserId:targetUserId
-//                                                          displayname:contact.displayName
-//                                                            avatarUrl:contact.matrixAvatarURL];
-//        MXUserModel *transfereeUser = [[MXUserModel alloc] initWithUser:self.peer];
-//
-//        [self.mainSession.callManager transferCall:self.mxCall
-//                                                to:targetUser
-//                                    withTransferee:transfereeUser
-//                                      consultFirst:consult
-//                                           success:^(NSString * _Nonnull newCallId){
-//            MXLogDebug(@"Call transfer succeeded with new call ID: %@", newCallId);
-//        } failure:^(NSError * _Nullable error) {
-//            MXLogDebug(@"Call transfer failed with error: %@", error);
-//            failureBlock(error);
-//        }];
-//    };
-//    
-//    if (contact)
-//    {
-//        continueBlock(contact.matrixIdentifiers.firstObject);
-//    }
-//    else if (phoneNumber)
-//    {
-//        MXWeakify(self);
-//        [self.mainSession.callManager getThirdPartyUserFrom:phoneNumber success:^(MXThirdPartyUserInstance * _Nonnull user) {
-//            if (weakself == nil) {
-//                return;
-//            }
-//            
-//            continueBlock(user.userId);
-//        } failure:^(NSError * _Nullable error) {
-//            failureBlock(error);
-//        }];
-//    }
-//}
-//
-//- (void)callTransferMainViewControllerDidCancel:(CallTransferMainViewController *)viewController
-//{
-//    [self.mxCall hold:NO];
-//    [viewController dismissViewControllerAnimated:YES completion:nil];
-//}
-//
-//#pragma mark - PiP
-//
-//- (void)configurePiPView
-//{
-//    if (self.inPiP)
-//    {
-//        [self.pipView configureWithCall:self.mxCall
-//                                   peer:self.peer
-//                             onHoldCall:self.mxCallOnHold
-//                             onHoldPeer:self.peerOnHold];
-//    }
-//}
-//
-//#pragma mark - PictureInPicturable
-//
-//- (void)didEnterPiP
-//{
-//    self.inPiP = YES;
-//}
-//
-//- (void)willExitPiP
-//{
-//    self.pipViewContainer.hidden = YES;
-//}
-//
-//- (void)didExitPiP
-//{
-//    self.inPiP = NO;
-//}
-//
-//#pragma mark - CallAudioRouteMenuViewDelegate
-//
-//- (void)callAudioRouteMenuView:(CallAudioRouteMenuView *)view didSelectRoute:(MXiOSAudioOutputRoute *)route
-//{
-//    [self.mxCall.audioOutputRouter changeCurrentRouteTo:route];
-//    [self.slidingModalPresenter dismissWithAnimated:YES completion:nil];
-//}
+- (IBAction)onButtonPressed:(id)sender
+{
+    if (sender == _chatButton)
+    {
+        if (self.delegate)
+        {
+            // Dismiss the view controller whereas the call is still running
+            [self.delegate dismissCallViewController:self completion:^{
+                
+                if (self.mxCall.room)
+                {
+                    // Open the room page
+                    Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerInCall;
+                    [[AppDelegate theDelegate] showRoom:self.mxCall.room.roomId andEventId:nil withMatrixSession:self.mxCall.room.mxSession];
+                }
+                
+            }];
+        }
+    }
+    else
+    {
+        [super onButtonPressed:sender];
+    }
+}
+
+- (void)setInPiP:(BOOL)inPiP
+{
+    _inPiP = inPiP;
+    
+    if (_inPiP)
+    {
+        self.overlayContainerView.hidden = YES;
+        self.callerImageView.hidden = YES;
+        self.callerNameLabel.hidden = YES;
+        self.callStatusLabel.hidden = YES;
+        self.localPreviewContainerView.hidden = YES;
+        self.localPreviewActivityView.hidden = YES;
+        
+        if (self.pipViewContainer.subviews.count == 0)
+        {
+            [self.pipViewContainer vc_addSubViewMatchingParent:self.pipView];
+        }
+        [self configurePiPView];
+        self.pipViewContainer.hidden = NO;
+    }
+    else
+    {
+        self.pipViewContainer.hidden = YES;
+        self.localPreviewContainerView.hidden = !self.mxCall.isVideoCall;
+        self.callerImageView.hidden = self.mxCall.isVideoCall && self.mxCall.state == MXCallStateConnected;
+        self.callerNameLabel.hidden = NO;
+        self.callStatusLabel.hidden = NO;
+        
+        //  show controls when coming back from PiP mode
+        [self showOverlayContainer:YES];
+    }
+}
+
+- (void)showOverlayContainer:(BOOL)isShown
+{
+    if (self.inPiP)
+    {
+        return;
+    }
+    
+    [super showOverlayContainer:isShown];
+}
+
+#pragma mark - DTMF
+
+- (void)openDialpad
+{
+    DialpadConfiguration *config = [[DialpadConfiguration alloc] initWithShowsTitle:YES
+                                                                   showsCloseButton:YES
+                                                               showsBackspaceButton:NO
+                                                                    showsCallButton:NO
+                                                                  formattingEnabled:NO
+                                                                     editingEnabled:NO
+                                                                          playTones:YES];
+    DialpadViewController *controller = [DialpadViewController instantiateWithConfiguration:config];
+    controller.delegate = self;
+    self.customSizedPresentationController = [[CustomSizedPresentationController alloc] initWithPresentedViewController:controller presentingViewController:self];
+    self.customSizedPresentationController.dismissOnBackgroundTap = NO;
+    self.customSizedPresentationController.cornerRadius = 16;
+    
+    controller.transitioningDelegate = self.customSizedPresentationController;
+    [self presentViewController:controller animated:YES completion:nil];
+}
+
+#pragma mark - Call Transfer
+
+- (void)openCallTransfer
+{
+    CallTransferMainViewController *controller = [CallTransferMainViewController instantiateWithSession:self.mainSession ignoredUserIds:@[self.peer.userId]];
+    controller.delegate = self;
+    UINavigationController *navController = [[RiotNavigationController alloc] initWithRootViewController:controller];
+    [self.mxCall hold:YES];
+    [self presentViewController:navController animated:YES completion:nil];
+}
+
+#pragma mark - DialpadViewControllerDelegate
+
+- (void)dialpadViewControllerDidTapClose:(DialpadViewController *)viewController
+{
+    [viewController dismissViewControllerAnimated:YES completion:nil];
+    self.customSizedPresentationController = nil;
+}
+
+- (void)dialpadViewControllerDidTapDigit:(DialpadViewController *)viewController digit:(NSString *)digit
+{
+    if (digit.length == 0)
+    {
+        return;
+    }
+    BOOL result = [self.mxCall sendDTMF:digit];
+    
+    MXLogDebug(@"[CallViewController] Sending DTMF tones %@", result ? @"succeeded": @"failed");
+}
+
+#pragma mark - CallTransferMainViewControllerDelegate
+
+- (void)callTransferMainViewControllerDidComplete:(CallTransferMainViewController *)viewController consult:(BOOL)consult contact:(MXKContact *)contact phoneNumber:(NSString *)phoneNumber
+{
+    [viewController dismissViewControllerAnimated:YES completion:nil];
+    
+    void(^failureBlock)(NSError *_Nullable) = ^(NSError *error) {
+        [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
+        
+        MXWeakify(self);
+        
+        self->currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n callTransferErrorTitle]
+                                                                 message:[VectorL10n callTransferErrorMessage]
+                                                          preferredStyle:UIAlertControllerStyleAlert];
+        
+        [self->currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
+                                                               style:UIAlertActionStyleDefault
+                                                             handler:^(UIAlertAction * action) {
+            
+            MXStrongifyAndReturnIfNil(self);
+            self->currentAlert = nil;
+        }]];
+        
+        [self presentViewController:self->currentAlert animated:YES completion:nil];
+    };
+    
+    void(^continueBlock)(NSString *_Nonnull) = ^(NSString *targetUserId) {
+        MXUserModel *targetUser = [[MXUserModel alloc] initWithUserId:targetUserId
+                                                          displayname:contact.displayName
+                                                            avatarUrl:contact.matrixAvatarURL];
+        MXUserModel *transfereeUser = [[MXUserModel alloc] initWithUser:self.peer];
+
+        [self.mainSession.callManager transferCall:self.mxCall
+                                                to:targetUser
+                                    withTransferee:transfereeUser
+                                      consultFirst:consult
+                                           success:^(NSString * _Nonnull newCallId){
+            MXLogDebug(@"Call transfer succeeded with new call ID: %@", newCallId);
+        } failure:^(NSError * _Nullable error) {
+            MXLogDebug(@"Call transfer failed with error: %@", error);
+            failureBlock(error);
+        }];
+    };
+    
+    if (contact)
+    {
+        continueBlock(contact.matrixIdentifiers.firstObject);
+    }
+    else if (phoneNumber)
+    {
+        MXWeakify(self);
+        [self.mainSession.callManager getThirdPartyUserFrom:phoneNumber success:^(MXThirdPartyUserInstance * _Nonnull user) {
+            if (weakself == nil) {
+                return;
+            }
+            
+            continueBlock(user.userId);
+        } failure:^(NSError * _Nullable error) {
+            failureBlock(error);
+        }];
+    }
+}
+
+- (void)callTransferMainViewControllerDidCancel:(CallTransferMainViewController *)viewController
+{
+    [self.mxCall hold:NO];
+    [viewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - PiP
+
+- (void)configurePiPView
+{
+    if (self.inPiP)
+    {
+        [self.pipView configureWithCall:self.mxCall
+                                   peer:self.peer
+                             onHoldCall:self.mxCallOnHold
+                             onHoldPeer:self.peerOnHold];
+    }
+}
+
+#pragma mark - PictureInPicturable
+
+- (void)didEnterPiP
+{
+    self.inPiP = YES;
+}
+
+- (void)willExitPiP
+{
+    self.pipViewContainer.hidden = YES;
+}
+
+- (void)didExitPiP
+{
+    self.inPiP = NO;
+}
+
+#pragma mark - CallAudioRouteMenuViewDelegate
+
+- (void)callAudioRouteMenuView:(CallAudioRouteMenuView *)view didSelectRoute:(MXiOSAudioOutputRoute *)route
+{
+    [self.mxCall.audioOutputRouter changeCurrentRouteTo:route];
+    [self.slidingModalPresenter dismissWithAnimated:YES completion:nil];
+}
 
 @end
