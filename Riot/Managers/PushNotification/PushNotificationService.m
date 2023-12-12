@@ -653,8 +653,8 @@ Matrix session observer used to detect new opened sessions.
                      [callInvite.type isEqualToString:kWidgetModularEventTypeString])
             {
                 // TODO: Tchap: VoIP support
-//                [[AppDelegate theDelegate].callPresenter processWidgetEvent:callInvite
-//                                                                  inSession:session];
+                [[AppDelegate theDelegate].callPresenter processWidgetEvent:callInvite
+                                                                  inSession:session];
             }
             else
             {

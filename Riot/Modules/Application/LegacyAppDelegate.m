@@ -87,7 +87,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 NSString *const kLegacyAppDelegateDidLogoutNotification = @"kLegacyAppDelegateDidLogoutNotification";
 NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDidLoginNotification";
 
-@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate/*, CallPresenterDelegate, SpaceDetailPresenterDelegate, SecureBackupSetupCoordinatorBridgePresenterDelegate*/>
+@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate, CallPresenterDelegate/*, SpaceDetailPresenterDelegate, SecureBackupSetupCoordinatorBridgePresenterDelegate*/>
 {
     /**
      Reachability observer
@@ -485,9 +485,8 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
     self.localAuthenticationService = [[LocalAuthenticationService alloc] initWithPinCodePreferences:[PinCodePreferences shared]];
     
-    // Tchap: Disable Calls
-//    self.callPresenter = [[CallPresenter alloc] init];
-//    self.callPresenter.delegate = self;
+    self.callPresenter = [[CallPresenter alloc] init];
+    self.callPresenter.delegate = self;
 
     self.pushNotificationStore = [PushNotificationStore new];
     self.pushNotificationService = [[PushNotificationService alloc] initWithPushNotificationStore:self.pushNotificationStore];
@@ -1982,8 +1981,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         else if (mxSession.state == MXSessionStateStoreDataReady)
         {
             //  start the call service
-            // Tchap: Disable Calls
-//            [self.callPresenter start];
+            [self.callPresenter start];
             
             // Register to user new device sign in notification
             [self registerUserDidSignInOnNewDeviceNotificationForSession:mxSession];
@@ -2157,8 +2155,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         [[WidgetManager sharedManager] addMatrixSession:mxSession];
         
         // register the session to the call service
-        // Tchap: Disable Calls
-//        [_callPresenter addMatrixSession:mxSession];
+        [_callPresenter addMatrixSession:mxSession];
         
         // Tchap: Disable UISI
         // register the session to the uisi auto-reporter
@@ -2182,8 +2179,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     [[MXKContactManager sharedManager] removeMatrixSession:mxSession];
     
     // remove session from the call service
-    // Tchap: Disable Calls
-    //    [_callPresenter removeMatrixSession:mxSession];
+    [_callPresenter removeMatrixSession:mxSession];
     
     // register the session to the uisi auto-reporter
     // Tchap: Disable UISI
@@ -2207,8 +2203,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     if (!mxSessionArray.count)
     {
         //  if no session left, stop the call service
-        // Tchap: Disable Calls
-//        [self.callPresenter stop];
+        [self.callPresenter stop];
     }
     
     [self.delegate legacyAppDelegate:self didRemoveMatrixSession:mxSession];
