@@ -3248,10 +3248,10 @@ static CGSize kThreadListBarButtonItemImageSize;
 //    {
 //        cellIdentifier = bubbleData.isPaginationFirstBubble ? RoomTimelineCellIdentifierRoomCreationCollapsedWithPaginationTitle : RoomTimelineCellIdentifierRoomCreationCollapsed;
 //    }
-//    else if (bubbleData.tag == RoomBubbleCellDataTagCall)
-//    {
-//        cellIdentifier = RoomTimelineCellIdentifierDirectCallStatus;
-//    }
+    else if (bubbleData.tag == RoomBubbleCellDataTagCall)
+    {
+        cellIdentifier = RoomTimelineCellIdentifierDirectCallStatus;
+    }
 //    else if (bubbleData.tag == RoomBubbleCellDataTagGroupCall)
 //    {
 //        cellIdentifier = RoomTimelineCellIdentifierGroupCallStatus;
