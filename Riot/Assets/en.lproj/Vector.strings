@@ -956,7 +956,7 @@ Tap the + to start adding people.";
 "security_settings_complete_security_alert_message" = "You should complete security on your current session first.";
 
 "security_settings_coming_soon" = "Sorry. This action is not available on %@ iOS yet. Please use another Matrix client to set it up. %@ iOS will use it.";
-"security_settings_user_password_description" = "Confirm your identity by entering your Matrix account password";
+"security_settings_user_password_description" = "Confirm your identity by entering your account password"; // Tchap
 
 // Manage session
 "manage_session_title" = "Manage session";
@@ -1908,7 +1908,7 @@ Tap the + to start adding people.";
 "secrets_reset_warning_title" = "If you reset everything";
 "secrets_reset_warning_message" = "You will restart with no history, no messages, trusted devices or trusted users.";
 "secrets_reset_reset_action" = "Reset";
-"secrets_reset_authentication_message" = "Enter your Matrix account password to confirm";
+"secrets_reset_authentication_message" = "Enter your account password to confirm"; // Tchap
 
 // MARK: - Cross-signing
 
