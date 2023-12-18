@@ -1,0 +1,3 @@
+- permettre la réinitialisation du Code de Récupération
+- permettre la réinitialisation de la signature croisée
+- ne tenter qu'une seule fois d'activer automatiquement la signature croisée
