@@ -23,8 +23,7 @@ protocol SecretsResetViewModelViewDelegate: AnyObject {
 }
 
 protocol SecretsResetViewModelCoordinatorDelegate: AnyObject {
-    // TODO: Tchap: Support Reauthentication (SecretsReset)
-//    func secretsResetViewModel(_ viewModel: SecretsResetViewModelType, needsToAuthenticateWith request: AuthenticatedEndpointRequest)
+    func secretsResetViewModel(_ viewModel: SecretsResetViewModelType, needsToAuthenticateWith request: AuthenticatedEndpointRequest)
     func secretsResetViewModelDidResetSecrets(_ viewModel: SecretsResetViewModelType)
     func secretsResetViewModelDidCancel(_ viewModel: SecretsResetViewModelType)
 }

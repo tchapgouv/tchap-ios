@@ -1841,7 +1841,7 @@ Tap the + to start adding people.";
 // MARK: - Secrets recovery
 
 "secrets_recovery_reset_action_part_1" = "You lost your Recovery Code?"; // Tchap
-"secrets_recovery_reset_action_part_2" = "Generate a new Code"; // Tchap
+"secrets_recovery_reset_action_part_2" = "\n\nGenerate a new Code"; // Tchap
 
 // Recover with passphrase
 
