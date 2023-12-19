@@ -109,6 +109,14 @@
 // Tchap: set-up cross-signing auto-activation
 - (void)tchapSetupCrossSigningAutoActivation
 {
+    if( RiotSettings.shared.tchapCrossSigningAutoActivationTried == YES )
+    {
+        // Don't retry to auto-activate cross-signing again.
+        // It has already been tried in optimal conditions and seems to not work.
+        // Don't retry because it can prompt the user to enter its account password each time.
+        return;
+    }
+    
     // Tchap: listen to Tchap syncDone notification to check the status of the cross-signing after account info are updated.
     if (tchapSyncDoneListener == nil)
     {
@@ -135,6 +143,7 @@
                 && (session.crypto.crossSigning.state == MXCrossSigningStateNotBootstrapped || session.crypto.crossSigning.state == MXCrossSigningStateCrossSigningExists) )
             {
                 [strongSelf showCrossSigningSetup];
+                RiotSettings.shared.tchapCrossSigningAutoActivationTried = YES;
             }
         }];
     }

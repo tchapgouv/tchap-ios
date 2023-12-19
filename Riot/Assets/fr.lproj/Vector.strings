@@ -1324,7 +1324,7 @@
 "social_login_button_title_sign_in" = "Se connecter avec %@";
 "secrets_setup_recovery_passphrase_summary_information" = "Mémorisez votre phrase de sécurité. Elle peut être utilisée pour déverrouiller vos messages et données chiffrés.";
 "secrets_setup_recovery_passphrase_summary_title" = "Enregistrer votre phrase de sécurité";
-"secrets_recovery_reset_action_part_2" = "Générer un nouveau code"; // Tchap
+"secrets_recovery_reset_action_part_2" = "\n\nGénérer un nouveau code"; // Tchap
 
 // MARK: - Secrets recovery
 
