@@ -1,3 +1,15 @@
+## Changes in 2.6.2 (2023-12-19)
+
+✨ Features
+
+- Permettre la réinitialisation du Code de Récupération
+- Permettre la réinitialisation de la signature croisée
+
+🙌 Improvements
+
+- Ne tenter qu'une seule fois d'activer automatiquement la signature croisée
+
+
 ## Changes in 2.6.0 (2023-11-27)
 
 ✨ Features
