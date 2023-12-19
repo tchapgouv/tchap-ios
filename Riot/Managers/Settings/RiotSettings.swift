@@ -439,6 +439,11 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "tchapSecureBackupNextDisplayDate", defaultValue: Date.init(timeIntervalSince1970: 0), storage: defaults)
     var tchapSecureBackupNextDisplayDate
     
+    // Tchap has tried to automatically activate cross-signing.
+    // This automatic activation must be tried only once because if it fails, it could pro;pt user each time the application is activated.
+    @UserDefault(key: "tchapCrossSigningAutoActivationTried", defaultValue: false, storage: defaults)
+    var tchapCrossSigningAutoActivationTried
+    
 }
 
 // MARK: - RiotSettings notification constants
