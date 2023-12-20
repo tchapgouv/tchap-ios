@@ -703,7 +703,9 @@ static const CGFloat kLocalPreviewMargin = 20;
         //  check the call can be up/downgraded
         
         //  check the call can send DTMF tones
-        if (self.mxCall.supportsDTMF)
+        // Tchap: don't present Dialpad
+        //        if (self.mxCall.supportsDTMF)
+        if( NO && self.mxCall.supportsDTMF )
         {
             UIAlertAction *dialpadAction = [UIAlertAction actionWithTitle:[VectorL10n callMoreActionsDialpad]
                                                                     style:UIAlertActionStyleDefault

@@ -70,14 +70,15 @@ final class CallTransferMainViewController: UIViewController {
         return controller
     }()
     
-    private lazy var dialpadVC: DialpadViewController = {
-        let configuration = DialpadConfiguration(showsTitle: false,
-                                                 showsCloseButton: false,
-                                                 showsCallButton: false)
-        let controller = DialpadViewController.instantiate(withConfiguration: configuration)
-        controller.delegate = self
-        return controller
-    }()
+    // Tchap: no support for Dialpad/PSTN
+//    private lazy var dialpadVC: DialpadViewController = {
+//        let configuration = DialpadConfiguration(showsTitle: false,
+//                                                 showsCloseButton: false,
+//                                                 showsCallButton: false)
+//        let controller = DialpadViewController.instantiate(withConfiguration: configuration)
+//        controller.delegate = self
+//        return controller
+//    }()
     
     // MARK: Public
     
@@ -136,7 +137,8 @@ final class CallTransferMainViewController: UIViewController {
         updateConnectButton()
         
         addChild(contactsVC)
-        addChild(dialpadVC)
+        // Tchap: no support for Dialpad/PSTN
+//        addChild(dialpadVC)
         
         if let view = contentView(at: segmentedControl.selectedSegmentIndex) {
             containerView.vc_addSubViewMatchingParent(view)
@@ -166,8 +168,9 @@ final class CallTransferMainViewController: UIViewController {
         switch index {
         case 0:
             return contactsVC.view
-        case 1:
-            return dialpadVC.view
+// Tchap: no support for Dialpad/PSTN
+//        case 1:
+//            return dialpadVC.view
         default:
             return nil
         }
@@ -214,10 +217,11 @@ extension CallTransferMainViewController: CallTransferSelectContactViewControlle
 
 //  MARK: - DialpadViewControllerDelegate
 
-extension CallTransferMainViewController: DialpadViewControllerDelegate {
-    
-    func dialpadViewControllerDidTapDigit(_ viewController: DialpadViewController, digit: String) {
-        phoneNumber = viewController.rawPhoneNumber
-    }
-    
-}
+// Tchap: no support for Dialpad/PSTN
+//extension CallTransferMainViewController: DialpadViewControllerDelegate {
+//    
+//    func dialpadViewControllerDidTapDigit(_ viewController: DialpadViewController, digit: String) {
+//        phoneNumber = viewController.rawPhoneNumber
+//    }
+//    
+//}
