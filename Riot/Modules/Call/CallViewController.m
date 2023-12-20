@@ -31,7 +31,7 @@
 @interface CallViewController () <
 PictureInPicturable,
 /* DialpadViewControllerDelegate, */ // Tchap: no Dialpad/PSTN support
-CallTransferMainViewControllerDelegate,
+/* CallTransferMainViewControllerDelegate, */ // Tchap: no Call transfer support
 CallAudioRouteMenuViewDelegate>
 {
     // Current alert (if any).
@@ -634,15 +634,15 @@ CallAudioRouteMenuViewDelegate>
 //}
 
 #pragma mark - Call Transfer
-
-- (void)openCallTransfer
-{
-    CallTransferMainViewController *controller = [CallTransferMainViewController instantiateWithSession:self.mainSession ignoredUserIds:@[self.peer.userId]];
-    controller.delegate = self;
-    UINavigationController *navController = [[RiotNavigationController alloc] initWithRootViewController:controller];
-    [self.mxCall hold:YES];
-    [self presentViewController:navController animated:YES completion:nil];
-}
+// Tchap: no Call transfer support
+//- (void)openCallTransfer
+//{
+//    CallTransferMainViewController *controller = [CallTransferMainViewController instantiateWithSession:self.mainSession ignoredUserIds:@[self.peer.userId]];
+//    controller.delegate = self;
+//    UINavigationController *navController = [[RiotNavigationController alloc] initWithRootViewController:controller];
+//    [self.mxCall hold:YES];
+//    [self presentViewController:navController animated:YES completion:nil];
+//}
 
 #pragma mark - DialpadViewControllerDelegate
 // Tchap: no support for Dialpad/PSTN
@@ -664,73 +664,73 @@ CallAudioRouteMenuViewDelegate>
 //}
 
 #pragma mark - CallTransferMainViewControllerDelegate
-
-- (void)callTransferMainViewControllerDidComplete:(CallTransferMainViewController *)viewController consult:(BOOL)consult contact:(MXKContact *)contact phoneNumber:(NSString *)phoneNumber
-{
-    [viewController dismissViewControllerAnimated:YES completion:nil];
-    
-    void(^failureBlock)(NSError *_Nullable) = ^(NSError *error) {
-        [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
-        
-        MXWeakify(self);
-        
-        self->currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n callTransferErrorTitle]
-                                                                 message:[VectorL10n callTransferErrorMessage]
-                                                          preferredStyle:UIAlertControllerStyleAlert];
-        
-        [self->currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
-                                                               style:UIAlertActionStyleDefault
-                                                             handler:^(UIAlertAction * action) {
-            
-            MXStrongifyAndReturnIfNil(self);
-            self->currentAlert = nil;
-        }]];
-        
-        [self presentViewController:self->currentAlert animated:YES completion:nil];
-    };
-    
-    void(^continueBlock)(NSString *_Nonnull) = ^(NSString *targetUserId) {
-        MXUserModel *targetUser = [[MXUserModel alloc] initWithUserId:targetUserId
-                                                          displayname:contact.displayName
-                                                            avatarUrl:contact.matrixAvatarURL];
-        MXUserModel *transfereeUser = [[MXUserModel alloc] initWithUser:self.peer];
-
-        [self.mainSession.callManager transferCall:self.mxCall
-                                                to:targetUser
-                                    withTransferee:transfereeUser
-                                      consultFirst:consult
-                                           success:^(NSString * _Nonnull newCallId){
-            MXLogDebug(@"Call transfer succeeded with new call ID: %@", newCallId);
-        } failure:^(NSError * _Nullable error) {
-            MXLogDebug(@"Call transfer failed with error: %@", error);
-            failureBlock(error);
-        }];
-    };
-    
-    if (contact)
-    {
-        continueBlock(contact.matrixIdentifiers.firstObject);
-    }
-    else if (phoneNumber)
-    {
-        MXWeakify(self);
-        [self.mainSession.callManager getThirdPartyUserFrom:phoneNumber success:^(MXThirdPartyUserInstance * _Nonnull user) {
-            if (weakself == nil) {
-                return;
-            }
-            
-            continueBlock(user.userId);
-        } failure:^(NSError * _Nullable error) {
-            failureBlock(error);
-        }];
-    }
-}
-
-- (void)callTransferMainViewControllerDidCancel:(CallTransferMainViewController *)viewController
-{
-    [self.mxCall hold:NO];
-    [viewController dismissViewControllerAnimated:YES completion:nil];
-}
+// Tchap: no Call transfer support
+//- (void)callTransferMainViewControllerDidComplete:(CallTransferMainViewController *)viewController consult:(BOOL)consult contact:(MXKContact *)contact phoneNumber:(NSString *)phoneNumber
+//{
+//    [viewController dismissViewControllerAnimated:YES completion:nil];
+//    
+//    void(^failureBlock)(NSError *_Nullable) = ^(NSError *error) {
+//        [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
+//        
+//        MXWeakify(self);
+//        
+//        self->currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n callTransferErrorTitle]
+//                                                                 message:[VectorL10n callTransferErrorMessage]
+//                                                          preferredStyle:UIAlertControllerStyleAlert];
+//        
+//        [self->currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
+//                                                               style:UIAlertActionStyleDefault
+//                                                             handler:^(UIAlertAction * action) {
+//            
+//            MXStrongifyAndReturnIfNil(self);
+//            self->currentAlert = nil;
+//        }]];
+//        
+//        [self presentViewController:self->currentAlert animated:YES completion:nil];
+//    };
+//    
+//    void(^continueBlock)(NSString *_Nonnull) = ^(NSString *targetUserId) {
+//        MXUserModel *targetUser = [[MXUserModel alloc] initWithUserId:targetUserId
+//                                                          displayname:contact.displayName
+//                                                            avatarUrl:contact.matrixAvatarURL];
+//        MXUserModel *transfereeUser = [[MXUserModel alloc] initWithUser:self.peer];
+//
+//        [self.mainSession.callManager transferCall:self.mxCall
+//                                                to:targetUser
+//                                    withTransferee:transfereeUser
+//                                      consultFirst:consult
+//                                           success:^(NSString * _Nonnull newCallId){
+//            MXLogDebug(@"Call transfer succeeded with new call ID: %@", newCallId);
+//        } failure:^(NSError * _Nullable error) {
+//            MXLogDebug(@"Call transfer failed with error: %@", error);
+//            failureBlock(error);
+//        }];
+//    };
+//    
+//    if (contact)
+//    {
+//        continueBlock(contact.matrixIdentifiers.firstObject);
+//    }
+//    else if (phoneNumber)
+//    {
+//        MXWeakify(self);
+//        [self.mainSession.callManager getThirdPartyUserFrom:phoneNumber success:^(MXThirdPartyUserInstance * _Nonnull user) {
+//            if (weakself == nil) {
+//                return;
+//            }
+//            
+//            continueBlock(user.userId);
+//        } failure:^(NSError * _Nullable error) {
+//            failureBlock(error);
+//        }];
+//    }
+//}
+//
+//- (void)callTransferMainViewControllerDidCancel:(CallTransferMainViewController *)viewController
+//{
+//    [self.mxCall hold:NO];
+//    [viewController dismissViewControllerAnimated:YES completion:nil];
+//}
 
 #pragma mark - PiP
 

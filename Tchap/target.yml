@@ -183,7 +183,7 @@ targetTemplates:
     - path: ../Riot/Modules/Call
       excludes:
         - "Dialpad"
-    - path: ../Riot/Modules/CallTransfer
+#    - path: ../Riot/Modules/CallTransfer
     - path: ../Riot/Modules/Camera
     - path: ../Riot/Modules/Common/ActivityIndicator
     - path: ../Riot/Modules/Common/Avatar
