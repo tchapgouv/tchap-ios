@@ -19,7 +19,24 @@ import Foundation
 @objcMembers
 class RoomDisplayConfiguration: NSObject {
     
-    let callsEnabled: Bool
+// Tchap: handle call activation by homeServer
+//    let callsEnabled: Bool
+    private let _tchapCallsEnabled: Bool
+    
+    var callsEnabled: Bool {
+        guard _tchapCallsEnabled,
+              let account = MXKAccountManager.shared().activeAccounts.first
+        else { return false }
+        // Tchap: allow VoIP for Pre-prod and Dev version
+        if ["fr.gouv.btchap", "fr.gouv.tchap.dev"].contains(BuildSettings.baseBundleIdentifier)
+        {
+            return true
+        }
+        // Tchap: actually, only allow VoIP for DINUM homeServer.
+        let allowedHomeServersForCalls = [BuildSettings.serverUrlPrefix + "agent.dinum.tchap.gouv.fr"]
+        let callsAreEnabled = allowedHomeServersForCalls.contains(account.identityServerURL)
+        return callsAreEnabled
+    }
     
     let integrationsEnabled: Bool
     
@@ -31,7 +48,9 @@ class RoomDisplayConfiguration: NSObject {
          integrationsEnabled: Bool,
          jitsiWidgetRemoverEnabled: Bool,
          sendingPollsEnabled: Bool) {
-        self.callsEnabled = callsEnabled
+// Tchap: handle call activation by homeServer
+//        self.callsEnabled = callsEnabled
+        self._tchapCallsEnabled = callsEnabled
         self.integrationsEnabled = integrationsEnabled
         self.jitsiWidgetRemoverEnabled = jitsiWidgetRemoverEnabled
         self.sendingPollsEnabled = sendingPollsEnabled
