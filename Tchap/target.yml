@@ -181,6 +181,8 @@ targetTemplates:
     - path: ../Riot/Modules/BugReport/BugReportViewController.h
     - path: ../Riot/Modules/BugReport/BugReportViewController.m
     - path: ../Riot/Modules/Call
+      excludes:
+        - "Dialpad"
     - path: ../Riot/Modules/CallTransfer
     - path: ../Riot/Modules/Camera
     - path: ../Riot/Modules/Common/ActivityIndicator

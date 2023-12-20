@@ -31,7 +31,7 @@
 // TODO: Tchap: VoIP support
 @interface CallViewController () <
 PictureInPicturable,
-DialpadViewControllerDelegate,
+/* DialpadViewControllerDelegate, */ // Tchap: no Dialpad/PSTN support
 CallTransferMainViewControllerDelegate,
 CallAudioRouteMenuViewDelegate>
 {
@@ -614,25 +614,25 @@ CallAudioRouteMenuViewDelegate>
 }
 
 #pragma mark - DTMF
-
-- (void)openDialpad
-{
-    DialpadConfiguration *config = [[DialpadConfiguration alloc] initWithShowsTitle:YES
-                                                                   showsCloseButton:YES
-                                                               showsBackspaceButton:NO
-                                                                    showsCallButton:NO
-                                                                  formattingEnabled:NO
-                                                                     editingEnabled:NO
-                                                                          playTones:YES];
-    DialpadViewController *controller = [DialpadViewController instantiateWithConfiguration:config];
-    controller.delegate = self;
-    self.customSizedPresentationController = [[CustomSizedPresentationController alloc] initWithPresentedViewController:controller presentingViewController:self];
-    self.customSizedPresentationController.dismissOnBackgroundTap = NO;
-    self.customSizedPresentationController.cornerRadius = 16;
-    
-    controller.transitioningDelegate = self.customSizedPresentationController;
-    [self presentViewController:controller animated:YES completion:nil];
-}
+// Tchap: no support for Dialpad/PSTN
+//- (void)openDialpad
+//{
+//    DialpadConfiguration *config = [[DialpadConfiguration alloc] initWithShowsTitle:YES
+//                                                                   showsCloseButton:YES
+//                                                               showsBackspaceButton:NO
+//                                                                    showsCallButton:NO
+//                                                                  formattingEnabled:NO
+//                                                                     editingEnabled:NO
+//                                                                          playTones:YES];
+//    DialpadViewController *controller = [DialpadViewController instantiateWithConfiguration:config];
+//    controller.delegate = self;
+//    self.customSizedPresentationController = [[CustomSizedPresentationController alloc] initWithPresentedViewController:controller presentingViewController:self];
+//    self.customSizedPresentationController.dismissOnBackgroundTap = NO;
+//    self.customSizedPresentationController.cornerRadius = 16;
+//    
+//    controller.transitioningDelegate = self.customSizedPresentationController;
+//    [self presentViewController:controller animated:YES completion:nil];
+//}
 
 #pragma mark - Call Transfer
 
@@ -646,23 +646,23 @@ CallAudioRouteMenuViewDelegate>
 }
 
 #pragma mark - DialpadViewControllerDelegate
-
-- (void)dialpadViewControllerDidTapClose:(DialpadViewController *)viewController
-{
-    [viewController dismissViewControllerAnimated:YES completion:nil];
-    self.customSizedPresentationController = nil;
-}
-
-- (void)dialpadViewControllerDidTapDigit:(DialpadViewController *)viewController digit:(NSString *)digit
-{
-    if (digit.length == 0)
-    {
-        return;
-    }
-    BOOL result = [self.mxCall sendDTMF:digit];
-    
-    MXLogDebug(@"[CallViewController] Sending DTMF tones %@", result ? @"succeeded": @"failed");
-}
+// Tchap: no support for Dialpad/PSTN
+//- (void)dialpadViewControllerDidTapClose:(DialpadViewController *)viewController
+//{
+//    [viewController dismissViewControllerAnimated:YES completion:nil];
+//    self.customSizedPresentationController = nil;
+//}
+//
+//- (void)dialpadViewControllerDidTapDigit:(DialpadViewController *)viewController digit:(NSString *)digit
+//{
+//    if (digit.length == 0)
+//    {
+//        return;
+//    }
+//    BOOL result = [self.mxCall sendDTMF:digit];
+//    
+//    MXLogDebug(@"[CallViewController] Sending DTMF tones %@", result ? @"succeeded": @"failed");
+//}
 
 #pragma mark - CallTransferMainViewControllerDelegate
 
