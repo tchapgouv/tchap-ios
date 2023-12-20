@@ -28,7 +28,6 @@
 
 #import "IncomingCallView.h"
 
-// TODO: Tchap: VoIP support
 @interface CallViewController () <
 PictureInPicturable,
 /* DialpadViewControllerDelegate, */ // Tchap: no Dialpad/PSTN support
