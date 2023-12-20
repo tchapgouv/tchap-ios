@@ -37,7 +37,6 @@ static NSString * _Nonnull kRCTTextViewClassName = @"RCTTextView";
 static NSString * _Nonnull kJitsiFeatureFlagChatEnabled = @"chat.enabled";
 static NSString * _Nonnull kJitsiFeatureFlagScreenSharingEnabled = @"ios.screensharing.enabled";
 
-// TODO: Tchap: VoIP support (Jitsi)
 @interface JitsiViewController () <PictureInPicturable, JitsiMeetViewDelegate>
 
 // The jitsi-meet SDK view
