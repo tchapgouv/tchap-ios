@@ -72,4 +72,3 @@
 #import "UserIndicatorCancel.h"
 #import "VoiceBroadcastInfo.h"
 #import "CallViewController.h"
-#import "MatrixContactsDataSource.h"
