@@ -308,7 +308,7 @@
 "secrets_setup_recovery_key_warning" = "Attention : c'est la seule fois que votre code est affiché !";
 "secrets_setup_recovery_key_invite_title" = "Sauvegarde automatique des messages";
 "secrets_setup_recovery_key_invite_message" = "Activez cette fonction pour ne jamais perdre l’accès à vos messages suite à une déconnexion.";
-"secrets_setup_recovery_key_invite_button_ok" = "Activer.";
+"secrets_setup_recovery_key_invite_button_ok" = "Activer"; // Tchap
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Key Verification Self Verify
