@@ -1965,9 +1965,10 @@ static CGSize kThreadListBarButtonItemImageSize;
                     [rightBarButtonItems addObject:itemVoice];
                     
                     //  video call button for Matrix call
-                    UIBarButtonItem *itemVideo = [self videoCallBarButtonItem];
-                    itemVideo.enabled = !self.isCallActive;
-                    [rightBarButtonItems addObject:itemVideo];
+// Tchap: Disable video call actually
+//                    UIBarButtonItem *itemVideo = [self videoCallBarButtonItem];
+//                    itemVideo.enabled = !self.isCallActive;
+//                    [rightBarButtonItems addObject:itemVideo];
                 }
                 else
                 {
