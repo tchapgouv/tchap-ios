@@ -207,7 +207,7 @@ final class SecretsSetupRecoveryKeyViewController: UIViewController {
             string: VectorL10n.secretsSetupRecoveryKeyStorageAlertMessage,
             attributes: [
                 NSAttributedString.Key.paragraphStyle: paragraphStyle,
-                NSAttributedString.Key.foregroundColor : UIColor.black,
+                NSAttributedString.Key.foregroundColor : ThemeService.shared().theme.textPrimaryColor,
                 NSAttributedString.Key.font : UIFont.preferredFont(forTextStyle: .body)
             ]
         )
