@@ -325,7 +325,7 @@ final class RoomCreationViewController: UIViewController {
     }
     
     @IBAction private func forumRoomViewTapGestureRecognizer(_ sender: UITapGestureRecognizer) {
-        self.viewModel.selectedRoomType = .forum(isFederated: self.viewModel.homeServerDomain == self.agentServerDomain)
+        self.viewModel.selectedRoomType = .forum(isFederated: true)
         self.setupRoomType()
     }
     

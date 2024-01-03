@@ -19,7 +19,7 @@ import Foundation
 enum RoomType {
     case privateRestricted(isFederated: Bool = true)
     case privateUnrestricted(isFederated: Bool = true)
-    case forum(isFederated: Bool = false)
+    case forum(isFederated: Bool = true) // Set forum as federated by default.
 }
 
 /// Protocol describing the view model used by RoomCreationViewController
