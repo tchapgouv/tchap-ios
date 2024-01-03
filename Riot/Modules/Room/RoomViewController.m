@@ -8041,7 +8041,6 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 #pragma mark - RemoveJitsiWidgetViewDelegate
 
-<<<<<<< HEAD
 //- (void)removeJitsiWidgetViewDidCompleteSliding:(RemoveJitsiWidgetView *)view
 //{
 //    view.delegate = nil;
@@ -8072,38 +8071,6 @@ static CGSize kThreadListBarButtonItemImageSize;
 //        [self stopActivityIndicator];
 //    }];
 //}
-=======
-- (void)removeJitsiWidgetViewDidCompleteSliding:(RemoveJitsiWidgetView *)view
-{
-    view.delegate = nil;
-    Widget *jitsiWidget = [self.customizedRoomDataSource jitsiWidget];
-    
-    [self startActivityIndicator];
-    
-    //  close the widget
-    MXWeakify(self);
-    
-    [[WidgetManager sharedManager] closeWidget:jitsiWidget.widgetId
-                                        inRoom:self.roomDataSource.room
-                                       success:^{
-        MXStrongifyAndReturnIfNil(self);
-        [self stopActivityIndicator];
-        //  we can wait for kWidgetManagerDidUpdateWidgetNotification, but we want to be faster
-        self.removeJitsiWidgetContainer.hidden = YES;
-        self.removeJitsiWidgetView.delegate = nil;
-        
-        //  end active call if exists
-        if ([self isRoomHavingAJitsiCall])
-        {
-            [self endActiveJitsiCall];
-        }
-    } failure:^(NSError *error) {
-        MXStrongifyAndReturnIfNil(self);
-        [self showJitsiErrorAsAlert:error];
-        [self stopActivityIndicator];
-    }];
-}
->>>>>>> v1.11.5
 
 #pragma mark - VoiceMessageControllerDelegate
 
