@@ -261,13 +261,13 @@ final class BuildSettings: NSObject {
 
     // Tchap: Feature activation by Instance
     static let tchapFeatureAnyFeature = "*"  // To allow any feature for some instances
-    static let tchapFeatureAnyInstance = "*" // To allow a feature for any instance
+    static let tchapFeatureAnyHomeServer = "*" // To allow a feature for any instance
                                              //     tchapFeatureAnyFeature : [ <instance> ] to allow any feature for an instance
-                                             //     "<feature ID>" : [ tchapFeatureAnyInstance ] to allow a feature to any instance
+                                             //     "<feature ID>" : [ tchapFeatureAnyHomeServer ] to allow a feature to any instance
     static let tchapFeatureNotificationByEmail = "tchapFeatureNotificationByEmail"
     static let tchapFeatureVoiceOverIP = "tchapFeatureVoiceOverIP"
     static let tchapFeatureVideoOverIP = "tchapFeatureVideoOverIP"
-    static var tchapFeatureByInstance: [String: [String]] = [
+    static var tchapFeatureByHomeServer: [String: [String]] = [
         tchapFeatureNotificationByEmail: [
             "agent.dinum.tchap.gouv.fr"
         ]

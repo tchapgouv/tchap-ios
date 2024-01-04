@@ -19,10 +19,20 @@ import Foundation
 @objc extension MXKAccount {
     
     func isFeatureActivated(_ featureId: String) -> Bool {
-        guard let targetedFeature = BuildSettings.tchapFeatureByInstance[featureId] ?? BuildSettings.tchapFeatureByInstance[BuildSettings.tchapFeatureAnyFeature] else {
+        guard let targetedFeature = BuildSettings.tchapFeatureByHomeServer[featureId] ?? BuildSettings.tchapFeatureByHomeServer[BuildSettings.tchapFeatureAnyFeature] else {
             return false
         }
         
-        return targetedFeature.contains(BuildSettings.tchapFeatureAnyInstance) || targetedFeature.contains(self.identityServerURL.replacingOccurrences(of: BuildSettings.serverUrlPrefix, with: ""))
+        if targetedFeature.contains(BuildSettings.tchapFeatureAnyHomeServer) {
+            return true
+        }
+        
+        guard let homeServerURL = self.mxCredentials.homeServer else {
+            return false
+        }
+        
+        let homeServerDomain = homeServerURL.replacingOccurrences(of: BuildSettings.serverUrlPrefix, with: "")
+        
+        return targetedFeature.contains(homeServerDomain)
     }
 }
