@@ -251,6 +251,10 @@ public class TchapL10n: NSObject {
   public static var createNewDiscussionTitle: String { 
     return TchapL10n.tr("Tchap", "create_new_discussion_title") 
   }
+  /// Si vous n'avez accès à aucun autre appareil, vous pouvez essayer d'activer la signature croisée dans vos paramètres.
+  public static var deviceVerificationSelfVerifyNoOtherVerifiedSessionAvailable: String { 
+    return TchapL10n.tr("Tchap", "device_verification_self_verify_no_other_verified_session_available") 
+  }
   /// Vérifier l’appareil
   public static var deviceVerificationTitle: String { 
     return TchapL10n.tr("Tchap", "device_verification_title") 
@@ -587,6 +591,10 @@ public class TchapL10n: NSObject {
   public static var roomInviteErrorActionForbidden: String { 
     return TchapL10n.tr("Tchap", "room_invite_error_action_forbidden") 
   }
+  /// Veuillez saisir le nom d'un correspondant pour le rechercher dans l'annuaire
+  public static var roomInviteSearchConsign: String { 
+    return TchapL10n.tr("Tchap", "room_invite_search_consign") 
+  }
   /// Envoyer un message
   public static var roomMemberDetailsActionChat: String { 
     return TchapL10n.tr("Tchap", "room_member_details_action_chat") 
@@ -711,9 +719,37 @@ public class TchapL10n: NSObject {
   public static var secretsSetupRecoveryKeyExportActionDone: String { 
     return TchapL10n.tr("Tchap", "secrets_setup_recovery_key_export_action_done") 
   }
+  /// Activer
+  public static var secretsSetupRecoveryKeyInviteButtonOk: String { 
+    return TchapL10n.tr("Tchap", "secrets_setup_recovery_key_invite_button_ok") 
+  }
+  /// Activez cette fonction pour ne jamais perdre l’accès à vos messages suite à une déconnexion.
+  public static var secretsSetupRecoveryKeyInviteMessage: String { 
+    return TchapL10n.tr("Tchap", "secrets_setup_recovery_key_invite_message") 
+  }
+  /// Sauvegarde automatique des messages
+  public static var secretsSetupRecoveryKeyInviteTitle: String { 
+    return TchapL10n.tr("Tchap", "secrets_setup_recovery_key_invite_title") 
+  }
   /// Attention : c'est la seule fois que votre code est affiché !
   public static var secretsSetupRecoveryKeyWarning: String { 
     return TchapL10n.tr("Tchap", "secrets_setup_recovery_key_warning") 
+  }
+  /// Réinitialiser
+  public static var securityCrossSigningResetActionTitle: String { 
+    return TchapL10n.tr("Tchap", "security_cross_signing_reset_action_title") 
+  }
+  /// Faites cette opération seulement si vous avez perdu tous vos autres appareils vérifiés.
+  public static var securityCrossSigningResetMessage: String { 
+    return TchapL10n.tr("Tchap", "security_cross_signing_reset_message") 
+  }
+  /// Êtes-vous sur ?
+  public static var securityCrossSigningResetTitle: String { 
+    return TchapL10n.tr("Tchap", "security_cross_signing_reset_title") 
+  }
+  /// Activer la signature croisée
+  public static var securityCrossSigningSetupTitle: String { 
+    return TchapL10n.tr("Tchap", "security_cross_signing_setup_title") 
   }
   /// Changer le mot de passe réinitialise les clés de chiffrement sur tous les appareils, rendant l’historique des discussions illisible: pensez d'abord à exporter vos clés pour pouvoir les ré-importer après le changement de mot de passe.
   public static var settingsChangePwdCaution: String { 

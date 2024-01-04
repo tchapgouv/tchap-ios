@@ -380,8 +380,8 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenSettings];
 }
 
-// Tchap: fix for destroy not being called (https://github.com/vector-im/element-ios/pull/7697)
 - (void)dealloc {
+    // Fix for destroy not being called
     [self destroy];
 }
 
