@@ -229,6 +229,18 @@ final class BuildSettings: NSObject {
 
     static let allowBackgroundAudioMessagePlayback: Bool = true
 
+    // Tchap: Feature activation by Instance
+    static let tchapFeatureAnyFeature = "*"  // To allow any feature for some instances
+    static let tchapFeatureAnyHomeServer = "*" // To allow a feature for any instance
+                                             //     tchapFeatureAnyFeature : [ <instance> ] to allow any feature for an instance
+                                             //     "<feature ID>" : [ tchapFeatureAnyHomeServer ] to allow a feature to any instance
+    static let tchapFeatureNotificationByEmail = "tchapFeatureNotificationByEmail"
+    static let tchapFeatureVoiceOverIP = "tchapFeatureVoiceOverIP"
+    static let tchapFeatureVideoOverIP = "tchapFeatureVideoOverIP"    // Tchap: in pre-prod, allow any feature to any instance.
+    static var tchapFeatureByHomeServer: [String: [String]] = [
+        tchapFeatureAnyFeature: [ tchapFeatureAnyHomeServer ]
+    ]
+    
     // MARK: - Side Menu
     static let enableSideMenu: Bool = true && !newAppLayoutEnabled
     static let sideMenuShowInviteFriends: Bool = true
