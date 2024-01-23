@@ -33,8 +33,13 @@ class RoomDisplayConfiguration: NSObject {
             return true
         }
         // Tchap: actually, only allow VoIP for DINUM homeServer.
-        let allowedHomeServersForCalls = [BuildSettings.serverUrlPrefix + "agent.dinum.tchap.gouv.fr"]
-        let callsAreEnabled = allowedHomeServersForCalls.contains(account.identityServerURL)
+        let allowedHomeServersForCalls = ["agent.dinum.tchap.gouv.fr"]
+        guard let currentHomeServerName = account.mxSession.credentials.homeServerName() else {
+            return false
+        }
+        let callsAreEnabled = allowedHomeServersForCalls.firstIndex {
+            currentHomeServerName.hasSuffix($0)
+        } != nil
         return callsAreEnabled
     }
     
