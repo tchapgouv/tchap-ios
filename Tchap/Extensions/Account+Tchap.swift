@@ -19,11 +19,11 @@ import Foundation
 @objc extension MXKAccount {
     
     func isFeatureActivated(_ featureId: String) -> Bool {
-        guard let targetedFeature = BuildSettings.tchapFeatureByHomeServer[featureId] ?? BuildSettings.tchapFeatureByHomeServer[BuildSettings.tchapFeatureAnyFeature] else {
+        guard let allowedHomeServers = BuildSettings.tchapFeaturesAllowedHomeServersForFeature[featureId] ?? BuildSettings.tchapFeaturesAllowedHomeServersForFeature[BuildSettings.tchapFeatureAnyFeature] else {
             return false
         }
         
-        if targetedFeature.contains(BuildSettings.tchapFeatureAnyHomeServer) {
+        if allowedHomeServers.contains(BuildSettings.tchapFeatureAnyHomeServer) {
             return true
         }
         
@@ -33,6 +33,6 @@ import Foundation
         
         let homeServerDomain = homeServerURL.replacingOccurrences(of: BuildSettings.serverUrlPrefix, with: "")
         
-        return targetedFeature.contains(homeServerDomain)
+        return allowedHomeServers.contains(homeServerDomain)
     }
 }

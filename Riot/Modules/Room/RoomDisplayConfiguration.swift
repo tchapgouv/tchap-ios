@@ -27,20 +27,13 @@ class RoomDisplayConfiguration: NSObject {
         guard _tchapCallsEnabled,
               let account = MXKAccountManager.shared().activeAccounts.first
         else { return false }
-        // Tchap: allow VoIP for Pre-prod and Dev version
-        if ["fr.gouv.btchap", "fr.gouv.tchap.dev"].contains(BuildSettings.baseBundleIdentifier)
-        {
+        // Tchap: actually, only allow VoIP for DINUM homeServer.
+        if (account.isFeatureActivated(BuildSettings.tchapFeatureVoiceOverIP) || account.isFeatureActivated(BuildSettings.tchapFeatureVideoOverIP)) {
             return true
         }
-        // Tchap: actually, only allow VoIP for DINUM homeServer.
-        let allowedHomeServersForCalls = ["agent.dinum.tchap.gouv.fr"]
-        guard let currentHomeServerName = account.mxSession.credentials.homeServerName() else {
+        else {
             return false
         }
-        let callsAreEnabled = allowedHomeServersForCalls.firstIndex {
-            currentHomeServerName.hasSuffix($0)
-        } != nil
-        return callsAreEnabled
     }
     
     let integrationsEnabled: Bool

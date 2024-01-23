@@ -1955,20 +1955,27 @@ static CGSize kThreadListBarButtonItemImageSize;
                     && self.roomDataSource.room.isDirect
                     && !self.mainSession.vc_homeserverConfiguration.jitsi.useFor1To1Calls)
                 {
-                    //  voice call button for Matrix call
-                    UIBarButtonItem *itemVoice = [[UIBarButtonItem alloc] initWithImage:AssetImages.voiceCallHangonIcon.image
-                                                                                  style:UIBarButtonItemStylePlain
-                                                                                 target:self
-                                                                                 action:@selector(onVoiceCallPressed:)];
-                    itemVoice.accessibilityLabel = [VectorL10n roomAccessibilityCall];
-                    itemVoice.enabled = !self.isCallActive;
-                    [rightBarButtonItems addObject:itemVoice];
+                    MXKAccount *account = MXKAccountManager.sharedManager.activeAccounts.firstObject;
                     
-                    //  video call button for Matrix call
-// Tchap: Disable video call actually
-//                    UIBarButtonItem *itemVideo = [self videoCallBarButtonItem];
-//                    itemVideo.enabled = !self.isCallActive;
-//                    [rightBarButtonItems addObject:itemVideo];
+                    if (account != nil && [account isFeatureActivated:BuildSettings.tchapFeatureVoiceOverIP])
+                    {
+                        //  voice call button for Matrix call
+                        UIBarButtonItem *itemVoice = [[UIBarButtonItem alloc] initWithImage:AssetImages.voiceCallHangonIcon.image
+                                                                                      style:UIBarButtonItemStylePlain
+                                                                                     target:self
+                                                                                     action:@selector(onVoiceCallPressed:)];
+                        itemVoice.accessibilityLabel = [VectorL10n roomAccessibilityCall];
+                        itemVoice.enabled = !self.isCallActive;
+                        [rightBarButtonItems addObject:itemVoice];
+                    }
+                         
+                    if (account != nil && [account isFeatureActivated:BuildSettings.tchapFeatureVideoOverIP])
+                    {
+                        //  video call button for Matrix call
+                        UIBarButtonItem *itemVideo = [self videoCallBarButtonItem];
+                        itemVideo.enabled = !self.isCallActive;
+                        [rightBarButtonItems addObject:itemVideo];
+                    }
                 }
                 else
                 {
