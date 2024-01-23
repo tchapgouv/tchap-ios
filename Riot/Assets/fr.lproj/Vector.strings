@@ -1465,7 +1465,7 @@
 
 "voice_message_release_to_send" = "Maintenir pour enregistrer, relâcher pour envoyer";
 "event_formatter_call_missed_video" = "Appel vidéo manqué";
-"event_formatter_call_missed_voice" = "Appel audio manqué";
+"event_formatter_call_missed_voice" = "Appel audio manqué\n\nActuellement sur iOS, vous ne pouvez que passer des appels et pas en recevoir."; // Tchap: temporary fix for VoIP beta-test
 "event_formatter_call_active_video" = "Appel vidéo en cours";
 "event_formatter_call_active_voice" = "Appel audio en cours";
 "event_formatter_call_incoming_video" = "Appel vidéo entrant";

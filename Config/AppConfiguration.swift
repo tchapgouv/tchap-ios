@@ -27,8 +27,7 @@ class AppConfiguration: CommonConfiguration {
     }
     
     private func setupAppSettings() {
-        // Tchap: Disable CallKit.
-        MXKAppSettings.standard()?.isCallKitEnabled = false
+        MXKAppSettings.standard()?.isCallKitEnabled = true
         
         // Get additional events (modular widget, voice broadcast...)
         MXKAppSettings.standard()?.addSupportedEventTypes([kWidgetMatrixEventTypeString,

@@ -135,11 +135,10 @@ Matrix session observer used to detect new opened sessions.
 
     _isPushRegistered = YES;
     
-    // Tchap: Do not configure pushKit for the moment
-//    if (!_pushNotificationStore.pushKitToken)
-//    {
-//        [self configurePushKit];
-//    }
+    if (!_pushNotificationStore.pushKitToken)
+    {
+        [self configurePushKit];
+    }
 
     if (self.registrationForRemoteNotificationsCompletion)
     {
@@ -652,9 +651,8 @@ Matrix session observer used to detect new opened sessions.
             else if ([callInvite.type isEqualToString:kWidgetMatrixEventTypeString] ||
                      [callInvite.type isEqualToString:kWidgetModularEventTypeString])
             {
-                // TODO: Tchap: VoIP support
-//                [[AppDelegate theDelegate].callPresenter processWidgetEvent:callInvite
-//                                                                  inSession:session];
+                [[AppDelegate theDelegate].callPresenter processWidgetEvent:callInvite
+                                                                  inSession:session];
             }
             else
             {

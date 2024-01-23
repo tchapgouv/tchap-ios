@@ -138,6 +138,15 @@ targetTemplates:
     - path: ../Riot/Managers/AppInfo
     - path: ../Riot/Managers/BugReport
     - path: ../Riot/Managers/Call/AsyncOperation.swift
+    - path: ../Riot/Managers/Call/CallPresenter.swift
+    - path: ../Riot/Managers/Call/CallPresenterDelegate.swift
+    - path: ../Riot/Managers/Call/PipView.swift
+    - path: ../Riot/Managers/Call/PipAnimator.swift
+    - path: ../Riot/Managers/Call/PictureInPicturable.swift
+    - path: ../Riot/Managers/Call/Operations/CallVCPresentOperation.swift
+    - path: ../Riot/Managers/Call/Operations/CallVCDismissOperation.swift
+    - path: ../Riot/Managers/Call/Operations/CallVCEnterPipOperation.swift
+    - path: ../Riot/Managers/Call/Operations/CallVCExitPipOperation.swift
     - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
     - path: ../Riot/Managers/KeyValueStorage
     - path: ../Riot/Managers/LocalAuthentication
@@ -171,12 +180,10 @@ targetTemplates:
     - path: ../Riot/Modules/BadgeLabel
     - path: ../Riot/Modules/BugReport/BugReportViewController.h
     - path: ../Riot/Modules/BugReport/BugReportViewController.m
-    - path: ../Riot/Modules/Call/CallViewController.h
-    - path: ../Riot/Modules/Call/CallViewController.m
-    - path: ../Riot/Modules/Call/Views/CircleButton.h
-    - path: ../Riot/Modules/Call/Views/CircleButton.m
-    - path: ../Riot/Modules/Call/Views/IncomingCallView.h
-    - path: ../Riot/Modules/Call/Views/IncomingCallView.m
+    - path: ../Riot/Modules/Call
+      excludes:
+        - "Dialpad"
+#    - path: ../Riot/Modules/CallTransfer
     - path: ../Riot/Modules/Camera
     - path: ../Riot/Modules/Common/ActivityIndicator
     - path: ../Riot/Modules/Common/Avatar
@@ -189,6 +196,8 @@ targetTemplates:
     - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.h
     - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.m
     - path: ../Riot/Modules/Common/PresenceIndicator
+    - path: ../Riot/Modules/Common/Presentation/CustomSizedPresentable.swift
+    - path: ../Riot/Modules/Common/Presentation/CustomSizedPresentationController.swift
     - path: ../Riot/Modules/Common/Recents/DataSources
     - path: ../Riot/Modules/Common/Recents/Model/RecentCellData.h
     - path: ../Riot/Modules/Common/Recents/Model/RecentCellData.m

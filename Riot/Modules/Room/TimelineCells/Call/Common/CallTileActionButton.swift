@@ -93,8 +93,11 @@ class CallTileActionButton: UIButton {
     // MARK: - Overrides
     
     override func setImage(_ image: UIImage?, for state: UIControl.State) {
-        super.setImage(image?.vc_resized(with: Constants.imageSize)?.withRenderingMode(.alwaysTemplate),
-                       for: state)
+        // Tchap: tint icon in white
+//        super.setImage(image?.vc_resized(with: Constants.imageSize)?.withRenderingMode(.alwaysTemplate),
+//                       for: state)
+        super.setImage(image?.vc_resized(with: Constants.imageSize)?.withRenderingMode(.alwaysTemplate).vc_tintedImage(usingColor: .white),
+                       for: state)        
     }
     
     override var intrinsicContentSize: CGSize {

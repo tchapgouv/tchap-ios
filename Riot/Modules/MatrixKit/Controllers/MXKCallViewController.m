@@ -703,7 +703,9 @@ static const CGFloat kLocalPreviewMargin = 20;
         //  check the call can be up/downgraded
         
         //  check the call can send DTMF tones
-        if (self.mxCall.supportsDTMF)
+        // Tchap: don't present Dialpad
+        //        if (self.mxCall.supportsDTMF)
+        if( NO && self.mxCall.supportsDTMF )
         {
             UIAlertAction *dialpadAction = [UIAlertAction actionWithTitle:[VectorL10n callMoreActionsDialpad]
                                                                     style:UIAlertActionStyleDefault
@@ -1440,6 +1442,9 @@ static const CGFloat kLocalPreviewMargin = 20;
      // Disable the idle timer during a video call, or during a voice call which is performed with the built-in receiver.
      // Note: if the device is locked, VoIP calling get dropped if an incoming GSM call is received.
      BOOL disableIdleTimer = inCall && (mxCall.isVideoCall || isBuiltInReceiverUsed);
+     
+     // Tchap: force disable the idle timer when in call, let it be a video call or a voice call with the built-in receiver, built-in speaker or a bluetooth device.
+     disableIdleTimer = inCall;
      
      UIApplication *sharedApplication = [UIApplication performSelector:@selector(sharedApplication)];
      if (sharedApplication && sharedApplication.isIdleTimerDisabled != disableIdleTimer)

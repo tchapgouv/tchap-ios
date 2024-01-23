@@ -19,7 +19,29 @@ import Foundation
 @objcMembers
 class RoomDisplayConfiguration: NSObject {
     
-    let callsEnabled: Bool
+// Tchap: handle call activation by homeServer
+//    let callsEnabled: Bool
+    private let _tchapCallsEnabled: Bool
+    
+    var callsEnabled: Bool {
+        guard _tchapCallsEnabled,
+              let account = MXKAccountManager.shared().activeAccounts.first
+        else { return false }
+        // Tchap: allow VoIP for Pre-prod and Dev version
+        if ["fr.gouv.btchap", "fr.gouv.tchap.dev"].contains(BuildSettings.baseBundleIdentifier)
+        {
+            return true
+        }
+        // Tchap: actually, only allow VoIP for DINUM homeServer.
+        let allowedHomeServersForCalls = ["agent.dinum.tchap.gouv.fr"]
+        guard let currentHomeServerName = account.mxSession.credentials.homeServerName() else {
+            return false
+        }
+        let callsAreEnabled = allowedHomeServersForCalls.firstIndex {
+            currentHomeServerName.hasSuffix($0)
+        } != nil
+        return callsAreEnabled
+    }
     
     let integrationsEnabled: Bool
     
@@ -31,14 +53,16 @@ class RoomDisplayConfiguration: NSObject {
          integrationsEnabled: Bool,
          jitsiWidgetRemoverEnabled: Bool,
          sendingPollsEnabled: Bool) {
-        self.callsEnabled = callsEnabled
+// Tchap: handle call activation by homeServer
+//        self.callsEnabled = callsEnabled
+        self._tchapCallsEnabled = callsEnabled
         self.integrationsEnabled = integrationsEnabled
         self.jitsiWidgetRemoverEnabled = jitsiWidgetRemoverEnabled
         self.sendingPollsEnabled = sendingPollsEnabled
         super.init()
     }
     
-    static let `default`: RoomDisplayConfiguration = RoomDisplayConfiguration(callsEnabled: false, // Tchap: don't allow calls.
+    static let `default`: RoomDisplayConfiguration = RoomDisplayConfiguration(callsEnabled: true,
                                                                               integrationsEnabled: true,
                                                                               jitsiWidgetRemoverEnabled: true,
                                                                               sendingPollsEnabled: true)
