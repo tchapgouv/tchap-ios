@@ -1,10 +1,6 @@
 ### Pull Request Checklist
 
-<<<<<<< HEAD
 - [ ] I read the [contributing guide](https://github.com/tchapgouv/tchap-ios/blob/develop/CONTRIBUTING.md)
-=======
-- [ ] I read the [contributing guide](https://github.com/element-hq/element-ios/blob/develop/CONTRIBUTING.md)
->>>>>>> v1.11.6
 - [ ] UI change has been tested on both light and dark themes, in portrait and landscape orientations and on iPhone and iPad simulators
 - [ ] Accessibility has been taken into account.
 * [ ] Pull request is based on the develop branch
