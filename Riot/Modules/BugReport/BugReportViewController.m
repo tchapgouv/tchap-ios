@@ -23,6 +23,9 @@
 #import "RageShakeManager.h"
 #import "ThemeService.h"
 
+// Tchap: use AFNetworkReachability connection state in VoIP RageShake
+#import "AFNetworkReachabilityManager.h"
+
 @interface BugReportViewController ()
 {
     MXBugReportRestClient *bugReportRestClient;
@@ -370,6 +373,16 @@
     // Tchap : add "context: 'voip'" (if necessary) for support automation
     if ( _reportVoIPIncident == YES ) {
         customFields[@"context"] = @"voip";
+        
+        if ( AFNetworkReachabilityManager.sharedManager.isReachableViaWiFi ) {
+            customFields[@"connection"] = @"wifi";
+        }
+        else if ( AFNetworkReachabilityManager.sharedManager.isReachableViaWWAN ) {
+            customFields[@"connection"] = @"4g";
+        }
+        else {
+            customFields[@"connection"] = @"unknown";
+        }
     }
     
     bugReportRestClient.others = userInfo;
