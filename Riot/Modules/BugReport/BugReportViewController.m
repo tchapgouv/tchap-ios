@@ -84,7 +84,13 @@
     _bugReportDescriptionTextView.text = nil;
     _bugReportDescriptionTextView.delegate = self;
 
-    if (_reportCrash)
+    // Tchap: add `reportVoIPIncident` configuration
+    if (_reportVoIPIncident)
+    {
+        _titleLabel.text = [TchapL10n voidReportIncidentTitle];
+        _descriptionLabel.text = [TchapL10n voidReportIncidentDescription];
+    }
+    else if (_reportCrash)
     {
         _titleLabel.text = [VectorL10n bugCrashReportTitle];
         _descriptionLabel.text = [VectorL10n bugCrashReportDescription];
@@ -361,6 +367,11 @@
     NSMutableDictionary<NSString *, NSString *> *customFields = NSMutableDictionary.dictionary;
     customFields[@"email"] = mainAccount.linkedEmails.firstObject ?: @"undefined";
     
+    // Tchap : add "context: 'voip'" (if necessary) for support automation
+    if ( _reportVoIPIncident == YES ) {
+        customFields[@"context"] = @"voip";
+    }
+    
     bugReportRestClient.others = userInfo;
 
     // Screenshot
@@ -388,7 +399,7 @@
                                             sendCrashLog:_reportCrash
                                                sendFiles:files
                                         additionalLabels:nil
-                                            customFields:customFields // Tchap : add custom fields (fro email actually)
+                                            customFields:customFields // Tchap : add custom fields (for email actually)
                                                 progress:^(MXBugReportState state, NSProgress *progress) {
         
         switch (state)
