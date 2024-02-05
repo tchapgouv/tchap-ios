@@ -378,7 +378,7 @@
             customFields[@"connection"] = @"wifi";
         }
         else if ( AFNetworkReachabilityManager.sharedManager.isReachableViaWWAN ) {
-            customFields[@"connection"] = @"4g";
+            customFields[@"connection"] = @"mobile";
         }
         else {
             customFields[@"connection"] = @"unknown";
