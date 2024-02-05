@@ -33,6 +33,8 @@ class HorizontalButtonsContainerView: UIView {
         var result = stackView.intrinsicContentSize
         result.width = self.frame.width
         result.height += Constants.stackViewTopMargin + Constants.stackViewBottomMargin
+        // Tchap: set minimum height for buttons not to be vertically compressed when text above is multi-line.
+        result.height = max(result.height, 68.0)
         return result
     }
 

@@ -50,6 +50,13 @@ class RoomDirectCallStatusCell: RoomCallBaseCell {
         return self.className + ".endCall"
     }
     
+    // Tchap
+    /// Action identifier used when the user pressed "Report VoIP incident" button for an ended call.
+    /// The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the invite event of the call.
+    static var reportIncidentAction: String {
+        return self.className + ".reportincident"
+    }
+    
     private var callDurationString: String = ""
     private var isVideoCall: Bool = false
     private var isIncoming: Bool = false
@@ -165,7 +172,18 @@ class RoomDirectCallStatusCell: RoomCallBaseCell {
             
             return view
         case .ended:
-            return nil
+            // Tchap: add "Report VoIP incident" button
+//            return nil
+            let view = HorizontalButtonsContainerView.loadFromNib()
+            view.secondButton.isHidden = true
+            
+            view.firstButton.style = .positive
+            view.firstButton.setTitle(TchapL10n.eventFormatterReportIncident, for: .normal)
+            view.firstButton.setImage(callButtonIcon, for: .normal)
+            view.firstButton.removeTarget(nil, action: nil, for: .touchUpInside)
+            view.firstButton.addTarget(self, action: #selector(reportIncidentAction(_:)), for: .touchUpInside)
+            
+            return view
         case .failed:
             let view = HorizontalButtonsContainerView.loadFromNib()
             view.secondButton.isHidden = true
@@ -329,6 +347,14 @@ class RoomDirectCallStatusCell: RoomCallBaseCell {
     private func endCallAction(_ sender: CallTileActionButton) {
         self.delegate?.cell(self,
                             didRecognizeAction: Self.endCallAction,
+                            userInfo: actionUserInfo)
+    }
+    
+    // Tchap: report VoIP incident action
+    @objc
+    private func reportIncidentAction(_ sender: CallTileActionButton) {
+        self.delegate?.cell(self,
+                            didRecognizeAction: Self.reportIncidentAction,
                             userInfo: actionUserInfo)
     }
     
