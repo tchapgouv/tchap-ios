@@ -332,6 +332,6 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: VoIP
-"event_formatter_report_incident" = "Rapporter un incident";
-"void_report_incident_title" = "Rapporter un incident VoIP";
+"event_formatter_report_incident" = "Signaler un problème";
+"void_report_incident_title" = "Signaler un problème VoIP";
 "void_report_incident_description" = "Vous avez rencontré un souci durant votre appel VoIP. Dites-nous ce qui s'est passé :";
