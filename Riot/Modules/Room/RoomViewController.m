@@ -3888,6 +3888,16 @@ static CGSize kThreadListBarButtonItemImageSize;
             MXCall *call = [self.mainSession.callManager callWithCallId:eventContent.callId];
             [call hangup];
         }
+        // Tchap: handle "rport VoIP incident" action
+        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusCell.reportIncidentAction])
+        {
+            MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
+            MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
+
+            BugReportViewController *bugReportViewController = [BugReportViewController bugReportViewController];
+            bugReportViewController.reportVoIPIncident = YES;
+            [bugReportViewController showInViewController:self];
+        }
         else if ([actionIdentifier isEqualToString:RoomGroupCallStatusCell.joinAction] ||
                  [actionIdentifier isEqualToString:RoomGroupCallStatusCell.answerAction])
         {

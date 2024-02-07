@@ -329,3 +329,9 @@
 "security_cross_signing_reset_title" = "Êtes-vous sur ?";
 "security_cross_signing_reset_message" = "Faites cette opération seulement si vous avez perdu tous vos autres appareils vérifiés.";
 "security_cross_signing_reset_action_title" = "Réinitialiser";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: VoIP
+"event_formatter_report_incident" = "Signaler un problème";
+"void_report_incident_title" = "Signaler un problème VoIP";
+"void_report_incident_description" = "Vous avez rencontré un souci durant votre appel VoIP. Dites-nous ce qui s'est passé :";

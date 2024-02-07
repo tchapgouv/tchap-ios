@@ -65,4 +65,11 @@
  */
 @property (nonatomic) BOOL reportCrash;
 
+// Tchap
+/**
+ Option to report a VoIP incident.
+ The crash log will sent in the report.
+ */
+@property (nonatomic) BOOL reportVoIPIncident;
+
 @end
