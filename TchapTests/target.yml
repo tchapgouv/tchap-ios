@@ -61,6 +61,7 @@ targets:
 
     # Tchap
     - path: ../Tchap/Config/BuildSettings.swift
+    - path: ../Tchap/Extensions/Account+Tchap.swift
 
     # Riot
     - path: ../Riot/Categories/Bundle.swift
