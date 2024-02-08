@@ -267,10 +267,23 @@ final class BuildSettings: NSObject {
     static let tchapFeatureNotificationByEmail = "tchapFeatureNotificationByEmail"
     static let tchapFeatureVoiceOverIP = "tchapFeatureVoiceOverIP"
     static let tchapFeatureVideoOverIP = "tchapFeatureVideoOverIP"
-    static var tchapFeatureByHomeServer: [String: [String]] = [
+    static let tchapFeatureThreads = "tchapFeatureThreads"
+    static var tchapFeaturesAllowedHomeServersForFeature: [String: [String]] = [
         tchapFeatureNotificationByEmail: [
             "agent.dinum.tchap.gouv.fr"
-        ]
+        ],
+        // No activation of VoIP calls actually in Tchap Production.
+//        tchapFeatureVoiceOverIP: [
+//            "agent.dinum.tchap.gouv.fr"
+//        ],
+        // No activation of video calls actually in Tchap Production.
+//        tchapFeatureVideoOverIP: [
+//            "agent.dinum.tchap.gouv.fr"
+//        ],
+        // No activation of Threads actually in Tchap Production.
+//        tchapFeatureThreads: [
+//            "agent.dinum.tchap.gouv.fr"
+//        ]
     ]
     
     // MARK: - Side Menu
