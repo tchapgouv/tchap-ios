@@ -1,3 +1,26 @@
+## Changes in 2.7.1 (2024-02-12)
+
+✨ Features
+
+- Proposer d'envoyer un rapport d'incident/de qualité à la fin d'un appel VoIP ([#962](https://github.com/tchapgouv/tchap-ios/issues/962))
+
+🙌 Improvements
+
+- Rendre les forums fédérés par défaut lors de leur création ([#938](https://github.com/tchapgouv/tchap-ios/issues/938))
+- Rebase sur Element 1.11.5 ([#939](https://github.com/tchapgouv/tchap-ios/issues/939))
+  - permettre la réinitialisation du Code de Récupération
+  - permettre la réinitialisation de la signature croisée
+  - ne tenter qu'une seule fois d'activer automatiquement la signature croisée ([#942](https://github.com/tchapgouv/tchap-ios/issues/942))
+- Autoriser l'activation de nouvelles fonctionnalités par instance de serveur ([#948](https://github.com/tchapgouv/tchap-ios/issues/948))
+- Utiliser les Features Flags pour activer la VoIP pour la Dinum ([#957](https://github.com/tchapgouv/tchap-ios/issues/957))
+- Rebase sur Element 1.11.6
+  Possibilité d'utiliser des apostrophes dans les emails de login ([#959](https://github.com/tchapgouv/tchap-ios/issues/959))
+
+🐛 Bugfixes
+
+- La consigne de stockage du code de récupération n'était pas lisible en mode sombre. ([#944](https://github.com/tchapgouv/tchap-ios/issues/944))
+
+
 ## Changes in 2.6.2 (2023-12-19)
 
 ✨ Features

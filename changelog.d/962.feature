@@ -1,1 +1,0 @@
-Proposer d'envoyer un rapport d'incident/de qualité à la fin d'un appel VoIP
