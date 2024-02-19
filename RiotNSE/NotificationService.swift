@@ -16,6 +16,7 @@
 
 import UserNotifications
 import MatrixSDK
+import CallKit
 
 /// The number of milliseconds in one second.
 private let MSEC_PER_SEC: TimeInterval = 1000
@@ -831,29 +832,42 @@ class NotificationService: UNNotificationServiceExtension {
         
         ongoingVoIPPushRequests[event.eventId] = true
         
-        let appId = BuildSettings.pushKitAppId
+//        let appId = BuildSettings.pushKitAppId
+//        
+//        pushGatewayRestClient.notifyApp(withId: appId,
+//                                        pushToken: token,
+//                                        eventId: event.eventId,
+//                                        roomId: event.roomId,
+//                                        eventType: nil,
+//                                        sender: event.sender,
+//                                        timeout: NSE.Constants.voipPushRequestTimeout,
+//                                        success: { [weak self] (rejected) in
+//                                            MXLog.debug("[NotificationService] sendVoipPush succeeded, rejected tokens: \(rejected)")
+//                                            
+//                                            guard let self = self else { return }
+//                                            self.ongoingVoIPPushRequests.removeValue(forKey: event.eventId)
+//                                            
+//                                            self.fallbackToBestAttemptContent(forEventId: event.eventId)
+//                                        }) { [weak self] (error) in
+//            MXLog.debug("[NotificationService] sendVoipPush failed with error: \(error)")
+//            
+//            guard let self = self else { return }
+//            self.ongoingVoIPPushRequests.removeValue(forKey: event.eventId)
+//            
+//            self.fallbackToBestAttemptContent(forEventId: event.eventId)
+//        }
         
-        pushGatewayRestClient.notifyApp(withId: appId,
-                                        pushToken: token,
-                                        eventId: event.eventId,
-                                        roomId: event.roomId,
-                                        eventType: nil,
-                                        sender: event.sender,
-                                        timeout: NSE.Constants.voipPushRequestTimeout,
-                                        success: { [weak self] (rejected) in
-                                            MXLog.debug("[NotificationService] sendVoipPush succeeded, rejected tokens: \(rejected)")
-                                            
-                                            guard let self = self else { return }
-                                            self.ongoingVoIPPushRequests.removeValue(forKey: event.eventId)
-                                            
-                                            self.fallbackToBestAttemptContent(forEventId: event.eventId)
-                                        }) { [weak self] (error) in
-            MXLog.debug("[NotificationService] sendVoipPush failed with error: \(error)")
-            
-            guard let self = self else { return }
-            self.ongoingVoIPPushRequests.removeValue(forKey: event.eventId)
-            
-            self.fallbackToBestAttemptContent(forEventId: event.eventId)
+        // Starting from iOS 14.5, SDK can "Reports a new incoming call after your notification service extension decrypts a VoIP call request."
+         // See: https://developer.apple.com/documentation/callkit/cxprovider/3727263-reportnewincomingvoippushpayload
+
+        var payload = [String: String]()
+        payload["event_id"] = event.eventId
+        payload["room_id"] = event.roomId
+        
+        CXProvider.reportNewIncomingVoIPPushPayload(payload) { error in
+            if let error = error {
+                MXLog.debug("[NotificationService] reportNewIncomingVoIPPushPayload Error: \(error)")
+            }
         }
     }
     
