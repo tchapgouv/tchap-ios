@@ -832,6 +832,9 @@ class NotificationService: UNNotificationServiceExtension {
         
         ongoingVoIPPushRequests[event.eventId] = true
         
+        // Tchap: report incoming VoIP notification directly to application
+        // rather than requesting Sygnal to resend unencrypted VoIP notification
+        
 //        let appId = BuildSettings.pushKitAppId
 //        
 //        pushGatewayRestClient.notifyApp(withId: appId,
@@ -860,10 +863,12 @@ class NotificationService: UNNotificationServiceExtension {
         // Starting from iOS 14.5, SDK can "Reports a new incoming call after your notification service extension decrypts a VoIP call request."
          // See: https://developer.apple.com/documentation/callkit/cxprovider/3727263-reportnewincomingvoippushpayload
 
+        // Build th payload expected by the application.
         var payload = [String: String]()
         payload["event_id"] = event.eventId
         payload["room_id"] = event.roomId
         
+        // Send the unencrypted VoIP payload dirtectly to the application.
         CXProvider.reportNewIncomingVoIPPushPayload(payload) { error in
             if let error = error {
                 MXLog.debug("[NotificationService] reportNewIncomingVoIPPushPayload Error: \(error)")
