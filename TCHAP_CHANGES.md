@@ -1,3 +1,11 @@
+## Changes in 2.7.2 (2024-02-26)
+
+🙌 Improvements
+
+- Activation du background mode "Voice over IP" ([#966](https://github.com/tchapgouv/tchap-ios/issues/966))
+- Réception des appels VoIP même si l'application n'est pas lancée ou pas en premier plan. ([#968](https://github.com/tchapgouv/tchap-ios/issues/968))
+
+
 ## Changes in 2.7.1 (2024-02-12)
 
 ✨ Features
