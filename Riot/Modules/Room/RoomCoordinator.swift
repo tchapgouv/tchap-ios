@@ -315,166 +315,166 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     }
     
     // Tchap: Disable Live location sharing
-//    private func showLiveLocationViewer() {
-//        guard let roomId = self.roomId else {
-//            return
-//        }
-//
-//        self.showLiveLocationViewer(for: roomId)
-//    }
-//
-//    private func showLiveLocationViewer(for roomId: String) {
-//
-//        guard let mxSession = self.mxSession, let navigationRouter = self.navigationRouter else {
-//            return
-//        }
-//
-//        guard mxSession.locationService.isSomeoneSharingDisplayableLocation(inRoomWithId: roomId) else {
-//            return
-//        }
-//
-//        let parameters = LiveLocationSharingViewerCoordinatorParameters(session: mxSession, roomId: roomId, navigationRouter: nil)
-//
-//        let coordinator = LiveLocationSharingViewerCoordinator(parameters: parameters)
-//
-//        coordinator.completion = { [weak self, weak coordinator] in
-//            guard let self = self, let coordinator = coordinator else {
-//                return
-//            }
-//
-//            self.navigationRouter?.dismissModule(animated: true, completion: nil)
-//            self.remove(childCoordinator: coordinator)
-//        }
-//
-//        add(childCoordinator: coordinator)
-//
-//        navigationRouter.present(coordinator, animated: true)
-//        coordinator.start()
-//    }
-//
-//    private func stopLiveLocationSharing(forBeaconInfoEventId beaconInfoEventId: String? = nil, inRoomWithId roomId: String) {
-//        guard let session = self.mxSession else {
-//            return
-//        }
-//
-//        let errorHandler: (Error) -> Void = { error in
-//
-//            let viewController = self.roomViewController
-//
-//            viewController.errorPresenter.presentError(from: viewController, title: VectorL10n.error, message: VectorL10n.locationSharingLiveStopSharingError, animated: true) {
-//            }
-//        }
-//
-//        // TODO: Handle loading state on the banner by replacing stop button with a spinner
-//        self.showLocationSharingIndicator(withMessage: VectorL10n.locationSharingLiveStopSharingProgress)
-//
-//        if let beaconInfoEventId = beaconInfoEventId {
-//            session.locationService.stopUserLocationSharing(withBeaconInfoEventId: beaconInfoEventId, roomId: roomId) {
-//                [weak self] response in
-//
-//                self?.hideLocationSharingIndicator()
-//
-//                switch response {
-//                case .success:
-//                    break
-//                case .failure(let error):
-//                    errorHandler(error)
-//                }
-//            }
-//        } else {
-//            session.locationService.stopUserLocationSharing(inRoomWithId: roomId) { [weak self] response in
-//
-//                self?.hideLocationSharingIndicator()
-//
-//                switch response {
-//                case .success:
-//                    break
-//                case .failure(let error):
-//                    errorHandler(error)
-//                }
-//            }
-//        }
-//    }
-//
-//    private func showLocationCoordinatorWithEvent(_ event: MXEvent, bubbleData: MXKRoomBubbleCellDataStoring) {
-//        guard let mxSession = self.mxSession,
-//              let navigationRouter = self.navigationRouter,
-//              let mediaManager = mxSession.mediaManager,
-//              let locationContent = event.location else {
-//                  MXLog.error("[RoomCoordinator] Invalid location showing coordinator parameters. Returning.")
-//                  return
-//              }
-//
-//        let avatarData = AvatarInput(mxContentUri: bubbleData.senderAvatarUrl,
-//                                     matrixItemId: bubbleData.senderId,
-//                                     displayName: bubbleData.senderDisplayName)
-//
-//
-//        let location = CLLocationCoordinate2D(latitude: locationContent.latitude, longitude: locationContent.longitude)
-//        let coordinateType = locationContent.assetType
-//
-//        guard let locationSharingCoordinatetype = coordinateType.locationSharingCoordinateType() else {
-//            fatalError("[LocationSharingCoordinator] event asset type is not supported: \(coordinateType)")
-//        }
-//
-//        let parameters = StaticLocationViewingCoordinatorParameters(
-//            session: mxSession,
-//            mediaManager: mediaManager,
-//            avatarData: avatarData,
-//            location: location,
-//            coordinateType: locationSharingCoordinatetype)
-//
-//        let coordinator = StaticLocationViewingCoordinator(parameters: parameters)
-//
-//        coordinator.completion = { [weak self, weak coordinator] in
-//            guard let self = self, let coordinator = coordinator else {
-//                return
-//            }
-//
-//            self.navigationRouter?.dismissModule(animated: true, completion: nil)
-//            self.remove(childCoordinator: coordinator)
-//        }
-//
-//        add(childCoordinator: coordinator)
-//
-//        navigationRouter.present(coordinator, animated: true)
-//        coordinator.start()
-//    }
-//
-//    private func startLocationCoordinator() {
-//        guard let mxSession = mxSession,
-//              let navigationRouter = self.navigationRouter,
-//              let mediaManager = mxSession.mediaManager,
-//              let user = mxSession.myUser else {
-//            MXLog.error("[RoomCoordinator] Invalid location sharing coordinator parameters. Returning.")
-//            return
-//        }
-//
-//        let avatarData = AvatarInput(mxContentUri: user.avatarUrl,
-//                                     matrixItemId: user.userId,
-//                                     displayName: user.displayname)
-//
-//        let parameters = LocationSharingCoordinatorParameters(session: mxSession,
-//                                                              roomDataSource: roomViewController.roomDataSource,
-//                                                              mediaManager: mediaManager,
-//                                                              avatarData: avatarData)
-//
-//        let coordinator = LocationSharingCoordinator(parameters: parameters)
-//
-//        coordinator.completion = { [weak self, weak coordinator] in
-//            guard let self = self, let coordinator = coordinator else {
-//                return
-//            }
-//
-//            self.navigationRouter?.dismissModule(animated: true, completion: nil)
-//            self.remove(childCoordinator: coordinator)
-//        }
-//
-//        add(childCoordinator: coordinator)
-//
-//        navigationRouter.present(coordinator, animated: true)
-//        coordinator.start()
-//    }
+    private func showLiveLocationViewer() {
+        guard let roomId = self.roomId else {
+            return
+        }
+
+        self.showLiveLocationViewer(for: roomId)
+    }
+
+    private func showLiveLocationViewer(for roomId: String) {
+
+        guard let mxSession = self.mxSession, let navigationRouter = self.navigationRouter else {
+            return
+        }
+
+        guard mxSession.locationService.isSomeoneSharingDisplayableLocation(inRoomWithId: roomId) else {
+            return
+        }
+
+        let parameters = LiveLocationSharingViewerCoordinatorParameters(session: mxSession, roomId: roomId, navigationRouter: nil)
+
+        let coordinator = LiveLocationSharingViewerCoordinator(parameters: parameters)
+
+        coordinator.completion = { [weak self, weak coordinator] in
+            guard let self = self, let coordinator = coordinator else {
+                return
+            }
+
+            self.navigationRouter?.dismissModule(animated: true, completion: nil)
+            self.remove(childCoordinator: coordinator)
+        }
+
+        add(childCoordinator: coordinator)
+
+        navigationRouter.present(coordinator, animated: true)
+        coordinator.start()
+    }
+
+    private func stopLiveLocationSharing(forBeaconInfoEventId beaconInfoEventId: String? = nil, inRoomWithId roomId: String) {
+        guard let session = self.mxSession else {
+            return
+        }
+
+        let errorHandler: (Error) -> Void = { error in
+
+            let viewController = self.roomViewController
+
+            viewController.errorPresenter.presentError(from: viewController, title: VectorL10n.error, message: VectorL10n.locationSharingLiveStopSharingError, animated: true) {
+            }
+        }
+
+        // TODO: Handle loading state on the banner by replacing stop button with a spinner
+        self.showLocationSharingIndicator(withMessage: VectorL10n.locationSharingLiveStopSharingProgress)
+
+        if let beaconInfoEventId = beaconInfoEventId {
+            session.locationService.stopUserLocationSharing(withBeaconInfoEventId: beaconInfoEventId, roomId: roomId) {
+                [weak self] response in
+
+                self?.hideLocationSharingIndicator()
+
+                switch response {
+                case .success:
+                    break
+                case .failure(let error):
+                    errorHandler(error)
+                }
+            }
+        } else {
+            session.locationService.stopUserLocationSharing(inRoomWithId: roomId) { [weak self] response in
+
+                self?.hideLocationSharingIndicator()
+
+                switch response {
+                case .success:
+                    break
+                case .failure(let error):
+                    errorHandler(error)
+                }
+            }
+        }
+    }
+
+    private func showLocationCoordinatorWithEvent(_ event: MXEvent, bubbleData: MXKRoomBubbleCellDataStoring) {
+        guard let mxSession = self.mxSession,
+              let navigationRouter = self.navigationRouter,
+              let mediaManager = mxSession.mediaManager,
+              let locationContent = event.location else {
+                  MXLog.error("[RoomCoordinator] Invalid location showing coordinator parameters. Returning.")
+                  return
+              }
+
+        let avatarData = AvatarInput(mxContentUri: bubbleData.senderAvatarUrl,
+                                     matrixItemId: bubbleData.senderId,
+                                     displayName: bubbleData.senderDisplayName)
+
+
+        let location = CLLocationCoordinate2D(latitude: locationContent.latitude, longitude: locationContent.longitude)
+        let coordinateType = locationContent.assetType
+
+        guard let locationSharingCoordinatetype = coordinateType.locationSharingCoordinateType() else {
+            fatalError("[LocationSharingCoordinator] event asset type is not supported: \(coordinateType)")
+        }
+
+        let parameters = StaticLocationViewingCoordinatorParameters(
+            session: mxSession,
+            mediaManager: mediaManager,
+            avatarData: avatarData,
+            location: location,
+            coordinateType: locationSharingCoordinatetype)
+
+        let coordinator = StaticLocationViewingCoordinator(parameters: parameters)
+
+        coordinator.completion = { [weak self, weak coordinator] in
+            guard let self = self, let coordinator = coordinator else {
+                return
+            }
+
+            self.navigationRouter?.dismissModule(animated: true, completion: nil)
+            self.remove(childCoordinator: coordinator)
+        }
+
+        add(childCoordinator: coordinator)
+
+        navigationRouter.present(coordinator, animated: true)
+        coordinator.start()
+    }
+
+    private func startLocationCoordinator() {
+        guard let mxSession = mxSession,
+              let navigationRouter = self.navigationRouter,
+              let mediaManager = mxSession.mediaManager,
+              let user = mxSession.myUser else {
+            MXLog.error("[RoomCoordinator] Invalid location sharing coordinator parameters. Returning.")
+            return
+        }
+
+        let avatarData = AvatarInput(mxContentUri: user.avatarUrl,
+                                     matrixItemId: user.userId,
+                                     displayName: user.displayname)
+
+        let parameters = LocationSharingCoordinatorParameters(session: mxSession,
+                                                              roomDataSource: roomViewController.roomDataSource,
+                                                              mediaManager: mediaManager,
+                                                              avatarData: avatarData)
+
+        let coordinator = LocationSharingCoordinator(parameters: parameters)
+
+        coordinator.completion = { [weak self, weak coordinator] in
+            guard let self = self, let coordinator = coordinator else {
+                return
+            }
+
+            self.navigationRouter?.dismissModule(animated: true, completion: nil)
+            self.remove(childCoordinator: coordinator)
+        }
+
+        add(childCoordinator: coordinator)
+
+        navigationRouter.present(coordinator, animated: true)
+        coordinator.start()
+    }
     
     private func startEditPollCoordinator(startEvent: MXEvent? = nil) {
         let parameters = PollEditFormCoordinatorParameters(room: roomViewController.roomDataSource.room, pollStartEvent: startEvent)
@@ -635,7 +635,7 @@ extension RoomCoordinator: RoomViewControllerDelegate {
         }
         
         // Tchap: Disable Live location sharing
-//        showLiveLocationViewer(for: roomId)
+        showLiveLocationViewer(for: roomId)
     }
     
     func roomViewController(_ roomViewController: RoomViewController, locationShareActivityViewControllerFor event: MXEvent) -> UIActivityViewController? {
@@ -682,7 +682,7 @@ extension RoomCoordinator: RoomViewControllerDelegate {
             return
         }
         
-//        self.stopLiveLocationSharing(forBeaconInfoEventId: beaconInfoEventId, inRoomWithId: roomId)
+        self.stopLiveLocationSharing(forBeaconInfoEventId: beaconInfoEventId, inRoomWithId: roomId)
     }
     
     func threadsCoordinator(for roomViewController: RoomViewController, threadId: String?) -> ThreadsCoordinatorBridgePresenter? {

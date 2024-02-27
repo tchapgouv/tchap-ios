@@ -32,9 +32,9 @@
 @protocol RoomViewControllerDelegate;
 @class RoomDisplayConfiguration;
 // Tchap: Disable Threads
-// Tchap: Disable Live location sharing
 //@class ThreadsCoordinatorBridgePresenter;
-//@class LiveLocationSharingBannerView;
+// Tchap: Disable Live location sharing
+@class LiveLocationSharingBannerView;
 @class VoiceBroadcastService;
 @class ComposerLinkActionBridgePresenter;
 
@@ -108,11 +108,11 @@ extern NSTimeInterval const kResizeComposerAnimationDuration;
 @property (weak, nonatomic, nullable) IBOutlet UIStackView *topBannersStackView;
 
 // Tchap: Disable Live location sharing
-// /// Indicate YES to show live location sharing banner
-//@property (nonatomic, readonly) BOOL shouldShowLiveLocationSharingBannerView;
-//
-// /// Displayed live location sharing banner if any
-//@property (nonatomic, weak) LiveLocationSharingBannerView *liveLocationSharingBannerView;
+ /// Indicate YES to show live location sharing banner
+@property (nonatomic, readonly) BOOL shouldShowLiveLocationSharingBannerView;
+
+ /// Displayed live location sharing banner if any
+@property (nonatomic, weak) LiveLocationSharingBannerView *liveLocationSharingBannerView;
 
 // The customized room data source for Vector
 @property (nonatomic, nullable) RoomDataSource *customizedRoomDataSource;
@@ -312,9 +312,9 @@ didRequestLocationPresentationForEvent:(MXEvent *)event
                 bubbleData:(id<MXKRoomBubbleCellDataStoring>)bubbleData;
 
 // Tchap: Disable Live location sharing
-/// Ask the coordinator to present the live location sharing viewer.
-//- (void)roomViewController:(RoomViewController *)roomViewController
-//didRequestLiveLocationPresentationForBubbleData:(id<MXKRoomBubbleCellDataStoring>)bubbleData;
+// Ask the coordinator to present the live location sharing viewer.
+- (void)roomViewController:(RoomViewController *)roomViewController
+didRequestLiveLocationPresentationForBubbleData:(id<MXKRoomBubbleCellDataStoring>)bubbleData;
 
 - (nullable UIActivityViewController *)roomViewController:(RoomViewController *)roomViewController
               locationShareActivityViewControllerForEvent:(MXEvent *)event;
@@ -349,7 +349,7 @@ didRequestEditForPollWithStartEvent:(MXEvent *)startEvent;
 
 // Tchap: Disable Live location sharing
 /// User tap live location sharing stop action
-//- (void)roomViewControllerDidStopLiveLocationSharing:(RoomViewController *)roomViewController beaconInfoEventId:(nullable NSString*)beaconInfoEventId;
+- (void)roomViewControllerDidStopLiveLocationSharing:(RoomViewController *)roomViewController beaconInfoEventId:(nullable NSString*)beaconInfoEventId;
 
 /// User tap live location sharing banner
 - (void)roomViewControllerDidTapLiveLocationSharingBanner:(RoomViewController *)roomViewController;

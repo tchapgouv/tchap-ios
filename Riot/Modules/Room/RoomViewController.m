@@ -1657,10 +1657,10 @@ static CGSize kThreadListBarButtonItemImageSize;
 }
 
 // Tchap: Disable Live location sharing
-//- (BOOL)shouldShowLiveLocationSharingBannerView
-//{
-//    return self.customizedRoomDataSource.isCurrentUserSharingActiveLocation;
-//}
+- (BOOL)shouldShowLiveLocationSharingBannerView
+{
+    return self.customizedRoomDataSource.isCurrentUserSharingActiveLocation;
+}
 
 - (void)setForceHideInputToolBar:(BOOL)forceHideInputToolBar
 {
