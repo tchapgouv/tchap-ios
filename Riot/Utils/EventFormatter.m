@@ -370,8 +370,10 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 //                                                          }]];
 
             NSMutableAttributedString *attributedStringWithRerequestMessage = [attributedString mutableCopy];
+            // Tchap: Reset initial String to optimize error message for user
+            [attributedStringWithRerequestMessage.mutableString setString: [NSString stringWithFormat:@"%@\n", VectorL10n.noticeCryptoErrorUnknownInboundSessionId]];
             
-            [attributedStringWithRerequestMessage appendString:[NSString stringWithFormat:@" %@\n", VectorL10n.noticeCryptoErrorUnknownInboundSessionId]];
+//            [attributedStringWithRerequestMessage appendString:[NSString stringWithFormat:@" %@\n", VectorL10n.noticeCryptoErrorUnknownInboundSessionId]];
             NSString *linkActionString = [NSString stringWithFormat:@"%@%@%@", EventFormatterFaqLinkAction,
                                           EventFormatterLinkActionSeparator,
                                           @"https://aide.tchap.beta.gouv.fr/fr/article/dechiffrement-impossible-de-mes-messages-comment-y-remedier-iphone-xotgv1"];
@@ -384,6 +386,11 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
                 NSFontAttributeName: self.encryptedMessagesTextFont,
                 NSUnderlineStyleAttributeName: [NSNumber numberWithInt:NSUnderlineStyleSingle]
              }]];
+            
+            [attributedStringWithRerequestMessage addAttributes:@{
+                NSForegroundColorAttributeName: [UIColor colorWithRed:106.0/255.0 green:106.0/255.0 blue:106.0/255.0 alpha:1.0],
+                NSFontAttributeName: self.encryptedMessagesTextFont,
+            } range:NSMakeRange(0, attributedStringWithRerequestMessage.length)];
             
             attributedString = attributedStringWithRerequestMessage;
         }
