@@ -78,15 +78,15 @@ final class HomeserverConfigurationBuilder: NSObject {
         
         // Tile server configuration
         
-//        let tileServerMapStyleURL: URL
-//        if let mapStyleURLString = wellKnown?.tileServer?.mapStyleURLString,
-//           let mapStyleURL = URL(string: mapStyleURLString) {
-//            tileServerMapStyleURL = mapStyleURL
-//        } else {
-//            tileServerMapStyleURL = BuildSettings.defaultTileServerMapStyleURL
-//        }
-//
-//        let tileServerConfiguration = HomeserverTileServerConfiguration(mapStyleURL: tileServerMapStyleURL)
+        let tileServerMapStyleURL: URL
+        if let mapStyleURLString = wellKnown?.tileServer?.mapStyleURLString,
+           let mapStyleURL = URL(string: mapStyleURLString) {
+            tileServerMapStyleURL = mapStyleURL
+        } else {
+            tileServerMapStyleURL = BuildSettings.defaultTileServerMapStyleURL
+        }
+
+        let tileServerConfiguration = HomeserverTileServerConfiguration(mapStyleURL: tileServerMapStyleURL)
         
         // Create HomeserverConfiguration
         
@@ -95,8 +95,8 @@ final class HomeserverConfigurationBuilder: NSObject {
                                                               useFor1To1Calls: useJitsiFor1To1Calls)
                 
         return HomeserverConfiguration(jitsi: jitsiConfiguration,
-                                       encryption: encryptionConfiguration/*,
-                                       tileServer: tileServerConfiguration*/)
+                                       encryption: encryptionConfiguration,
+                                       tileServer: tileServerConfiguration)
     }
     
     // MARK: - Private

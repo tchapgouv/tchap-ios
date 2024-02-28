@@ -23,13 +23,13 @@ final class HomeserverConfiguration: NSObject {
     // Note: Use an object per configuration subject when there is multiple properties related
     let jitsi: HomeserverJitsiConfiguration
     let encryption: HomeserverEncryptionConfiguration
-//    let tileServer: HomeserverTileServerConfiguration
+    let tileServer: HomeserverTileServerConfiguration
     
     init(jitsi: HomeserverJitsiConfiguration,
-         encryption: HomeserverEncryptionConfiguration/*,
-         tileServer: HomeserverTileServerConfiguration*/) {
+         encryption: HomeserverEncryptionConfiguration,
+         tileServer: HomeserverTileServerConfiguration) {
         self.jitsi = jitsi
         self.encryption = encryption
-//        self.tileServer = tileServer
+        self.tileServer = tileServer
     }
 }

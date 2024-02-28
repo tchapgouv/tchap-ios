@@ -53,6 +53,7 @@ targetTemplates:
     - package: SwiftOGG
     - package: WysiwygComposer
     - package: AnalyticsEvents
+    - package: Mapbox
 
     preBuildScripts:
     - name: 🛠 Environment
@@ -245,6 +246,7 @@ targetTemplates:
     - path: ../Riot/Modules/KeyBackup
     - path: ../Riot/Modules/KeyVerification
     - path: ../Riot/Modules/LaunchLoading
+    - path: ../Riot/Modules/LocationSharing
     - path: ../Riot/Modules/MatrixKit
     - path: ../Riot/Modules/MediaPicker
     - path: ../Riot/Modules/MediaPickerV2
@@ -294,7 +296,7 @@ targetTemplates:
       excludes:
       - "**/Test/**"
       - "Common/Locale/LocaleProvider.swift"
-      - "LocationSharing"
+#      - "LocationSharing"
       - "Room/LiveLocationSharingViewer"
       - "Room/LocationSharing"
       - "Room/StaticLocationSharingViewer"
