@@ -1807,7 +1807,7 @@
 "notice_room_history_visible_to_members_from_invited_point" = "%@ a rendu l’historique futur du salon visible à tous les membres, à partir du moment où ils ont été invités.";
 "notice_room_history_visible_to_members_from_joined_point" = "%@ a rendu l’historique futur du salon visible à tous les membres, à partir de leur arrivée.";
 "notice_crypto_unable_to_decrypt" = "** Déchiffrement impossible : %@ **";
-"notice_crypto_error_unknown_inbound_session_id" = "Déchiffrement en cours. Patientez…"; // Tchap
+"notice_crypto_error_unknown_inbound_session_id" = "Déchiffrement en cours…"; // Tchap
 "notice_sticker" = "autocollant";
 // room display name
 "room_displayname_empty_room" = "Salon vide";
