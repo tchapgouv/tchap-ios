@@ -1807,7 +1807,7 @@
 "notice_room_history_visible_to_members_from_invited_point" = "%@ a rendu l’historique futur du salon visible à tous les membres, à partir du moment où ils ont été invités.";
 "notice_room_history_visible_to_members_from_joined_point" = "%@ a rendu l’historique futur du salon visible à tous les membres, à partir de leur arrivée.";
 "notice_crypto_unable_to_decrypt" = "** Déchiffrement impossible : %@ **";
-"notice_crypto_error_unknown_inbound_session_id" = "La session de l’expéditeur ne nous a pas envoyé les clés pour ce message.";
+"notice_crypto_error_unknown_inbound_session_id" = "Déchiffrement en cours…"; // Tchap
 "notice_sticker" = "autocollant";
 // room display name
 "room_displayname_empty_room" = "Salon vide";
@@ -2797,4 +2797,3 @@
 "local_contacts_access_discovery_warning" = "Afin d’afficher qui parmi vos contacts utilise déjà Tchap, nous pouvons exploiter les adresses e-mails de votre carnet d'adresse. Ces données ne seront pas mémorisées. Pour plus d'informations, veuillez consulter les Termes et Conditions disponibles dans les paramètres de l'application.";
 // Events formatter
 "notice_crypto_unable_to_decrypt" = "Message verrouillé."; // Tchap
-"notice_crypto_error_unknown_inbound_session_id" = "Ouvrez Tchap sur un autre appareil pour récupérer vos messages."; // Tchap
