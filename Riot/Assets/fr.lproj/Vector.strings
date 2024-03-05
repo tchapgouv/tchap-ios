@@ -279,7 +279,7 @@
 "settings_add_phone_number" = "Ajouter un numéro de téléphone";
 "settings_night_mode" = "Mode nuit";
 "settings_fail_to_update_profile" = "Échec de la mise à jour du profil";
-"settings_enable_push_notif" = "Notifications sur cet appareil";
+"settings_enable_push_notif" = "Autoriser les notifications sur cet appareil"; // Tchap
 "settings_global_settings_info" = "Les paramètres de notification globaux sont disponibles sur votre client web %@";
 "settings_pin_rooms_with_missed_notif" = "Épingler les salons avec des notifications non lues";
 "settings_pin_rooms_with_unread" = "Épingler les salons avec des messages non lus";

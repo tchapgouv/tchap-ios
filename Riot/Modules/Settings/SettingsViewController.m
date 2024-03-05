@@ -2107,8 +2107,8 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             // Tchap: Add Hide User from directory
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
-            NSString *title = NSLocalizedStringFromTable(@"settings_hide_from_users_directory_title", @"Tchap", nil);
-            NSString *summary = NSLocalizedStringFromTable(@"settings_hide_from_users_directory_summary", @"Tchap", nil);
+            NSString *title =  TchapL10n.settingsHideFromUsersDirectoryTitle;
+            NSString *summary = TchapL10n.settingsHideFromUsersDirectorySummary;
             NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString: title
                                                                                                attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
                                                                                                             NSFontAttributeName: [UIFont systemFontOfSize:17.0]}];
@@ -2171,7 +2171,18 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
     
-            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsEnablePushNotif];
+            // Tchap: adapt "Enable notifications" label and text.
+//            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsEnablePushNotif];
+            
+            NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString: VectorL10n.settingsEnablePushNotif
+                                                                                               attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
+                                                                                                            NSFontAttributeName: [UIFont systemFontOfSize:17.0]}];
+            [attributedText appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:4]}]];
+            [attributedText appendAttributedString:[[NSMutableAttributedString alloc] initWithString: TchapL10n.settingsEnablePushNotifText
+                                                                                          attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textSecondaryColor,
+                                                                                                       NSFontAttributeName: [UIFont systemFontOfSize:14.0]}]];
+            
+            labelAndSwitchCell.mxkLabel.attributedText = attributedText;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventTouchUpInside];
