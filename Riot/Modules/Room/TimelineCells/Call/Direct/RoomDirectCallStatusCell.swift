@@ -111,6 +111,11 @@ class RoomDirectCallStatusCell: RoomCallBaseCell {
         }
     }
     
+    // Tchap: report VoIP problem button icon 􀌭
+    private var reportVoIPProblemButtonIcon: UIImage {
+        return UIImage(systemName: "exclamationmark.circle.fill")!
+    }
+    
     private var actionUserInfo: [AnyHashable: Any]? {
         if let event = callInviteEvent {
             return [kMXKRoomBubbleCellEventKey: event]
@@ -179,7 +184,7 @@ class RoomDirectCallStatusCell: RoomCallBaseCell {
             
             view.firstButton.style = .positive
             view.firstButton.setTitle(TchapL10n.eventFormatterReportIncident, for: .normal)
-            view.firstButton.setImage(callButtonIcon, for: .normal)
+            view.firstButton.setImage(reportVoIPProblemButtonIcon, for: .normal)
             view.firstButton.removeTarget(nil, action: nil, for: .touchUpInside)
             view.firstButton.addTarget(self, action: #selector(reportIncidentAction(_:)), for: .touchUpInside)
             
