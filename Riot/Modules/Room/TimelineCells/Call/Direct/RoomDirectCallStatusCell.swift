@@ -113,7 +113,7 @@ class RoomDirectCallStatusCell: RoomCallBaseCell {
     
     // Tchap: report VoIP problem button icon 􀌭
     private var reportVoIPProblemButtonIcon: UIImage {
-        return UIImage(systemName: "exclamationmark.bubble.fill")!
+        return UIImage(systemName: "exclamationmark.circle.fill")!
     }
     
     private var actionUserInfo: [AnyHashable: Any]? {
