@@ -2425,7 +2425,10 @@ static CGSize kThreadListBarButtonItemImageSize;
             [self.delegate roomViewControllerDidRequestPollCreationFormPresentation:self];
         }]];
     }
-    if (BuildSettings.locationSharingEnabled && !self.isNewDirectChat)
+    // Tchap: allow location sharing by feature flag
+//    if (BuildSettings.locationSharingEnabled && !self.isNewDirectChat)
+    MXKAccount *account = MXKAccountManager.sharedManager.activeAccounts.firstObject;
+    if ([account isFeatureActivated:BuildSettings.tchapFeatureGeolocationSharing] && BuildSettings.locationSharingEnabled && !self.isNewDirectChat)
     {
         [actionItems addObject:[[RoomActionItem alloc] initWithImage:AssetImages.actionLocation.image andAction:^{
             MXStrongifyAndReturnIfNil(self);
