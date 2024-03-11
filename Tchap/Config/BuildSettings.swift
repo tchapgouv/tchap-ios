@@ -452,9 +452,9 @@ final class BuildSettings: NSObject {
     // MARK: - Location Sharing
     
     /// Overwritten by the home server's .well-known configuration (if any exists)
-    static let defaultTileServerMapStyleURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=")!
-    
-    static let locationSharingEnabled = false // Currently disabled in Tchap.
+    static let defaultTileServerMapStyleURL = URL(string: "https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json")!
+
+    static let locationSharingEnabled = true
 
     // MARK: - Voice Broadcast
     static let voiceBroadcastChunkLength: Int = 120
