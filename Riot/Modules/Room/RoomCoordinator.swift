@@ -621,11 +621,11 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     }
     
     func roomViewControllerDidRequestLocationSharingFormPresentation(_ roomViewController: RoomViewController) {
-//        startLocationCoordinator()
+        startLocationCoordinator()
     }
     
     func roomViewController(_ roomViewController: RoomViewController, didRequestLocationPresentationFor event: MXEvent, bubbleData: MXKRoomBubbleCellDataStoring) {
-//        showLocationCoordinatorWithEvent(event, bubbleData: bubbleData)
+        showLocationCoordinatorWithEvent(event, bubbleData: bubbleData)
     }
     
     func roomViewController(_ roomViewController: RoomViewController, didRequestLiveLocationPresentationForBubbleData bubbleData: MXKRoomBubbleCellDataStoring) {
@@ -643,8 +643,7 @@ extension RoomCoordinator: RoomViewControllerDelegate {
             return nil
         }
         
-        // Tchap: Location Sharing is disabled in Tchap
-        return nil// LocationSharingCoordinator.shareLocationActivityController(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
+        return LocationSharingCoordinator.shareLocationActivityController(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
     }
     
     func roomViewController(_ roomViewController: RoomViewController, canEndPollWithEventIdentifier eventIdentifier: String) -> Bool {
@@ -672,8 +671,7 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     }
     
     func roomViewControllerDidTapLiveLocationSharingBanner(_ roomViewController: RoomViewController) {
-        
-//        showLiveLocationViewer()
+        showLiveLocationViewer()
     }
     
     func roomViewControllerDidStopLiveLocationSharing(_ roomViewController: RoomViewController, beaconInfoEventId: String?) {
