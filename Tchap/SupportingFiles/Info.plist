@@ -53,12 +53,19 @@
 	<string>In order to show who among your contacts already uses Tchap, we can exploit the e-mail addresses of your address book. These data will not be stored. For more information, please visit the privacy policy page in the app settings</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Face ID is used to access your app.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Please, allow Tchap to share your location</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Please, allow Tchap to share your location</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Please, allow Tchap to share your location</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Tchap needs to access your microphone to take videos, and record voice messages.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This allows you to select pictures or videos from the photo library, and send them in your conversations. You can also use one of these pictures to set your profile picture.</string>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>location</string>
 		<string>remote-notification</string>
 		<string>voip</string>
 	</array>
