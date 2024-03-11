@@ -190,8 +190,7 @@ typedef NS_ENUM(NSUInteger, LABS_ENABLE)
     LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX = 0,
     LABS_ENABLE_THREADS_INDEX,
     LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS,
-    // Tchap: Location sharing is disabled in Tchap
-//    LABS_ENABLE_LIVE_LOCATION_SHARING,
+    LABS_ENABLE_LIVE_LOCATION_SHARING,
     LABS_ENABLE_NEW_SESSION_MANAGER,
     LABS_ENABLE_NEW_CLIENT_INFO_FEATURE,
     LABS_ENABLE_WYSIWYG_COMPOSER,
@@ -681,8 +680,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         [sectionLabs addRowWithTag:LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS];
         if (BuildSettings.locationSharingEnabled)
         {
-            // Tchap: Location sharing is disabled in Tchap
-//            [sectionLabs addRowWithTag:LABS_ENABLE_LIVE_LOCATION_SHARING];
+            [sectionLabs addRowWithTag:LABS_ENABLE_LIVE_LOCATION_SHARING];
         }
         [sectionLabs addRowWithTag:LABS_ENABLE_NEW_SESSION_MANAGER];
         [sectionLabs addRowWithTag:LABS_ENABLE_NEW_CLIENT_INFO_FEATURE];
@@ -2691,11 +2689,10 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         {
             cell = [self buildAutoReportDecryptionErrorsCellForTableView:tableView atIndexPath:indexPath];
         }
-        // Tchap: Location sharing is disabled in Tchap
-//        else if (row == LABS_ENABLE_LIVE_LOCATION_SHARING)
-//        {
-//            cell = [self buildLiveLocationSharingCellForTableView:tableView atIndexPath:indexPath];
-//        }
+        else if (row == LABS_ENABLE_LIVE_LOCATION_SHARING)
+        {
+            cell = [self buildLiveLocationSharingCellForTableView:tableView atIndexPath:indexPath];
+        }
         else if (row == LABS_ENABLE_NEW_SESSION_MANAGER)
         {
             MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
