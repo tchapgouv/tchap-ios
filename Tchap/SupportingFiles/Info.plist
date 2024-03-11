@@ -54,11 +54,9 @@
 	<key>NSFaceIDUsageDescription</key>
 	<string>Face ID is used to access your app.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Please, allow Tchap to share your location</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Please, allow Tchap to share your location</string>
+	<string>When you share your location to people, Tchap needs access to show them a map.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Please, allow Tchap to share your location</string>
+	<string>When you share your location to people, Tchap needs access to show them a map.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Tchap needs to access your microphone to take videos, and record voice messages.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
