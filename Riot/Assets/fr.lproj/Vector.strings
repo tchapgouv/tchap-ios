@@ -2324,7 +2324,7 @@
 "authentication_registration_title" = "Créez votre compte";
 "room_access_settings_screen_upgrade_alert_title" = "Mettre à niveau le salon";
 "room_access_settings_screen_upgrade_required" = "Mise à niveau requise";
-"location_sharing_allow_background_location_message" = "Si vous voulez partager votre localisation en temps réel, Element doit avoir accès à vos données de localisation lorsque l’application est en arrière-plan. Pour lui donner accès, rendez-vous dans Réglages > Position et sélectionnez Toujours";
+"location_sharing_allow_background_location_message" = "Si vous voulez partager votre localisation en temps réel, Tchap doit avoir accès à vos données de localisation lorsque l’application est en arrière-plan. Pour lui donner accès, rendez-vous dans Réglages > Position et sélectionnez Toujours"; // Tchap
 "settings_timeline" = "HISTORIQUE";
 "authentication_server_selection_login_title" = "Connexion à un serveur d’accueil";
 "message_reply_to_sender_sent_their_live_location" = "Localisation en temps réel.";
