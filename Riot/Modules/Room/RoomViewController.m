@@ -3330,39 +3330,39 @@ static CGSize kThreadListBarButtonItemImageSize;
             }
         }
     }
-//    else if (bubbleData.tag == RoomBubbleCellDataTagLocation || bubbleData.tag == RoomBubbleCellDataTagLiveLocation)
-//    {
-//        if (bubbleData.isIncoming)
-//        {
-//            if (bubbleData.isPaginationFirstBubble)
-//            {
-//                cellIdentifier = RoomTimelineCellIdentifierIncomingLocationWithPaginationTitle;
-//            }
-//            else if (bubbleData.shouldHideSenderInformation)
-//            {
-//                cellIdentifier = RoomTimelineCellIdentifierIncomingLocationWithoutSenderInfo;
-//            }
-//            else
-//            {
-//                cellIdentifier = RoomTimelineCellIdentifierIncomingLocation;
-//            }
-//        }
-//        else
-//        {
-//            if (bubbleData.isPaginationFirstBubble)
-//            {
-//                cellIdentifier = RoomTimelineCellIdentifierOutgoingLocationWithPaginationTitle;
-//            }
-//            else if (bubbleData.shouldHideSenderInformation)
-//            {
-//                cellIdentifier = RoomTimelineCellIdentifierOutgoingLocationWithoutSenderInfo;
-//            }
-//            else
-//            {
-//                cellIdentifier = RoomTimelineCellIdentifierOutgoingLocation;
-//            }
-//        }
-//    }
+    else if (bubbleData.tag == RoomBubbleCellDataTagLocation || bubbleData.tag == RoomBubbleCellDataTagLiveLocation)
+    {
+        if (bubbleData.isIncoming)
+        {
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingLocationWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingLocationWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingLocation;
+            }
+        }
+        else
+        {
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingLocationWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingLocationWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingLocation;
+            }
+        }
+    }
 //    else if (bubbleData.tag == RoomBubbleCellDataTagVoiceBroadcastPlayback)
 //    {
 //        if (bubbleData.isIncoming)
