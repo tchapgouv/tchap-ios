@@ -3633,26 +3633,26 @@ static CGSize kThreadListBarButtonItemImageSize;
                 [self mention:roomMember];
             }
         }
-//        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellStopShareButtonPressed])
-//        {
-//            NSString *beaconInfoEventId;
-//
-//            if ([bubbleData isKindOfClass:[RoomBubbleCellData class]])
-//            {
-//                RoomBubbleCellData *roomBubbleCellData = (RoomBubbleCellData*)bubbleData;
-//                beaconInfoEventId = roomBubbleCellData.beaconInfoSummary.id;
-//            }
-//
-//            [self.delegate roomViewControllerDidStopLiveLocationSharing:self beaconInfoEventId:beaconInfoEventId];
-//        }
-//        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellRetryShareButtonPressed])
-//        {
-//            MXEvent *selectedEvent = userInfo[kMXKRoomBubbleCellEventKey];
-//            if (selectedEvent)
-//            {
-//                // TODO: - Implement retry live location action
-//            }
-//        }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellStopShareButtonPressed])
+        {
+            NSString *beaconInfoEventId;
+
+            if ([bubbleData isKindOfClass:[RoomBubbleCellData class]])
+            {
+                RoomBubbleCellData *roomBubbleCellData = (RoomBubbleCellData*)bubbleData;
+                beaconInfoEventId = roomBubbleCellData.beaconInfoSummary.id;
+            }
+
+            [self.delegate roomViewControllerDidStopLiveLocationSharing:self beaconInfoEventId:beaconInfoEventId];
+        }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellRetryShareButtonPressed])
+        {
+            MXEvent *selectedEvent = userInfo[kMXKRoomBubbleCellEventKey];
+            if (selectedEvent)
+            {
+                // TODO: - Implement retry live location action
+            }
+        }
         else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnMessageTextView] || [actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnContentView])
         {
             // Retrieve the tapped event
@@ -3663,10 +3663,10 @@ static CGSize kThreadListBarButtonItemImageSize;
             {
                 [self cancelEventSelection];
             }
-//            else if (bubbleData.tag == RoomBubbleCellDataTagLiveLocation)
-//            {
-//                [self.delegate roomViewController:self didRequestLiveLocationPresentationForBubbleData:bubbleData];
-//            }
+            else if (bubbleData.tag == RoomBubbleCellDataTagLiveLocation)
+            {
+                [self.delegate roomViewController:self didRequestLiveLocationPresentationForBubbleData:bubbleData];
+            }
             else if (tappedEvent)
             {
                 if (tappedEvent.eventType == MXEventTypeRoomCreate)
