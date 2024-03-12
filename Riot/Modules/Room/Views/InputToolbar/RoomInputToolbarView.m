@@ -234,7 +234,9 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
             self.textView.maxHeight -= kContextBarHeight;
             break;
         case RoomInputToolbarViewSendModeEdit:
-            buttonImage = AssetImages.saveIcon.image;
+            // Tchap: use Tchap icon to save edited message.
+            //            buttonImage = AssetImages.saveIcon.image;
+            buttonImage = AssetImages_tchap.sendIconTchap.image ;
             self.inputContextImageView.image = AssetImages.inputEditIcon.image;
             self.inputContextLabel.text = [VectorL10n roomMessageEditing];
 
