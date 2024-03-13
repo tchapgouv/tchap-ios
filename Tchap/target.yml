@@ -158,9 +158,9 @@ targetTemplates:
     - path: ../Riot/Managers/PushNotification
     - path: ../Riot/Managers/PushRulesUpdater
     - path: ../Riot/Managers/Serialization
-    - path: ../Riot/Managers/Settings/RiotSettings.swift
-    - path: ../Riot/Managers/Settings/Shared
+    - path: ../Riot/Managers/Settings
     - path: ../Riot/Managers/Theme
+    - path: ../Riot/Managers/UISIAutoReporter
     - path: ../Riot/Managers/URLPreviews
     - path: ../Riot/Managers/UserSessions
     - path: ../Riot/Managers/Widgets

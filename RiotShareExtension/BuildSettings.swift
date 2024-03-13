@@ -221,7 +221,8 @@ final class BuildSettings: NSObject {
     static let bugReportEndpointUrlSuffix = "/bugreports"
     // Use the name allocated by the bug report server
     static let bugReportApplicationId = "tchap-ios"
-    
+    static let bugReportUISIId = "element-auto-uisi"
+
     
     // MARK: - Integrations
     static let integrationsUiUrlString = "https://scalar.vector.im/"

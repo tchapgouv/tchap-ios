@@ -495,8 +495,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     // Tchap: Disable Spaces
 //    self.spaceFeatureUnavailablePresenter = [SpaceFeatureUnavailablePresenter new];
 
-    // Tchap: Disable UISI
-//    self.uisiAutoReporter = [[UISIAutoReporter alloc] init];
+    self.uisiAutoReporter = [[UISIAutoReporter alloc] init];
 
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
     [self initMatrixSessions];
@@ -2157,13 +2156,12 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         // register the session to the call service
         [_callPresenter addMatrixSession:mxSession];
         
-        // Tchap: Disable UISI
         // register the session to the uisi auto-reporter
-//        if (_uisiAutoReporter != nil)
-//        {
-//            UISIAutoReporter* uisiAutoReporter = (UISIAutoReporter*)_uisiAutoReporter;
-//            [uisiAutoReporter add:mxSession];
-//        }
+        if (_uisiAutoReporter != nil)
+        {
+            UISIAutoReporter* uisiAutoReporter = (UISIAutoReporter*)_uisiAutoReporter;
+            [uisiAutoReporter add:mxSession];
+        }
         
         [mxSessionArray addObject:mxSession];
         
@@ -2182,12 +2180,11 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     [_callPresenter removeMatrixSession:mxSession];
     
     // register the session to the uisi auto-reporter
-    // Tchap: Disable UISI
-//    if (_uisiAutoReporter != nil)
-//    {
-//        UISIAutoReporter* uisiAutoReporter = (UISIAutoReporter*)_uisiAutoReporter;
-//        [uisiAutoReporter remove:mxSession];
-//    }
+    if (_uisiAutoReporter != nil)
+    {
+        UISIAutoReporter* uisiAutoReporter = (UISIAutoReporter*)_uisiAutoReporter;
+        [uisiAutoReporter remove:mxSession];
+    }
 
     // Update the widgets manager
     [[WidgetManager sharedManager] removeMatrixSession:mxSession]; 
