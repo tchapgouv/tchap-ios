@@ -521,7 +521,7 @@
 "room_action_send_sticker" = "Envoyer un autocollant";
 "room_action_send_file" = "Envoyer un fichier";
 "settings_deactivate_account" = "FERMER LE COMPTE"; // Tchap
-"settings_deactivate_my_account" = "Fermer le compte pour toujours"; // Tchap
+"settings_deactivate_my_account" = "Fermer le compte"; // Tchap
 "widget_sticker_picker_no_stickerpacks_alert" = "Vous n’avez aucun jeu d’autocollants activé.";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "En ajouter maintenant ?";
 "deactivate_account_title" = "Fermer le compte"; // Tchap
