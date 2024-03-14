@@ -495,7 +495,10 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     // Tchap: Disable Spaces
 //    self.spaceFeatureUnavailablePresenter = [SpaceFeatureUnavailablePresenter new];
 
-    self.uisiAutoReporter = [[UISIAutoReporter alloc] init];
+    // Tchap: don't initialize UISIAutoReporter here because we don't have active account here
+    // to test if this feature is allozed for the current user.
+    // Try to activate it in `addMatrixSession` method.
+//    self.uisiAutoReporter = [[UISIAutoReporter alloc] init];
 
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
     [self initMatrixSessions];
@@ -2155,6 +2158,16 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         
         // register the session to the call service
         [_callPresenter addMatrixSession:mxSession];
+        
+        // Tchap: try to initialize UISIAutoReporter here
+        // because we can have a user session at this moment
+        // and test if the feature is allowed for this user.
+        MXKAccount *currentAccount = MXKAccountManager.sharedManager.activeAccounts.firstObject;
+        
+        if( [currentAccount isFeatureActivated:BuildSettings.tchapFeatureAutoReportUisi] )
+        {
+            self.uisiAutoReporter = [[UISIAutoReporter alloc] init];
+        }
         
         // register the session to the uisi auto-reporter
         if (_uisiAutoReporter != nil)
