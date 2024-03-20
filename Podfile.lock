@@ -39,9 +39,9 @@ PODS:
   - LoggerAPI (1.9.200):
     - Logging (~> 1.1)
   - Logging (1.4.0)
-  - MatrixSDK (0.27.5):
-    - MatrixSDK/Core (= 0.27.5)
-  - MatrixSDK/Core (0.27.5):
+  - MatrixSDK (0.27.6):
+    - MatrixSDK/Core (= 0.27.6)
+  - MatrixSDK/Core (0.27.6):
     - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.3.0)
     - libbase58 (~> 0.1.4)
@@ -49,7 +49,7 @@ PODS:
     - OLMKit (~> 3.2.5)
     - Realm (= 10.27.0)
     - SwiftyBeaver (= 1.9.5)
-  - MatrixSDK/JingleCallStack (0.27.5):
+  - MatrixSDK/JingleCallStack (0.27.6):
     - JitsiMeetSDKLite (= 8.1.2-lite)
     - MatrixSDK/Core
   - MatrixSDKCrypto (0.3.13)
@@ -87,9 +87,9 @@ PODS:
   - UICollectionViewRightAlignedLayout (0.0.3)
   - WeakDictionary (2.0.2)
   - zxcvbn-ios (1.0.4)
-  - ZXingObjC (3.6.5):
-    - ZXingObjC/All (= 3.6.5)
-  - ZXingObjC/All (3.6.5)
+  - ZXingObjC (3.6.9):
+    - ZXingObjC/All (= 3.6.9)
+  - ZXingObjC/All (3.6.9)
 
 DEPENDENCIES:
   - Down (~> 0.11.0)
@@ -102,8 +102,8 @@ DEPENDENCIES:
   - KeychainAccess (~> 4.2.2)
   - KTCenterFlowLayout (~> 1.3.1)
   - libPhoneNumber-iOS (~> 0.9.13)
-  - MatrixSDK (= 0.27.5)
-  - MatrixSDK/JingleCallStack (= 0.27.5)
+  - MatrixSDK (= 0.27.6)
+  - MatrixSDK/JingleCallStack (= 0.27.6)
   - OLMKit
   - PostHog (~> 2.0.0)
   - ReadMoreTextView (~> 3.0.1)
@@ -119,7 +119,7 @@ DEPENDENCIES:
   - UICollectionViewRightAlignedLayout (~> 0.0.3)
   - WeakDictionary (~> 2.0)
   - zxcvbn-ios
-  - ZXingObjC (~> 3.6.5)
+  - ZXingObjC (~> 3.6.9)
 
 SPEC REPOS:
   trunk:
@@ -187,7 +187,7 @@ SPEC CHECKSUMS:
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
-  MatrixSDK: f92ffead50eda83c99786afefed9be739987f338
+  MatrixSDK: 4129ab9c0acda1d0aad50b1c9765bd795b8d70b9
   MatrixSDKCrypto: bf08b72f2cd015d8749420a2b8b92fc0536bedf4
   OLMKit: da115f16582e47626616874e20f7bb92222c7a51
   PostHog: f9e5c13ceea86bb5314218c85d16125b797eb332
@@ -206,7 +206,7 @@ SPEC CHECKSUMS:
   UICollectionViewRightAlignedLayout: 823eef8c567eba4a44c21bc2ffcb0d0d5f361e2d
   WeakDictionary: 8cd038acd77e5d54ca4ebaec3d20853d732b45e0
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
-  ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
+  ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
 PODFILE CHECKSUM: a6293c739492b4ee2d4697abbb601e7c92729aea
 

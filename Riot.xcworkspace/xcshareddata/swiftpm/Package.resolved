@@ -50,8 +50,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/matrix-org/matrix-wysiwyg-composer-swift",
       "state" : {
-        "revision" : "0aa1308c43451fd077e332f72d6a32135f258834",
-        "version" : "2.19.0"
+        "revision" : "f788fe2482c0b89019f679a1f43dccf9c25a0782",
+        "version" : "2.29.0"
       }
     },
     {
@@ -84,7 +84,7 @@
     {
       "identity" : "swift-ogg",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/vector-im/swift-ogg",
+      "location" : "https://github.com/element-hq/swift-ogg",
       "state" : {
         "branch" : "0.0.1",
         "revision" : "e9a9e7601da662fd8b97d93781ff5c60b4becf88"
