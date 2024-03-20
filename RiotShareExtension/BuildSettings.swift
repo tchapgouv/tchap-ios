@@ -447,7 +447,7 @@ final class BuildSettings: NSObject {
     static let secretsRecoveryAllowReset = true
     
     // MARK: - UISI Autoreporting
-    static let cryptoUISIAutoReportingEnabled = false
+    static let cryptoUISIAutoReportingEnabled = true // Tchap
     
     // MARK: - Polls
     
