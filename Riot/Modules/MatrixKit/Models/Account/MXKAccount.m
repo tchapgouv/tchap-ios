@@ -998,7 +998,11 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         // Enable the antivirus scanner in the current session.
         [mxSession setAntivirusServerURL:_antivirusServerURL];
     }
-
+    // Tchap: else hard code antivirus server URL with homeServer URL like in Tchap Android.
+    else {
+        [mxSession setAntivirusServerURL:self.mxCredentials.homeServer];
+    }
+    
     // Set default MXEvent -> NSString formatter
     MXKEventFormatter *eventFormatter = [[MXKEventFormatter alloc] initWithMatrixSession:self.mxSession];
     eventFormatter.isForSubtitle = YES;
