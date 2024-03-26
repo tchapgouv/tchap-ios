@@ -580,13 +580,13 @@
 {
     return @{
         // Incoming
-//        @(RoomTimelineCellIdentifierIncomingLocation) : LocationPlainCell.class,
-//        @(RoomTimelineCellIdentifierIncomingLocationWithoutSenderInfo) : LocationWithoutSenderInfoPlainCell.class,
-//        @(RoomTimelineCellIdentifierIncomingLocationWithPaginationTitle) : LocationWithPaginationTitlePlainCell.class,
+        @(RoomTimelineCellIdentifierIncomingLocation) : LocationPlainCell.class,
+        @(RoomTimelineCellIdentifierIncomingLocationWithoutSenderInfo) : LocationWithoutSenderInfoPlainCell.class,
+        @(RoomTimelineCellIdentifierIncomingLocationWithPaginationTitle) : LocationWithPaginationTitlePlainCell.class,
         // Outgoing
-//        @(RoomTimelineCellIdentifierOutgoingLocation) : LocationPlainCell.class,
-//        @(RoomTimelineCellIdentifierOutgoingLocationWithoutSenderInfo) : LocationWithoutSenderInfoPlainCell.class,
-//        @(RoomTimelineCellIdentifierOutgoingLocationWithPaginationTitle) : LocationWithPaginationTitlePlainCell.class
+        @(RoomTimelineCellIdentifierOutgoingLocation) : LocationPlainCell.class,
+        @(RoomTimelineCellIdentifierOutgoingLocationWithoutSenderInfo) : LocationWithoutSenderInfoPlainCell.class,
+        @(RoomTimelineCellIdentifierOutgoingLocationWithPaginationTitle) : LocationWithPaginationTitlePlainCell.class
     };
 }
 

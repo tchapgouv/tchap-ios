@@ -220,6 +220,15 @@ final class RoomPreviewCoordinator: NSObject, RoomPreviewCoordinatorType {
 
 // MARK: - RoomViewControllerDelegate
 extension RoomPreviewCoordinator: RoomViewControllerDelegate {
+    
+    func roomViewController(_ roomViewController: RoomViewController, didRequestLiveLocationPresentationForBubbleData bubbleData: MXKRoomBubbleCellDataStoring) {
+        //
+    }
+    
+    func roomViewControllerDidStopLiveLocationSharing(_ roomViewController: RoomViewController, beaconInfoEventId: String?) {
+        //
+    }
+
     func roomViewController(_ roomViewController: RoomViewController, showRoomWithId roomID: String, eventId eventID: String?) {
         //
     }
