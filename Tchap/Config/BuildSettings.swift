@@ -269,7 +269,7 @@ final class BuildSettings: NSObject {
     static let tchapFeatureVideoOverIP = "tchapFeatureVideoOverIP"
     static var tchapFeaturesAllowedHomeServersForFeature: [String: [String]] = [
         tchapFeatureNotificationByEmail: [
-            "*"
+            tchapFeatureAnyHomeServer
         ],
         tchapFeatureVoiceOverIP: [
             "agent.dinum.tchap.gouv.fr"
