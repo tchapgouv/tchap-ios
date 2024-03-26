@@ -414,8 +414,13 @@ final class BuildSettings: NSObject {
     // MARK: - Location Sharing
     
     /// Overwritten by the home server's .well-known configuration (if any exists)
-    static let defaultTileServerMapStyleURL = URL(string: "https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json")!
-    
+    // Tchap: handle different map providers.
+    private enum TchapMapProvider: String {
+        case geoDataGouv = "https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json"
+        case ign = "https://data.geopf.fr/annexes/ressources/vectorTiles/styles/PLAN.IGN/standard.json"
+    }
+    static let defaultTileServerMapStyleURL = URL(string: TchapMapProvider.geoDataGouv.rawValue)!
+
     static let locationSharingEnabled = true
 
     // MARK: - Voice Broadcast
