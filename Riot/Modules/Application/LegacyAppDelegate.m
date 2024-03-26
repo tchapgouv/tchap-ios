@@ -495,7 +495,9 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     // Tchap: Disable Spaces
 //    self.spaceFeatureUnavailablePresenter = [SpaceFeatureUnavailablePresenter new];
 
-    // Tchap: Disable UISI
+    // Tchap: don't initialize UISIAutoReporter here because we don't have active account here
+    // to test if this feature is allozed for the current user.
+    // Try to activate it in `addMatrixSession` method.
 //    self.uisiAutoReporter = [[UISIAutoReporter alloc] init];
 
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
@@ -2157,13 +2159,22 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         // register the session to the call service
         [_callPresenter addMatrixSession:mxSession];
         
-        // Tchap: Disable UISI
+        // Tchap: try to initialize UISIAutoReporter here
+        // because we can have a user session at this moment
+        // and test if the feature is allowed for this user.
+        MXKAccount *currentAccount = MXKAccountManager.sharedManager.activeAccounts.firstObject;
+        
+        if( [currentAccount isFeatureActivated:BuildSettings.tchapFeatureAutoReportUisi] )
+        {
+            self.uisiAutoReporter = [[UISIAutoReporter alloc] init];
+        }
+        
         // register the session to the uisi auto-reporter
-//        if (_uisiAutoReporter != nil)
-//        {
-//            UISIAutoReporter* uisiAutoReporter = (UISIAutoReporter*)_uisiAutoReporter;
-//            [uisiAutoReporter add:mxSession];
-//        }
+        if (_uisiAutoReporter != nil)
+        {
+            UISIAutoReporter* uisiAutoReporter = (UISIAutoReporter*)_uisiAutoReporter;
+            [uisiAutoReporter add:mxSession];
+        }
         
         [mxSessionArray addObject:mxSession];
         
@@ -2182,12 +2193,11 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     [_callPresenter removeMatrixSession:mxSession];
     
     // register the session to the uisi auto-reporter
-    // Tchap: Disable UISI
-//    if (_uisiAutoReporter != nil)
-//    {
-//        UISIAutoReporter* uisiAutoReporter = (UISIAutoReporter*)_uisiAutoReporter;
-//        [uisiAutoReporter remove:mxSession];
-//    }
+    if (_uisiAutoReporter != nil)
+    {
+        UISIAutoReporter* uisiAutoReporter = (UISIAutoReporter*)_uisiAutoReporter;
+        [uisiAutoReporter remove:mxSession];
+    }
 
     // Update the widgets manager
     [[WidgetManager sharedManager] removeMatrixSession:mxSession]; 

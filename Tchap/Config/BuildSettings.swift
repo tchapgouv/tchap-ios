@@ -221,7 +221,8 @@ final class BuildSettings: NSObject {
     static let bugReportEndpointUrlSuffix = "/bugreports"
     // Use the name allocated by the bug report server
     static let bugReportApplicationId = "tchap-ios"
-    
+    static let bugReportUISIId = "element-auto-uisi"
+
     
     // MARK: - Integrations
     static let integrationsUiUrlString = "https://scalar.vector.im/"
@@ -267,17 +268,21 @@ final class BuildSettings: NSObject {
     static let tchapFeatureNotificationByEmail = "tchapFeatureNotificationByEmail"
     static let tchapFeatureVoiceOverIP = "tchapFeatureVoiceOverIP"
     static let tchapFeatureVideoOverIP = "tchapFeatureVideoOverIP"
+    static let tchapFeatureAutoReportUisi = "tchapFeatureAutoReportUisi"
     static var tchapFeaturesAllowedHomeServersForFeature: [String: [String]] = [
         tchapFeatureNotificationByEmail: [
             tchapFeatureAnyHomeServer
         ],
         tchapFeatureVoiceOverIP: [
             "agent.dinum.tchap.gouv.fr"
-        ]
+        ],
         // No activation of video calls actually in Tchap Production.
 //        tchapFeatureVideoOverIP: [
 //            "agent.dinum.tchap.gouv.fr"
 //        ],
+        tchapFeatureAutoReportUisi: [
+            "agent.dinum.tchap.gouv.fr"
+        ]
     ]
     
     // MARK: - Side Menu
@@ -442,7 +447,7 @@ final class BuildSettings: NSObject {
     static let secretsRecoveryAllowReset = true
     
     // MARK: - UISI Autoreporting
-    static let cryptoUISIAutoReportingEnabled = false
+    static let cryptoUISIAutoReportingEnabled = true // Tchap
     
     // MARK: - Polls
     

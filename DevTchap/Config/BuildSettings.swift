@@ -192,7 +192,8 @@ final class BuildSettings: NSObject {
     static let bugReportEndpointUrlSuffix = "/bugreports"
     // Use the name allocated by the bug report server
     static let bugReportApplicationId = "devtchap-ios"
-    
+    static let bugReportUISIId = "element-auto-uisi"
+
     
     // MARK: - Integrations
     static let integrationsUiUrlString = "https://scalar.vector.im/"
@@ -238,6 +239,7 @@ final class BuildSettings: NSObject {
     static let tchapFeatureNotificationByEmail = "tchapFeatureNotificationByEmail"
     static let tchapFeatureVoiceOverIP = "tchapFeatureVoiceOverIP"
     static let tchapFeatureVideoOverIP = "tchapFeatureVideoOverIP"    // Tchap: in Dev, allow any feature to any instance.
+    static let tchapFeatureAutoReportUisi = "tchapFeatureAutoReportUisi"
     static var tchapFeaturesAllowedHomeServersForFeature: [String: [String]] = [
         tchapFeatureAnyFeature: [ tchapFeatureAnyHomeServer ]
     ]
@@ -404,7 +406,7 @@ final class BuildSettings: NSObject {
     static let secretsRecoveryAllowReset = true
     
     // MARK: - UISI Autoreporting
-    static let cryptoUISIAutoReportingEnabled = false
+    static let cryptoUISIAutoReportingEnabled = true // Tchap
     
     // MARK: - Polls
     
