@@ -260,6 +260,14 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         [types addObject:@(RecentsDataSourceSectionTypeServerNotice)];
     }
 
+    // Tchap: if Server Notice section is present, place it in first position.
+    NSUInteger indexOfServerNotice = [types indexOfObject:@(RecentsDataSourceSectionTypeServerNotice)];
+    if( indexOfServerNotice != NSNotFound )
+    {
+        [types removeObject:@(RecentsDataSourceSectionTypeServerNotice)];
+        [types insertObject:@(RecentsDataSourceSectionTypeServerNotice) atIndex:0];
+    }
+    
     return [[RecentsDataSourceSections alloc] initWithSectionTypes:types.copy];
 }
 
