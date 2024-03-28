@@ -685,6 +685,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     if (sectionType == RecentsDataSourceSectionTypeSecureBackupBanner ||
         sectionType == RecentsDataSourceSectionTypeCrossSigningBanner ||
         sectionType == RecentsDataSourceSectionTypeBreadcrumbs ||
+        sectionType == RecentsDataSourceSectionTypeServerNotice || // Tchap: no header for Server Notices (presented in first position)
         (sectionType == RecentsDataSourceSectionTypeInvites && self.recentsDataSourceMode == RecentsDataSourceModeAllChats) ||
         (sectionType == RecentsDataSourceSectionTypeAllChats && !self.allChatsFilterOptions.optionsCount) ||
         (sectionType == RecentsDataSourceSectionTypeAllChats && self.currentSpace != nil && self.currentSpace.childRoomIds.count == 0))
@@ -744,8 +745,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
     else if (sectionType == RecentsDataSourceSectionTypeServerNotice)
     {
-        count = self.recentsListService.serverNoticeRoomListData.counts.total.numberOfRooms;
-        title = [VectorL10n roomRecentsServerNoticeSection];
+        // Tchap: remove section title for Server Notices.
+//        count = self.recentsListService.serverNoticeRoomListData.counts.total.numberOfRooms;
+//        title = [VectorL10n roomRecentsServerNoticeSection];
+        count = 0;
+        title = nil;
     }
     else if (sectionType == RecentsDataSourceSectionTypeInvites)
     {
@@ -829,7 +833,9 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
     else if (sectionType == RecentsDataSourceSectionTypeServerNotice)
     {
-        counts = self.recentsListService.serverNoticeRoomListData.counts;
+        // Tchap: no badge because no header view for Server Notice section.
+//        counts = self.recentsListService.serverNoticeRoomListData.counts;
+        counts = 0;
     }
     else if (sectionType == RecentsDataSourceSectionTypeSuggestedRooms)
     {
@@ -886,6 +892,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     if (sectionType == RecentsDataSourceSectionTypeSecureBackupBanner ||
         sectionType == RecentsDataSourceSectionTypeCrossSigningBanner ||
         sectionType == RecentsDataSourceSectionTypeBreadcrumbs ||
+        sectionType == RecentsDataSourceSectionTypeServerNotice || // Tchap: no header for Server Notices (presented in first position)
         (sectionType == RecentsDataSourceSectionTypeInvites && self.recentsDataSourceMode == RecentsDataSourceModeRoomInvites) ||
         (sectionType == RecentsDataSourceSectionTypeAllChats && !self.allChatsFilterOptions.optionsCount))
     {
