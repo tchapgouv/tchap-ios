@@ -1,3 +1,19 @@
+## Changes in 2.7.3 (2024-04-02)
+
+🙌 Improvements
+
+- Rename RiotNSE extension product name to TchapNSE. It will change user-agent of requests in backend logs. ([#664](https://github.com/tchapgouv/tchap-ios/issues/664))
+- Réactivation de l'antivirus ([#887](https://github.com/tchapgouv/tchap-ios/issues/887))
+- Activation du partage de géolocalisation ([#970](https://github.com/tchapgouv/tchap-ios/issues/970))
+- Mettre une icône plus adaptée sur le bouton "Signaler un problème" lors d'un appel VoIP ([#974](https://github.com/tchapgouv/tchap-ios/issues/974))
+- Changement de la formulation du bouton des réglages pour autoriser les notifications sur l'appareil. Ajout d'un texte explicatif. ([#975](https://github.com/tchapgouv/tchap-ios/issues/975))
+- Changer le message d'erreur affiché en cas de problème de déchiffrement ([#976](https://github.com/tchapgouv/tchap-ios/issues/976))
+- Modifier l'intitulé de désactivation de compte ([#982](https://github.com/tchapgouv/tchap-ios/issues/982))
+- Utiliser le bouton de validation Tchap en édition de message. ([#986](https://github.com/tchapgouv/tchap-ios/issues/986))
+- La "notification par email" est rendue disponible à tout le monde. ([#995](https://github.com/tchapgouv/tchap-ios/issues/995))
+- Ajout des textes d'alerte d'activation de la géolocalisation dans les targets Btchap et DevTchap ([#998](https://github.com/tchapgouv/tchap-ios/issues/998))
+
+
 ## Changes in 2.7.2 (2024-02-26)
 
 🙌 Improvements
