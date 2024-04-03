@@ -176,7 +176,9 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
             return false
         }
         
-        return userPowerLevel.rawValue >= RoomPowerLevel.moderator.rawValue
+        // Tchap: allow user to live share its location even if its user power level is below moderator.
+//        return userPowerLevel.rawValue >= RoomPowerLevel.moderator.rawValue
+        return true
     }
     
     private func showLabFlagPromotionIfNeeded(completion: @escaping ((Bool) -> Void)) {
