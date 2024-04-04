@@ -1,5 +1,5 @@
-// 
-// Copyright 2021 Vector Creations Ltd
+//
+// Copyright 2024 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,11 +14,15 @@
 // limitations under the License.
 //
 
-// Version
-<<<<<<< HEAD
-MARKETING_VERSION = 2.7.4
-CURRENT_PROJECT_VERSION = 1
-=======
-MARKETING_VERSION = 1.11.9
-CURRENT_PROJECT_VERSION = 1.11.9
->>>>>>> v1.11.9
+import XCTest
+
+extension XCUIElement {
+    func forceTap() {
+        if isHittable {
+            tap()
+        } else {
+            let coordinate: XCUICoordinate = coordinate(withNormalizedOffset: .init(dx: 0.5, dy: 0.5))
+            coordinate.tap()
+        }
+    }
+}
