@@ -255,10 +255,13 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         [types addObject:@(RecentsDataSourceSectionTypeLowPriority)];
     }
 
-    if (self.serverNoticeCellDataArray.count > 0)
-    {
-        [types addObject:@(RecentsDataSourceSectionTypeServerNotice)];
-    }
+    // Tchap: don't display server notices as separate section.
+    // Server notices are displayed in the main section "all chats"
+    // (see modification in `updateConversationFetcher` in `RecentListService`
+//    if (self.serverNoticeCellDataArray.count > 0)
+//    {
+//        [types addObject:@(RecentsDataSourceSectionTypeServerNotice)];
+//    }
 
     return [[RecentsDataSourceSections alloc] initWithSectionTypes:types.copy];
 }
