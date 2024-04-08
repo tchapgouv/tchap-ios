@@ -268,9 +268,9 @@
 
 - (void)registerLocationCellsForTableView:(UITableView*)tableView
 {
-//    [tableView registerClass:LocationCell.class forCellReuseIdentifier:LocationCell.defaultReuseIdentifier];
-//    [tableView registerClass:LocationWithoutSenderInfoCell.class forCellReuseIdentifier:LocationWithoutSenderInfoCell.defaultReuseIdentifier];
-//    [tableView registerClass:LocationWithPaginationTitleCell.class forCellReuseIdentifier:LocationWithPaginationTitleCell.defaultReuseIdentifier];
+    [tableView registerClass:LocationPlainCell.class forCellReuseIdentifier:LocationPlainCell.defaultReuseIdentifier];
+    [tableView registerClass:LocationWithoutSenderInfoPlainCell.class forCellReuseIdentifier:LocationWithoutSenderInfoPlainCell.defaultReuseIdentifier];
+    [tableView registerClass:LocationWithPaginationTitlePlainCell.class forCellReuseIdentifier:LocationWithPaginationTitlePlainCell.defaultReuseIdentifier];
 }
 
 - (void)registerAntivirusCellsForTableView:(UITableView*)tableView
