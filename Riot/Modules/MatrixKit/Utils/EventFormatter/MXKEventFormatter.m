@@ -2029,6 +2029,9 @@ static NSString *const kRepliedTextPattern = @"<mx-reply>.*<blockquote>.*<br>(.*
         }
     }
     
+    // Tchap: truncate quoted reply if necessary.
+    html = [self tchapTruncatedQuotedReplyFrom:html];
+    
     // Replace <mx-reply><blockquote><a href=\"__permalink__\">In reply to</a>
     // By <mx-reply><blockquote><a href=\"__permalink__\">['In reply to' from resources]</a>
     // To localize the "In reply to" string
@@ -2040,6 +2043,42 @@ static NSString *const kRepliedTextPattern = @"<mx-reply>.*<blockquote>.*<br>(.*
     }
     
     return html;
+}
+
+// Tchap: truncate long quoted reply
+- (NSString *)tchapTruncatedQuotedReplyFrom:(NSString *)fullQuotedReply {
+    static NSRegularExpression *htmlQuotedTextRegex;
+
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        htmlQuotedTextRegex = [NSRegularExpression regularExpressionWithPattern:kRepliedTextPattern
+                                                                        options:NSRegularExpressionCaseInsensitive
+                                                                          error:nil];
+    });
+
+    NSTextCheckingResult * regexResults =  [htmlQuotedTextRegex firstMatchInString:fullQuotedReply
+                                                                           options:0
+                                                                             range:NSMakeRange(0, fullQuotedReply.length)];
+
+    // Check if a quoted text is present.
+    if( regexResults.numberOfRanges < 1 )
+    {
+        // No reply found.
+        return fullQuotedReply;
+    }
+    
+    NSRange quotedTextRange = [regexResults rangeAtIndex:1];
+    
+    NSUInteger quotedTextMaxLength = 60; // Max length of quoted text
+    
+    if( quotedTextRange.location != NSNotFound && quotedTextRange.length > quotedTextMaxLength )
+    {
+        NSRange truncatedRange = NSMakeRange(quotedTextRange.location + quotedTextMaxLength, quotedTextRange.length - quotedTextMaxLength);
+        return [fullQuotedReply stringByReplacingCharactersInRange:truncatedRange withString:@"…"];
+    }
+    
+    // The quoted reply is not found or already short. Return it as is.
+    return fullQuotedReply;
 }
 
 - (NSString*)renderPollEndedReplyTo:(NSString*)htmlString repliedEvent:(MXEvent*)repliedEvent {
