@@ -331,6 +331,11 @@
 "security_cross_signing_reset_action_title" = "Réinitialiser";
 
 ////////////////////////////////////////////////////////////////////////////////
+// MARK: Room send file
+"room_send_file_too_big_title" = "Erreur d'envoi";
+"room_send_file_too_big_message" = "Le fichier est trop lourd pour être envoyé. La taille limite est de %ldMo, mais la taille de votre fichier est de %ldMo.";
+
+////////////////////////////////////////////////////////////////////////////////
 // MARK: VoIP
 "event_formatter_report_incident" = "Signaler un problème";
 "void_report_incident_title" = "Signaler un problème VoIP";
