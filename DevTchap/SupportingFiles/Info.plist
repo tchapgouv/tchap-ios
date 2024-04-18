@@ -61,6 +61,7 @@
 	<string>This allows you to select pictures or videos from the photo library, and send them in your conversations. You can also use one of these pictures to set your profile picture.</string>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>location</string>
 		<string>remote-notification</string>
 		<string>voip</string>
 	</array>
