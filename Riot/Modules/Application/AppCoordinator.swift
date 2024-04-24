@@ -442,14 +442,17 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         
         self.expiredAccountAlertController?.dismiss(animated: false)
         
-        let alert = UIAlertController(title: TchapL10n.warningTitle, message: TchapL10n.expiredAccountAlertMessage, preferredStyle: .alert)
+        // Tchap: customize wording
+        let alert = UIAlertController(title: TchapL10n.expiredAccountAlertTitle, message: TchapL10n.expiredAccountAlertMessage, preferredStyle: .alert)
         
+        // Tchap: customize wording
         let resumeTitle = TchapL10n.expiredAccountResumeButton
         let resumeAction = UIAlertAction(title: resumeTitle, style: .default, handler: { action in
             // Relaunch the session
             self.reloadSession(clearCache: false)
         })
         alert.addAction(resumeAction)
+        // Tchap: customize wording
         let sendEmailTitle = TchapL10n.expiredAccountRequestRenewalEmailButton
         let sendEmailAction = UIAlertAction(title: sendEmailTitle, style: .default, handler: { action in
             // Request a new email for the main account
@@ -484,9 +487,10 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         
         self.expiredAccountAlertController?.dismiss(animated: false)
         
-        let alert = UIAlertController(title: TchapL10n.infoTitle, message: TchapL10n.expiredAccountOnNewSentEmailMsg, preferredStyle: .alert)
+        // Tchap: customize wording
+        let alert = UIAlertController(title: TchapL10n.expiredAccountOnNewSentEmailTitle, message: TchapL10n.expiredAccountOnNewSentEmailMessage, preferredStyle: .alert)
         
-        let resumeTitle = TchapL10n.expiredAccountResumeButton
+        let resumeTitle = TchapL10n.expiredAccountOnNewSentEmailButton
         let resumeAction = UIAlertAction(title: resumeTitle, style: .default, handler: { action in
             // Relaunch the session
             self.reloadSession(clearCache: false)
