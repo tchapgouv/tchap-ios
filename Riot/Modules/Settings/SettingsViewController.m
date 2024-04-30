@@ -2241,7 +2241,34 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
     
-            labelAndSwitchCell.mxkLabel.text = TchapL10n.settingsNotificationEmail;
+
+
+            // Tchap: add explanation to "enable notiofications by email"
+//            labelAndSwitchCell.mxkLabel.text = TchapL10n.settingsNotificationEmail;
+
+            NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString: TchapL10n.settingsNotificationEmail
+                                                                                               attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
+                                                                                                            NSFontAttributeName: [UIFont systemFontOfSize:17.0]}];
+            [attributedText appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:4]}]];
+            [attributedText appendAttributedString:[[NSMutableAttributedString alloc] initWithString: TchapL10n.settingsEnableEmailNotifText
+                                                                                          attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textSecondaryColor,
+                                                                                                       NSFontAttributeName: [UIFont systemFontOfSize:14.0]}]];
+
+            [attributedText appendString:@" "];
+            
+            [attributedText appendAttributedString:
+             [[NSAttributedString alloc] initWithString:TchapL10n.settingsEnableEmailNotifLink
+                                             attributes:@{
+                NSForegroundColorAttributeName: ThemeService.shared.theme.textSecondaryColor,
+                NSFontAttributeName:  [UIFont systemFontOfSize:14.0],
+                NSUnderlineStyleAttributeName: [NSNumber numberWithInt:NSUnderlineStyleSingle]
+             }]];
+            
+            labelAndSwitchCell.mxkLabel.attributedText = attributedText;
+            
+            [labelAndSwitchCell.mxkLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(displayEmailNotificationFaq)]];
+            labelAndSwitchCell.mxkLabel.userInteractionEnabled = YES;
+            
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleNotificationsByEmail:) forControlEvents:UIControlEventTouchUpInside];
@@ -5126,5 +5153,15 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 //    self.ssoAuthenticationPresenter = nil;
 //    MXLogWarning(@"Unexpected callback after OIDC account management.")
 //}
+
+// Tchap: display email notification faq
+- (void)displayEmailNotificationFaq {
+    NSLog(@"activateHyperlinkURL");
+    
+    NSString *targetUrlString = @"https://aide.tchap.beta.gouv.fr/fr/article/notification-par-email-draft-6k7k89/";
+    
+    WebSheetViewController *webCtrl = [[WebSheetViewController alloc] initWithTargetUrl:[NSURL URLWithString:targetUrlString]];
+    [self presentViewController:webCtrl animated:YES completion:nil];
+}
 
 @end
