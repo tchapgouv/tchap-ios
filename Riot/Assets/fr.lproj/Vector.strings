@@ -279,7 +279,7 @@
 "settings_add_phone_number" = "Ajouter un numéro de téléphone";
 "settings_night_mode" = "Mode nuit";
 "settings_fail_to_update_profile" = "Échec de la mise à jour du profil";
-"settings_enable_push_notif" = "Notifications sur cet appareil";
+"settings_enable_push_notif" = "Autoriser les notifications sur cet appareil"; // Tchap
 "settings_global_settings_info" = "Les paramètres de notification globaux sont disponibles sur votre client web %@";
 "settings_pin_rooms_with_missed_notif" = "Épingler les salons avec des notifications non lues";
 "settings_pin_rooms_with_unread" = "Épingler les salons avec des messages non lus";
@@ -520,21 +520,21 @@
 "room_action_send_photo_or_video" = "Envoyer une photo ou une vidéo";
 "room_action_send_sticker" = "Envoyer un autocollant";
 "room_action_send_file" = "Envoyer un fichier";
-"settings_deactivate_account" = "DÉSACTIVER LE COMPTE";
-"settings_deactivate_my_account" = "Désactiver le compte pour toujours";
+"settings_deactivate_account" = "FERMER LE COMPTE"; // Tchap
+"settings_deactivate_my_account" = "Fermer le compte"; // Tchap
 "widget_sticker_picker_no_stickerpacks_alert" = "Vous n’avez aucun jeu d’autocollants activé.";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "En ajouter maintenant ?";
-"deactivate_account_title" = "Désactiver le compte";
+"deactivate_account_title" = "Fermer le compte"; // Tchap
 "deactivate_account_informations_part1" = "Votre compte sera inutilisable de façon permanente. Vous ne pourrez plus vous connecter et personne ne pourra se réenregistrer avec le même identifiant d’utilisateur. Votre compte quittera tous les salons auxquels il participe, et toutes les informations du compte seront supprimés du serveur d’identité. ";
 "deactivate_account_informations_part2_emphasize" = "Cette action est irréversible.";
-"deactivate_account_informations_part3" = "\n\nLa désactivation de votre compte ";
+"deactivate_account_informations_part3" = "\n\nLa fermeture de votre compte "; // Tchap
 "deactivate_account_informations_part4_emphasize" = "ne nous fait pas oublier les messages que vous avez envoyés par défaut. ";
 "deactivate_account_informations_part5" = "Si vous souhaitez que nous oubliions vos messages, cochez la case ci-dessous\n\nLa visibilité des messages dans Matrix est similaire à celle des e-mails. Notre oubli des messages signifie que les messages que vous avez envoyés ne seront pas partagés avec les nouveaux utilisateurs ou les utilisateurs non enregistrés, mais les utilisateurs qui ont déjà accès à ces messages auront toujours accès à leur copie.";
-"deactivate_account_forget_messages_information_part1" = "Veuillez oublier tous les messages que j’ai envoyés quand mon compte sera désactivé (";
+"deactivate_account_forget_messages_information_part1" = "Veuillez oublier tous les messages que j’ai envoyés quand mon compte sera fermé ("; // Tchap
 "deactivate_account_forget_messages_information_part2_emphasize" = "Avertissement";
 "deactivate_account_forget_messages_information_part3" = ": les futurs utilisateurs auront alors une vue incomplète des conversations)";
-"deactivate_account_validate_action" = "Désactiver le compte";
-"deactivate_account_password_alert_title" = "Désactiver le compte";
+"deactivate_account_validate_action" = "Fermer le compte"; // Tchap
+"deactivate_account_password_alert_title" = "Fermer le compte"; // Tchap
 "deactivate_account_password_alert_message" = "Pour continuer, veuillez renseigner votre mot de passe";
 "event_formatter_rerequest_keys_part1" = "Demande envoyée.\U00A0";
 "event_formatter_rerequest_keys_part2_link" = "Renvoyer";
@@ -551,7 +551,7 @@
 "settings_labs_room_members_lazy_loading" = "Chargement différé des participants des salons";
 "settings_labs_room_members_lazy_loading_error_message" = "Votre serveur d'accueil ne prend pas en charge le chargement différé des participants des salons. Réessayez plus tard.";
 "room_event_action_view_decrypted_source" = "Voir la source déchiffrée";
-"room_recents_server_notice_section" = "ALERTES SYSTÈME";
+"room_recents_server_notice_section" = "Tchap Annonces"; // Tchap
 "room_resource_limit_exceeded_message_contact_1" = " Veuillez ";
 "room_resource_limit_exceeded_message_contact_2_link" = "contacter l’administrateur de votre service";
 "room_resource_limit_exceeded_message_contact_3" = " pour continuer à l’utiliser.";
@@ -1807,7 +1807,7 @@
 "notice_room_history_visible_to_members_from_invited_point" = "%@ a rendu l’historique futur du salon visible à tous les membres, à partir du moment où ils ont été invités.";
 "notice_room_history_visible_to_members_from_joined_point" = "%@ a rendu l’historique futur du salon visible à tous les membres, à partir de leur arrivée.";
 "notice_crypto_unable_to_decrypt" = "** Déchiffrement impossible : %@ **";
-"notice_crypto_error_unknown_inbound_session_id" = "La session de l’expéditeur ne nous a pas envoyé les clés pour ce message.";
+"notice_crypto_error_unknown_inbound_session_id" = "Déchiffrement en cours…"; // Tchap
 "notice_sticker" = "autocollant";
 // room display name
 "room_displayname_empty_room" = "Salon vide";
@@ -2324,7 +2324,7 @@
 "authentication_registration_title" = "Créez votre compte";
 "room_access_settings_screen_upgrade_alert_title" = "Mettre à niveau le salon";
 "room_access_settings_screen_upgrade_required" = "Mise à niveau requise";
-"location_sharing_allow_background_location_message" = "Si vous voulez partager votre localisation en temps réel, Element doit avoir accès à vos données de localisation lorsque l’application est en arrière-plan. Pour lui donner accès, rendez-vous dans Réglages > Position et sélectionnez Toujours";
+"location_sharing_allow_background_location_message" = "Si vous voulez partager votre localisation en temps réel, Tchap doit avoir accès à vos données de localisation lorsque l’application est en arrière-plan. Pour lui donner accès, rendez-vous dans Réglages > Position et sélectionnez Toujours"; // Tchap
 "settings_timeline" = "HISTORIQUE";
 "authentication_server_selection_login_title" = "Connexion à un serveur d’accueil";
 "message_reply_to_sender_sent_their_live_location" = "Localisation en temps réel.";
@@ -2669,8 +2669,8 @@
 "wysiwyg_composer_format_action_unordered_list" = "Liste à puces";
 "wysiwyg_composer_format_action_inline_code" = "Formater comme code informatique";
 "wysiwyg_composer_format_action_link" = "Formater comme lien";
-"wysiwyg_composer_format_action_strikethrough" = "Souligner";
-"wysiwyg_composer_format_action_underline" = "Barrer";
+"wysiwyg_composer_format_action_strikethrough" = "Barrer";
+"wysiwyg_composer_format_action_underline" = "Souligner";
 "wysiwyg_composer_format_action_italic" = "Mettre en italique";
 
 // Formatting Actions
@@ -2797,4 +2797,3 @@
 "local_contacts_access_discovery_warning" = "Afin d’afficher qui parmi vos contacts utilise déjà Tchap, nous pouvons exploiter les adresses e-mails de votre carnet d'adresse. Ces données ne seront pas mémorisées. Pour plus d'informations, veuillez consulter les Termes et Conditions disponibles dans les paramètres de l'application.";
 // Events formatter
 "notice_crypto_unable_to_decrypt" = "Message verrouillé."; // Tchap
-"notice_crypto_error_unknown_inbound_session_id" = "Ouvrez Tchap sur un autre appareil pour récupérer vos messages."; // Tchap

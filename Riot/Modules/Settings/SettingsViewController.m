@@ -190,8 +190,7 @@ typedef NS_ENUM(NSUInteger, LABS_ENABLE)
     LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX = 0,
     LABS_ENABLE_THREADS_INDEX,
     LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS,
-    // Tchap: Location sharing is disabled in Tchap
-//    LABS_ENABLE_LIVE_LOCATION_SHARING,
+    LABS_ENABLE_LIVE_LOCATION_SHARING,
     LABS_ENABLE_NEW_SESSION_MANAGER,
     LABS_ENABLE_NEW_CLIENT_INFO_FEATURE,
     LABS_ENABLE_WYSIWYG_COMPOSER,
@@ -681,8 +680,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         [sectionLabs addRowWithTag:LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS];
         if (BuildSettings.locationSharingEnabled)
         {
-            // Tchap: Location sharing is disabled in Tchap
-//            [sectionLabs addRowWithTag:LABS_ENABLE_LIVE_LOCATION_SHARING];
+            [sectionLabs addRowWithTag:LABS_ENABLE_LIVE_LOCATION_SHARING];
         }
         [sectionLabs addRowWithTag:LABS_ENABLE_NEW_SESSION_MANAGER];
         [sectionLabs addRowWithTag:LABS_ENABLE_NEW_CLIENT_INFO_FEATURE];
@@ -2107,8 +2105,8 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             // Tchap: Add Hide User from directory
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
-            NSString *title = NSLocalizedStringFromTable(@"settings_hide_from_users_directory_title", @"Tchap", nil);
-            NSString *summary = NSLocalizedStringFromTable(@"settings_hide_from_users_directory_summary", @"Tchap", nil);
+            NSString *title =  TchapL10n.settingsHideFromUsersDirectoryTitle;
+            NSString *summary = TchapL10n.settingsHideFromUsersDirectorySummary;
             NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString: title
                                                                                                attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
                                                                                                             NSFontAttributeName: [UIFont systemFontOfSize:17.0]}];
@@ -2171,7 +2169,18 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
     
-            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsEnablePushNotif];
+            // Tchap: adapt "Enable notifications" label and text.
+//            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsEnablePushNotif];
+            
+            NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString: VectorL10n.settingsEnablePushNotif
+                                                                                               attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
+                                                                                                            NSFontAttributeName: [UIFont systemFontOfSize:17.0]}];
+            [attributedText appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:4]}]];
+            [attributedText appendAttributedString:[[NSMutableAttributedString alloc] initWithString: TchapL10n.settingsEnablePushNotifText
+                                                                                          attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textSecondaryColor,
+                                                                                                       NSFontAttributeName: [UIFont systemFontOfSize:14.0]}]];
+            
+            labelAndSwitchCell.mxkLabel.attributedText = attributedText;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventTouchUpInside];
@@ -2232,7 +2241,34 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
     
-            labelAndSwitchCell.mxkLabel.text = TchapL10n.settingsNotificationEmail;
+
+
+            // Tchap: add explanation to "enable notiofications by email"
+//            labelAndSwitchCell.mxkLabel.text = TchapL10n.settingsNotificationEmail;
+
+            NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString: TchapL10n.settingsNotificationEmail
+                                                                                               attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
+                                                                                                            NSFontAttributeName: [UIFont systemFontOfSize:17.0]}];
+            [attributedText appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:4]}]];
+            [attributedText appendAttributedString:[[NSMutableAttributedString alloc] initWithString: TchapL10n.settingsEnableEmailNotifText
+                                                                                          attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textSecondaryColor,
+                                                                                                       NSFontAttributeName: [UIFont systemFontOfSize:14.0]}]];
+
+            [attributedText appendString:@" "];
+            
+            [attributedText appendAttributedString:
+             [[NSAttributedString alloc] initWithString:TchapL10n.settingsEnableEmailNotifLink
+                                             attributes:@{
+                NSForegroundColorAttributeName: ThemeService.shared.theme.textSecondaryColor,
+                NSFontAttributeName:  [UIFont systemFontOfSize:14.0],
+                NSUnderlineStyleAttributeName: [NSNumber numberWithInt:NSUnderlineStyleSingle]
+             }]];
+            
+            labelAndSwitchCell.mxkLabel.attributedText = attributedText;
+            
+            [labelAndSwitchCell.mxkLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(displayEmailNotificationFaq)]];
+            labelAndSwitchCell.mxkLabel.userInteractionEnabled = YES;
+            
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleNotificationsByEmail:) forControlEvents:UIControlEventTouchUpInside];
@@ -2691,11 +2727,10 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         {
             cell = [self buildAutoReportDecryptionErrorsCellForTableView:tableView atIndexPath:indexPath];
         }
-        // Tchap: Location sharing is disabled in Tchap
-//        else if (row == LABS_ENABLE_LIVE_LOCATION_SHARING)
-//        {
-//            cell = [self buildLiveLocationSharingCellForTableView:tableView atIndexPath:indexPath];
-//        }
+        else if (row == LABS_ENABLE_LIVE_LOCATION_SHARING)
+        {
+            cell = [self buildLiveLocationSharingCellForTableView:tableView atIndexPath:indexPath];
+        }
         else if (row == LABS_ENABLE_NEW_SESSION_MANAGER)
         {
             MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
@@ -5118,5 +5153,13 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 //    self.ssoAuthenticationPresenter = nil;
 //    MXLogWarning(@"Unexpected callback after OIDC account management.")
 //}
+
+// Tchap: display email notification faq
+- (void)displayEmailNotificationFaq {
+    NSString *targetUrlString = @"https://aide.tchap.beta.gouv.fr/fr/article/notification-par-email-draft-6k7k89/";
+    
+    WebSheetViewController *webCtrl = [[WebSheetViewController alloc] initWithTargetUrl:[NSURL URLWithString:targetUrlString]];
+    [self presentViewController:webCtrl animated:YES completion:nil];
+}
 
 @end

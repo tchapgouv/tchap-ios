@@ -29,6 +29,8 @@ internal enum InfoPlist {
   internal static let nsCameraUsageDescription: String = _document["NSCameraUsageDescription"]
   internal static let nsContactsUsageDescription: String = _document["NSContactsUsageDescription"]
   internal static let nsFaceIDUsageDescription: String = _document["NSFaceIDUsageDescription"]
+  internal static let nsLocationAlwaysAndWhenInUseUsageDescription: String = _document["NSLocationAlwaysAndWhenInUseUsageDescription"]
+  internal static let nsLocationWhenInUseUsageDescription: String = _document["NSLocationWhenInUseUsageDescription"]
   internal static let nsMicrophoneUsageDescription: String = _document["NSMicrophoneUsageDescription"]
   internal static let nsPhotoLibraryUsageDescription: String = _document["NSPhotoLibraryUsageDescription"]
   internal static let uiBackgroundModes: [String] = _document["UIBackgroundModes"]

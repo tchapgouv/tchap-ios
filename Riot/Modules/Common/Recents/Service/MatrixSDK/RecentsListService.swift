@@ -717,7 +717,12 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     }
     
     private func updateConversationFetcher(_ fetcher: MXRoomListDataFetcher, for mode: RecentsDataSourceMode) {
-        var notDataTypes: MXRoomSummaryDataTypes = mode == .allChats ? [.hidden, .conferenceUser, .invited, .lowPriority, .serverNotice, .space] : [.hidden, .conferenceUser, .direct, .invited, .lowPriority, .serverNotice, .space]
+        // Tchap: 
+        // don't exclude serverNotice channels from "all chats" group fetcher
+        // to get server Notices (aka "Tchap Annonces") in the main room list
+        // to be displayed as classic rooms
+//        var notDataTypes: MXRoomSummaryDataTypes = mode == .allChats ? [.hidden, .conferenceUser, .invited, .lowPriority, .serverNotice, .space] : [.hidden, .conferenceUser, .direct, .invited, .lowPriority, .serverNotice, .space]
+        var notDataTypes: MXRoomSummaryDataTypes = mode == .allChats ? [.hidden, .conferenceUser, .invited, .lowPriority, /*.serverNotice,*/ .space] : [.hidden, .conferenceUser, .direct, .invited, .lowPriority, /*.serverNotice,*/ .space]
 
         switch mode {
         case .home:

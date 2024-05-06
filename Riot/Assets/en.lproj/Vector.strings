@@ -378,7 +378,7 @@
 "room_recents_conversations_section" = "ROOMS";
 "room_recents_no_conversation" = "No rooms";
 "room_recents_low_priority_section" = "LOW PRIORITY";
-"room_recents_server_notice_section" = "SYSTEM ALERTS";
+"room_recents_server_notice_section" = "Tchap Announcements"; // Tchap
 "room_recents_invites_section" = "INVITES";
 "room_recents_suggested_rooms_section" = "SUGGESTED ROOMS";
 "room_recents_start_chat_with" = "Start chat";
@@ -727,7 +727,7 @@ Tap the + to start adding people.";
 "settings_devices" = "SESSIONS";
 "settings_cryptography" = "CRYPTOGRAPHY";
 "settings_key_backup" = "KEY BACKUP";
-"settings_deactivate_account" = "DEACTIVATE ACCOUNT";
+"settings_deactivate_account" = "CLOSE ACCOUNT"; // Tchap
 
 "settings_sign_out" = "Sign Out";
 "settings_sign_out_confirmation" = "Are you sure?";
@@ -759,7 +759,7 @@ Tap the + to start adding people.";
 
 "settings_security" = "SECURITY";
 
-"settings_enable_push_notif" = "Notifications on this device";
+"settings_enable_push_notif" = "Enable notifications on this device"; // Tchap
 "settings_device_notifications" = "Device notifications";
 "settings_show_decrypted_content" = "Show decrypted content";
 "settings_global_settings_info" = "Global notification settings are available on your %@ web client";
@@ -860,7 +860,7 @@ Tap the + to start adding people.";
 "settings_crypto_export" = "Export keys";
 "settings_crypto_blacklist_unverified_devices" = "Encrypt to verified sessions only";
 
-"settings_deactivate_my_account" = "Deactivate account permanently";
+"settings_deactivate_my_account" = "Close account"; // Tchap
 
 "settings_key_backup_info" = "Encrypted messages are secured with end-to-end encryption. Only you and the recipient(s) have the keys to read these messages.";
 "settings_key_backup_info_checking" = "Checking…";
@@ -1384,21 +1384,21 @@ Tap the + to start adding people.";
 
 // Deactivate account
 
-"deactivate_account_title" = "Deactivate Account";
+"deactivate_account_title" = "Close Account"; // Tchap
 
 "deactivate_account_informations_part1" = "This will make your account permanently unusable. You will not be able to log in, and no one will be able to re-register the same user ID.  This will cause your account to leave all rooms it is participating in, and it will remove your account details from your identity server. ";
 "deactivate_account_informations_part2_emphasize" = "This action is irreversible.";
-"deactivate_account_informations_part3" = "\n\nDeactivating your account ";
+"deactivate_account_informations_part3" = "\n\nClosing your account "; // Tchap
 "deactivate_account_informations_part4_emphasize" = "does not by default cause us to forget messages you have sent. ";
 "deactivate_account_informations_part5" = "If you would like us to forget your messages, please tick the box below\n\nMessage visibility in Matrix is similar to email. Our forgetting your messages means that messages you have sent will not be shared with any new or unregistered users, but registered users who already have access to these messages will still have access to their copy.";
 
-"deactivate_account_forget_messages_information_part1" = "Please forget all messages I have sent when my account is deactivated (";
+"deactivate_account_forget_messages_information_part1" = "Please forget all messages I have sent when my account is closed ("; // Tchap
 "deactivate_account_forget_messages_information_part2_emphasize" = "Warning";
 "deactivate_account_forget_messages_information_part3" = ": this will cause future users to see an incomplete view of conversations)";
 
-"deactivate_account_validate_action" = "Deactivate account";
+"deactivate_account_validate_action" = "Close account"; // Tchap
 
-"deactivate_account_password_alert_title" = "Deactivate Account";
+"deactivate_account_password_alert_title" = "Close Account"; // Tchap
 "deactivate_account_password_alert_message" = "To continue, please enter your Matrix account password";
 
 // Re-request confirmation dialog
@@ -2453,8 +2453,8 @@ Tap the + to start adding people.";
 "location_sharing_settings_toggle_title" = "Enable location sharing";
 
 "location_sharing_allow_background_location_title" = "Allow access";
-"location_sharing_allow_background_location_message" = "If you’d like to share your Live location, Element needs location access when the app is in the background.
-To enable access, tap Settings> Location and select Always";
+"location_sharing_allow_background_location_message" = "If you’d like to share your Live location, Tchap needs location access when the app is in the background.
+To enable access, tap Settings> Location and select Always"; // Tchap
 "location_sharing_allow_background_location_validate_action" = "Settings";
 "location_sharing_allow_background_location_cancel_action" = "Not now";
 "location_sharing_map_credits_title" = "© Copyright";
@@ -2619,8 +2619,8 @@ To enable access, tap Settings> Location and select Always";
 // Formatting Actions
 "wysiwyg_composer_format_action_bold" = "Apply bold format";
 "wysiwyg_composer_format_action_italic" = "Apply italic format";
-"wysiwyg_composer_format_action_underline" = "Apply strikethrough format";
-"wysiwyg_composer_format_action_strikethrough" = "Apply underline format";
+"wysiwyg_composer_format_action_underline" = "Apply underline format";
+"wysiwyg_composer_format_action_strikethrough" = "Apply strikethrough format";
 "wysiwyg_composer_format_action_link" = "Apply link format";
 "wysiwyg_composer_format_action_inline_code" = "Apply inline code format";
 "wysiwyg_composer_format_action_unordered_list" = "Toggle bulleted list";
@@ -2773,7 +2773,7 @@ To enable access, tap Settings> Location and select Always";
 "notice_room_history_visible_to_members_from_joined_point" = "%@ made future room history visible to all room members, from the point they joined.";
 "notice_room_history_visible_to_members_from_joined_point_for_dm" = "%@ made future messages visible to everyone, from when they joined.";
 "notice_crypto_unable_to_decrypt" = "** Unable to decrypt: %@ **";
-"notice_crypto_error_unknown_inbound_session_id" = "The sender's session has not sent us the keys for this message.";
+"notice_crypto_error_unknown_inbound_session_id" = "Decrypting…"; // Tchap
 "notice_sticker" = "sticker";
 "notice_in_reply_to" = "In reply to";
 "notice_voice_broadcast_live" = "Live broadcast";

@@ -1657,10 +1657,10 @@ static CGSize kThreadListBarButtonItemImageSize;
 }
 
 // Tchap: Disable Live location sharing
-//- (BOOL)shouldShowLiveLocationSharingBannerView
-//{
-//    return self.customizedRoomDataSource.isCurrentUserSharingActiveLocation;
-//}
+- (BOOL)shouldShowLiveLocationSharingBannerView
+{
+    return self.customizedRoomDataSource.isCurrentUserSharingActiveLocation;
+}
 
 - (void)setForceHideInputToolBar:(BOOL)forceHideInputToolBar
 {
@@ -2425,7 +2425,10 @@ static CGSize kThreadListBarButtonItemImageSize;
             [self.delegate roomViewControllerDidRequestPollCreationFormPresentation:self];
         }]];
     }
-    if (BuildSettings.locationSharingEnabled && !self.isNewDirectChat)
+    // Tchap: allow location sharing by feature flag
+//    if (BuildSettings.locationSharingEnabled && !self.isNewDirectChat)
+    MXKAccount *account = MXKAccountManager.sharedManager.activeAccounts.firstObject;
+    if ([account isFeatureActivated:BuildSettings.tchapFeatureGeolocationSharing] && BuildSettings.locationSharingEnabled && !self.isNewDirectChat)
     {
         [actionItems addObject:[[RoomActionItem alloc] initWithImage:AssetImages.actionLocation.image andAction:^{
             MXStrongifyAndReturnIfNil(self);
@@ -3330,39 +3333,39 @@ static CGSize kThreadListBarButtonItemImageSize;
             }
         }
     }
-//    else if (bubbleData.tag == RoomBubbleCellDataTagLocation || bubbleData.tag == RoomBubbleCellDataTagLiveLocation)
-//    {
-//        if (bubbleData.isIncoming)
-//        {
-//            if (bubbleData.isPaginationFirstBubble)
-//            {
-//                cellIdentifier = RoomTimelineCellIdentifierIncomingLocationWithPaginationTitle;
-//            }
-//            else if (bubbleData.shouldHideSenderInformation)
-//            {
-//                cellIdentifier = RoomTimelineCellIdentifierIncomingLocationWithoutSenderInfo;
-//            }
-//            else
-//            {
-//                cellIdentifier = RoomTimelineCellIdentifierIncomingLocation;
-//            }
-//        }
-//        else
-//        {
-//            if (bubbleData.isPaginationFirstBubble)
-//            {
-//                cellIdentifier = RoomTimelineCellIdentifierOutgoingLocationWithPaginationTitle;
-//            }
-//            else if (bubbleData.shouldHideSenderInformation)
-//            {
-//                cellIdentifier = RoomTimelineCellIdentifierOutgoingLocationWithoutSenderInfo;
-//            }
-//            else
-//            {
-//                cellIdentifier = RoomTimelineCellIdentifierOutgoingLocation;
-//            }
-//        }
-//    }
+    else if (bubbleData.tag == RoomBubbleCellDataTagLocation || bubbleData.tag == RoomBubbleCellDataTagLiveLocation)
+    {
+        if (bubbleData.isIncoming)
+        {
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingLocationWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingLocationWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingLocation;
+            }
+        }
+        else
+        {
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingLocationWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingLocationWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingLocation;
+            }
+        }
+    }
 //    else if (bubbleData.tag == RoomBubbleCellDataTagVoiceBroadcastPlayback)
 //    {
 //        if (bubbleData.isIncoming)
@@ -3630,26 +3633,26 @@ static CGSize kThreadListBarButtonItemImageSize;
                 [self mention:roomMember];
             }
         }
-//        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellStopShareButtonPressed])
-//        {
-//            NSString *beaconInfoEventId;
-//
-//            if ([bubbleData isKindOfClass:[RoomBubbleCellData class]])
-//            {
-//                RoomBubbleCellData *roomBubbleCellData = (RoomBubbleCellData*)bubbleData;
-//                beaconInfoEventId = roomBubbleCellData.beaconInfoSummary.id;
-//            }
-//
-//            [self.delegate roomViewControllerDidStopLiveLocationSharing:self beaconInfoEventId:beaconInfoEventId];
-//        }
-//        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellRetryShareButtonPressed])
-//        {
-//            MXEvent *selectedEvent = userInfo[kMXKRoomBubbleCellEventKey];
-//            if (selectedEvent)
-//            {
-//                // TODO: - Implement retry live location action
-//            }
-//        }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellStopShareButtonPressed])
+        {
+            NSString *beaconInfoEventId;
+
+            if ([bubbleData isKindOfClass:[RoomBubbleCellData class]])
+            {
+                RoomBubbleCellData *roomBubbleCellData = (RoomBubbleCellData*)bubbleData;
+                beaconInfoEventId = roomBubbleCellData.beaconInfoSummary.id;
+            }
+
+            [self.delegate roomViewControllerDidStopLiveLocationSharing:self beaconInfoEventId:beaconInfoEventId];
+        }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellRetryShareButtonPressed])
+        {
+            MXEvent *selectedEvent = userInfo[kMXKRoomBubbleCellEventKey];
+            if (selectedEvent)
+            {
+                // TODO: - Implement retry live location action
+            }
+        }
         else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnMessageTextView] || [actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnContentView])
         {
             // Retrieve the tapped event
@@ -3660,10 +3663,10 @@ static CGSize kThreadListBarButtonItemImageSize;
             {
                 [self cancelEventSelection];
             }
-//            else if (bubbleData.tag == RoomBubbleCellDataTagLiveLocation)
-//            {
-//                [self.delegate roomViewController:self didRequestLiveLocationPresentationForBubbleData:bubbleData];
-//            }
+            else if (bubbleData.tag == RoomBubbleCellDataTagLiveLocation)
+            {
+                [self.delegate roomViewController:self didRequestLiveLocationPresentationForBubbleData:bubbleData];
+            }
             else if (tappedEvent)
             {
                 if (tappedEvent.eventType == MXEventTypeRoomCreate)
@@ -7766,6 +7769,15 @@ static CGSize kThreadListBarButtonItemImageSize;
 - (void)documentPickerPresenter:(MXKDocumentPickerPresenter *)presenter didPickDocumentsAt:(NSURL *)url
 {
     self.documentPickerPresenter = nil;
+    
+    // Tchap: check maxUploadSize accepted by the home server before trying to upload.
+    NSUInteger maxUploadFileSize = self.roomDataSource.mxSession.maxUploadSize;
+    NSDictionary *fileAttributes = [NSFileManager.defaultManager attributesOfItemAtPath:url.path error:nil];
+    if (fileAttributes && fileAttributes.fileSize > maxUploadFileSize) {
+        [self showAlertWithTitle:TchapL10n.roomSendFileTooBigTitle
+                         message:[TchapL10n roomSendFileTooBigMessage:maxUploadFileSize/(1024*1024) :fileAttributes.fileSize/(1024*1024)]];
+        return;
+    }
     
     MXKUTI *fileUTI = [[MXKUTI alloc] initWithLocalFileURL:url];
     NSString *mimeType = fileUTI.mimeType;

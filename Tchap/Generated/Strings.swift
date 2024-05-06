@@ -271,6 +271,10 @@ public class TchapL10n: NSObject {
   public static var errorTitleDefault: String { 
     return TchapL10n.tr("Tchap", "error_title_default") 
   }
+  /// Signaler un problème
+  public static var eventFormatterReportIncident: String { 
+    return TchapL10n.tr("Tchap", "event_formatter_report_incident") 
+  }
   /// La durée de validité de votre compte a expiré. Un email vous a été envoyé pour la renouveler. Une fois que vous aurez suivi le lien qu’il contient, cliquez ci-dessous.
   public static var expiredAccountAlertMessage: String { 
     return TchapL10n.tr("Tchap", "expired_account_alert_message") 
@@ -563,7 +567,7 @@ public class TchapL10n: NSObject {
   public static var roomCreationTitle: String { 
     return TchapL10n.tr("Tchap", "room_creation_title") 
   }
-  /// Sinon, consulter cet article de FAQ.
+  /// En savoir plus.
   public static var roomDecryptionErrorFaqLinkMessage: String { 
     return TchapL10n.tr("Tchap", "room_decryption_error_faq_link_message") 
   }
@@ -743,7 +747,7 @@ public class TchapL10n: NSObject {
   public static var securityCrossSigningResetMessage: String { 
     return TchapL10n.tr("Tchap", "security_cross_signing_reset_message") 
   }
-  /// Êtes-vous sur ?
+  /// Êtes-vous sûr ?
   public static var securityCrossSigningResetTitle: String { 
     return TchapL10n.tr("Tchap", "security_cross_signing_reset_title") 
   }
@@ -790,6 +794,10 @@ public class TchapL10n: NSObject {
   /// Fichier de clés invalide.
   public static var settingsCryptoImportInvalidFile: String { 
     return TchapL10n.tr("Tchap", "settings_crypto_import_invalid_file") 
+  }
+  /// Sans cette autorisation, les appels entrants ne seront pas notifiés.
+  public static var settingsEnablePushNotifText: String { 
+    return TchapL10n.tr("Tchap", "settings_enable_push_notif_text") 
   }
   /// Les autres utilisateurs ne pourront pas découvrir mon compte lors de leurs recherches
   public static var settingsHideFromUsersDirectorySummary: String { 
@@ -854,6 +862,14 @@ public class TchapL10n: NSObject {
   /// Ce lien n'est pas valide
   public static var tchapRoomInvalidLink: String { 
     return TchapL10n.tr("Tchap", "tchap_room_invalid_link") 
+  }
+  /// Vous avez rencontré un souci durant votre appel VoIP. Dites-nous ce qui s'est passé :
+  public static var voidReportIncidentDescription: String { 
+    return TchapL10n.tr("Tchap", "void_report_incident_description") 
+  }
+  /// Signaler un problème VoIP
+  public static var voidReportIncidentTitle: String { 
+    return TchapL10n.tr("Tchap", "void_report_incident_title") 
   }
   /// Attention
   public static var warningTitle: String { 
