@@ -708,7 +708,9 @@
                     MXInvite3PID *invite3PID = [[MXInvite3PID alloc] init];
                     invite3PID.identityServer = identityServer;
                     invite3PID.medium = kMX3PIDMediumEmail;
-                    invite3PID.address = participantId;
+                    // Tchap: be sure to convert email address to lowercase
+//                    invite3PID.address = participantId;
+                    invite3PID.address = participantId.lowercaseString;
                     
                     [invite3PIDArray addObject:invite3PID];
                 }
