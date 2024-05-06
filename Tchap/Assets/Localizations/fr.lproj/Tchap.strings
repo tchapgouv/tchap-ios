@@ -347,3 +347,5 @@
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Settings
 "settings_enable_push_notif_text" = "Sans cette autorisation, les appels entrants ne seront pas notifiés.";
+"settings_enable_email_notif_text" = "Recevez un e-mail si au moins un message récent non lu pendant 72h.";
+"settings_enable_email_notif_link" = "En savoir plus.";
