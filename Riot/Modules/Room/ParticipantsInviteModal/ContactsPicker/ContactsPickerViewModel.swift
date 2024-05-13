@@ -128,6 +128,9 @@ class ContactsPickerViewModel: NSObject, ContactsPickerViewModelProtocol {
         contactsViewController.showSearch(true)
         // Tchap: Replace string by removing user ID
         contactsViewController.searchBar.placeholder = VectorL10n.roomParticipantsInviteAnotherUserWithoutId
+        // Tchap: don't force capitalization of first char of search input (to protect capitalization of email)
+        // when inviting a participant in a room.
+        contactsViewController.searchBar.searchTextField.autocapitalizationType = .none
         // Tchap: don't make searchbar resign as first responder.
         // Let it becomes first responder to activate the input field and deploy the keyboard when the controller comes to screen.
 //        contactsViewController.searchBar.resignFirstResponder()
@@ -279,7 +282,9 @@ extension ContactsPickerViewModel: ContactsTableViewControllerDelegate {
             self.coordinatorDelegate?.contactsPickerViewModelDidStartInvite(self)
             // Is it an email or a Matrix user ID?
             if MXTools.isEmailAddress(participantId) {
-                room.invite(.email(participantId)) { [weak self] response in
+                // Tchap: be sure to convert email address to lowercase.
+//                room.invite(.email(participantId)) { [weak self] response in
+                room.invite(.email(participantId.lowercased())) { [weak self] response in
                     guard let self = self else { return }
                     
                     switch response {
