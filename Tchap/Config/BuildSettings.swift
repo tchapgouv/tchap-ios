@@ -273,9 +273,7 @@ final class BuildSettings: NSObject {
             tchapFeatureAnyHomeServer
         ],
         tchapFeatureVoiceOverIP: [
-            "agent.dinum.tchap.gouv.fr",
-            "agent.diplomatie.tchap.gouv.fr",
-            "agent.finances.tchap.gouv.fr"
+            tchapFeatureAnyHomeServer
         ],
         // No activation of video calls actually in Tchap Production.
 //        tchapFeatureVideoOverIP: [
