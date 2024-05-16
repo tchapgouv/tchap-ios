@@ -86,7 +86,7 @@ This homeserver is not configured to display maps</string>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HzR-Av-TiG">
                             <rect key="frame" x="0.0" y="0.0" width="395" height="20"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" text="©MapTiler ©OpenStreetMap contributors" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jWW-0w-1YM">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" text="© Etalab © OpenMapTiles © Contributeurs OpenStreetMap" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jWW-0w-1YM">
                                     <rect key="frame" x="8" y="0.0" width="379" height="20"/>
                                     <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="10"/>
