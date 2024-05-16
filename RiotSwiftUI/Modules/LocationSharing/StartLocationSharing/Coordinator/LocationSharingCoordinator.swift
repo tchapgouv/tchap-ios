@@ -191,7 +191,9 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
         //
         // let liveSharingPowerLevel = parameters.roomDataSource.roomState.powerLevels.minimumPowerLevelForSendingStateEvent(.beaconInfo)
         //
-        let liveSharingPowerLevel = roomPowerLevels.events[kMXEventTypeStringBeaconInfoMSC3672] as? Int ?? roomPowerLevels.stateDefault
+          
+        // Get live sharing power level from stable value, then unstable value and fallback on default value.
+        let liveSharingPowerLevel = (roomPowerLevels.events[kMXEventTypeStringBeaconInfo] ?? roomPowerLevels.events[kMXEventTypeStringBeaconInfoMSC3672]) as? Int ?? roomPowerLevels.stateDefault
 
         return userPowerLevel.rawValue >= liveSharingPowerLevel
     }
