@@ -166,19 +166,34 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
     
     // Check if user can send beacon info state event
     private func canShareLiveLocation() -> Bool {
-        guard let myUserId = parameters.roomDataSource.mxSession.myUserId else {
-            return false
-        }
-        
-        let userPowerLevelRawValue = parameters.roomDataSource.roomState.powerLevels.powerLevelOfUser(withUserID: myUserId)
-        
-        guard let userPowerLevel = RoomPowerLevel(rawValue: userPowerLevelRawValue) else {
-            return false
-        }
-        
-        // Tchap: allow user to live share its location even if its user power level is below moderator.
+        // Tchap: allow live sharing geolocation based on room power levels
+        //
+//        guard let myUserId = parameters.roomDataSource.mxSession.myUserId else {
+//            return false
+//        }
+//        
+//        let userPowerLevelRawValue = parameters.roomDataSource.roomState.powerLevels.powerLevelOfUser(withUserID: myUserId)
+//        
+//        guard let userPowerLevel = RoomPowerLevel(rawValue: userPowerLevelRawValue) else {
+//            return false
+//        }
+//        
 //        return userPowerLevel.rawValue >= RoomPowerLevel.moderator.rawValue
-        return true
+
+        guard let myUserId = parameters.roomDataSource.mxSession.myUserId,
+              let roomPowerLevels = parameters.roomDataSource.roomState.powerLevels,
+              let userPowerLevel = RoomPowerLevel(rawValue: parameters.roomDataSource.roomState.powerLevels.powerLevelOfUser(withUserID: myUserId)) else {
+            return false
+        }
+        
+        // Tchap: should call `minimumPowerLevelForSendingStateEvent(_ eventType: MXEventType) -> Int` from `MatrixSDK:MXRoomPowerLevels.swift`
+        // but can't because it is inaccessible due to 'internal' protection level
+        //
+        // let liveSharingPowerLevel = parameters.roomDataSource.roomState.powerLevels.minimumPowerLevelForSendingStateEvent(.beaconInfo)
+        //
+        let liveSharingPowerLevel = roomPowerLevels.events[kMXEventTypeStringBeaconInfoMSC3672] as? Int ?? roomPowerLevels.stateDefault
+
+        return userPowerLevel.rawValue >= liveSharingPowerLevel
     }
     
     private func showLabFlagPromotionIfNeeded(completion: @escaping ((Bool) -> Void)) {
