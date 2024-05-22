@@ -272,8 +272,9 @@ final class BuildSettings: NSObject {
         tchapFeatureNotificationByEmail: [
             tchapFeatureAnyHomeServer
         ],
+        // Audio calls inly for DINUM actually in Tchap Production.
         tchapFeatureVoiceOverIP: [
-            tchapFeatureAnyHomeServer
+            "agent.dinum.tchap.gouv.fr"
         ],
         // No activation of video calls actually in Tchap Production.
 //        tchapFeatureVideoOverIP: [
