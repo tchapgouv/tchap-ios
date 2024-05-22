@@ -1,3 +1,10 @@
+## Changes in 2.7.7 (2024-05-22)
+
+🙌 Improvements
+
+- Restriction de la fonctionnalité VoIP à l'instance DINUM ([#1044](https://github.com/tchapgouv/tchap-ios/issues/1044))
+
+
 ## Changes in 2.7.6 (2024-05-22)
 
 🙌 Improvements
