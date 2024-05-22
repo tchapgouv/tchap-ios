@@ -1,3 +1,26 @@
+## Changes in 2.7.6 (2024-05-22)
+
+🙌 Improvements
+
+- Déploiement des appels audio VoIP sur les instances Finances et Diplomatie. (deploy_voip)
+- Limiter la longueur du message d'origine à l'affichage d'une réponse avec citation. ([#832](https://github.com/tchapgouv/tchap-ios/issues/832))
+- Autoriser le partage de localisation dans un salon en se basant sur les niveaux d'autorisation du salon ([#984](https://github.com/tchapgouv/tchap-ios/issues/984))
+- Afficher le salon "Tchap Annonces" dans le flux normal des salons ([#1000](https://github.com/tchapgouv/tchap-ios/issues/1000))
+- Ajout d'un "Privacy Manifest" dans le projet Xcode (obligatoire à partir du 1er mai 2024) ([#1002](https://github.com/tchapgouv/tchap-ios/issues/1002))
+- L'affichage de géolocalisation plante quand l'affichage en bulle est désactivé ([#1009](https://github.com/tchapgouv/tchap-ios/issues/1009))
+- Afficher un message d'alerte avant envoi d'une pièce jointe trop lourde. ([#1015](https://github.com/tchapgouv/tchap-ios/issues/1015))
+- Ajout de la géolocalisation en background sur les targets Dev et Pre-prod ([#1017](https://github.com/tchapgouv/tchap-ios/issues/1017))
+- Mauvais libellé de fermeture de compte en anglais. ([#1019](https://github.com/tchapgouv/tchap-ios/issues/1019))
+- Améliorer les textes du parcours de renouvellement de compte. ([#1021](https://github.com/tchapgouv/tchap-ios/issues/1021), [#1027](https://github.com/tchapgouv/tchap-ios/issues/1027))
+- Mauvais message d'erreur quand on invite un utilisateur déjà présent dans un salon ([#1022](https://github.com/tchapgouv/tchap-ios/issues/1022))
+- forcer l'email en minuscules à l'envoi d'invitation à un salon (pour éviter les problèmes d'email avec majuscules) ([#1024](https://github.com/tchapgouv/tchap-ios/issues/1024))
+- Améliorer la compréhension du fonctionnement des notifications par email. ([#1029](https://github.com/tchapgouv/tchap-ios/issues/1029))
+- Dans les réglages de Notification par email, changer "courriel" par "e-mail. ([#1033](https://github.com/tchapgouv/tchap-ios/issues/1033))
+- Ouverture de la fonctionnalité VoIP à toutes les instances. ([#1036](https://github.com/tchapgouv/tchap-ios/issues/1036))
+- Changement du copyright de fournisseur de fond de carte de géolocalisation ([#1039](https://github.com/tchapgouv/tchap-ios/issues/1039))
+- Ajout de la licence MapLibre dans les licences tierces ([#1041](https://github.com/tchapgouv/tchap-ios/issues/1041))
+
+
 ## Changes in 2.7.3 (2024-04-02)
 
 🙌 Improvements
