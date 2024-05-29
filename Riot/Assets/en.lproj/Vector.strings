@@ -2488,7 +2488,7 @@ To enable access, tap Settings> Location and select Always"; // Tchap
 "location_sharing_live_stop_sharing_progress" = "Stop location sharing";
 
 "location_sharing_live_lab_promotion_title" = "Live location sharing";
-"location_sharing_live_lab_promotion_text" = "Please note: this is a labs feature using a temporary implementation that allows the history of your shared location to be permanently visible to other people in the room.";
+"location_sharing_live_lab_promotion_text" = "Please note: the history of your shared location will be permanently visible to other people in the room even after the sharing is stopped.";
 "location_sharing_live_lab_promotion_activation" = "Enable live location sharing";
 
 // MARK: User sessions management
