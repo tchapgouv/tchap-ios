@@ -2331,7 +2331,7 @@
 "room_displayname_more_than_two_members" = "%@ et %@ autres";
 "ignore_user" = "Ignorer l’utilisateur";
 "location_sharing_live_lab_promotion_activation" = "Activer le partage de localisation en temps réel";
-"location_sharing_live_lab_promotion_text" = "Pour information : il s’agit d’une fonctionnalité expérimentale et d’une implémentation temporaire qui rend votre historique de localisation visible de manière permanente à toutes les autres personnes dans le salon.";
+"location_sharing_live_lab_promotion_text" = "Attention: l'historique des positions partagées sera accessible aux autres membres du salon même après avoir arreté le partage.";
 "location_sharing_live_lab_promotion_title" = "Partage de localisation en temps réel";
 "location_sharing_live_stop_sharing_progress" = "Arrêter de partager ma localisation";
 "location_sharing_live_stop_sharing_error" = "Échec de l’arrêt du partage de la localisation";
