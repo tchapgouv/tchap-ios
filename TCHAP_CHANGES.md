@@ -1,3 +1,15 @@
+## Changes in 2.7.8 (2024-06-06)
+
+✨ Features
+
+- Ajouter une action "Marquer comme lu" sur un salon ([#1053](https://github.com/tchapgouv/tchap-ios/issues/1053))
+
+🙌 Improvements
+
+- Rebase on Element 1.11.12 ([#1052](https://github.com/tchapgouv/tchap-ios/issues/1052))
+- Changement du texte d'alerte affiché lors de la première utilisation du partage de position en temps réel ([#1050](https://github.com/tchapgouv/tchap-ios/issues/1050))
+
+
 ## Changes in 2.7.7 (2024-05-22)
 
 🙌 Improvements
