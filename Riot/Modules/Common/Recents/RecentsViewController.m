@@ -1304,6 +1304,24 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     leaveImage = [leaveImage vc_tintedImageUsingColor:selectedColor];
     leaveAction.image = [leaveImage vc_notRenderedImage];
         
+    //Tchap: mark room as read action
+    UIContextualAction *markAllAsReadAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive
+                                                                                   title:title
+                                                                                 handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+        [self markAllAsReadInEditedRoom];
+
+        self->editedRoomId = nil; // Tchap: Reset editedRoomId else UI content does not refresh anymore.
+
+        completionHandler(YES);
+    }];
+    markAllAsReadAction.backgroundColor = actionBackgroundColor;
+    
+    UIImage *markAllAsReadImage = [UIImage systemImageNamed:@"envelope.open"];
+    markAllAsReadImage = [markAllAsReadImage vc_tintedImageUsingColor:selectedColor];
+    markAllAsReadAction.image = [markAllAsReadImage vc_notRenderedImage];
+        
+
+
     // Create swipe action configuration
     // Tchap: Disable unavailable actions in Tchap
     NSArray<UIContextualAction*> *actions = @[
@@ -1311,7 +1329,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         //priorityAction,
         favouriteAction,
         muteAction,
-        //directChatAction
+        //directChatAction,
+        markAllAsReadAction // Tchap: mark all as read local action
     ];
     
     UISwipeActionsConfiguration *swipeActionConfiguration = [UISwipeActionsConfiguration configurationWithActions:actions];
@@ -1635,6 +1654,25 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
                 }];
             }
+        }
+        else
+        {
+            // Leave editing mode
+            [self cancelEditionMode:isRefreshPending];
+        }
+    }
+}
+
+// Tchap: mark room as read action
+- (void)markAllAsReadInEditedRoom
+{
+    if (editedRoomId)
+    {
+        // Check whether the user didn't leave the room
+        MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
+        if (room)
+        {
+            [room markAllAsRead];
         }
         else
         {
