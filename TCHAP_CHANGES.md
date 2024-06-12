@@ -1,3 +1,10 @@
+## Changes in 2.7.8 (2024-06-12)
+
+🙌 Improvements
+
+- Préparer la version VoIP except Finances ([#1057](https://github.com/tchapgouv/tchap-ios/issues/1057))
+
+
 ## Changes in 2.7.8 (2024-06-06)
 
 ✨ Features
