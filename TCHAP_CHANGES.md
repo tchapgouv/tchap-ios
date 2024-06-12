@@ -1,4 +1,4 @@
-## Changes in 2.7.8 (2024-06-06)
+## Changes in 2.7.8 (2024-06-12)
 
 ✨ Features
 
@@ -6,6 +6,7 @@
 
 🙌 Improvements
 
+- Préparer la version VoIP except Finances ([#1057](https://github.com/tchapgouv/tchap-ios/issues/1057))
 - Rebase on Element 1.11.12 ([#1052](https://github.com/tchapgouv/tchap-ios/issues/1052))
 - Changement du texte d'alerte affiché lors de la première utilisation du partage de position en temps réel ([#1050](https://github.com/tchapgouv/tchap-ios/issues/1050))
 
