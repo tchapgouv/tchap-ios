@@ -272,9 +272,25 @@ final class BuildSettings: NSObject {
         tchapFeatureNotificationByEmail: [
             tchapFeatureAnyHomeServer
         ],
-        // Audio calls inly for DINUM actually in Tchap Production.
+        // Audio calls for all except Finances in Tchap Production.
         tchapFeatureVoiceOverIP: [
-            "agent.dinum.tchap.gouv.fr"
+            "agent.externe.tchap.gouv.fr",
+            "agent.collectivites.tchap.gouv.fr",
+            "agent.tchap.gouv.fr",
+            "agent.elysee.tchap.gouv.fr",
+            "agent.pm.tchap.gouv.fr",
+            "agent.ssi.tchap.gouv.fr",
+//            "agent.finances.tchap.gouv.fr",
+            "agent.social.tchap.gouv.fr",
+            "agent.interieur.tchap.gouv.fr",
+            "agent.agriculture.tchap.gouv.fr",
+            "agent.justice.tchap.gouv.fr",
+            "agent.diplomatie.tchap.gouv.fr",
+            "agent.intradef.tchap.gouv.fr",
+            "agent.dinum.tchap.gouv.fr",
+            "agent.culture.tchap.gouv.fr",
+            "agent.dev-durable.tchap.gouv.fr",
+            "agent.education.tchap.gouv.fr"
         ],
         // No activation of video calls actually in Tchap Production.
 //        tchapFeatureVideoOverIP: [
