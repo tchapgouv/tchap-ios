@@ -32,6 +32,11 @@
 
 static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>([^<]*)</a>";
 static NSString *const kRepliedTextPattern = @"<mx-reply>.*<blockquote>.*<br>(.*)</blockquote></mx-reply>";
+// Tchap: modify regex to define reply pattern// The Tchap pattern takes in account:
+//   - a text can span on multiple lines -> (?s) modifier make regex '.' to match any char or newline char.
+//   - the pattern doesn't truncate any quoted user defined by <a> tag at the begining of the  replied to text
+// else, truncating in first quoted users (if they exists) breaks the tyext rendering.
+static NSString *const kTchapRepliedTextPattern = @"(?s)<mx-reply>.*<blockquote>.*<br>(?:<a .*?/a>[: ]*)*(.*)</blockquote></mx-reply>";
 
 @interface MXKEventFormatter ()
 {
@@ -2051,7 +2056,7 @@ static NSString *const kRepliedTextPattern = @"<mx-reply>.*<blockquote>.*<br>(.*
 
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        htmlQuotedTextRegex = [NSRegularExpression regularExpressionWithPattern:kRepliedTextPattern
+        htmlQuotedTextRegex = [NSRegularExpression regularExpressionWithPattern:kTchapRepliedTextPattern
                                                                         options:NSRegularExpressionCaseInsensitive
                                                                           error:nil];
     });
@@ -2074,6 +2079,23 @@ static NSString *const kRepliedTextPattern = @"<mx-reply>.*<blockquote>.*<br>(.*
     if( quotedTextRange.location != NSNotFound && quotedTextRange.length > quotedTextMaxLength )
     {
         NSRange truncatedRange = NSMakeRange(quotedTextRange.location + quotedTextMaxLength, quotedTextRange.length - quotedTextMaxLength);
+        
+        NSRange remainingRange = NSMakeRange(quotedTextRange.location, quotedTextMaxLength);
+        
+        // Check if truncation is in the middle of an HTML <a> tag
+        NSRange lastOpeningTag = [fullQuotedReply rangeOfString:@"<a" options:NSBackwardsSearch range:remainingRange];
+        NSRange lastClosingTag = [fullQuotedReply rangeOfString:@"/a>" options:NSBackwardsSearch range:remainingRange];
+        
+        if( lastOpeningTag.location != NSNotFound &&
+           (lastClosingTag.location == NSNotFound || lastOpeningTag.location > lastClosingTag.location) )
+        {
+            // An opening tag has no closing tag. This can break the display of the message.
+            // Cut at the beginning of the incomplete tag.
+            NSUInteger excedentLength = truncatedRange.location - lastOpeningTag.location;
+            truncatedRange.location -= excedentLength;
+            truncatedRange.length += excedentLength;
+        }
+        
         return [fullQuotedReply stringByReplacingCharactersInRange:truncatedRange withString:@"…"];
     }
     
