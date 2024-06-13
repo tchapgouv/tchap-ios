@@ -31,13 +31,12 @@
 #import "GeneratedInterface-Swift.h"
 
 static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>([^<]*)</a>";
-// Tchap: modify regex to define reply paqttern
-// static NSString *const kRepliedTextPattern = @"<mx-reply>.*<blockquote>.*<br>(.*)</blockquote></mx-reply>";
-// The Tchap pattern takes in account:
+static NSString *const kRepliedTextPattern = @"<mx-reply>.*<blockquote>.*<br>(.*)</blockquote></mx-reply>";
+// Tchap: modify regex to define reply pattern// The Tchap pattern takes in account:
 //   - a text can span on multiple lines -> (?s) modifier make regex '.' to match any char or newline char.
 //   - the pattern doesn't truncate any quoted user defined by <a> tag at the begining of the  replied to text
 // else, truncating in first quoted users (if they exists) breaks the tyext rendering.
-static NSString *const kRepliedTextPattern = @"(?s)<mx-reply>.*<blockquote>.*<br>(?:<a .*?/a>[: ]*)*(.*)</blockquote></mx-reply>";
+static NSString *const kTchapRepliedTextPattern = @"(?s)<mx-reply>.*<blockquote>.*<br>(?:<a .*?/a>[: ]*)*(.*)</blockquote></mx-reply>";
 
 @interface MXKEventFormatter ()
 {
@@ -2057,7 +2056,7 @@ static NSString *const kRepliedTextPattern = @"(?s)<mx-reply>.*<blockquote>.*<br
 
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        htmlQuotedTextRegex = [NSRegularExpression regularExpressionWithPattern:kRepliedTextPattern
+        htmlQuotedTextRegex = [NSRegularExpression regularExpressionWithPattern:kTchapRepliedTextPattern
                                                                         options:NSRegularExpressionCaseInsensitive
                                                                           error:nil];
     });
