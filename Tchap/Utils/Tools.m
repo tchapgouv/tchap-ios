@@ -150,10 +150,43 @@
     return [NSString stringWithFormat:@"%@/#/room/%@", urlPrefix, roomIdOrAlias];
 }
 
++ (NSString *)permalinkToRoomWithoutAliasFromRoomState:(MXRoomState *)state {
+    NSString *roomId = state.roomId;
+    
+    NSArray<MXRoomMember *> *members = state.members.joinedMembers;
+    
+    NSMutableSet<NSString *> *memberHomeservers = [NSMutableSet setWithCapacity:members.count];
+    
+    // Add the homeServer hosting the room.
+    [memberHomeservers addObject:[roomId componentsSeparatedByString:@":"].lastObject];
+    
+    // List unique members' homeServers in memberHomeservers. Limit to 3
+    [members enumerateObjectsUsingBlock:^(MXRoomMember * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSArray<NSString *> *userIdParts = [obj.userId componentsSeparatedByString:@":"];
+        if (userIdParts.count > 1)
+        {
+            [memberHomeservers addObject:userIdParts.lastObject]; // NSMutableSet only add object if not already present in the Set.
+            
+            // Stop if 3 homeServers are listed.
+            if (memberHomeservers.count >= 3)
+            {
+                *stop = YES;
+            }
+        }
+    }];
+    
+    NSString *urlPrefix = BuildSettings.clientPermalinkBaseUrl;
+    NSString *viaParameters = [NSString stringWithFormat:@"?via=%@", [memberHomeservers.allObjects componentsJoinedByString:@"&via="]];
+    NSString *permalinkToRoom = [NSString stringWithFormat:@"%@/#/room/%@%@", urlPrefix, roomId, viaParameters];
+    
+    return permalinkToRoom;
+}
+
 + (NSString *)permalinkToEvent:(NSString *)eventId inRoom:(NSString *)roomIdOrAlias
 {
     NSString *urlPrefix = BuildSettings.clientPermalinkBaseUrl;
     return [NSString stringWithFormat:@"%@/#/room/%@/%@", urlPrefix, roomIdOrAlias, eventId];
 }
+
 
 @end

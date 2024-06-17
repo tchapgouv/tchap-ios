@@ -149,6 +149,19 @@ final class RoomAccessByLinkViewModel: RoomAccessByLinkViewModelType {
                 } else {
                     isUnrestrictedRoom = false
                 }
+            } else if let permalink = Tools.permalinkToRoomWithoutAlias(from: roomState) {
+                // If room as no canonical alias but permalink can be computed uing roomId and homeServers from members
+                // use this form of permalink (Tchap on web does like this).
+                link = permalink
+                if let room = self.session.room(withRoomId: roomId), let summary = room.summary {
+                    if case RoomAccessRule.unrestricted = summary.tc_roomAccessRule() {
+                        isUnrestrictedRoom = true
+                    } else {
+                        isUnrestrictedRoom = false
+                    }
+                } else {
+                    isUnrestrictedRoom = false
+                }
             } else {
                 link = TchapL10n.roomSettingsRoomAccessByLinkInvalid
                 isUnrestrictedRoom = false
