@@ -27,6 +27,7 @@ class NotificationService: UNNotificationServiceExtension {
         enum Constants {
             static let voipPushRequestTimeout: TimeInterval = 15
             static let timeNeededToSendVoIPPushes: TimeInterval = 20
+            static let tchapCallInviteNotificationDiscardDelta = 10.0 // Tchap: max age of call event before ignoring it
         }
     }
     
@@ -863,6 +864,17 @@ class NotificationService: UNNotificationServiceExtension {
         // Starting from iOS 14.5, SDK can "Reports a new incoming call after your notification service extension decrypts a VoIP call request."
          // See: https://developer.apple.com/documentation/callkit/cxprovider/3727263-reportnewincomingvoippushpayload
 
+        // from Element X : https://github.com/element-hq/element-x-ios/pull/2862/files#diff-1ff0fcebaadd2768e042e7bbafc1321cc5a73089ac1692dc3749492fa2881d91R203
+        // Checks if it's still time relevant (max 10 seconds old) and whether it should ring
+        //
+        // Should prevent ghost ringing when old m.call.invite are dispatched lately
+        
+        let timestamp = Date(timeIntervalSince1970: TimeInterval(event.age / 1000))
+        guard abs(timestamp.timeIntervalSinceNow) < NSE.Constants.tchapCallInviteNotificationDiscardDelta else {
+            MXLog.info("Call notification is too old, handling as push notification")
+            return
+        }
+        
         // Build th payload expected by the application.
         var payload = [String: String]()
         payload["event_id"] = event.eventId
