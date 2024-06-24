@@ -64,6 +64,16 @@
  */
 + (NSString*)permalinkToRoom:(NSString*)roomIdOrAlias;
 
+
+/*
+ Return a permalink to a room which has no alias.
+ 
+ @param roomState the RoomState of the room, containing the roomId and the room members necessary to build the permalink.
+ @return the Tchap permalink.
+ */
++ (NSString *)permalinkToRoomWithoutAliasFromRoomState:(MXRoomState *)roomState;
+
+
 /*
  Return a permalink to an event.
  
@@ -72,5 +82,6 @@
  @return the Tchap permalink.
  */
 + (NSString*)permalinkToEvent:(NSString*)eventId inRoom:(NSString*)roomIdOrAlias;
+
 
 @end
