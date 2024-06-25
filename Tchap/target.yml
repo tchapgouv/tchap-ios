@@ -54,6 +54,7 @@ targetTemplates:
     - package: WysiwygComposer
     - package: AnalyticsEvents
     - package: Mapbox
+    - package: PostHog    
 
     preBuildScripts:
     - name: 🛠 Environment

@@ -142,7 +142,13 @@
     return fixedURL;
 }
 
-<<<<<<< HEAD:Tchap/Utils/Tools.m
+#pragma mark - Time utilities
+
++ (uint64_t)durationInMsFromDays:(uint)days
+{
+    return days * (uint64_t)(86400000);
+}
+
 #pragma mark - Tchap permalink
 
 + (NSString *)permalinkToRoom:(NSString *)roomIdOrAlias
@@ -190,13 +196,4 @@
 }
 
 
-=======
-#pragma mark - Time utilities
-
-+ (uint64_t)durationInMsFromDays:(uint)days
-{
-    return days * (uint64_t)(86400000);
-}
-
->>>>>>> v1.11.15:Riot/Utils/Tools.m
 @end

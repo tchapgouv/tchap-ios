@@ -659,12 +659,6 @@ withVoiceBroadcastInfoStateEvent:lastVoiceBroadcastInfoEvent
 - (BOOL)session:(MXSession *)session updateRoomSummary:(MXRoomSummary *)summary withStateEvents:(NSArray<MXEvent *> *)stateEvents roomState:(MXRoomState *)roomState
 {
     BOOL updated = [super session:session updateRoomSummary:summary withStateEvents:stateEvents roomState:roomState];
-<<<<<<< HEAD
-    
-    // Store in the room summary some additional information
-    updated |= [summary tc_updateWithStateEvents:stateEvents];
-    
-=======
 
     MXEvent* lastRoomRetentionEvent = [self roomRetentionEventFromStateEvents:stateEvents];
     if (lastRoomRetentionEvent)
@@ -673,7 +667,9 @@ withVoiceBroadcastInfoStateEvent:lastVoiceBroadcastInfoEvent
         updated = YES;
     }
         
->>>>>>> v1.11.15
+    // Store in the room summary some additional information
+    updated |= [summary tc_updateWithStateEvents:stateEvents];
+
     // Customisation for EMS Functional Members in direct rooms
     if (BuildSettings.supportFunctionalMembers && summary.room.isDirect)
     {
