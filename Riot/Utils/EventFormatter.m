@@ -659,10 +659,21 @@ withVoiceBroadcastInfoStateEvent:lastVoiceBroadcastInfoEvent
 - (BOOL)session:(MXSession *)session updateRoomSummary:(MXRoomSummary *)summary withStateEvents:(NSArray<MXEvent *> *)stateEvents roomState:(MXRoomState *)roomState
 {
     BOOL updated = [super session:session updateRoomSummary:summary withStateEvents:stateEvents roomState:roomState];
+<<<<<<< HEAD
     
     // Store in the room summary some additional information
     updated |= [summary tc_updateWithStateEvents:stateEvents];
     
+=======
+
+    MXEvent* lastRoomRetentionEvent = [self roomRetentionEventFromStateEvents:stateEvents];
+    if (lastRoomRetentionEvent)
+    {
+        summary.others[MXRoomSummary.roomRetentionMaxLifetime] = lastRoomRetentionEvent.content[MXRoomSummary.roomRetentionEventMaxLifetimeKey];
+        updated = YES;
+    }
+        
+>>>>>>> v1.11.15
     // Customisation for EMS Functional Members in direct rooms
     if (BuildSettings.supportFunctionalMembers && summary.room.isDirect)
     {
@@ -675,7 +686,7 @@ withVoiceBroadcastInfoStateEvent:lastVoiceBroadcastInfoEvent
             // room name which we'll do twice more in updateRoomSummary:withServerRoomSummary:roomState: anyway.
             //
             // So return YES and let that happen there.
-            return YES;
+            updated = YES;
         }
     }
     
@@ -828,6 +839,12 @@ withVoiceBroadcastInfoStateEvent:lastVoiceBroadcastInfoEvent
 - (MXEvent *)functionalMembersEventFromStateEvents:(NSArray<MXEvent *> *)stateEvents
 {
     NSPredicate *functionalMembersPredicate = [NSPredicate predicateWithFormat:@"type == %@", FunctionalMembersStateEventType];
+    return [stateEvents filteredArrayUsingPredicate:functionalMembersPredicate].lastObject;
+}
+
+- (MXEvent *)roomRetentionEventFromStateEvents:(NSArray<MXEvent *> *)stateEvents
+{
+    NSPredicate *functionalMembersPredicate = [NSPredicate predicateWithFormat:@"type == %@", kMXEventTypeStringRoomRetention];
     return [stateEvents filteredArrayUsingPredicate:functionalMembersPredicate].lastObject;
 }
 

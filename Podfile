@@ -9,44 +9,10 @@ inhibit_all_warnings!
 # Use frameworks to allow usage of pods written in Swift
 use_frameworks!
 
-# Different flavours of pods to MatrixSDK. Can be one of:
-# - a String indicating an official MatrixSDK released version number
-# - `:local` (to use Development Pods)
-# - `{ :branch => 'sdk branch name'}` to depend on specific branch of MatrixSDK repo
-# - `{ :specHash => {sdk spec hash}` to depend on specific pod options (:git => …, :podspec => …) for MatrixSDK repo. Used by Fastfile during CI
-#
-# Warning: our internal tooling depends on the name of this variable name, so be sure not to change it
-$matrixSDKVersion = '= 0.27.8'
-# $matrixSDKVersion = :local
-# $matrixSDKVersion = { :branch => 'develop'}
-# $matrixSDKVersion = { :specHash => { git: 'https://git.io/fork123', branch: 'fix' } }
-
-########################################
-
-case $matrixSDKVersion
-when :local
-$matrixSDKVersionSpec = { :path => '../matrix-ios-sdk/MatrixSDK.podspec' }
-when Hash
-spec_mode, sdk_spec = $matrixSDKVersion.first # extract first and only key/value pair; key is spec_mode, value is sdk_spec
-
-  case spec_mode
-  when :branch
-  # :branch => sdk branch name
-  sdk_spec = { :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => sdk_spec.to_s } unless sdk_spec.is_a?(Hash)
-  when :specHash
-  # :specHash => {sdk spec Hash}
-  sdk_spec = sdk_spec
-  end
-
-$matrixSDKVersionSpec = sdk_spec
-when String # specific MatrixSDK released version
-$matrixSDKVersionSpec = $matrixSDKVersion
-end
-
 # Method to import the MatrixSDK
 def import_MatrixSDK
-  pod 'MatrixSDK', $matrixSDKVersionSpec, :inhibit_warnings => false
-  pod 'MatrixSDK/JingleCallStack', $matrixSDKVersionSpec, :inhibit_warnings => false
+  pod 'MatrixSDK', :path => 'matrix-ios-sdk/MatrixSDK.podspec', :inhibit_warnings => false
+  pod 'MatrixSDK/JingleCallStack', :path => 'matrix-ios-sdk/MatrixSDK.podspec', :inhibit_warnings => false
 end
 
 ########################################
@@ -62,7 +28,33 @@ def import_SwiftUI_pods
     pod 'ZXingObjC', '~> 3.6.9'
 end
 
+<<<<<<< HEAD
 def import_Common_pods
+=======
+abstract_target 'RiotPods' do
+
+  pod 'GBDeviceInfo', '~> 7.1.0'
+  pod 'Reusable', '~> 4.1'
+  pod 'KeychainAccess', '~> 4.2.2'
+  pod 'WeakDictionary', '~> 2.0'
+
+  pod 'Sentry', '~> 7.15.0'
+
+  pod 'OLMKit'
+  pod 'zxcvbn-ios'
+
+  # Tools
+  pod 'SwiftGen'
+  pod 'SwiftLint'
+  pod 'SwiftFormat/CLI'
+
+  target "Riot" do
+    import_MatrixSDK
+    import_MatrixKit_pods
+
+    import_SwiftUI_pods
+
+>>>>>>> v1.11.15
     pod 'UICollectionViewRightAlignedLayout', '~> 0.0.3'
     pod 'UICollectionViewLeftAlignedLayout', '~> 1.0.2'
     pod 'KTCenterFlowLayout', '~> 1.3.1'

@@ -1991,6 +1991,9 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             [self registerNewRequestNotificationForSession:mxSession];
             
             [self.pushNotificationService checkPushKitPushersInSession:mxSession];
+            
+            // Clean the storage by removing expired data
+            [mxSession removeExpiredMessages];
         }
         else if (mxSession.state == MXSessionStateRunning)
         {

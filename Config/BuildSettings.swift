@@ -304,6 +304,7 @@ final class BuildSettings: NSObject {
     static let settingsScreenShowChangePassword: Bool = true
     static let settingsScreenShowEnableStunServerFallback: Bool = true
     static let settingsScreenShowNotificationDecodedContentOption: Bool = true
+<<<<<<< HEAD
     static let settingsScreenShowNsfwRoomsOption: Bool = false
     static let settingsSecurityScreenShowSessions: Bool = true
     static let settingsSecurityScreenShowSetupBackup: Bool = true
@@ -312,6 +313,15 @@ final class BuildSettings: NSObject {
     static let settingsSecurityScreenShowCryptographyInfo: Bool = true
     static let settingsSecurityScreenShowCryptographyExport: Bool = true
     static let settingsSecurityScreenShowAdvancedUnverifiedDevices: Bool = false
+=======
+    static let settingsSecurityScreenShowSessions:Bool = true
+    static let settingsSecurityScreenShowSetupBackup:Bool = true
+    static let settingsSecurityScreenShowRestoreBackup:Bool = true
+    static let settingsSecurityScreenShowDeleteBackup:Bool = true
+    static let settingsSecurityScreenShowCryptographyInfo:Bool = true
+    static let settingsSecurityScreenShowCryptographyExport:Bool = true
+    static let settingsSecurityScreenShowAdvancedUnverifiedDevices:Bool = true
+>>>>>>> v1.11.15
     /// A setting to enable the presence configuration settings section.
     static let settingsScreenPresenceAllowConfiguration: Bool = false
 

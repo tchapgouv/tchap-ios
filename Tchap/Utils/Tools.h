@@ -54,6 +54,7 @@
  */
 + (NSURL*)fixURLWithSeveralHashKeys:(NSURL*)url;
 
+<<<<<<< HEAD:Tchap/Utils/Tools.h
 #pragma mark - Tchap permalink
 
 /*
@@ -83,5 +84,13 @@
  */
 + (NSString*)permalinkToEvent:(NSString*)eventId inRoom:(NSString*)roomIdOrAlias;
 
+=======
+#pragma mark - Time utilities
+
+/**
+ * Convert a number of days to a duration in ms.
+ */
++ (uint64_t)durationInMsFromDays:(uint)days;
+>>>>>>> v1.11.15:Riot/Utils/Tools.h
 
 @end

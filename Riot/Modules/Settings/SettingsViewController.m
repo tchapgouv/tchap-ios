@@ -169,8 +169,7 @@ typedef NS_ENUM(NSUInteger, PREFERENCES)
 
 typedef NS_ENUM(NSUInteger, ADVANCED)
 {
-    ADVANCED_SHOW_NSFW_ROOMS_INDEX = 0,
-    ADVANCED_CRASH_REPORT_INDEX,
+    ADVANCED_CRASH_REPORT_INDEX = 0,
     ADVANCED_ENABLE_RAGESHAKE_INDEX,
     ADVANCED_MARK_ALL_AS_READ_INDEX,
     ADVANCED_CLEAR_CACHE_INDEX,
@@ -624,11 +623,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     
     Section *sectionAdvanced = [Section sectionWithTag:SECTION_TAG_ADVANCED];
     sectionAdvanced.headerTitle = [VectorL10n settingsAdvanced];
-    
-    if (RiotSettings.shared.settingsScreenShowNsfwRoomsOption)
-    {
-        [sectionAdvanced addRowWithTag:ADVANCED_SHOW_NSFW_ROOMS_INDEX];
-    }
     
     if (BuildSettings.settingsScreenAllowChangingCrashUsageDataSettings)
     {
@@ -2541,20 +2535,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     }
     else if (section == SECTION_TAG_ADVANCED)
     {
-        if (row == ADVANCED_SHOW_NSFW_ROOMS_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-            
-            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsShowNSFWPublicRooms];
-            
-            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.showNSFWPublicRooms;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            labelAndSwitchCell.mxkSwitch.enabled = YES;
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleNSFWPublicRoomsFiltering:) forControlEvents:UIControlEventTouchUpInside];
-            
-            cell = labelAndSwitchCell;
-        }
-        else if (row == ADVANCED_CRASH_REPORT_INDEX)
+        if (row == ADVANCED_CRASH_REPORT_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* sendCrashReportCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
@@ -4411,11 +4392,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     {
         account.preferredSyncPresence = MXPresenceOnline;
     }
-}
-
-- (void)toggleNSFWPublicRoomsFiltering:(UISwitch *)sender
-{
-    RiotSettings.shared.showNSFWPublicRooms = sender.isOn;
 }
 
 - (void)toggleEnableRoomMessageBubbles:(UISwitch *)sender

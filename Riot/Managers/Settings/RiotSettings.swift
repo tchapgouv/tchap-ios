@@ -97,6 +97,7 @@ final class RiotSettings: NSObject {
     @UserDefault(key: UserDefaultsKeys.pinRoomsWithUnreadMessagesOnHome, defaultValue: false, storage: defaults)
     var pinRoomsWithUnreadMessagesOnHome
     
+<<<<<<< HEAD
     /// Indicate to show Not Safe For Work public rooms.
     @UserDefault(key: "showNSFWPublicRooms", defaultValue: false, storage: defaults)
     var showNSFWPublicRooms
@@ -111,6 +112,8 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "showProfileUpdateEvents", defaultValue: false, storage: defaults)
     var showProfileUpdateEvents
     
+=======
+>>>>>>> v1.11.15
     // MARK: User interface
     
     @UserDefault<String?>(key: "userInterfaceTheme", defaultValue: nil, storage: defaults)
@@ -346,10 +349,7 @@ final class RiotSettings: NSObject {
     
     @UserDefault(key: "settingsScreenShowNotificationDecodedContentOption", defaultValue: BuildSettings.settingsScreenShowNotificationDecodedContentOption, storage: defaults)
     var settingsScreenShowNotificationDecodedContentOption
-    
-    @UserDefault(key: "settingsScreenShowNsfwRoomsOption", defaultValue: BuildSettings.settingsScreenShowNsfwRoomsOption, storage: defaults)
-    var settingsScreenShowNsfwRoomsOption
-    
+        
     @UserDefault(key: "settingsSecurityScreenShowSessions", defaultValue: BuildSettings.settingsSecurityScreenShowSessions, storage: defaults)
     var settingsSecurityScreenShowSessions
     

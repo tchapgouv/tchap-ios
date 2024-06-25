@@ -25,7 +25,9 @@ jobs:
       cancel-in-progress: true
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+        with:
+            submodules: 'true'
 
       # Common cache
       # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
@@ -54,10 +56,13 @@ jobs:
         run: |
           bundle config path vendor/bundle
           bundle install --jobs 4 --retry 3
+<<<<<<< HEAD
 
       # Disabled for Tchap to avoid MatrixSDK version reset on the main branch (develop), instead of using the DINUM specific one.
 #      - name: Use right MatrixSDK versions
 #        run: bundle exec fastlane point_dependencies_to_related_branches
+=======
+>>>>>>> v1.11.15
 
       # Main step
       - name: Unit tests
