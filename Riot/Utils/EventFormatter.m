@@ -504,7 +504,9 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         self.defaultTextColor = ThemeService.shared.theme.textPrimaryColor;
         self.subTitleTextColor = ThemeService.shared.theme.textSecondaryColor;
         self.prefixTextColor = ThemeService.shared.theme.textSecondaryColor;
-        self.bingTextColor = ThemeService.shared.theme.noticeColor;
+        // Tchap: Don't set text color to red/notice when a user is targeted.
+//        self.bingTextColor = ThemeService.shared.theme.noticeColor;
+        self.bingTextColor = ThemeService.shared.theme.textPrimaryColor;
         self.encryptingTextColor = ThemeService.shared.theme.textPrimaryColor;
         self.sendingTextColor = ThemeService.shared.theme.textPrimaryColor;
         self.linksColor = ThemeService.shared.theme.colors.links;

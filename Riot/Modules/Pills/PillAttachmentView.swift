@@ -68,7 +68,10 @@ class PillAttachmentView: UIView {
                 let label = UILabel(frame: .zero)
                 label.text = string
                 label.font = pillData.font
-                label.textColor = pillData.isHighlighted ? theme.baseTextPrimaryColor : theme.textPrimaryColor
+                // Tchap: set highlighted pill text content light enough to be readable in light and dark themes.
+                // Only `baseTextPrimaryColor` is light enough in both themes.
+//                label.textColor = pillData.isHighlighted ? theme.baseTextPrimaryColor : theme.textPrimaryColor
+                label.textColor = pillData.isHighlighted ? theme.baseIconPrimaryColor : theme.textPrimaryColor
                 label.translatesAutoresizingMaskIntoConstraints = false
                 stack.addArrangedSubview(label)
                 
@@ -154,7 +157,9 @@ class PillAttachmentView: UIView {
 
         pillBackgroundView.vc_addSubViewMatchingParent(stack, withInsets: UIEdgeInsets(top: sizes.verticalMargin, left: leadingStackMargin, bottom: -sizes.verticalMargin, right: -sizes.horizontalMargin))
         
-        pillBackgroundView.backgroundColor = pillData.isHighlighted ? theme.colors.alert : theme.colors.quinaryContent
+        // Tchap: set highlighted pill background color to accent color (not red)
+//        pillBackgroundView.backgroundColor = pillData.isHighlighted ? theme.colors.alert : theme.colors.quinaryContent
+        pillBackgroundView.backgroundColor = pillData.isHighlighted ? theme.colors.accent : theme.colors.quinaryContent
         pillBackgroundView.layer.cornerRadius = sizes.pillBackgroundHeight / 2.0
 
         self.addSubview(pillBackgroundView)
