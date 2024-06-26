@@ -95,7 +95,7 @@
         [self flushPills];
     }
 
-    // Tchap: set text type to prefered font to rerspect user text size, but only if timeline style is set to bubble.
+    // Tchap: set text type to prefered font to respect user text size, but only if timeline style is set to bubble.
     if (RiotSettings.shared.roomTimelineStyleIdentifier == RoomTimelineStyleIdentifierBubble ) {
         attributedText = [self respectPreferredFontForAttributedString:attributedText];
     }
