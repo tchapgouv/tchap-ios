@@ -275,19 +275,31 @@ public class TchapL10n: NSObject {
   public static var eventFormatterReportIncident: String { 
     return TchapL10n.tr("Tchap", "event_formatter_report_incident") 
   }
-  /// La durée de validité de votre compte a expiré. Un email vous a été envoyé pour la renouveler. Une fois que vous aurez suivi le lien qu’il contient, cliquez ci-dessous.
+  /// Un email vous a été envoyé pour renouveler votre compte. Une fois que vous aurez suivi le lien qu’il contient, cliquez ci-dessous.
   public static var expiredAccountAlertMessage: String { 
     return TchapL10n.tr("Tchap", "expired_account_alert_message") 
   }
-  /// Un nouvel email vous a été envoyé pour renouveler la validité de votre compte. Une fois que vous aurez suivi le lien qu’il contient, cliquez ci-dessous.
-  public static var expiredAccountOnNewSentEmailMsg: String { 
-    return TchapL10n.tr("Tchap", "expired_account_on_new_sent_email_msg") 
+  /// Votre compte a expiré
+  public static var expiredAccountAlertTitle: String { 
+    return TchapL10n.tr("Tchap", "expired_account_alert_title") 
   }
-  /// Demander l’envoi d’un nouvel email
+  /// Continuer
+  public static var expiredAccountOnNewSentEmailButton: String { 
+    return TchapL10n.tr("Tchap", "expired_account_on_new_sent_email_button") 
+  }
+  /// Un nouvel email vous a été envoyé pour renouveler votre compte. Une fois que vous aurez suivi le lien qu’il contient, cliquez ci-dessous.
+  public static var expiredAccountOnNewSentEmailMessage: String { 
+    return TchapL10n.tr("Tchap", "expired_account_on_new_sent_email_message") 
+  }
+  /// Email envoyé
+  public static var expiredAccountOnNewSentEmailTitle: String { 
+    return TchapL10n.tr("Tchap", "expired_account_on_new_sent_email_title") 
+  }
+  /// Emvoyer un nouvel email
   public static var expiredAccountRequestRenewalEmailButton: String { 
     return TchapL10n.tr("Tchap", "expired_account_request_renewal_email_button") 
   }
-  /// J’ai renouvelé mon compte
+  /// Continuer
   public static var expiredAccountResumeButton: String { 
     return TchapL10n.tr("Tchap", "expired_account_resume_button") 
   }
@@ -591,7 +603,7 @@ public class TchapL10n: NSObject {
   public static var roomFilesTabTitle: String { 
     return TchapL10n.tr("Tchap", "room_files_tab_title") 
   }
-  /// Cet utilisateur n'est pas autorisé à rejoindre ce salon.
+  /// Cet utilisateur est déjà membre du salon ou n'est pas autorisé à le rejoindre.
   public static var roomInviteErrorActionForbidden: String { 
     return TchapL10n.tr("Tchap", "room_invite_error_action_forbidden") 
   }
@@ -614,6 +626,14 @@ public class TchapL10n: NSObject {
   /// Membres
   public static var roomMembersTabTitle: String { 
     return TchapL10n.tr("Tchap", "room_members_tab_title") 
+  }
+  /// Le fichier est trop lourd pour être envoyé. La taille limite est de %ldMo, mais la taille de votre fichier est de %ldMo.
+  public static func roomSendFileTooBigMessage(_ p1: Int, _ p2: Int) -> String {
+    return TchapL10n.tr("Tchap", "room_send_file_too_big_message", p1, p2)
+  }
+  /// Erreur d'envoi
+  public static var roomSendFileTooBigTitle: String { 
+    return TchapL10n.tr("Tchap", "room_send_file_too_big_title") 
   }
   /// Ce changement n’est pas supporté actuellement car le salon est accessible par lien. Il sera supporté prochainement
   public static var roomSettingsAllowExternalUsersForbidden: String { 
@@ -795,6 +815,14 @@ public class TchapL10n: NSObject {
   public static var settingsCryptoImportInvalidFile: String { 
     return TchapL10n.tr("Tchap", "settings_crypto_import_invalid_file") 
   }
+  /// En savoir plus.
+  public static var settingsEnableEmailNotifLink: String { 
+    return TchapL10n.tr("Tchap", "settings_enable_email_notif_link") 
+  }
+  /// Recevez un e-mail si au moins un message récent non lu pendant 72h.
+  public static var settingsEnableEmailNotifText: String { 
+    return TchapL10n.tr("Tchap", "settings_enable_email_notif_text") 
+  }
   /// Sans cette autorisation, les appels entrants ne seront pas notifiés.
   public static var settingsEnablePushNotifText: String { 
     return TchapL10n.tr("Tchap", "settings_enable_push_notif_text") 
@@ -807,7 +835,7 @@ public class TchapL10n: NSObject {
   public static var settingsHideFromUsersDirectoryTitle: String { 
     return TchapL10n.tr("Tchap", "settings_hide_from_users_directory_title") 
   }
-  /// Notification par courriel
+  /// Notification par e-mail
   public static var settingsNotificationEmail: String { 
     return TchapL10n.tr("Tchap", "settings_notification_email") 
   }

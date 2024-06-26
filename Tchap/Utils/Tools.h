@@ -54,6 +54,13 @@
  */
 + (NSURL*)fixURLWithSeveralHashKeys:(NSURL*)url;
 
+#pragma mark - Time utilities
+
+/**
+ * Convert a number of days to a duration in ms.
+ */
++ (uint64_t)durationInMsFromDays:(uint)days;
+
 #pragma mark - Tchap permalink
 
 /*
@@ -82,6 +89,7 @@
  @return the Tchap permalink.
  */
 + (NSString*)permalinkToEvent:(NSString*)eventId inRoom:(NSString*)roomIdOrAlias;
+
 
 
 @end

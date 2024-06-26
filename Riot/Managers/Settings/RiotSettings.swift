@@ -97,10 +97,6 @@ final class RiotSettings: NSObject {
     @UserDefault(key: UserDefaultsKeys.pinRoomsWithUnreadMessagesOnHome, defaultValue: false, storage: defaults)
     var pinRoomsWithUnreadMessagesOnHome
     
-    /// Indicate to show Not Safe For Work public rooms.
-    @UserDefault(key: "showNSFWPublicRooms", defaultValue: false, storage: defaults)
-    var showNSFWPublicRooms
-    
     /// Indicate if the user wants to display the join and leave events in the room history.
     /// (No by default)
     @UserDefault(key: "showJoinLeaveEvents", defaultValue: false, storage: defaults)
@@ -346,10 +342,7 @@ final class RiotSettings: NSObject {
     
     @UserDefault(key: "settingsScreenShowNotificationDecodedContentOption", defaultValue: BuildSettings.settingsScreenShowNotificationDecodedContentOption, storage: defaults)
     var settingsScreenShowNotificationDecodedContentOption
-    
-    @UserDefault(key: "settingsScreenShowNsfwRoomsOption", defaultValue: BuildSettings.settingsScreenShowNsfwRoomsOption, storage: defaults)
-    var settingsScreenShowNsfwRoomsOption
-    
+        
     @UserDefault(key: "settingsSecurityScreenShowSessions", defaultValue: BuildSettings.settingsSecurityScreenShowSessions, storage: defaults)
     var settingsSecurityScreenShowSessions
     
