@@ -280,7 +280,7 @@ final class BuildSettings: NSObject {
             "agent.elysee.tchap.gouv.fr",
             "agent.pm.tchap.gouv.fr",
             "agent.ssi.tchap.gouv.fr",
-//            "agent.finances.tchap.gouv.fr",
+            "agent.finances.tchap.gouv.fr",
             "agent.social.tchap.gouv.fr",
             "agent.interieur.tchap.gouv.fr",
             "agent.agriculture.tchap.gouv.fr",
