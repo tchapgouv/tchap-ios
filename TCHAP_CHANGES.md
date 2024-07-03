@@ -1,3 +1,18 @@
+## Changes in 2.7.9 (2024-07-03)
+
+🙌 Improvements
+
+- Rebase sur Element 1.11.15 ([#1066](https://github.com/tchapgouv/tchap-ios/issues/1066))
+- Adaptation des couleurs des pills lors des mentions ([#1067](https://github.com/tchapgouv/tchap-ios/issues/1067))
+- Activaction de la VoIP pour l'administration Finances ([#1069](https://github.com/tchapgouv/tchap-ios/issues/1069))
+
+🐛 Bugfixes
+
+- Correction de la génération de lien de partage sur les forums ([#875](https://github.com/tchapgouv/tchap-ios/issues/875))
+- Ignorer les notifications d'appel VoIP trop anciennes ([#1005](https://github.com/tchapgouv/tchap-ios/issues/1005))
+- Amélioration de la troncature des réponses à messages (certains messages tronqués apparaissaient vides). ([#1056](https://github.com/tchapgouv/tchap-ios/issues/1056))
+
+
 ## Changes in 2.7.8 (2024-06-12)
 
 ✨ Features
