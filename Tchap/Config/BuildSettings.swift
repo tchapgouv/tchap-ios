@@ -272,7 +272,7 @@ final class BuildSettings: NSObject {
         tchapFeatureNotificationByEmail: [
             tchapFeatureAnyHomeServer
         ],
-        // Audio calls for all except Finances in Tchap Production.
+        // Audio calls for all in Tchap Production.
         tchapFeatureVoiceOverIP: [
             "agent.externe.tchap.gouv.fr",
             "agent.collectivites.tchap.gouv.fr",
@@ -280,7 +280,7 @@ final class BuildSettings: NSObject {
             "agent.elysee.tchap.gouv.fr",
             "agent.pm.tchap.gouv.fr",
             "agent.ssi.tchap.gouv.fr",
-//            "agent.finances.tchap.gouv.fr",
+            "agent.finances.tchap.gouv.fr",
             "agent.social.tchap.gouv.fr",
             "agent.interieur.tchap.gouv.fr",
             "agent.agriculture.tchap.gouv.fr",
