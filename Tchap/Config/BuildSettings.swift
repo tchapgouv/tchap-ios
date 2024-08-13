@@ -292,10 +292,9 @@ final class BuildSettings: NSObject {
             "agent.dev-durable.tchap.gouv.fr",
             "agent.education.tchap.gouv.fr"
         ],
-        // No activation of video calls actually in Tchap Production.
-//        tchapFeatureVideoOverIP: [
-//            "agent.dinum.tchap.gouv.fr"
-//        ],
+        tchapFeatureVideoOverIP: [
+            "agent.dinum.tchap.gouv.fr"
+        ],
         tchapFeatureGeolocationSharing: [
             tchapFeatureAnyHomeServer
         ]
