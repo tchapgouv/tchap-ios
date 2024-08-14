@@ -480,7 +480,9 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     profiler.analytics = analytics;
     [MXSDKOptions sharedInstance].profiler = profiler;
     
-    [analytics startIfEnabled];
+    // Tchap: Don't try to start analytics here.
+    // Wait to have MXSession initialized in `handleAppState` method.
+//    [analytics startIfEnabled];
 
     self.localAuthenticationService = [[LocalAuthenticationService alloc] initWithPinCodePreferences:[PinCodePreferences shared]];
     
@@ -2551,6 +2553,24 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             // An observer has been set in didFinishLaunching that will call the stored block when ready
             self.roomListDataReadyCompletion = finishAppLaunch;
         }
+        
+        // Tchap: handle analytics start now that a MXSession is known.
+        // Check classes with `object_getClass` function because they are `id` conforming to protocols and not direct objects.
+        if (object_getClass(MXSDKOptions.sharedInstance.profiler) == MXBaseProfiler.class &&
+            object_getClass(((MXBaseProfiler *)MXSDKOptions.sharedInstance.profiler).analytics) == Analytics.class)
+        {
+            Analytics *analytics = (Analytics *)((MXBaseProfiler *)MXSDKOptions.sharedInstance.profiler).analytics;
+#if DEBUG
+            // Tchap: Force analytics acceptance in DEBUG mode
+            //        `optInWith:` calls `startIfEnabled`
+            [analytics optInWith:mainSession];
+#else
+            // Tchap: start analytics as it was done in `application:didFinishLaunchingWithOptions:`
+            [analytics startIfEnabled];
+#endif
+        }
+        
+
     }
 }
 
