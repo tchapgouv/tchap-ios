@@ -1,3 +1,17 @@
+## Changes in 2.8.0 (2024-08-14)
+
+🙌 Improvements
+
+- Ajout de la VoIP sur Finances dans le bon fichier de configuration ([#1071](https://github.com/tchapgouv/tchap-ios/issues/1071))
+- Activation de la visio 1-to-1 pour l'instance DINUM. ([#1073](https://github.com/tchapgouv/tchap-ios/issues/1073))
+- Suppression du filtrage de notification VoIP sur l'age de la notification. Ne fonctionnait pas correctement sur Tchap. ([#1076](https://github.com/tchapgouv/tchap-ios/issues/1076))
+- Activation de l'analytics PostHog en version Debug ([#1078](https://github.com/tchapgouv/tchap-ios/issues/1078))
+
+🧱 Build
+
+- Update pods for Xcode 15.4 ([#1080](https://github.com/tchapgouv/tchap-ios/issues/1080))
+
+
 ## Changes in 2.7.9 (2024-07-03)
 
 🙌 Improvements
