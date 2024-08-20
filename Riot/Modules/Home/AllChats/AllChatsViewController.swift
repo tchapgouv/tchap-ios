@@ -1117,36 +1117,36 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
         MXLog.debug("[AllChatsViewController] presentOnboardingFlow")
 
         // Tchap: Use WelcomeCoordinatorBridgePresenter instead of OnboardingCoordinatorBridgePresenter
-        let welcomeCoordinatorBridgePresenter = WelcomeCoordinatorBridgePresenter()
-        welcomeCoordinatorBridgePresenter.completion = { [weak self] in
-            guard let self = self else { return }
-            
-            self.welcomeCoordinatorBridgePresenter?.dismiss(animated: true, completion: {
-                self.welcomeCoordinatorBridgePresenter = nil
-            })
-
-            self.isOnboardingInProgress = false   // Must be set before calling didCompleteAuthentication
-            self.allChatsDelegate?.allChatsViewControllerDidCompleteAuthentication(self)
-        }
-
-        welcomeCoordinatorBridgePresenter.present(from: self, animated: true)
-        self.welcomeCoordinatorBridgePresenter = welcomeCoordinatorBridgePresenter
-
-        
-//        let onboardingCoordinatorBridgePresenter = OnboardingCoordinatorBridgePresenter()
-//        onboardingCoordinatorBridgePresenter.completion = { [weak self] in
+//        let welcomeCoordinatorBridgePresenter = WelcomeCoordinatorBridgePresenter()
+//        welcomeCoordinatorBridgePresenter.completion = { [weak self] in
 //            guard let self = self else { return }
-//
-//            self.onboardingCoordinatorBridgePresenter?.dismiss(animated: true, completion: {
-//                self.onboardingCoordinatorBridgePresenter = nil
+//            
+//            self.welcomeCoordinatorBridgePresenter?.dismiss(animated: true, completion: {
+//                self.welcomeCoordinatorBridgePresenter = nil
 //            })
 //
 //            self.isOnboardingInProgress = false   // Must be set before calling didCompleteAuthentication
 //            self.allChatsDelegate?.allChatsViewControllerDidCompleteAuthentication(self)
 //        }
 //
-//        onboardingCoordinatorBridgePresenter.present(from: self, animated: true)
-//        self.onboardingCoordinatorBridgePresenter = onboardingCoordinatorBridgePresenter
+//        welcomeCoordinatorBridgePresenter.present(from: self, animated: true)
+//        self.welcomeCoordinatorBridgePresenter = welcomeCoordinatorBridgePresenter
+
+        
+        let onboardingCoordinatorBridgePresenter = OnboardingCoordinatorBridgePresenter()
+        onboardingCoordinatorBridgePresenter.completion = { [weak self] in
+            guard let self = self else { return }
+
+            self.onboardingCoordinatorBridgePresenter?.dismiss(animated: true, completion: {
+                self.onboardingCoordinatorBridgePresenter = nil
+            })
+
+            self.isOnboardingInProgress = false   // Must be set before calling didCompleteAuthentication
+            self.allChatsDelegate?.allChatsViewControllerDidCompleteAuthentication(self)
+        }
+
+        onboardingCoordinatorBridgePresenter.present(from: self, animated: true)
+        self.onboardingCoordinatorBridgePresenter = onboardingCoordinatorBridgePresenter
         self.isOnboardingCoordinatorPreparing = false
     }
 
