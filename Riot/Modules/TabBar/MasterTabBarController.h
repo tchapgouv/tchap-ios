@@ -15,7 +15,7 @@
  limitations under the License.
  */
 
-#import "AuthenticationViewController.h"
+//#import "AuthenticationViewController.h"
 
 #import "RoomPreviewData.h"
 #import "FavouritesViewController.h"
