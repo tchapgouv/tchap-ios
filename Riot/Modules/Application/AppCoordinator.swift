@@ -281,7 +281,9 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         
         switch deepLinkOption {
         case .connect(let loginToken, let transactionID):
-            canOpenLink = self.legacyAppDelegate.continueSSOLogin(withToken: loginToken, txnId: transactionID)
+            // Tchap: return to Element way of handling deep link SSO connect
+//            canOpenLink = self.legacyAppDelegate.continueSSOLogin(withToken: loginToken, txnId: transactionID)
+            canOpenLink = AuthenticationService.shared.continueSSOLogin(with: loginToken, and: transactionID)
         }
         
         return canOpenLink

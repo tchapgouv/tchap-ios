@@ -294,7 +294,7 @@ UINavigationControllerDelegate
 /// @param loginToken The login token provided when SSO succeeded.
 /// @param txnId transaction id generated during SSO page presentation.
 /// returns YES if the SSO login can be continued.
-- (BOOL)continueSSOLoginWithToken:(NSString*)loginToken txnId:(NSString*)txnId;
+//- (BOOL)continueSSOLoginWithToken:(NSString*)loginToken txnId:(NSString*)txnId;
 
 @end
 
