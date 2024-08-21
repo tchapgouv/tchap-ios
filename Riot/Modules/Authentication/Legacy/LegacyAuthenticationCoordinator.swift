@@ -72,13 +72,14 @@ final class LegacyAuthenticationCoordinator: NSObject, AuthenticationCoordinator
         // Set (or clear) any soft-logout credentials.
         authenticationViewController.softLogoutCredentials = authenticationService.softLogoutCredentials
         
-        // Configure custom servers if already customised by a deep link.
-        let homeserver = authenticationService.state.homeserver.address
-        let identityServer = authenticationService.state.identityServer
-        if homeserver != BuildSettings.serverConfigDefaultHomeserverUrlString
-            || (identityServer != nil && identityServer != BuildSettings.serverConfigDefaultIdentityServerUrlString) {
-            authenticationViewController.showCustomHomeserver(homeserver, andIdentityServer: identityServer)
-        }
+        // Tchap: Don't show custom servers during SSO tests.
+//        // Configure custom servers if already customised by a deep link.
+//        let homeserver = authenticationService.state.homeserver.address
+//        let identityServer = authenticationService.state.identityServer
+//        if homeserver != BuildSettings.serverConfigDefaultHomeserverUrlString
+//            || (identityServer != nil && identityServer != BuildSettings.serverConfigDefaultIdentityServerUrlString) {
+//            authenticationViewController.showCustomHomeserver(homeserver, andIdentityServer: identityServer)
+//        }
         
         // Listen for further changes from deep links.
         AuthenticationService.shared.delegate = self
