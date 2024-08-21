@@ -4543,20 +4543,21 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     [self presentViewController:viewController animated:YES completion:completion];
 }
 
-//#pragma mark - Authentication
-//
-//- (BOOL)continueSSOLoginWithToken:(NSString*)loginToken txnId:(NSString*)txnId
-//{
-//    OnboardingCoordinatorBridgePresenter *bridgePresenter = self.masterTabBarController.onboardingCoordinatorBridgePresenter;
-//    
-//    if (!bridgePresenter)
-//    {
-//        MXLogDebug(@"[AppDelegate] Fail to continue SSO login");
-//        return NO;
-//    }
-//    
-//    [bridgePresenter continueSSOLoginWithToken:loginToken transactionID:txnId];
-//}
+#pragma mark - Authentication
+
+- (BOOL)continueSSOLoginWithToken:(NSString*)loginToken txnId:(NSString*)txnId
+{
+    OnboardingCoordinatorBridgePresenter *bridgePresenter = self.masterTabBarController.onboardingCoordinatorBridgePresenter;
+    
+    if (!bridgePresenter)
+    {
+        MXLogDebug(@"[AppDelegate] Fail to continue SSO login");
+        return NO;
+    }
+    
+    // Tchap:
+    return NO;//[bridgePresenter continueSSOLoginWithToken:loginToken transactionID:txnId];
+}
 
 #pragma mark - Private
 
