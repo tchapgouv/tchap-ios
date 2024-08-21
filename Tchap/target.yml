@@ -177,6 +177,8 @@ targetTemplates:
     - path: ../Riot/Modules/Analytics
     - path: ../Riot/Modules/Application
     - path: ../Riot/Modules/Authentication
+      excludes:
+        - "Legacy"
     - path: ../Riot/Modules/BadgeLabel
     - path: ../Riot/Modules/BugReport/BugReportViewController.h
     - path: ../Riot/Modules/BugReport/BugReportViewController.m
