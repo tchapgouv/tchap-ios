@@ -108,7 +108,7 @@ class AllChatsViewController: HomeViewController {
     // Reference to the current onboarding flow. It is always nil unless the flow is being presented.
     private(set) var onboardingCoordinatorBridgePresenter: OnboardingCoordinatorBridgePresenter?
     // Tchap: Use welcomeCoordinator instead of onboardingCoordinator
-    private(set) var welcomeCoordinatorBridgePresenter: WelcomeCoordinatorBridgePresenter?
+//    private(set) var welcomeCoordinatorBridgePresenter: WelcomeCoordinatorBridgePresenter?
     
     // Tell whether the onboarding screen is preparing.
     private(set) var isOnboardingInProgress: Bool = false
@@ -921,8 +921,7 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
         // This method can be called after the user chooses to clear their data as the MXSession
         // is opened to call logout from. So we only set the credentials when authentication isn't
         // in progress to prevent a second soft logout screen being shown.
-        // Tchap: Use WelcomeCoordinatorBridgePresenter instead of OnboardingCoordinatorBridgePresenter
-        guard self.welcomeCoordinatorBridgePresenter == nil && !self.isOnboardingCoordinatorPreparing else {
+        guard self.onboardingCoordinatorBridgePresenter == nil && !self.isOnboardingCoordinatorPreparing else {
             return
         }
 
@@ -1092,8 +1091,7 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
 
     private func showOnboardingFlowAndResetSessionFlags(_ resetSessionFlags: Bool) {
         // Check whether an authentication screen is not already shown or preparing
-        // Tchap: Use WelcomeCoordinatorBridgePresenter instead of OnboardingCoordinatorBridgePresenter
-        guard self.welcomeCoordinatorBridgePresenter == nil && !self.isOnboardingCoordinatorPreparing else {
+        guard self.onboardingCoordinatorBridgePresenter == nil && !self.isOnboardingCoordinatorPreparing else {
             return
         }
 
