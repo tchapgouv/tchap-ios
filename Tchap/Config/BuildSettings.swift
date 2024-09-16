@@ -137,7 +137,7 @@ final class BuildSettings: NSObject {
     static let applicationHelpUrlString = "https://www.tchap.gouv.fr/faq"
     static let applicationServicesStatusUrlString = "https://status.tchap.numerique.gouv.fr/"
     static let applicationAcceptableUsePolicyUrlString = ""
-
+    static let agentConnectInfoUrlString = "https://franceconnect.gouv.fr/"
     
     // MARK: - Matrix permalinks
     // Hosts/Paths for URLs that will considered as valid permalinks. Those permalinks are opened within the app.

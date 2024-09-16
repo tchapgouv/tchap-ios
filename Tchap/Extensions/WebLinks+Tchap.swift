@@ -15,3 +15,19 @@
 //
 
 import Foundation
+
+// Exclude this class from target of type Application extension
+// becasue UIApplication.shared is not available for extension.
+@available(iOSApplicationExtension, unavailable)
+struct TchapWebLinks {
+    static func openAgentConnectInfo() {
+        self.openWebsite(urlString: BuildSettings.agentConnectInfoUrlString)
+    }
+    
+    static private func openWebsite(urlString: String) {
+        guard let websiteUrl = URL(string: urlString) else {
+            return
+        }
+        UIApplication.shared.open(websiteUrl)
+    }
+}
