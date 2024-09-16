@@ -93,7 +93,9 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
         let viewModel = AuthenticationLoginViewModel(homeserver: homeserver.viewData)
         authenticationLoginViewModel = viewModel
         
-        let view = AuthenticationLoginScreen(viewModel: viewModel.context)
+        // Tchap: Use heavily customized AuthenticationLoginScreen
+//        let view = AuthenticationLoginScreen(viewModel: viewModel.context)
+        let view = TchapAuthenticationLoginScreen(viewModel: viewModel.context)
         authenticationLoginHostingController = VectorHostingController(rootView: view)
         authenticationLoginHostingController.vc_removeBackTitle()
         authenticationLoginHostingController.enableNavigationBarScrollEdgeAppearance = true
