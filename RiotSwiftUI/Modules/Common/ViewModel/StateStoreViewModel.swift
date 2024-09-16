@@ -43,7 +43,9 @@ final class ViewModelContext<ViewState: BindableState, ViewAction>: ObservableOb
     // MARK: Public
 
     /// Get-able/Observable `Published` property for the `ViewState`
-    @Published fileprivate(set) var viewState: ViewState
+    // Tchap: set viewState settable from outside (needed for SSO Login)
+    // @Published fileprivate(set) var viewState: ViewState
+    @Published var viewState: ViewState
 
     /// Set-able/Bindable access to the bindable state.
     subscript<T>(dynamicMember keyPath: WritableKeyPath<ViewState.BindStateType, T>) -> T {

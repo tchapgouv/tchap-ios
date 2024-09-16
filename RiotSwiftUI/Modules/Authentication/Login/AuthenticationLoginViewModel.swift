@@ -29,7 +29,7 @@ class AuthenticationLoginViewModel: AuthenticationLoginViewModelType, Authentica
 
     init(homeserver: AuthenticationHomeserverViewData) {
         let bindings = AuthenticationLoginBindings()
-        let viewState = AuthenticationLoginViewState(homeserver: homeserver, bindings: bindings)
+        let viewState = AuthenticationLoginViewState(tchapLoginState: .onlyLogin, homeserver: homeserver, bindings: bindings)
         
         super.init(initialViewState: viewState)
     }

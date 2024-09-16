@@ -58,6 +58,19 @@ enum AuthenticationLoginViewModelResult: CustomStringConvertible {
 // MARK: View
 
 struct AuthenticationLoginViewState: BindableState {
+    // Tchap: customize view composition to display:
+    // - only login with next button
+    // - login and password button
+    // - only SSO option
+    
+    enum TchapLoginTypeStepType {
+        case onlyLogin
+        case loginPassword
+        case onlySso
+    }
+    
+    var tchapLoginState: TchapLoginTypeStepType = .onlyLogin
+    
     /// Data about the selected homeserver.
     var homeserver: AuthenticationHomeserverViewData
     /// Whether a new homeserver is currently being loaded.
@@ -77,7 +90,17 @@ struct AuthenticationLoginViewState: BindableState {
     
     /// `true` if valid credentials have been entered and the homeserver is loaded.
     var canSubmit: Bool {
-        hasValidCredentials && !isLoading
+        if tchapLoginState == .onlyLogin {
+            return !isLoading && tchapEmailIsValid
+        }
+        else {
+            return hasValidCredentials && !isLoading
+        }
+    }
+    
+    // Tchap: username is email
+    var tchapEmailIsValid: Bool {
+        MXTools.isEmailAddress(bindings.username)
     }
 }
 

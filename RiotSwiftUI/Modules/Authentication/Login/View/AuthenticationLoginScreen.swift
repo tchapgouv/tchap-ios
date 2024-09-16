@@ -38,15 +38,14 @@ struct AuthenticationLoginScreen: View {
                     .padding(.top, OnboardingMetrics.topPaddingToNavigationBar)
                     .padding(.bottom, 28)
                 
-                // Tchap: Hide server selection
-//                serverInfo
-//                    .padding(.leading, 12)
-//                    .padding(.bottom, 16)
-//                
-//                Rectangle()
-//                    .fill(theme.colors.quinaryContent)
-//                    .frame(height: 1)
-//                    .padding(.bottom, 22)
+                serverInfo
+                    .padding(.leading, 12)
+                    .padding(.bottom, 16)
+                
+                Rectangle()
+                    .fill(theme.colors.quinaryContent)
+                    .frame(height: 1)
+                    .padding(.bottom, 22)
                 
                 if viewModel.viewState.homeserver.showLoginForm {
                     loginForm
@@ -99,12 +98,10 @@ struct AuthenticationLoginScreen: View {
     /// The form with text fields for username and password, along with a submit button.
     var loginForm: some View {
         VStack(spacing: 14) {
-            // Tchap: Update placeholder and set keyboard type to email address
-            RoundedBorderTextField(placeHolder: VectorL10n.authenticationVerifyEmailTextFieldPlaceholder,
+            RoundedBorderTextField(placeHolder: VectorL10n.authenticationLoginUsername,
                                    text: $viewModel.username,
                                    isFirstResponder: false,
-                                   configuration: UIKitTextInputConfiguration(keyboardType: .emailAddress,
-                                                                              returnKeyType: .next,
+                                   configuration: UIKitTextInputConfiguration(returnKeyType: .next,
                                                                               autocapitalizationType: .none,
                                                                               autocorrectionType: .no),
                                    onEditingChanged: usernameEditingChanged,

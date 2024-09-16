@@ -263,6 +263,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     /// Shows the login screen.
     @MainActor private func showLoginScreen() {
+    // Tchap: allow override home server's preferred login mode
         MXLog.debug("[AuthenticationCoordinator] showLoginScreen")
         
         let homeserver = authenticationService.state.homeserver

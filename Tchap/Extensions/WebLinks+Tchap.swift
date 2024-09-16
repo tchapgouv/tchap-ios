@@ -1,5 +1,5 @@
 // 
-// Copyright 2022 Vector Creations Ltd
+// Copyright 2024 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,15 +14,4 @@
 // limitations under the License.
 //
 
-// Team
-DEVELOPMENT_TEAM = NVMQD635C6
-
-// Provisioning profiles
-TCHAP_PROVISIONING_PROFILE_SPECIFIER = DevTchap App Store
-TCHAP_PROVISIONING_PROFILE = 2e6b85aa-f6b6-4be0-b061-809b53f557df
-
-NSE_PROVISIONING_PROFILE_SPECIFIER = DevTchap NSE App Store
-NSE_PROVISIONING_PROFILE = e0ff349d-d05d-48f0-b2a2-c3314b1f074d
-
-SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER = DevTchap Share Extension App Store
-SHARE_EXTENSION_PROVISIONING_PROFILE = 180b64b6-bc93-46e7-b531-65f3f8363ba7
+import Foundation

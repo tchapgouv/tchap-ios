@@ -97,7 +97,7 @@ final class BuildSettings: NSObject {
     static let serverUrlPrefix = "https://matrix."
     static let preferredIdentityServerNames = [
         "dev01.tchap.incubateur.net",
-        "dev02.tchap.incubateur.net"
+//        "dev02.tchap.incubateur.net"
     ]
     static let otherIdentityServerNames: [String] = [
         "ext01.tchap.incubateur.net"
