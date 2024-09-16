@@ -30,7 +30,9 @@ struct OnboardingSplashScreenPageContent {
 
 enum OnboardingSplashScreenViewModelResult {
     case register
-    case login
+    // Tchap: allow override home server's preferred login mode
+//    case login
+    case login(forcedAuthenticationMode: LoginMode?)
 }
 
 // MARK: View
@@ -94,7 +96,8 @@ struct OnboardingSplashScreenBindings {
 
 enum OnboardingSplashScreenViewAction {
     case register
-    case login
+    // Tchap: allow override home server's preferred login mode
+    case login(LoginMode?)
     case nextPage
     case previousPage
     case hiddenPage
