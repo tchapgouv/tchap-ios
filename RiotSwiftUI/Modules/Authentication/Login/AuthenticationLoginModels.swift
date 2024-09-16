@@ -58,19 +58,6 @@ enum AuthenticationLoginViewModelResult: CustomStringConvertible {
 // MARK: View
 
 struct AuthenticationLoginViewState: BindableState {
-    // Tchap: customize view composition to display:
-    // - only login with next button
-    // - login and password button
-    // - only SSO option
-    
-    enum TchapLoginTypeStepType {
-        case onlyLogin
-        case loginPassword
-        case onlySso
-    }
-    
-    var tchapLoginState: TchapLoginTypeStepType = .onlyLogin
-    
     /// Data about the selected homeserver.
     var homeserver: AuthenticationHomeserverViewData
     /// Whether a new homeserver is currently being loaded.
@@ -83,7 +70,17 @@ struct AuthenticationLoginViewState: BindableState {
 
     /// Whether to show any SSO buttons.
     var showSSOButtons: Bool {
-        !homeserver.ssoIdentityProviders.isEmpty
+        // Tchap: only show sso buttons if tchapAuthenticationMode == .sso OR .ssoAndPassword
+//        !homeserver.ssoIdentityProviders.isEmpty
+        if case .sso = tchapAuthenticationMode,
+           !homeserver.ssoIdentityProviders.isEmpty {
+            return true
+        }
+        if case .ssoAndPassword = tchapAuthenticationMode,
+           !homeserver.ssoIdentityProviders.isEmpty {
+            return true
+        }
+        return false
     }
     
     /// `true` if the username and password are ready to be submitted.
@@ -93,10 +90,14 @@ struct AuthenticationLoginViewState: BindableState {
     
     /// `true` if valid credentials have been entered and the homeserver is loaded.
     var canSubmit: Bool {
-        if tchapLoginState == .onlyLogin {
+        // Tchap: handle `canSubmit` by checking email validity for concerned cases
+//        return hasValidCredentials && !isLoading
+        switch tchapAuthenticationMode {
+        case .password:
             return !isLoading && tchapEmailIsValid
-        }
-        else {
+        case .sso(let ssoIdentityProviders):
+            return !isLoading && tchapEmailIsValid
+        default:
             return hasValidCredentials && !isLoading
         }
     }
