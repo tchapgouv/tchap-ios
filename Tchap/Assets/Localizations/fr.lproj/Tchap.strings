@@ -19,12 +19,17 @@
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Welcome
 "welcome_title" = "Bienvenue dans Tchap";
+"welcome_subtitle" = "La messagerie instantanée du secteur public";
 "welcome_login_action" = "J'ai un compte";
 "welcome_register_action" = "Je n'ai pas de compte";
+"welcome_agent_connect_title" = "S'identifier avec\n**AgentConnect**"; // Markdown string for SwiftUI Text()
+"welcome_agent_connect_info" = "→ Qu'est-ce que AgentConnect ?";
+"welcome_password_title" = "Se connecter par mot de passe";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Authentication
-"authentication_title" = "Connexion Tchap";
+"authentication_password_title" = "Se connecter à Tchap";
+"authentication_sso_title" = "Se connecter avec AgentConnect";
 "authentication_mail_placeholder" = "Adresse email";
 "authentication_password_placeholder" = "Mot de passe Tchap";
 "authentication_forgot_password" = "Mot de passe oublié ?";
