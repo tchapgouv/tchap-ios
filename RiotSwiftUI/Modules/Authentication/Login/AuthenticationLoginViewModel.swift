@@ -27,9 +27,16 @@ class AuthenticationLoginViewModel: AuthenticationLoginViewModelType, Authentica
 
     // MARK: - Setup
 
-    init(homeserver: AuthenticationHomeserverViewData) {
+    // Tchap: pass `loginMode` to ViewState to correctly display login UI.
+//    init(homeserver: AuthenticationHomeserverViewData) {
+//        let bindings = AuthenticationLoginBindings()
+//        let viewState = AuthenticationLoginViewState(tchapLoginState: .onlyLogin, homeserver: homeserver, bindings: bindings)
+//        
+//        super.init(initialViewState: viewState)
+//    }
+    init(homeserver: AuthenticationHomeserverViewData, authenticationMode: LoginMode = .unknown) {
         let bindings = AuthenticationLoginBindings()
-        let viewState = AuthenticationLoginViewState(tchapLoginState: .onlyLogin, homeserver: homeserver, bindings: bindings)
+        let viewState = AuthenticationLoginViewState(homeserver: homeserver, bindings: bindings, tchapAuthenticationMode: authenticationMode)
         
         super.init(initialViewState: viewState)
     }

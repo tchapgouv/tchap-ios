@@ -32,7 +32,9 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     enum EntryPoint {
         case registration
-        case login
+        // Tchap: allow override home server's preferred login mode
+//        case login
+        case login(LoginMode? = nil)
     }
     
     // MARK: - Properties
@@ -88,9 +90,17 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     // MARK: - Public
     
+    // Tchap: allow override home server's preferred login mode
     func start() {
+        start(forcedAuthenticationMode: nil)
+    }
+    
+    // Tchap: allow override home server's preferred login mode
+    func start(forcedAuthenticationMode: LoginMode? = nil) {
         Task { @MainActor in
-            await startAuthenticationFlow()
+            // Tchap: allow override home server's preferred login mode
+//            await startAuthenticationFlow()
+            await startAuthenticationFlow(forcedAuthenticationMode: forcedAuthenticationMode)
             callback?(.didStart)
             authenticationService.delegate = self
         }
@@ -114,7 +124,9 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     // MARK: - Private
     
     /// Starts the authentication flow.
-    @MainActor private func startAuthenticationFlow() async {
+    // Tchap: allow override home server's preferred login mode
+//    @MainActor private func startAuthenticationFlow() async {
+    @MainActor private func startAuthenticationFlow(forcedAuthenticationMode: LoginMode? = nil) async {
         if let softLogoutCredentials = authenticationService.softLogoutCredentials,
            let homeserverAddress = softLogoutCredentials.homeServer {
             do {
@@ -129,7 +141,15 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
             return
         }
 
-        let flow: AuthenticationFlow = initialScreen == .login ? .login : .register
+        // Tchap: allow override home server's preferred login mode
+        //        let flow: AuthenticationFlow = initialScreen == .login ? .login : .register
+        let flow: AuthenticationFlow = {
+            if case .login(_) = initialScreen {
+                return .login
+            } else {
+                return .register
+            }
+        }()
 
         // Check if the user must select a server
         if BuildSettings.forceHomeserverSelection, authenticationService.provisioningLink?.homeserverUrl == nil {
@@ -137,14 +157,15 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
             return
         }
         
-        do {
-            // Start the flow (if homeserverAddress is nil, the default server will be used).
-            try await authenticationService.startFlow(flow)
-        } catch {
-            MXLog.error("[AuthenticationCoordinator] start: Failed to start, showing server selection.")
-            showServerSelectionScreen(for: flow)
-            return
-        }
+        // Tchap: Don't use default home server
+//        do {
+//            // Start the flow (if homeserverAddress is nil, the default server will be used).
+//            try await authenticationService.startFlow(flow)
+//        } catch {
+//            MXLog.error("[AuthenticationCoordinator] start: Failed to start, showing server selection.")
+//            showServerSelectionScreen(for: flow)
+//            return
+//        }
 
         switch initialScreen {
         case .registration:
@@ -159,7 +180,9 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
             if authenticationService.state.homeserver.needsLoginFallback {
                 showFallback(for: flow)
             } else {
-                showLoginScreen()
+                // Tchap: allow override home server's preferred login mode
+//                showLoginScreen()
+                showLoginScreen(forcedAuthenticationMode: forcedAuthenticationMode)
             }
         }
     }
@@ -262,14 +285,17 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     // MARK: - Login
     
     /// Shows the login screen.
-    @MainActor private func showLoginScreen() {
     // Tchap: allow override home server's preferred login mode
+//    @MainActor private func showLoginScreen() {
+    @MainActor private func showLoginScreen(forcedAuthenticationMode: LoginMode? = nil) {
         MXLog.debug("[AuthenticationCoordinator] showLoginScreen")
         
         let homeserver = authenticationService.state.homeserver
         let parameters = AuthenticationLoginCoordinatorParameters(navigationRouter: navigationRouter,
                                                                   authenticationService: authenticationService,
-                                                                  loginMode: homeserver.preferredLoginMode)
+                                                                  // Tchap: allow override home server's preferred login mode
+                                                                  // loginMode: homeserver.preferredLoginMode)
+                                                                  loginMode: forcedAuthenticationMode ?? homeserver.preferredLoginMode)
         let coordinator = AuthenticationLoginCoordinator(parameters: parameters)
         coordinator.callback = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }

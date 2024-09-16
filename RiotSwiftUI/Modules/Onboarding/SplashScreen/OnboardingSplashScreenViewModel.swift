@@ -45,8 +45,11 @@ class OnboardingSplashScreenViewModel: OnboardingSplashScreenViewModelType, Onbo
         switch viewAction {
         case .register:
             register()
-        case .login:
-            login()
+            // Tchap: allow override home server's preferred login mode
+//        case let .login:
+//            login()
+        case let .login(forcedAuthenticationMode):
+            login(forcedAuthenticationMode: forcedAuthenticationMode)
         case .nextPage:
             // Wrap back round to the first page index when reaching the end.
             state.bindings.pageIndex = (state.bindings.pageIndex + 1) % state.content.count
@@ -63,7 +66,11 @@ class OnboardingSplashScreenViewModel: OnboardingSplashScreenViewModelType, Onbo
         completion?(.register)
     }
 
-    private func login() {
-        completion?(.login)
+    // Tchap: allow override home server's preferred login mode
+//    private func login() {
+//        completion?(.login)
+//    }
+    private func login(forcedAuthenticationMode: LoginMode?) {
+        completion?(.login(forcedAuthenticationMode: forcedAuthenticationMode))
     }
 }

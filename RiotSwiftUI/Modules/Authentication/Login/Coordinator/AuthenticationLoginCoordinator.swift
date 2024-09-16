@@ -90,7 +90,8 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
         self.parameters = parameters
         
         let homeserver = parameters.authenticationService.state.homeserver
-        let viewModel = AuthenticationLoginViewModel(homeserver: homeserver.viewData)
+        // Tchap: pass `loginMode` to viewModel to be able to adapt the working of the login display view.
+        let viewModel = AuthenticationLoginViewModel(homeserver: homeserver.viewData, authenticationMode: parameters.loginMode)
         authenticationLoginViewModel = viewModel
         
         // Tchap: Use heavily customized AuthenticationLoginScreen

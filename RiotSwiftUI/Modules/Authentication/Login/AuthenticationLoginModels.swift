@@ -78,6 +78,9 @@ struct AuthenticationLoginViewState: BindableState {
     /// View state that can be bound to from SwiftUI.
     var bindings: AuthenticationLoginBindings
     
+    // Tchap: add loginMode (only password or sso modes are handled)
+    var tchapAuthenticationMode: LoginMode
+
     /// Whether to show any SSO buttons.
     var showSSOButtons: Bool {
         !homeserver.ssoIdentityProviders.isEmpty
