@@ -293,7 +293,8 @@ final class BuildSettings: NSObject {
             "agent.education.tchap.gouv.fr"
         ],
         tchapFeatureVideoOverIP: [
-            "agent.dinum.tchap.gouv.fr"
+            "agent.dinum.tchap.gouv.fr",
+            "agent.education.tchap.gouv.fr"
         ],
         tchapFeatureGeolocationSharing: [
             tchapFeatureAnyHomeServer
