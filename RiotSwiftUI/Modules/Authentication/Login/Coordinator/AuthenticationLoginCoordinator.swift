@@ -290,35 +290,40 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
     @MainActor private func showForgotPasswordScreen() {
         MXLog.debug("[AuthenticationLoginCoordinator] showForgotPasswordScreen")
 
-        guard let loginWizard = loginWizard else {
-            MXLog.failure("[AuthenticationLoginCoordinator] The login wizard was requested before getting the login flow.")
-            return
-        }
-
-        let modalRouter = NavigationRouter()
-
-        let parameters = AuthenticationForgotPasswordCoordinatorParameters(navigationRouter: modalRouter,
-                                                                           loginWizard: loginWizard,
-                                                                           homeserver: parameters.authenticationService.state.homeserver)
-        let coordinator = AuthenticationForgotPasswordCoordinator(parameters: parameters)
-        coordinator.callback = { [weak self, weak coordinator] result in
-            guard let self = self, let coordinator = coordinator else { return }
-            switch result {
-            case .success:
-                self.navigationRouter.dismissModule(animated: true, completion: nil)
-                self.successIndicator = self.indicatorPresenter.present(.success(label: VectorL10n.done))
-            case .cancel:
-                self.navigationRouter.dismissModule(animated: true, completion: nil)
+        // Tchap: Call `startFlow` here to get `loginWizard` initialized.
+        Task {
+            try? await authenticationService.startFlow(.login)
+            
+            guard let loginWizard = loginWizard else {
+                MXLog.failure("[AuthenticationLoginCoordinator] The login wizard was requested before getting the login flow.")
+                return
             }
-            self.remove(childCoordinator: coordinator)
+            
+            let modalRouter = NavigationRouter()
+            
+            let parameters = AuthenticationForgotPasswordCoordinatorParameters(navigationRouter: modalRouter,
+                                                                               loginWizard: loginWizard,
+                                                                               homeserver: parameters.authenticationService.state.homeserver)
+            let coordinator = AuthenticationForgotPasswordCoordinator(parameters: parameters)
+            coordinator.callback = { [weak self, weak coordinator] result in
+                guard let self = self, let coordinator = coordinator else { return }
+                switch result {
+                case .success:
+                    self.navigationRouter.dismissModule(animated: true, completion: nil)
+                    self.successIndicator = self.indicatorPresenter.present(.success(label: VectorL10n.done))
+                case .cancel:
+                    self.navigationRouter.dismissModule(animated: true, completion: nil)
+                }
+                self.remove(childCoordinator: coordinator)
+            }
+            
+            coordinator.start()
+            add(childCoordinator: coordinator)
+            
+            modalRouter.setRootModule(coordinator)
+            
+            navigationRouter.present(modalRouter, animated: true)
         }
-
-        coordinator.start()
-        add(childCoordinator: coordinator)
-
-        modalRouter.setRootModule(coordinator)
-
-        navigationRouter.present(modalRouter, animated: true)
     }
 
     /// Shows the QR login screen.

@@ -95,7 +95,7 @@ struct AuthenticationLoginViewState: BindableState {
         switch tchapAuthenticationMode {
         case .password:
             return !isLoading && tchapEmailIsValid
-        case .sso(let ssoIdentityProviders):
+        case .sso:
             return !isLoading && tchapEmailIsValid
         default:
             return hasValidCredentials && !isLoading

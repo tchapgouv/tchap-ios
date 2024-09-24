@@ -174,7 +174,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
             } else {
                 // Tchap: force email registration mode
 //                showRegistrationScreen()
-                TchapShowVerifyEmailScreen()
+                await TchapShowVerifyEmailScreen()
             }
         case .login:
             if authenticationService.state.homeserver.needsLoginFallback {
@@ -410,8 +410,11 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     // Tchap: start Registration with VerifyEmail screen
     /// Shows the login screen.
-    @MainActor private func TchapShowVerifyEmailScreen() {
+    @MainActor private func TchapShowVerifyEmailScreen() async {
         MXLog.debug("[AuthenticationCoordinator] TchapShowVerifyEmailScreen")
+        
+        // Call `startFlow` here to get `registrationWizard` initialized.
+        try? await authenticationService.startFlow(.register)
         
         guard let registrationWizard = authenticationService.registrationWizard else {
             MXLog.failure("[AuthenticationCoordinator] showStage: Missing the RegistrationWizard needed to complete the stage.")
