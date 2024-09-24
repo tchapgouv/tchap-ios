@@ -70,14 +70,6 @@ struct TchapAuthenticationLoginScreen: View {
         
     }
     
-    /// The sever information section that includes a button to select a different server.
-    var serverInfo: some View {
-        AuthenticationServerInfoSection(address: viewModel.viewState.homeserver.address,
-                                        flow: .login) {
-            viewModel.send(viewAction: .selectServer)
-        }
-    }
-    
     /// The form with text fields for username and password, along with a submit button.
     var loginForm: some View {
         VStack(spacing: 14) {
@@ -156,17 +148,9 @@ struct TchapAuthenticationLoginScreen: View {
         }
     }
     
-//    // Tchap:
-//    func usernameChanged(newText: String) {
-//        usernameEditingChanged(isEditing: <#T##Bool#>)
-//    }
-    
     /// Parses the username for a homeserver.
     func usernameEditingChanged(isEditing: Bool) {
         guard !isEditing, !viewModel.username.isEmpty else { return }
-        
-        // Tchap: don't parse username
-//        viewModel.send(viewAction: .parseUsername)
     }
     
     /// Resets the password field focus.
