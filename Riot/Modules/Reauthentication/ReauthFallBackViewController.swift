@@ -62,10 +62,19 @@ final class ReauthFallBackViewController: AuthFallBackViewController, Themable {
     }
     
     private func setupNavigationBar() {
+        // Tchap: Add 'Cancel' button the cancel the authentication process from the beginning.
+        // (because the 'Done' button will try to launch the authentication process with current session token
+        // which will retrigger the display of the Authentication window).
+        let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
+            self?.didCancel?()
+        }
+
         let doneBarButtonItem = MXKBarButtonItem(title: VectorL10n.close, style: .plain) { [weak self] in
             self?.didValidate?()
-        }        
-        self.navigationItem.leftBarButtonItem = doneBarButtonItem
+        }
+        self.navigationItem.leftBarButtonItem = cancelBarButtonItem
+        
+        self.setBackButton(doneBarButtonItem)
     }
 }
 
