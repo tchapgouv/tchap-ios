@@ -66,4 +66,7 @@
  */
 @property (nonatomic) NSString *localHTMLFile;
 
+// Tchap: give access to backButton to allow a 'Cancel' functionnality.
+- (void)setBackButton:(UIBarButtonItem *)button;
+
 @end

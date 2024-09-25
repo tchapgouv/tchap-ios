@@ -230,6 +230,11 @@ NSString *const kMXKWebViewViewControllerJavaScriptEnableLog =
     }
 }
 
+// Tchap: give access to backButton to allow a 'Cancel' functionnality.
+- (void)setBackButton:(UIBarButtonItem *)button {
+    backButton = button;
+}
+
 #pragma mark - WKNavigationDelegate
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
