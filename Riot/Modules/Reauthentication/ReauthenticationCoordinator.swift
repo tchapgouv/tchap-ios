@@ -92,7 +92,12 @@ final class ReauthenticationCoordinator: ReauthenticationCoordinatorType {
     }
     
     private func start(with authenticationSession: MXAuthenticationSession) {
-        if self.userInteractiveAuthenticationService.hasPasswordFlow(inFlows: authenticationSession.flows) {
+        // Tchap: give priority to SSO reauthentication if a SSO flow is available and not completed
+        if self.userInteractiveAuthenticationService.tchapHasSsoFlowAvailable(authenticationSession: authenticationSession),
+           let authenticationFallbackURL = self.userInteractiveAuthenticationService.firstUncompletedStageAuthenticationFallbackURL(for: authenticationSession) {
+            self.showFallbackAuthentication(with: authenticationFallbackURL, authenticationSession: authenticationSession)
+        }
+        else if self.userInteractiveAuthenticationService.hasPasswordFlow(inFlows: authenticationSession.flows) {
             self.showPasswordAuthentication(with: authenticationSession)
         } else if let authenticationFallbackURL = self.userInteractiveAuthenticationService.firstUncompletedStageAuthenticationFallbackURL(for: authenticationSession) {
             
@@ -142,10 +147,15 @@ final class ReauthenticationCoordinator: ReauthenticationCoordinatorType {
         let reauthFallbackViewController: ReauthFallBackViewController = ReauthFallBackViewController(url: authenticationURL.absoluteString)
         reauthFallbackViewController.title = self.parameters.title
                 
+        // Tchap: move navigationController init before actions closures for the closures to capture the controller to dismiss it.
+        let navigationController = RiotNavigationController(rootViewController: reauthFallbackViewController)
+        
         reauthFallbackViewController.didCancel = { [weak self] in
             guard let self = self else {
                 return
             }
+            // Tchap: dismiss controller
+            navigationController.dismiss(animated: true)
             self.delegate?.reauthenticationCoordinatorDidCancel(self)
         }
         
@@ -160,10 +170,10 @@ final class ReauthenticationCoordinator: ReauthenticationCoordinatorType {
             }
             
             let authenticationParameters = self.authenticationParametersBuilder.buildOAuthParameters(with: sessionId)
+            // Tchap: dismiss controller
+            navigationController.dismiss(animated: true)
             self.delegate?.reauthenticationCoordinatorDidComplete(self, withAuthenticationParameters: authenticationParameters)
         }
-        
-        let navigationController = RiotNavigationController(rootViewController: reauthFallbackViewController)
         
         self.presentingViewController.present(navigationController, animated: true)
     }
