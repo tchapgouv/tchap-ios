@@ -20,8 +20,8 @@ import Foundation
 // becasue UIApplication.shared is not available for extension.
 @available(iOSApplicationExtension, unavailable)
 struct TchapWebLinks {
-    static func openAgentConnectInfo() {
-        self.openWebsite(urlString: BuildSettings.agentConnectInfoUrlString)
+    static func openProConnectInfo() {
+        self.openWebsite(urlString: BuildSettings.proConnectInfoUrlString)
     }
     
     static private func openWebsite(urlString: String) {

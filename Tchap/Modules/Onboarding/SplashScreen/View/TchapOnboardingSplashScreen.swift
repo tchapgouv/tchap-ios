@@ -92,11 +92,11 @@ struct TchapOnboardingSplashScreen: View {
         HStack { // HStack to center horizontally
             Spacer()
             VStack {
-                // Button AgentConnect
+                // Button ProConnect
                 Button(action: { viewModel.send(viewAction: .login(.sso(ssoIdentityProviders: []))) }, label: {
                     HStack {
-                        Image(uiImage: Asset_tchap.Images.agentConnectIcon.image)
-                        Text(LocalizedStringKey(TchapL10n.welcomeAgentConnectTitle)) // LocalizedStringKey is needed for markdown interpretation.
+                        Image(uiImage: Asset_tchap.Images.proConnectIcon.image)
+                        Text(LocalizedStringKey(TchapL10n.welcomeProConnectTitle)) // LocalizedStringKey is needed for markdown interpretation.
                             .fixedSize(horizontal: false, vertical: true) // .lineLimit(Int.max) doesn't work here.
                             .foregroundColor(.white)
                     }
@@ -108,9 +108,9 @@ struct TchapOnboardingSplashScreen: View {
                 )
                 .padding(.bottom, 8.0)
                 
-                // Button "What is AgentConnect?"
-                Button(action: { openAgentConnectWebsite() }, label: {
-                    Text(TchapL10n.welcomeAgentConnectInfo)
+                // Button "What is ProConnect?"
+                Button(action: { openProConnectWebsite() }, label: {
+                    Text(TchapL10n.welcomeProConnectInfo)
                 })
                 .padding(.bottom, 32.0)
                 
@@ -162,8 +162,8 @@ struct TchapOnboardingSplashScreen: View {
 //        .readableFrame()
     }
 
-    func openAgentConnectWebsite() {
-        TchapWebLinks.openAgentConnectInfo()
+    func openProConnectWebsite() {
+        TchapWebLinks.openProConnectInfo()
     }
 }
 

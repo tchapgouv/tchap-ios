@@ -74,7 +74,7 @@ struct TchapAuthenticationLoginScreen: View {
     var loginForm: some View {
         VStack(spacing: 14) {
             // Tchap: Update placeholder and set keyboard type to email address
-            RoundedBorderTextField(placeHolder: VectorL10n.authenticationVerifyEmailTextFieldPlaceholder,
+            RoundedBorderTextField(placeHolder: TchapL10n.authenticationMailPlaceholder,
                                    text: $viewModel.username,
                                    isFirstResponder: false,
                                    configuration: UIKitTextInputConfiguration(keyboardType: .emailAddress,
@@ -124,26 +124,26 @@ struct TchapAuthenticationLoginScreen: View {
     
     var ssoLoginSection: some View {
         Group {
-            // Button AgentConnect
+            // Button ProConnect
             Button(action: submit, label: {
                 HStack {
                     Spacer()
-                    Image(uiImage: Asset_tchap.Images.agentConnectIcon.image)
-                    Text(LocalizedStringKey(TchapL10n.authenticationSsoTitle)) // LocalizedStringKey is needed for markdown interpretation.
+                    Image(uiImage: Asset_tchap.Images.proConnectIcon.image)
+                    Text(LocalizedStringKey(TchapL10n.authenticationSsoConnectTitle)) // LocalizedStringKey is needed for markdown interpretation.
                         .fixedSize(horizontal: false, vertical: true) // .lineLimit(Int.max) doesn't work here.
                         .foregroundColor(.white)
                     Spacer()
                 }
                 .padding(EdgeInsets(top: 10.0, leading: 16.0, bottom: 10.0, trailing: 16.0))
             })
-            .buttonStyle(AgentConnectButtonStyle(customColor: Color(UIColor(rgb: 0x000091))))
+            .buttonStyle(ProConnectButtonStyle(customColor: Color(UIColor(rgb: 0x000091))))
             .disabled(!viewModel.viewState.canSubmit)
             .accessibilityIdentifier("ssoButton")
             .padding(.bottom, 8.0)
                         
-            // Button "What is AgentConnect?"
-            Button(action: { openAgentConnectWebsite() }, label: {
-                Text(TchapL10n.welcomeAgentConnectInfo)
+            // Button "What is ProConnect?"
+            Button(action: { openProConnectWebsite() }, label: {
+                Text(TchapL10n.welcomeProConnectInfo)
             })
         }
     }
@@ -172,8 +172,8 @@ struct TchapAuthenticationLoginScreen: View {
 
                     // Then, now that homeServer is known, start authentication flow.
                     if case .sso = viewModel.viewState.tchapAuthenticationMode,
-                       let agentConnectProvider = userHomeServerViewData.ssoIdentityProviders.first {
-                        viewModel.send(viewAction: .continueWithSSO(agentConnectProvider))
+                       let proConnectProvider = userHomeServerViewData.ssoIdentityProviders.first {
+                        viewModel.send(viewAction: .continueWithSSO(proConnectProvider))
                     } else {
                         guard viewModel.viewState.canSubmit else { return }
                         viewModel.send(viewAction: .next)
@@ -230,12 +230,12 @@ struct TchapAuthenticationLoginScreen: View {
         }
     }
 
-    func openAgentConnectWebsite() {
-        TchapWebLinks.openAgentConnectInfo()
+    func openProConnectWebsite() {
+        TchapWebLinks.openProConnectInfo()
     }
 }
 
-struct AgentConnectButtonStyle: ButtonStyle {
+struct ProConnectButtonStyle: ButtonStyle {
     @Environment(\.theme) private var theme
     @Environment(\.isEnabled) private var isEnabled
 
