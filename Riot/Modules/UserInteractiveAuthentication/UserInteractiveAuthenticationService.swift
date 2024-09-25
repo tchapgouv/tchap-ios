@@ -211,7 +211,10 @@ final class UserInteractiveAuthenticationService: NSObject {
     /// - Parameter authenticationSession: An authentication session for a given request.
     /// - Returns: The fallback URL for the first uncompleted stage found.
     func firstUncompletedStageAuthenticationFallbackURL(for authenticationSession: MXAuthenticationSession) -> URL? {
-        guard let sessiondId = authenticationSession.session, let firstUncompletedStageIdentifier = self.firstUncompletedFlowIdentifier(in: authenticationSession) else {
+        guard let sessiondId = authenticationSession.session, 
+                // Tchap: give priority to SSO authentication
+//              let firstUncompletedStageIdentifier = self.firstUncompletedFlowIdentifier(in: authenticationSession) else {
+                let firstUncompletedStageIdentifier = self.firstUncompletedFlowIdentifier(in: authenticationSession, priorityToSso: true) else {
             return nil
         }
         return self.authenticationFallbackURL(for: firstUncompletedStageIdentifier, sessionId: sessiondId)
@@ -235,8 +238,10 @@ final class UserInteractiveAuthenticationService: NSObject {
     /// Find the first uncompleted login flow stage in a MXauthenticationSession.
     /// - Parameter authenticationSession: An authentication session for a given request.
     /// - Returns: Uncompleted login flow stage identifier.
-    func firstUncompletedFlowIdentifier(in authenticationSession: MXAuthenticationSession) -> String? {
-        
+    // Tchap: Add `priorityToSso` parameter
+//    func firstUncompletedFlowIdentifier(in authenticationSession: MXAuthenticationSession) -> String? {
+    func firstUncompletedFlowIdentifier(in authenticationSession: MXAuthenticationSession, priorityToSso: Bool = false) -> String? {
+
         let completedStages = authenticationSession.completed ?? []
         
         guard let flows = authenticationSession.flows else {
@@ -256,6 +261,11 @@ final class UserInteractiveAuthenticationService: NSObject {
         let completedStagesSet = NSOrderedSet(array: completedStages)
         uncompletedStages.minus(completedStagesSet)
         
+        // Tchap
+        if uncompletedStages.contains(MXLoginFlowType.sso.identifier) {
+            return MXLoginFlowType.sso.identifier
+        }
+        
         let firstUncompletedFlowIdentifier = uncompletedStages.firstObject as? String
         return firstUncompletedFlowIdentifier
     }
@@ -269,6 +279,12 @@ final class UserInteractiveAuthenticationService: NSObject {
         }
         
         return false
+    }
+    
+    // Tchap
+    /// Check if an array of login flows contains "m.login.sso" flow.
+    func tchapHasSsoFlowAvailable(authenticationSession: MXAuthenticationSession) -> Bool {
+        return self.firstUncompletedFlowIdentifier(in: authenticationSession, priorityToSso: true) == MXLoginFlowType.sso.identifier
     }
     
     // MARK: - Private
