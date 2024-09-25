@@ -48,7 +48,9 @@ final class SecretsResetViewModel: SecretsResetViewModelType {
         case .loadData:
             break
         case .reset:
-            self.askAuthentication()
+            // Tchap: try `resetScrets` immediately to post request with the keys to get correct response from backend.
+//            self.askAuthentication()
+            self.resetSecrets(with: [:])
         case .authenticationCancelled:
             self.authenticationCancelled()
         case .authenticationInfoEntered(let authParameters):
@@ -92,7 +94,17 @@ final class SecretsResetViewModel: SecretsResetViewModelType {
             guard let self = self else {
                 return
             }
-            self.update(viewState: .error(error))
+
+            // Tchap: handle 'authentication requested' error (401) from backend
+            let nsError = error as NSError
+            if let jsonResponse = nsError.userInfo[MXHTTPClientErrorResponseDataKey] as? [AnyHashable: Any],
+               let authenticationSession = MXAuthenticationSession(fromJSON: jsonResponse) {
+                // Begin authentication flow using authentication session informations returned by backend.
+                self.coordinatorDelegate?.secretsResetViewModel(self, needsToAuthenticateWith: authenticationSession)
+            }
+            else {
+                self.update(viewState: .error(error))
+            }
         })
     }
     
