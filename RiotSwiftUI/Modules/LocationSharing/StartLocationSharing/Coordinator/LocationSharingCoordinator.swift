@@ -166,6 +166,7 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
     
     // Check if user can send beacon info state event
     private func canShareLiveLocation() -> Bool {
+<<<<<<< HEAD
         // Tchap: allow live sharing geolocation based on room power levels
         //
 //        guard let myUserId = parameters.roomDataSource.mxSession.myUserId else {
@@ -194,6 +195,16 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
           
         // Get live sharing power level from stable value, then unstable value and fallback on default value.
         let liveSharingPowerLevel = (roomPowerLevels.events[kMXEventTypeStringBeaconInfo] ?? roomPowerLevels.events[kMXEventTypeStringBeaconInfoMSC3672]) as? Int ?? roomPowerLevels.stateDefault
+=======
+        guard let myUserId = parameters.roomDataSource.mxSession.myUserId,
+              let roomPowerLevels = parameters.roomDataSource.roomState.powerLevels,
+              let userPowerLevel = RoomPowerLevel(rawValue: roomPowerLevels.powerLevelOfUser(withUserID: myUserId)) else {
+            return false
+        }
+        
+        // CHeck user power level in room against power level needed to post geolocation state event.
+        let liveSharingPowerLevel = roomPowerLevels.minimumPowerLevelForSendingStateEvent(.beaconInfo)
+>>>>>>> v1.11.18
 
         return userPowerLevel.rawValue >= liveSharingPowerLevel
     }
