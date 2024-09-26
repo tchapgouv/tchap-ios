@@ -40,10 +40,7 @@ def import_Common_pods
     pod 'DSWaveformImage', '~> 6.1.1'
     
     pod 'FLEX', '~> 5.22.10', :configurations => ['Debug'], :inhibit_warnings => true
-<<<<<<< HEAD
 end
-=======
->>>>>>> v1.11.18
 
 abstract_target 'TchapPods' do
 

@@ -74,13 +74,8 @@ PODS:
   - Sentry/Core (7.15.0)
   - SideMenu (6.5.0)
   - SwiftBase32 (0.9.0)
-<<<<<<< HEAD
-  - SwiftFormat/CLI (0.54.0)
-  - SwiftGen (6.6.2)
-=======
   - SwiftFormat/CLI (0.54.5)
   - SwiftGen (6.6.3)
->>>>>>> v1.11.18
   - SwiftJWT (3.6.200):
     - BlueCryptor (~> 1.0)
     - BlueECC (~> 1.1)
@@ -209,13 +204,8 @@ SPEC CHECKSUMS:
   Sentry: 63ca44f5e0c8cea0ee5a07686b02e56104f41ef7
   SideMenu: f583187d21c5b1dd04c72002be544b555a2627a2
   SwiftBase32: 9399c25a80666dc66b51e10076bf591e3bbb8f17
-<<<<<<< HEAD
-  SwiftFormat: 0e0b577434e6aa63bc82a8905b40d9597b8452d4
-  SwiftGen: 1366a7f71aeef49954ca5a63ba4bef6b0f24138c
-=======
   SwiftFormat: 543a7b1ab4a6ce2d88bd5616a17903446ca3dc5c
   SwiftGen: 4993cbf71cbc4886f775e26f8d5c3a1188ec9f99
->>>>>>> v1.11.18
   SwiftJWT: 88c412708f58c169d431d344c87bc79a87c830ae
   SwiftLint: eb47480d47c982481592c195c221d11013a679cc
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
@@ -225,10 +215,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-<<<<<<< HEAD
-PODFILE CHECKSUM: 971cd7529e2d127b237469afa2c18e6dced151ec
-=======
 PODFILE CHECKSUM: fb3e1c62f9e35a9bdbafce743664bf4f620af028
->>>>>>> v1.11.18
 
 COCOAPODS: 1.15.2
