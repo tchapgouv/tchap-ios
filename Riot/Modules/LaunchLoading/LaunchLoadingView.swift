@@ -56,7 +56,23 @@ final class LaunchLoadingView: UIView, NibLoadable, Themable {
         animationTimeline.play()
         self.animationTimeline = animationTimeline
         
+        // Tchap: setup custom loading view.
+        tchapSetupLoadingView()
+        
         progressContainer.isHidden = true
+    }
+    
+    // Tchap: replace Element logo loadng animation by a simple UIActivityIndicatorView.
+    private func tchapSetupLoadingView() {
+        let tchapAnimationView = UIActivityIndicatorView(style: .large)
+        self.addSubview(tchapAnimationView)
+        tchapAnimationView.translatesAutoresizingMaskIntoConstraints = false
+        tchapAnimationView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        tchapAnimationView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        tchapAnimationView.startAnimating()
+        
+        // Hide Element aninmated logo.
+        animationView.isHidden = true
     }
     
     // MARK: - Public
@@ -64,6 +80,9 @@ final class LaunchLoadingView: UIView, NibLoadable, Themable {
     func update(theme: Theme) {
         self.backgroundColor = theme.backgroundColor
         self.animationView.backgroundColor = theme.backgroundColor
+        
+        // Tchap: Set progress view to Tchap color.
+        progressView.progressTintColor = theme.tintColor
     }
 }
 
