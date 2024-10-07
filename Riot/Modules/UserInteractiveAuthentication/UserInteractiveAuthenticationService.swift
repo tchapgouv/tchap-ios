@@ -262,8 +262,8 @@ final class UserInteractiveAuthenticationService: NSObject {
         uncompletedStages.minus(completedStagesSet)
         
         // Tchap
-        if uncompletedStages.contains(MXLoginFlowType.sso.identifier) {
-            return MXLoginFlowType.sso.identifier
+        if uncompletedStages.contains(kMXLoginFlowTypeSSO) {
+            return kMXLoginFlowTypeSSO
         }
         
         let firstUncompletedFlowIdentifier = uncompletedStages.firstObject as? String
@@ -284,7 +284,7 @@ final class UserInteractiveAuthenticationService: NSObject {
     // Tchap
     /// Check if an array of login flows contains "m.login.sso" flow.
     func tchapHasSsoFlowAvailable(authenticationSession: MXAuthenticationSession) -> Bool {
-        return self.firstUncompletedFlowIdentifier(in: authenticationSession, priorityToSso: true) == MXLoginFlowType.sso.identifier
+        return self.firstUncompletedFlowIdentifier(in: authenticationSession, priorityToSso: true) == kMXLoginFlowTypeSSO
     }
     
     // MARK: - Private
