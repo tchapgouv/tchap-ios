@@ -1,5 +1,5 @@
 // 
-// Copyright 2022 Vector Creations Ltd
+// Copyright 2020 Vector Creations Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,9 +17,12 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-#include "DevTchap/SupportingFiles/DevTchap-App-Common.xcconfig"
+#include "Tchap/SupportingFiles/App-Common.xcconfig"
 
-PRODUCT_NAME = RiotNSE
+
+// Tchap: Customize TchapNSE user-agent for back-end logs.
+// PRODUCT_NAME = RiotNSE
+PRODUCT_NAME = TchapNSE
 PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER).nse
 
 INFOPLIST_FILE = RiotNSE/Info.plist
@@ -27,5 +30,8 @@ INFOPLIST_FILE = RiotNSE/Info.plist
 CODE_SIGN_ENTITLEMENTS = RiotNSE/RiotNSE.entitlements
 
 SKIP_INSTALL = YES
-SWIFT_OBJC_BRIDGING_HEADER = $(SRCROOT)/$(PRODUCT_NAME)/SupportingFiles/RiotNSE-Bridging-Header.h
+
+// Tchap: Customize TchapNSE user-agent for back-end logs.
+// SWIFT_OBJC_BRIDGING_HEADER = $(SRCROOT)/$(PRODUCT_NAME)/SupportingFiles/RiotNSE-Bridging-Header.h
+SWIFT_OBJC_BRIDGING_HEADER = $(SRCROOT)/RiotNSE/SupportingFiles/RiotNSE-Bridging-Header.h
 
