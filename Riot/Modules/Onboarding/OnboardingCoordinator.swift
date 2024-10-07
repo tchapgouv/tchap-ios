@@ -165,7 +165,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         case .register:
             // Tchap: Bypass usecase selection screen
 //            showUseCaseSelectionScreen()
-            MXLog.failure("[OnboardingCoordinator] splashScreenCoordinator register case should not happen !")
+            beginAuthentication(with: .registration, onStart: coordinator.stop)
             
         case .login:
             if BuildSettings.onboardingEnableNewAuthenticationFlow {

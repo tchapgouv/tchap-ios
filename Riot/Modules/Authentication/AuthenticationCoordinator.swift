@@ -151,7 +151,9 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
             if authenticationService.state.homeserver.needsRegistrationFallback {
                 showFallback(for: flow)
             } else {
-                showRegistrationScreen()
+                // Tchap: force email registration mode
+//                showRegistrationScreen()
+                TchapShowVerifyEmailScreen()
             }
         case .login:
             if authenticationService.state.homeserver.needsLoginFallback {
@@ -378,6 +380,38 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
             }
         }
     }
+    
+    // Tchap: start Registration with VerifyEmail screen
+    /// Shows the login screen.
+    @MainActor private func TchapShowVerifyEmailScreen() {
+        MXLog.debug("[AuthenticationCoordinator] TchapShowVerifyEmailScreen")
+        
+        guard let registrationWizard = authenticationService.registrationWizard else {
+            MXLog.failure("[AuthenticationCoordinator] showStage: Missing the RegistrationWizard needed to complete the stage.")
+            displayError(message: VectorL10n.errorCommonMessage)
+            return
+        }
+        let homeserver = authenticationService.state.homeserver
+
+        let parameters = AuthenticationVerifyEmailCoordinatorParameters(registrationWizard: registrationWizard,
+                                                                        homeserver: authenticationService.state.homeserver)
+        let coordinator = AuthenticationVerifyEmailCoordinator(parameters: parameters)
+        coordinator.callback = { [weak self] result in
+            self?.registrationStageDidComplete(with: result)
+        }
+
+        coordinator.start()
+        add(childCoordinator: coordinator)
+        
+        if navigationRouter.modules.isEmpty {
+            navigationRouter.setRootModule(coordinator, popCompletion: nil)
+        } else {
+            navigationRouter.push(coordinator, animated: true) { [weak self] in
+                self?.remove(childCoordinator: coordinator)
+            }
+        }
+    }
+
     
     /// Displays the next view in the flow based on the result from the registration screen.
     @MainActor private func registrationCoordinator(_ coordinator: AuthenticationRegistrationCoordinator,

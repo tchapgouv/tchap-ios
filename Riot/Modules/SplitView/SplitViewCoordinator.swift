@@ -93,7 +93,9 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
             self.splitViewController.delegate = self
             
             // Create primary controller
-            let masterCoordinator: SplitViewMasterCoordinatorProtocol = BuildSettings.newAppLayoutEnabled ? self.createAllChatsCoordinator() : self.createTabBarCoordinator()
+            // Tchap: force using AllChatsCoordinator because newLayout is always TRUE
+//            let masterCoordinator: SplitViewMasterCoordinatorProtocol = BuildSettings.newAppLayoutEnabled ? self.createAllChatsCoordinator() : self.createTabBarCoordinator()
+            let masterCoordinator: SplitViewMasterCoordinatorProtocol = self.createAllChatsCoordinator()
             masterCoordinator.splitViewMasterPresentableDelegate = self
             masterCoordinator.start(with: spaceId)
             
@@ -182,14 +184,15 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
         return coordinator
     }
     
-    private func createTabBarCoordinator() -> TabBarCoordinator {
-        
-        let coordinatorParameters = TabBarCoordinatorParameters(userSessionsService: self.parameters.userSessionsService, appNavigator: self.parameters.appNavigator)
-        
-        let tabBarCoordinator = TabBarCoordinator(parameters: coordinatorParameters)
-        tabBarCoordinator.delegate = self
-        return tabBarCoordinator
-    }
+    // Tchap: don't use TabBarCoordinator anymore now that newLayout is always TRUE
+//    private func createTabBarCoordinator() -> TabBarCoordinator {
+//        
+//        let coordinatorParameters = TabBarCoordinatorParameters(userSessionsService: self.parameters.userSessionsService, appNavigator: self.parameters.appNavigator)
+//        
+//        let tabBarCoordinator = TabBarCoordinator(parameters: coordinatorParameters)
+//        tabBarCoordinator.delegate = self
+//        return tabBarCoordinator
+//    }
     
     private func resetDetailNavigationControllerWithPlaceholder(animated: Bool) {
         guard let detailNavigationRouter = self.detailNavigationRouter else {
