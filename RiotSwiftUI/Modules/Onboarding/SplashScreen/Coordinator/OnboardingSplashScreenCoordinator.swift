@@ -42,7 +42,9 @@ final class OnboardingSplashScreenCoordinator: OnboardingSplashScreenCoordinator
     
     init() {
         let viewModel = OnboardingSplashScreenViewModel()
-        let view = OnboardingSplashScreen(viewModel: viewModel.context)
+        // Tchap: use Tchap heavy customized Onboarding splash screen
+//        let view = OnboardingSplashScreen(viewModel: viewModel.context)
+        let view = TchapOnboardingSplashScreen(viewModel: viewModel.context)
         onboardingSplashScreenViewModel = viewModel
         onboardingSplashScreenHostingController = VectorHostingController(rootView: view)
         onboardingSplashScreenHostingController.vc_removeBackTitle()

@@ -351,8 +351,18 @@ static CGFloat const kTextFontSize = 15.0;
 {
     MXLogDebug(@"[DeactivateAccountViewController] Show fallback for url: %@", url)
     SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];
-    safariViewController.modalPresentationStyle = UIModalPresentationFormSheet;
+    // Tchap: set modalPresentationStyle to 'currentContext' to enable safariViewController to be presented modaly.
+//    safariViewController.modalPresentationStyle = UIModalPresentationFormSheet;
+    safariViewController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    
     safariViewController.delegate = self;
+    
+    // Tchap: block dismissal of this SFSafariViewController sheet by dragging down.
+    // Else, the underlying activity indicator is not removed.
+    // The user must use the close button.
+    if (@available(iOS 13.0, *)) {
+        safariViewController.modalInPresentation = true;
+    }
     
     [self presentViewController:safariViewController animated:YES completion:nil];
 }

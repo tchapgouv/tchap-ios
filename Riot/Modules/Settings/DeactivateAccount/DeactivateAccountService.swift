@@ -93,7 +93,9 @@ enum DeactivateAccountServiceError: Error {
     /// - Parameter authenticationSession: The authentication session to be used.
     /// - Returns: A tuple containing the required authentication method along with a URL for fallback if necessary.
     private func handleAuthenticationSession(_ authenticationSession: MXAuthenticationSession) throws -> (DeactivateAccountAuthentication, URL?) {
-        guard let nextStage = uiaService.firstUncompletedFlowIdentifier(in: authenticationSession) else {
+        // Tchap: give priority to SSO authentication
+       // guard let nextStage = uiaService.firstUncompletedFlowIdentifier(in: authenticationSession) else {
+        guard let nextStage = uiaService.firstUncompletedFlowIdentifier(in: authenticationSession, priorityToSso: true) else {
             MXLog.error("[DeactivateAccountService] handleAuthenticationSession: Failed to determine the next stage.")
             throw DeactivateAccountServiceError.missingStage
         }

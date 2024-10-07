@@ -65,9 +65,22 @@ struct AuthenticationLoginViewState: BindableState {
     /// View state that can be bound to from SwiftUI.
     var bindings: AuthenticationLoginBindings
     
+    // Tchap: add loginMode (only password or sso modes are handled)
+    var tchapAuthenticationMode: LoginMode
+
     /// Whether to show any SSO buttons.
     var showSSOButtons: Bool {
-        !homeserver.ssoIdentityProviders.isEmpty
+        // Tchap: only show sso buttons if tchapAuthenticationMode == .sso OR .ssoAndPassword
+//        !homeserver.ssoIdentityProviders.isEmpty
+        if case .sso = tchapAuthenticationMode,
+           !homeserver.ssoIdentityProviders.isEmpty {
+            return true
+        }
+        if case .ssoAndPassword = tchapAuthenticationMode,
+           !homeserver.ssoIdentityProviders.isEmpty {
+            return true
+        }
+        return false
     }
     
     /// `true` if the username and password are ready to be submitted.
@@ -77,7 +90,21 @@ struct AuthenticationLoginViewState: BindableState {
     
     /// `true` if valid credentials have been entered and the homeserver is loaded.
     var canSubmit: Bool {
-        hasValidCredentials && !isLoading
+        // Tchap: handle `canSubmit` by checking email validity for concerned cases
+//        return hasValidCredentials && !isLoading
+        switch tchapAuthenticationMode {
+        case .password:
+            return !isLoading && tchapEmailIsValid
+        case .sso:
+            return !isLoading && tchapEmailIsValid
+        default:
+            return hasValidCredentials && !isLoading
+        }
+    }
+    
+    // Tchap: username is email
+    var tchapEmailIsValid: Bool {
+        MXTools.isEmailAddress(bindings.username)
     }
 }
 

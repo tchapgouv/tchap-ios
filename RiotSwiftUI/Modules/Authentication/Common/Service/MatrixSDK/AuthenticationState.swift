@@ -51,7 +51,10 @@ struct AuthenticationState {
         }
         
         /// The preferred login mode for the server
-        var preferredLoginMode: LoginMode = .unknown
+        // Tchap: force preferredLoginMode to `password` to present `username` input field.
+        // (can't set it to `SSO` because we don't know yet if the user's homeServer supports SSO).
+//        var preferredLoginMode: LoginMode = .unknown
+        var preferredLoginMode: LoginMode = .password
 
         /// Flag indicating whether the homeserver supports logging in via a QR code.
         var supportsQRLogin = false
