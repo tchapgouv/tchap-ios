@@ -45,6 +45,9 @@ final class CrossSigningSetupCoordinator: CrossSigningSetupCoordinatorType {
     // MARK: - Public methods
     
     func start() {
+        // Tchap: launch classic crossiging without authentication parameters
+        // to trigger real requets to backend, with real keys.
+        // This will trigger a 401 reponse that will launch the SSO reauthentication.
 //        self.showReauthentication()
         self.setupCrossSigning(with: [:])
     }
@@ -110,8 +113,6 @@ final class CrossSigningSetupCoordinator: CrossSigningSetupCoordinatorType {
             let nsError = error as NSError
             if let jsonResponse = nsError.userInfo[MXHTTPClientErrorResponseDataKey] as? [AnyHashable: Any],
                let authenticationSession = MXAuthenticationSession(fromJSON: jsonResponse) {
-                // Begin authentication flow using authentication session informations returned by backend.
-//                self.coordinatorDelegate?.secretsResetViewModel(self, needsToAuthenticateWith: authenticationSession)
                 self.showReauthentication(with: authenticationSession)
             }
             else {
