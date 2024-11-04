@@ -1814,7 +1814,7 @@
 "room_displayname_two_members" = "%@ et %@";
 // Settings
 "settings" = "Paramètres";
-"settings_enable_inapp_notifications" = "Activer les notifications dans l’application";
+"settings_enable_inapp_notifications" = "Activer les notifications pour ce compte"; // Tchap
 "settings_enable_push_notifications" = "Activer les notifications push";
 "settings_enter_validation_token_for" = "Saisir le jeton de validation pour %@ :";
 "notification_settings_room_rule_title" = "Salon : « %@ »";
