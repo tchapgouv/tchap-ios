@@ -2211,7 +2211,18 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
-            labelAndSwitchCell.mxkLabel.text = VectorL10n.settingsEnableInappNotifications;
+            // Tchap: add explanation to "enable notifications by email"
+//            labelAndSwitchCell.mxkLabel.text = VectorL10n.settingsEnableInappNotifications;
+  
+            NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString: VectorL10n.settingsEnableInappNotifications
+                                                                                               attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
+                                                                                                            NSFontAttributeName: [UIFont systemFontOfSize:17.0]}];
+            [attributedText appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:4]}]];
+            [attributedText appendAttributedString:[[NSMutableAttributedString alloc] initWithString: TchapL10n.settingsEnableInappNotificationsDescription
+                                                                                          attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textSecondaryColor,
+                                                                                                       NSFontAttributeName: [UIFont systemFontOfSize:14.0]}]];
+            labelAndSwitchCell.mxkLabel.attributedText = attributedText;
+
             labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.showInAppNotifications;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = account.pushNotificationServiceIsActive;
@@ -2237,7 +2248,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     
 
 
-            // Tchap: add explanation to "enable notiofications by email"
+            // Tchap: add explanation to "enable notifications by email"
 //            labelAndSwitchCell.mxkLabel.text = TchapL10n.settingsNotificationEmail;
 
             NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString: TchapL10n.settingsNotificationEmail
