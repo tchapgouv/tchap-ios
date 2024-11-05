@@ -212,9 +212,9 @@ final class UserInteractiveAuthenticationService: NSObject {
     /// - Returns: The fallback URL for the first uncompleted stage found.
     func firstUncompletedStageAuthenticationFallbackURL(for authenticationSession: MXAuthenticationSession) -> URL? {
         guard let sessiondId = authenticationSession.session, 
-                // Tchap: give priority to SSO authentication
+                // Tchap: give priority to SSO authentication if SSO handling is activated by feature flag.
 //              let firstUncompletedStageIdentifier = self.firstUncompletedFlowIdentifier(in: authenticationSession) else {
-                let firstUncompletedStageIdentifier = self.firstUncompletedFlowIdentifier(in: authenticationSession, priorityToSso: true) else {
+                let firstUncompletedStageIdentifier = self.firstUncompletedFlowIdentifier(in: authenticationSession, priorityToSso: BuildSettings.tchapFeatureHandleSSO) else {
             return nil
         }
         return self.authenticationFallbackURL(for: firstUncompletedStageIdentifier, sessionId: sessiondId)
@@ -261,8 +261,8 @@ final class UserInteractiveAuthenticationService: NSObject {
         let completedStagesSet = NSOrderedSet(array: completedStages)
         uncompletedStages.minus(completedStagesSet)
         
-        // Tchap
-        if uncompletedStages.contains(kMXLoginFlowTypeSSO) {
+        // Tchap: return SSO if priority is given to SSO login flow type and SSO flow type is available on the homeServer.
+        if priorityToSso && uncompletedStages.contains(kMXLoginFlowTypeSSO) {
             return kMXLoginFlowTypeSSO
         }
         
@@ -284,7 +284,7 @@ final class UserInteractiveAuthenticationService: NSObject {
     // Tchap
     /// Check if an array of login flows contains "m.login.sso" flow.
     func tchapHasSsoFlowAvailable(authenticationSession: MXAuthenticationSession) -> Bool {
-        return self.firstUncompletedFlowIdentifier(in: authenticationSession, priorityToSso: true) == kMXLoginFlowTypeSSO
+        return self.firstUncompletedFlowIdentifier(in: authenticationSession, priorityToSso: BuildSettings.tchapFeatureHandleSSO) == kMXLoginFlowTypeSSO
     }
     
     // MARK: - Private

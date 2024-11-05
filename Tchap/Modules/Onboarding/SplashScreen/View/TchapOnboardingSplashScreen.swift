@@ -92,28 +92,31 @@ struct TchapOnboardingSplashScreen: View {
         HStack { // HStack to center horizontally
             Spacer()
             VStack {
-                // Button ProConnect
-                Button(action: { viewModel.send(viewAction: .login(.sso(ssoIdentityProviders: []))) }, label: {
-                    HStack {
-                        Image(uiImage: Asset_tchap.Images.proConnectIcon.image)
-                        Text(LocalizedStringKey(TchapL10n.welcomeProConnectTitle)) // LocalizedStringKey is needed for markdown interpretation.
-                            .fixedSize(horizontal: false, vertical: true) // .lineLimit(Int.max) doesn't work here.
-                            .foregroundColor(.white)
-                    }
-                    .padding(EdgeInsets(top: 10.0, leading: 32.0, bottom: 10.0, trailing: 32.0))
-                })
-                .background(
-                    Color(UIColor(rgb: 0x000091)),
-                    in: RoundedRectangle(cornerRadius: 12.0)
-                )
-                .padding(.bottom, 8.0)
+                // Display ProConnect option only if enabled by feature flag.
+                if BuildSettings.tchapFeatureHandleSSO {
+                    // Button ProConnect
+                    Button(action: { viewModel.send(viewAction: .login(.sso(ssoIdentityProviders: []))) }, label: {
+                        HStack {
+                            Image(uiImage: Asset_tchap.Images.proConnectIcon.image)
+                            Text(LocalizedStringKey(TchapL10n.welcomeProConnectTitle)) // LocalizedStringKey is needed for markdown interpretation.
+                                .fixedSize(horizontal: false, vertical: true) // .lineLimit(Int.max) doesn't work here.
+                                .foregroundColor(.white)
+                        }
+                        .padding(EdgeInsets(top: 10.0, leading: 32.0, bottom: 10.0, trailing: 32.0))
+                    })
+                    .background(
+                        Color(UIColor(rgb: 0x000091)),
+                        in: RoundedRectangle(cornerRadius: 12.0)
+                    )
+                    .padding(.bottom, 8.0)
                 
-                // Button "What is ProConnect?"
-                Button(action: { openProConnectWebsite() }, label: {
-                    Text(TchapL10n.welcomeProConnectInfo)
-                })
-                .padding(.bottom, 32.0)
-                
+                    // Button "What is ProConnect?"
+                    Button(action: { openProConnectWebsite() }, label: {
+                        Text(TchapL10n.welcomeProConnectInfo)
+                    })
+                    .padding(.bottom, 32.0)
+                }
+              
                 /// Button "Connect with password"
                 Button(action: { viewModel.send(viewAction: .login(.password)) }, label: {
                     Text(TchapL10n.welcomePasswordTitle)
