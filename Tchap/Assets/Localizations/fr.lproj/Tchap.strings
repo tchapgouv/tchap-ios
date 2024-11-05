@@ -295,6 +295,7 @@
 // MARK: Device Verification
 "device_verification_title" = "Vérifier l’appareil";
 "device_verification_verified_description" = "Vous avez bien vérifié cet appareil.\n\nLe partage des clés va s'effectuer progressivement. Les messages se déchiffreront au fur à mesure. Cela peut prendre quelques minutes.";
+"device_verification_help_label" = "Obtenir de l'aide";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Favourite messages screen
