@@ -243,6 +243,9 @@ final class BuildSettings: NSObject {
         tchapFeatureAnyFeature: [ tchapFeatureAnyHomeServer ]
     ]
     
+    // Tchap: handle SSO feature flag. Presents SSO button on Onboarding screen and give priority to SSO on UIA.
+    static let tchapFeatureHandleSSO = false
+    
     // MARK: - Side Menu
     static let enableSideMenu: Bool = true && !newAppLayoutEnabled
     static let sideMenuShowInviteFriends: Bool = true
