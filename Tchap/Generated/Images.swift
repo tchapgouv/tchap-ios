@@ -34,6 +34,7 @@ internal class Asset_tchap: NSObject {
     internal static let cameraCapture = ImageAsset(name: "camera_capture")
     internal static let cameraVideoCapture = ImageAsset(name: "camera_video_capture")
     internal static let videoIcon = ImageAsset(name: "video_icon")
+    internal static let proConnectIcon = ImageAsset(name: "pro_connect_icon")
     internal static let error = ImageAsset(name: "error")
     internal static let newmessages = ImageAsset(name: "newmessages")
     internal static let scrolldown = ImageAsset(name: "scrolldown")

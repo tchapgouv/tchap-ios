@@ -59,8 +59,8 @@ abstract_target 'TchapPods' do
   pod 'zxcvbn-ios'
 
   # Tools
-  pod 'SwiftGen', '~> 6.3'
-  pod 'SwiftLint', '~> 0.49.1'
+  pod 'SwiftGen'
+  pod 'SwiftLint'
   pod 'SwiftFormat/CLI'
 
   target "Tchap" do
