@@ -16,37 +16,32 @@ internal enum StoryboardScene {
   internal enum AppVersionUpdateViewController: StoryboardType {
     internal static let storyboardName = "AppVersionUpdateViewController"
 
-    internal static let initialScene = InitialSceneType<DevTchap.AppVersionUpdateViewController>(storyboard: AppVersionUpdateViewController.self)
+    internal static let initialScene = InitialSceneType<Tchap.AppVersionUpdateViewController>(storyboard: AppVersionUpdateViewController.self)
   }
   internal enum ChangePasswordCurrentPasswordViewController: StoryboardType {
     internal static let storyboardName = "ChangePasswordCurrentPasswordViewController"
 
-    internal static let initialScene = InitialSceneType<DevTchap.ChangePasswordCurrentPasswordViewController>(storyboard: ChangePasswordCurrentPasswordViewController.self)
+    internal static let initialScene = InitialSceneType<Tchap.ChangePasswordCurrentPasswordViewController>(storyboard: ChangePasswordCurrentPasswordViewController.self)
   }
   internal enum ChangePasswordNewPasswordViewController: StoryboardType {
     internal static let storyboardName = "ChangePasswordNewPasswordViewController"
 
-    internal static let initialScene = InitialSceneType<DevTchap.ChangePasswordNewPasswordViewController>(storyboard: ChangePasswordNewPasswordViewController.self)
+    internal static let initialScene = InitialSceneType<Tchap.ChangePasswordNewPasswordViewController>(storyboard: ChangePasswordNewPasswordViewController.self)
   }
   internal enum PublicRoomsViewController: StoryboardType {
     internal static let storyboardName = "PublicRoomsViewController"
 
-    internal static let initialScene = InitialSceneType<DevTchap.PublicRoomsViewController>(storyboard: PublicRoomsViewController.self)
+    internal static let initialScene = InitialSceneType<Tchap.PublicRoomsViewController>(storyboard: PublicRoomsViewController.self)
   }
   internal enum RoomAccessByLinkViewController: StoryboardType {
     internal static let storyboardName = "RoomAccessByLinkViewController"
 
-    internal static let initialScene = InitialSceneType<DevTchap.RoomAccessByLinkViewController>(storyboard: RoomAccessByLinkViewController.self)
+    internal static let initialScene = InitialSceneType<Tchap.RoomAccessByLinkViewController>(storyboard: RoomAccessByLinkViewController.self)
   }
   internal enum RoomCreationViewController: StoryboardType {
     internal static let storyboardName = "RoomCreationViewController"
 
-    internal static let initialScene = InitialSceneType<DevTchap.RoomCreationViewController>(storyboard: RoomCreationViewController.self)
-  }
-  internal enum WelcomeViewController: StoryboardType {
-    internal static let storyboardName = "WelcomeViewController"
-
-    internal static let initialScene = InitialSceneType<DevTchap.WelcomeViewController>(storyboard: WelcomeViewController.self)
+    internal static let initialScene = InitialSceneType<Tchap.RoomCreationViewController>(storyboard: RoomCreationViewController.self)
   }
 }
 // swiftlint:enable explicit_type_interface identifier_name line_length prefer_self_in_static_references
