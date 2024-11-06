@@ -1,4 +1,5 @@
 /*
+<<<<<<< HEAD
  Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,6 +13,13 @@
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
+=======
+Copyright 2024 New Vector Ltd.
+Copyright 2017 Aram Sargsyan
+
+SPDX-License-Identifier: AGPL-3.0-only
+Please see LICENSE in the repository root for full details.
+>>>>>>> v1.11.19
  */
 
 @import UIKit;
