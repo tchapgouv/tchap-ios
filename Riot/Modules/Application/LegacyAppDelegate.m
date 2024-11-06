@@ -2454,13 +2454,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                 case MXSessionStateSyncInProgress:
                     // Stay in launching during the first server sync if the store is empty.
                     isLaunching = (mainSession.rooms.count == 0 && launchAnimationContainerView);
-// Tchap: Disable Cross Signing Managment.
-#ifdef CROSS_SIGNING
-                    if (mainSession.crypto.crossSigning && mainSession.crypto.crossSigning.state == MXCrossSigningStateCrossSigningExists && [mainSession.crypto isKindOfClass:[MXLegacyCrypto class]])
-                    {
-                        [(MXLegacyCrypto *)mainSession.crypto setOutgoingKeyRequestsEnabled:NO onComplete:nil];
-                    }
-#endif
                     break;
                 case MXSessionStateRunning:
                     self.clearingCache = NO;

@@ -1,11 +1,6 @@
 /*
-<<<<<<< HEAD:Tchap/Utils/Tools.h
- Copyright 2016 OpenMarket Ltd
- Copyright 2020 New Vector Ltd
-=======
 Copyright 2024 New Vector Ltd.
 Copyright 2016 OpenMarket Ltd
->>>>>>> v1.11.19:Riot/Utils/Tools.h
 
 SPDX-License-Identifier: AGPL-3.0-only
 Please see LICENSE in the repository root for full details.

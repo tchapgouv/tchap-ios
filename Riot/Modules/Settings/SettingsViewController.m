@@ -1542,8 +1542,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     
     NSString *sdkVersionInfo = [NSString stringWithFormat:@"Matrix SDK %@", MatrixSDKVersion];
     
-    NSString *olmVersionInfo = [NSString stringWithFormat:@"OLM %@", [OLMKit versionString]];    
-    
     // Tchap: Hide user and homeserver infos
 //    [footerText appendFormat:@"%@\n", loggedUserInfo];
 //    [footerText appendFormat:@"%@\n", homeserverInfo];
