@@ -1,3 +1,25 @@
+## Changes in 2.8.2 (2024-11-06)
+
+✨ Features
+
+- Activer la connexion par SSO ([#1083](https://github.com/tchapgouv/tchap-ios/issues/1083))
+- Mettre en place le nouveau flow SSO ([#1089](https://github.com/tchapgouv/tchap-ios/issues/1089))
+
+🙌 Improvements
+
+- Activation de la visio 1-to-1 pour l'instance Education Nationale ([#1090](https://github.com/tchapgouv/tchap-ios/issues/1090))
+- Changement de l'explication sous le bouton d'activation des notifications pour mentionner les messages et les appels entrants. ([#1091](https://github.com/tchapgouv/tchap-ios/issues/1091))
+- Gérer correctement les flows de réauthentification sur les actions sécurisées ([#1093](https://github.com/tchapgouv/tchap-ios/issues/1093))
+- Rebase to Element 1.11.18 and Matrix 0.27.14 ([#1096](https://github.com/tchapgouv/tchap-ios/issues/1096))
+- Ajout d'un label sous le bouton "Activer les notifs dans l'application" ([#1103](https://github.com/tchapgouv/tchap-ios/issues/1103))
+- Amélioration de l'explication lorsqu'on active l'accès à un salon par lien. ([#1104](https://github.com/tchapgouv/tchap-ios/issues/1104))
+- Faciliter l'accès à l'aide sur la vérification d'appareil ([#1105](https://github.com/tchapgouv/tchap-ios/issues/1105))
+- Activer les appels vidéos pour les agents Intradef. ([#1108](https://github.com/tchapgouv/tchap-ios/issues/1108))
+- Permettre les appels vidéos sur Education et Agent. ([#1109](https://github.com/tchapgouv/tchap-ios/issues/1109))
+- Activation de la gestion de ProConnect (login et UIA) via feature flag (désactivé par défaut en Prod). ([#1110](https://github.com/tchapgouv/tchap-ios/issues/1110))
+- Rebase to Element 1.11.19 and Matrix SDK 0.27.15 ([#1114](https://github.com/tchapgouv/tchap-ios/issues/1114))
+
+
 ## Changes in 2.8.0 (2024-08-14)
 
 🙌 Improvements

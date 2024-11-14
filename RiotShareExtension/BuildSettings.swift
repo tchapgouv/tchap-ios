@@ -137,7 +137,7 @@ final class BuildSettings: NSObject {
     static let applicationHelpUrlString = "https://www.tchap.gouv.fr/faq"
     static let applicationServicesStatusUrlString = "https://status.tchap.numerique.gouv.fr/"
     static let applicationAcceptableUsePolicyUrlString = ""
-
+    static let proConnectInfoUrlString = "https://proconnect.gouv.fr/"
     
     // MARK: - Matrix permalinks
     // Hosts/Paths for URLs that will considered as valid permalinks. Those permalinks are opened within the app.
@@ -203,10 +203,10 @@ final class BuildSettings: NSObject {
     
     #if DEBUG
     /// The configuration to use for analytics during development. Set `isEnabled` to false to disable analytics in debug builds.
-    static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: false,
-                                                               host: "",
-                                                               apiKey: "",
-                                                               termsURL: URL(string: "https://")!)
+    static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: true, // Tchap: enable PostHog analytics on DEBUG
+                                                               host: "https://us.i.posthog.com", // Tchap: dev posthog,
+                                                               apiKey: "phc_eQOeaQiaIxdX9kaQmqYTD7RJLyFubYmGYKUI9czqqQD", // Tchap: dev posthog,
+                                                               termsURL: URL(string: "https://tchap.beta.gouv.fr/politique-de-confidentialite")!) // Tchap: dev posthog,
     #else
     /// The configuration to use for analytics. Set `isEnabled` to false to disable analytics.
     static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: false,
@@ -272,7 +272,7 @@ final class BuildSettings: NSObject {
         tchapFeatureNotificationByEmail: [
             tchapFeatureAnyHomeServer
         ],
-        // Audio calls for all except Finances in Tchap Production.
+        // Audio calls for all in Tchap Production.
         tchapFeatureVoiceOverIP: [
             "agent.externe.tchap.gouv.fr",
             "agent.collectivites.tchap.gouv.fr",
@@ -280,7 +280,7 @@ final class BuildSettings: NSObject {
             "agent.elysee.tchap.gouv.fr",
             "agent.pm.tchap.gouv.fr",
             "agent.ssi.tchap.gouv.fr",
-//            "agent.finances.tchap.gouv.fr",
+            "agent.finances.tchap.gouv.fr",
             "agent.social.tchap.gouv.fr",
             "agent.interieur.tchap.gouv.fr",
             "agent.agriculture.tchap.gouv.fr",
@@ -292,14 +292,17 @@ final class BuildSettings: NSObject {
             "agent.dev-durable.tchap.gouv.fr",
             "agent.education.tchap.gouv.fr"
         ],
-        // No activation of video calls actually in Tchap Production.
-//        tchapFeatureVideoOverIP: [
-//            "agent.dinum.tchap.gouv.fr"
-//        ],
+        tchapFeatureVideoOverIP: [
+            "agent.dinum.tchap.gouv.fr",
+            "agent.education.tchap.gouv.fr"
+        ],
         tchapFeatureGeolocationSharing: [
             tchapFeatureAnyHomeServer
         ]
     ]
+    
+    // Tchap: handle SSO feature flag. Presents SSO button on Onboarding screen and give priority to SSO on UIA.
+    static let tchapFeatureHandleSSO = false
     
     // MARK: - Side Menu
     static let enableSideMenu: Bool = true && !newAppLayoutEnabled

@@ -107,7 +107,9 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
             }
             startLoading()
             if BuildSettings.onboardingEnableNewAuthenticationFlow {
-                beginAuthentication(with: .login) { [weak self] in
+                // Tchap: allow override home server's preferred login mode
+//                beginAuthentication(with: .login) { [weak self] in
+                    beginAuthentication(with: .login()) { [weak self] in
                     self?.stopLoading()
                 }
             } else {
@@ -165,11 +167,14 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         case .register:
             // Tchap: Bypass usecase selection screen
 //            showUseCaseSelectionScreen()
-            MXLog.failure("[OnboardingCoordinator] splashScreenCoordinator register case should not happen !")
+            beginAuthentication(with: .registration, onStart: coordinator.stop)
             
-        case .login:
+        // Tchap: allow override home server's preferred login mode
+//        case .login:
+        case let .login(mode):
             if BuildSettings.onboardingEnableNewAuthenticationFlow {
-                beginAuthentication(with: .login, onStart: coordinator.stop)
+//                beginAuthentication(with: .login, onStart: coordinator.stop)
+                beginAuthentication(with: .login(mode), onStart: coordinator.stop)
             } else {
                 coordinator.stop()
                 showLegacyAuthenticationScreen()
@@ -243,7 +248,15 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         authenticationCoordinator = coordinator
         
         add(childCoordinator: coordinator)
-        coordinator.start()
+        
+        // Tchap: allow override home server's preferred login mode
+//        coordinator.start()
+        if case let .login(forcedAuthenticationMode) = initialScreen {
+            coordinator.start(forcedAuthenticationMode: forcedAuthenticationMode)
+        }
+        else {
+            coordinator.start()
+        }
     }
 
     /// Show the legacy authentication screen. Any parameters that have been set in previous screens are be applied.

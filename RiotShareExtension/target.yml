@@ -105,6 +105,8 @@ targets:
     # Tchap
     - path: ../RiotShareExtension/BuildSettings.swift
     - path: ../Tchap/Extensions
+      excludes:
+      - WebLinks+Tchap.swift
     - path: ../Tchap/Generated/Images_Riot.swift
     - path: ../Tchap/Generated/InfoPlist.swift
     - path: ../Tchap/Generated/Strings.swift

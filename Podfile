@@ -51,7 +51,7 @@ abstract_target 'TchapPods' do
 
   # PostHog for analytics
   pod 'PostHog', '~> 2.0.0'
-  pod 'Sentry', '~> 7.15.0'
+  pod 'Sentry', '~> 8.40.1'
 
   pod 'RxSwift', '~> 5.1.1'
 
@@ -59,8 +59,8 @@ abstract_target 'TchapPods' do
   pod 'zxcvbn-ios'
 
   # Tools
-  pod 'SwiftGen', '~> 6.3'
-  pod 'SwiftLint', '~> 0.49.1'
+  pod 'SwiftGen'
+  pod 'SwiftLint'
   pod 'SwiftFormat/CLI'
 
   target "Tchap" do

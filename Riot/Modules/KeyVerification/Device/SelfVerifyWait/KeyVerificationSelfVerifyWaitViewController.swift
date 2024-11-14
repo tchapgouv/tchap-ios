@@ -53,6 +53,9 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     @IBOutlet weak var tchapNoRecoverSecretsMethodAvailableInformationLabel: UILabel!
     @IBOutlet weak var tchapNoRecoverSecretsMethodAvailableButton: RoundedButton!
     
+    // Tchap: Quick access to Help FAQ specific article
+    @IBOutlet weak var tchapQuickHelpButton: UIButton!
+    
     // MARK: Private
 
     private var viewModel: KeyVerificationSelfVerifyWaitViewModelType!
@@ -142,10 +145,24 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         
         self.desktopClientImageView.image = Asset.Images.monitor.image.withRenderingMode(.alwaysTemplate)
         self.mobileClientImageView.image = Asset.Images.smartphone.image.withRenderingMode(.alwaysTemplate)
-                
+        
         self.recoverSecretsAdditionalInformationLabel.text = VectorL10n.deviceVerificationSelfVerifyWaitRecoverSecretsAdditionalHelp(AppInfo.current.displayName)
+        
+        // Tchap: configure Help button
+        self.tchapSetupHelpButton()
     }
 
+    // Tchap: configure Help button
+    private func tchapSetupHelpButton() {
+        let  helpAttributedString = NSMutableAttributedString(string: TchapL10n.deviceVerificationHelpLabel, attributes: [.foregroundColor: self.theme.warningColor])
+        
+        self.tchapQuickHelpButton.setAttributedTitle(helpAttributedString, for: .normal)
+        
+        self.tchapQuickHelpButton.vc_addAction {
+            self.tchapHelpButtonAction()
+        }
+    }
+    
     private func render(viewState: KeyVerificationSelfVerifyWaitViewState) {
         switch viewState {
         case .loading:
@@ -250,6 +267,11 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     
     @IBAction private func recoverSecretsButtonAction(_ sender: Any) {
         self.viewModel.process(viewAction: .recoverSecrets)
+    }
+    
+    // Tchap: Help button action
+    private func tchapHelpButtonAction() {
+        self.present(WebSheetViewController(targetUrl: URL(string: "https://aide.tchap.beta.gouv.fr/fr/article/comment-verifier-un-nouvel-appareil-sur-tchap-xm0b0y/")!), animated: true)
     }
 }
 

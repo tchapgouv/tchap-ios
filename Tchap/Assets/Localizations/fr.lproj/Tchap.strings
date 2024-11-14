@@ -19,13 +19,19 @@
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Welcome
 "welcome_title" = "Bienvenue dans Tchap";
+"welcome_subtitle" = "La messagerie instantanée du secteur public";
 "welcome_login_action" = "J'ai un compte";
 "welcome_register_action" = "Je n'ai pas de compte";
+"welcome_pro_connect_title" = "Se connecter avec\n**ProConnect**"; // Markdown string for SwiftUI Text()
+"welcome_pro_connect_info" = "→ Qu'est-ce que ProConnect ?";
+"welcome_password_title" = "Se connecter par mot de passe";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Authentication
-"authentication_title" = "Connexion Tchap";
-"authentication_mail_placeholder" = "Adresse email";
+"authentication_password_title" = "Se connecter à Tchap";
+"authentication_sso_title" = "Se connecter avec ProConnect";
+"authentication_sso_connect_title" = "**Continuer avec ProConnect**"; // Markdown string for SwiftUI Text()
+"authentication_mail_placeholder" = "Adresse mail professionnelle";
 "authentication_password_placeholder" = "Mot de passe Tchap";
 "authentication_forgot_password" = "Mot de passe oublié ?";
 
@@ -203,7 +209,7 @@
 "room_settings_room_access_by_link_disabled" = "Ce salon n’est pas accessible par lien";
 "room_settings_room_access_by_link_enabled" = "Ce salon est accessible par lien";
 "room_settings_enable_room_access_by_link" = "Activer l’accès au salon par lien";
-"room_settings_enable_room_access_by_link_info_off" = "Les autres utilisateurs seront autorisés à rejoindre ce salon à partir d’un lien";
+"room_settings_enable_room_access_by_link_info_off" = "Tous les agents disposant du lien peuvent rejoindre ce salon et inviter d'autres agents";
 "room_settings_enable_room_access_by_link_info_on" = "Les autres utilisateurs peuvent rejoindre ce salon à partir du lien suivant\U00A0:";
 "room_settings_enable_room_access_by_link_info_on_with_limitation" = "Les autres utilisateurs peuvent rejoindre ce salon à partir du lien suivant (une invitation reste nécessaire pour les externes)\U00A0:";
 "room_settings_room_access_by_link_share" = "Partager le lien";
@@ -289,6 +295,7 @@
 // MARK: Device Verification
 "device_verification_title" = "Vérifier l’appareil";
 "device_verification_verified_description" = "Vous avez bien vérifié cet appareil.\n\nLe partage des clés va s'effectuer progressivement. Les messages se déchiffreront au fur à mesure. Cela peut prendre quelques minutes.";
+"device_verification_help_label" = "Obtenir de l'aide";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Favourite messages screen
@@ -346,6 +353,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Settings
-"settings_enable_push_notif_text" = "Sans cette autorisation, les appels entrants ne seront pas notifiés.";
+"settings_enable_push_notif_text" = "Sans cette autorisation, les messages et appels entrants ne seront pas notifiés.";
 "settings_enable_email_notif_text" = "Recevez un e-mail si au moins un message récent non lu pendant 72h.";
 "settings_enable_email_notif_link" = "En savoir plus.";
+"settings_enable_inapp_notifications_description" = "Le compte correspond à tous vos appareils connectés à Tchap.";

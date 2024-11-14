@@ -1,17 +1,8 @@
 //
-// Copyright 2021 New Vector Ltd
+// Copyright 2021-2024 New Vector Ltd.
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// SPDX-License-Identifier: AGPL-3.0-only
+// Please see LICENSE in the repository root for full details.
 //
 
 import Foundation
@@ -65,9 +56,22 @@ struct AuthenticationLoginViewState: BindableState {
     /// View state that can be bound to from SwiftUI.
     var bindings: AuthenticationLoginBindings
     
+    // Tchap: add loginMode (only password or sso modes are handled)
+    var tchapAuthenticationMode: LoginMode
+
     /// Whether to show any SSO buttons.
     var showSSOButtons: Bool {
-        !homeserver.ssoIdentityProviders.isEmpty
+        // Tchap: only show sso buttons if tchapAuthenticationMode == .sso OR .ssoAndPassword
+//        !homeserver.ssoIdentityProviders.isEmpty
+        if case .sso = tchapAuthenticationMode,
+           !homeserver.ssoIdentityProviders.isEmpty {
+            return true
+        }
+        if case .ssoAndPassword = tchapAuthenticationMode,
+           !homeserver.ssoIdentityProviders.isEmpty {
+            return true
+        }
+        return false
     }
     
     /// `true` if the username and password are ready to be submitted.
@@ -77,7 +81,21 @@ struct AuthenticationLoginViewState: BindableState {
     
     /// `true` if valid credentials have been entered and the homeserver is loaded.
     var canSubmit: Bool {
-        hasValidCredentials && !isLoading
+        // Tchap: handle `canSubmit` by checking email validity for concerned cases
+//        return hasValidCredentials && !isLoading
+        switch tchapAuthenticationMode {
+        case .password:
+            return !isLoading && tchapEmailIsValid
+        case .sso:
+            return !isLoading && tchapEmailIsValid
+        default:
+            return hasValidCredentials && !isLoading
+        }
+    }
+    
+    // Tchap: username is email
+    var tchapEmailIsValid: Bool {
+        MXTools.isEmailAddress(bindings.username)
     }
 }
 

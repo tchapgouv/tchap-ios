@@ -1,17 +1,9 @@
 /*
+Copyright 2024 New Vector Ltd.
 Copyright 2020 Vector Creations Ltd
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+SPDX-License-Identifier: AGPL-3.0-only
+Please see LICENSE in the repository root for full details.
 */
 
 import UIKit
@@ -56,7 +48,23 @@ final class LaunchLoadingView: UIView, NibLoadable, Themable {
         animationTimeline.play()
         self.animationTimeline = animationTimeline
         
+        // Tchap: setup custom loading view.
+        tchapSetupLoadingView()
+        
         progressContainer.isHidden = true
+    }
+    
+    // Tchap: replace Element logo loadng animation by a simple UIActivityIndicatorView.
+    private func tchapSetupLoadingView() {
+        let tchapAnimationView = UIActivityIndicatorView(style: .large)
+        self.addSubview(tchapAnimationView)
+        tchapAnimationView.translatesAutoresizingMaskIntoConstraints = false
+        tchapAnimationView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        tchapAnimationView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        tchapAnimationView.startAnimating()
+        
+        // Hide Element aninmated logo.
+        animationView.isHidden = true
     }
     
     // MARK: - Public
@@ -64,6 +72,9 @@ final class LaunchLoadingView: UIView, NibLoadable, Themable {
     func update(theme: Theme) {
         self.backgroundColor = theme.backgroundColor
         self.animationView.backgroundColor = theme.backgroundColor
+        
+        // Tchap: Set progress view to Tchap color.
+        progressView.progressTintColor = theme.tintColor
     }
 }
 

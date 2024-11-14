@@ -639,13 +639,14 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     }
     
     private func showWelcome(animated: Bool = false) {
-        let welcomeCoordinator = WelcomeCoordinator()
-        welcomeCoordinator.delegate = self
-        welcomeCoordinator.start()
-        self.add(childCoordinator: welcomeCoordinator)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5 , execute: { [weak self] in
-            self?.navigationRouter.present(welcomeCoordinator, animated: animated)
-        })
+        // Tchap: remove calls to Welcome classes
+//        let welcomeCoordinator = WelcomeCoordinator()
+//        welcomeCoordinator.delegate = self
+//        welcomeCoordinator.start()
+//        self.add(childCoordinator: welcomeCoordinator)
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5 , execute: { [weak self] in
+//            self?.navigationRouter.present(welcomeCoordinator, animated: animated)
+//        })
     }
     
     private func userDidLogin() -> Bool {
@@ -1163,14 +1164,15 @@ extension TabBarCoordinator: SecureBackupSetupCoordinatorBridgePresenterDelegate
 }
 
 // MARK: - WelcomeCoordinatorDelegate
-extension TabBarCoordinator: WelcomeCoordinatorDelegate {
-    func welcomeCoordinatorUserDidAuthenticate(_ coordinator: WelcomeCoordinatorType) {
-        // Check that the new account actually exists before removing the current coordinator
-        if userDidLogin() {
-            self.remove(childCoordinator: coordinator)
-        }
-    }
-}
+// Tchap: remove calls to Tchap Welcome classes
+//extension TabBarCoordinator: WelcomeCoordinatorDelegate {
+//    func welcomeCoordinatorUserDidAuthenticate(_ coordinator: WelcomeCoordinatorType) {
+//        // Check that the new account actually exists before removing the current coordinator
+//        if userDidLogin() {
+//            self.remove(childCoordinator: coordinator)
+//        }
+//    }
+//}
 
 // MARK: - RoomsViewControllerDelegate
 extension TabBarCoordinator: RoomsViewControllerDelegate {

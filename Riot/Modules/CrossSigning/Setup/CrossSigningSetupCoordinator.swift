@@ -45,7 +45,11 @@ final class CrossSigningSetupCoordinator: CrossSigningSetupCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-        self.showReauthentication()
+        // Tchap: launch classic crossiging without authentication parameters
+        // to trigger real requets to backend, with real keys.
+        // This will trigger a 401 reponse that will launch the SSO reauthentication.
+//        self.showReauthentication()
+        self.setupCrossSigning(with: [:])
     }
     
     func toPresentable() -> UIViewController {
@@ -71,6 +75,24 @@ final class CrossSigningSetupCoordinator: CrossSigningSetupCoordinatorType {
         coordinator.start()
     }
     
+    // Tchap: reauthenticate with session information (used by SSO reauthentication)
+    private func showReauthentication(with session: MXAuthenticationSession) {
+        
+        let setupCrossSigningRequest = self.crossSigningService.setupCrossSigningRequest()
+        
+        let reauthenticationParameters = ReauthenticationCoordinatorParameters(session: parameters.session,
+                                                                               presenter: parameters.presenter,
+                                                                               title: parameters.title,
+                                                                               message: parameters.message,
+                                                                               authenticationSession: session)
+        
+        let coordinator = ReauthenticationCoordinator(parameters: reauthenticationParameters)
+        coordinator.delegate = self
+        self.add(childCoordinator: coordinator)
+        
+        coordinator.start()
+    }
+    
     private func setupCrossSigning(with authenticationParameters: [String: Any]) {
         guard let crossSigning = self.parameters.session.crypto?.crossSigning else {
             return
@@ -85,7 +107,18 @@ final class CrossSigningSetupCoordinator: CrossSigningSetupCoordinatorType {
             guard let self = self else {
                 return
             }
-            self.delegate?.crossSigningSetupCoordinator(self, didFailWithError: error)
+            
+            // Tchap: handle 'authentication requested' error (401) from backend
+//            self.delegate?.crossSigningSetupCoordinator(self, didFailWithError: error)
+            let nsError = error as NSError
+            if let jsonResponse = nsError.userInfo[MXHTTPClientErrorResponseDataKey] as? [AnyHashable: Any],
+               let authenticationSession = MXAuthenticationSession(fromJSON: jsonResponse) {
+                self.showReauthentication(with: authenticationSession)
+            }
+            else {
+                self.delegate?.crossSigningSetupCoordinator(self, didFailWithError: error)
+            }
+            
         }
     }
 }

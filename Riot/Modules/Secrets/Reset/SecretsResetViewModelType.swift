@@ -24,6 +24,7 @@ protocol SecretsResetViewModelViewDelegate: AnyObject {
 
 protocol SecretsResetViewModelCoordinatorDelegate: AnyObject {
     func secretsResetViewModel(_ viewModel: SecretsResetViewModelType, needsToAuthenticateWith request: AuthenticatedEndpointRequest)
+    func secretsResetViewModel(_ viewModel: SecretsResetViewModelType, needsToAuthenticateWith session: MXAuthenticationSession)
     func secretsResetViewModelDidResetSecrets(_ viewModel: SecretsResetViewModelType)
     func secretsResetViewModelDidCancel(_ viewModel: SecretsResetViewModelType)
 }

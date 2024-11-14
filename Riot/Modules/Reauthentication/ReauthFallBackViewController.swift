@@ -1,17 +1,8 @@
 //
-// Copyright 2021 New Vector Ltd
+// Copyright 2021-2024 New Vector Ltd.
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// SPDX-License-Identifier: AGPL-3.0-only
+// Please see LICENSE in the repository root for full details.
 //
 
 import UIKit
@@ -39,6 +30,12 @@ final class ReauthFallBackViewController: AuthFallBackViewController, Themable {
         self.setupNavigationBar()
         self.registerThemeServiceDidChangeThemeNotification()
         self.update(theme: self.theme)
+        
+        // Tchap: block dismissal of this Reauthentication sheet by dragging down.
+        // The user must use the close button.
+        if #available(iOS 13.0, *) {
+            self.isModalInPresentation = true
+        }
     }
     
     // MARK: - Public
@@ -62,10 +59,19 @@ final class ReauthFallBackViewController: AuthFallBackViewController, Themable {
     }
     
     private func setupNavigationBar() {
+        // Tchap: Add 'Cancel' button the cancel the authentication process from the beginning.
+        // (because the 'Done' button will try to launch the authentication process with current session token
+        // which will retrigger the display of the Authentication window).
+        let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
+            self?.didCancel?()
+        }
+
         let doneBarButtonItem = MXKBarButtonItem(title: VectorL10n.close, style: .plain) { [weak self] in
             self?.didValidate?()
-        }        
-        self.navigationItem.leftBarButtonItem = doneBarButtonItem
+        }
+        self.navigationItem.leftBarButtonItem = cancelBarButtonItem
+        
+        self.setBackButton(doneBarButtonItem)
     }
 }
 

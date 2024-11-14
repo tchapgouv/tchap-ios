@@ -91,7 +91,7 @@ public class TchapL10n: NSObject {
   public static var authenticationForgotPassword: String { 
     return TchapL10n.tr("Tchap", "authentication_forgot_password") 
   }
-  /// Adresse email
+  /// Adresse mail professionnelle
   public static var authenticationMailPlaceholder: String { 
     return TchapL10n.tr("Tchap", "authentication_mail_placeholder") 
   }
@@ -99,9 +99,17 @@ public class TchapL10n: NSObject {
   public static var authenticationPasswordPlaceholder: String { 
     return TchapL10n.tr("Tchap", "authentication_password_placeholder") 
   }
-  /// Connexion Tchap
-  public static var authenticationTitle: String { 
-    return TchapL10n.tr("Tchap", "authentication_title") 
+  /// Se connecter à Tchap
+  public static var authenticationPasswordTitle: String { 
+    return TchapL10n.tr("Tchap", "authentication_password_title") 
+  }
+  /// **Continuer avec ProConnect**
+  public static var authenticationSsoConnectTitle: String { 
+    return TchapL10n.tr("Tchap", "authentication_sso_connect_title") 
+  }
+  /// Se connecter avec ProConnect
+  public static var authenticationSsoTitle: String { 
+    return TchapL10n.tr("Tchap", "authentication_sso_title") 
   }
   /// Veuillez saisir votre mot de passe actuel.
   public static var changePasswordCurrentPasswordInstructions: String { 
@@ -250,6 +258,10 @@ public class TchapL10n: NSObject {
   /// Nouvelle discussion
   public static var createNewDiscussionTitle: String { 
     return TchapL10n.tr("Tchap", "create_new_discussion_title") 
+  }
+  /// Obtenir de l'aide
+  public static var deviceVerificationHelpLabel: String { 
+    return TchapL10n.tr("Tchap", "device_verification_help_label") 
   }
   /// Si vous n'avez accès à aucun autre appareil, vous pouvez essayer d'activer la signature croisée dans vos paramètres.
   public static var deviceVerificationSelfVerifyNoOtherVerifiedSessionAvailable: String { 
@@ -651,7 +663,7 @@ public class TchapL10n: NSObject {
   public static var roomSettingsEnableRoomAccessByLink: String { 
     return TchapL10n.tr("Tchap", "room_settings_enable_room_access_by_link") 
   }
-  /// Les autres utilisateurs seront autorisés à rejoindre ce salon à partir d’un lien
+  /// Les utilisateurs pourront rejoindre ce salon à partir d'un lien puis le partager à d'autres utilisateurs.
   public static var roomSettingsEnableRoomAccessByLinkInfoOff: String { 
     return TchapL10n.tr("Tchap", "room_settings_enable_room_access_by_link_info_off") 
   }
@@ -823,7 +835,11 @@ public class TchapL10n: NSObject {
   public static var settingsEnableEmailNotifText: String { 
     return TchapL10n.tr("Tchap", "settings_enable_email_notif_text") 
   }
-  /// Sans cette autorisation, les appels entrants ne seront pas notifiés.
+  /// Le compte correspond à tous vos appareils connectés à Tchap.
+  public static var settingsEnableInappNotificationsDescription: String { 
+    return TchapL10n.tr("Tchap", "settings_enable_inapp_notifications_description") 
+  }
+  /// Sans cette autorisation, les messages et appels entrants ne seront pas notifiés.
   public static var settingsEnablePushNotifText: String { 
     return TchapL10n.tr("Tchap", "settings_enable_push_notif_text") 
   }
@@ -907,9 +923,25 @@ public class TchapL10n: NSObject {
   public static var welcomeLoginAction: String { 
     return TchapL10n.tr("Tchap", "welcome_login_action") 
   }
+  /// Se connecter par mot de passe
+  public static var welcomePasswordTitle: String { 
+    return TchapL10n.tr("Tchap", "welcome_password_title") 
+  }
+  /// → Qu'est-ce que ProConnect ?
+  public static var welcomeProConnectInfo: String { 
+    return TchapL10n.tr("Tchap", "welcome_pro_connect_info") 
+  }
+  /// Se connecter avec\n**ProConnect**
+  public static var welcomeProConnectTitle: String { 
+    return TchapL10n.tr("Tchap", "welcome_pro_connect_title") 
+  }
   /// Je n'ai pas de compte
   public static var welcomeRegisterAction: String { 
     return TchapL10n.tr("Tchap", "welcome_register_action") 
+  }
+  /// La messagerie instantanée du secteur public
+  public static var welcomeSubtitle: String { 
+    return TchapL10n.tr("Tchap", "welcome_subtitle") 
   }
   /// Bienvenue dans Tchap
   public static var welcomeTitle: String { 

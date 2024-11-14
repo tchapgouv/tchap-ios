@@ -97,7 +97,7 @@ final class BuildSettings: NSObject {
     static let serverUrlPrefix = "https://matrix."
     static let preferredIdentityServerNames = [
         "dev01.tchap.incubateur.net",
-        "dev02.tchap.incubateur.net"
+//        "dev02.tchap.incubateur.net"
     ]
     static let otherIdentityServerNames: [String] = [
         "ext01.tchap.incubateur.net"
@@ -123,7 +123,7 @@ final class BuildSettings: NSObject {
     static let applicationHelpUrlString = "https://www.tchap.incubateur.net/faq"
     static let applicationServicesStatusUrlString = "https://status.tchap.numerique.gouv.fr/"
     static let applicationAcceptableUsePolicyUrlString = ""
-
+    static let proConnectInfoUrlString = "https://proconnect.gouv.fr/"
     
     // MARK: - Matrix permalinks
     // Hosts/Paths for URLs that will considered as valid permalinks. Those permalinks are opened within the app.
@@ -243,6 +243,9 @@ final class BuildSettings: NSObject {
         tchapFeatureAnyFeature: [ tchapFeatureAnyHomeServer ]
     ]
 
+    // Tchap: handle SSO feature flag. Presents SSO button on Onboarding screen and give priority to SSO on UIA.
+    static let tchapFeatureHandleSSO = true
+    
     // MARK: - Side Menu
     static let enableSideMenu: Bool = true && !newAppLayoutEnabled
     static let sideMenuShowInviteFriends: Bool = true
