@@ -42,6 +42,8 @@
 "authentication_error_limit_exceeded" = "Vos trois dernières tentatives de connexion ont échoué. Veuillez réessayer dans 30 minutes";
 "authentication_choose_password_signout_all_devices" = "Déconnecter mes appareils et verrouiller mes messages (en cas de piratage de votre compte ou de la perte d'un appareil)";
 
+"authentication_sso_warning" = "**Attention** : la connexion à Tchap avec **ProConnect** n'est actuellement disponible que sur les instances suivantes :\n&nbsp;&nbsp;&nbsp;&nbsp; - DINUM\n&nbsp;&nbsp;&nbsp;&nbsp; - Agents\n&nbsp;&nbsp;&nbsp;&nbsp; - Éducation"; // Markdown string for SwiftUI Text()
+
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Forgot password
 "forgot_password_title" = "Connexion Tchap";

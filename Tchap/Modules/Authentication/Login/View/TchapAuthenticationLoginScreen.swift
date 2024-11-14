@@ -91,6 +91,8 @@ struct TchapAuthenticationLoginScreen: View {
                 passwordLoginSection
             } else if case .sso = viewModel.viewState.tchapAuthenticationMode {
                 ssoLoginSection
+                Spacer(minLength: 32.0)
+                ssoInformation
             }
         }
     }
@@ -146,6 +148,13 @@ struct TchapAuthenticationLoginScreen: View {
                 Text(TchapL10n.welcomeProConnectInfo)
             })
         }
+    }
+    
+    var ssoInformation: some View {
+        Text(LocalizedStringKey(TchapL10n.authenticationSsoWarning))
+        .padding(.horizontal, 16.0)
+        .font(.footnote)
+        .foregroundColor(Color(UIColor(rgb: 0x000091)))
     }
     
     /// Parses the username for a homeserver.
