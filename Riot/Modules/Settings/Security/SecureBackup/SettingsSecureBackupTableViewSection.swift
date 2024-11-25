@@ -157,14 +157,9 @@ private enum BackupRows {
 //                    .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion)
 //                ]
                 let noBackup = VectorL10n.settingsKeyBackupInfoNotValid
-//                let signoutWarning = VectorL10n.settingsKeyBackupInfoSignoutWarning
-                // Tchap
-//                let infoText = [noBackup, signoutWarning].joined(separator: "\n")
-                let infoText = noBackup
                 
-                let backupInfoText = noBackup
                 backupRows = [
-                    .info(text: infoText, icon: UIImage(systemName: "xmark.circle.fill"), tint: .systemGray),
+                    .info(text: noBackup, icon: UIImage(systemName: "xmark.circle.fill"), tint: .systemGray),
                     .createSecureBackupAction
                 ]
             }
@@ -172,8 +167,8 @@ private enum BackupRows {
             switch keyBackupState {
             case .noKeyBackup:
                 let noBackup = VectorL10n.settingsKeyBackupInfoNone
-                let signoutWarning = VectorL10n.settingsKeyBackupInfoSignoutWarning
                 // Tchap
+//                let signoutWarning = VectorL10n.settingsKeyBackupInfoSignoutWarning
 //                let infoText = [noBackup, signoutWarning].joined(separator: "\n")
                 let infoText = noBackup
                                 
