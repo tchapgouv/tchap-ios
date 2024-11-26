@@ -123,7 +123,8 @@ final class BuildSettings: NSObject {
     static let applicationHelpUrlString = "https://www.beta.tchap.gouv.fr/faq"
     static let applicationServicesStatusUrlString = "https://status.tchap.numerique.gouv.fr/"
     static let applicationAcceptableUsePolicyUrlString = ""
-    
+    static let proConnectInfoUrlString = "https://proconnect.gouv.fr/"
+
     // MARK: - Matrix permalinks
     // Hosts/Paths for URLs that will considered as valid permalinks. Those permalinks are opened within the app.
     static let permalinkSupportedHosts: [String: [String]] = [
@@ -241,6 +242,9 @@ final class BuildSettings: NSObject {
     static var tchapFeaturesAllowedHomeServersForFeature: [String: [String]] = [
         tchapFeatureAnyFeature: [ tchapFeatureAnyHomeServer ]
     ]
+    
+    // Tchap: handle SSO feature flag. Presents SSO button on Onboarding screen and give priority to SSO on UIA.
+    static let tchapFeatureHandleSSO = false
     
     // MARK: - Side Menu
     static let enableSideMenu: Bool = true && !newAppLayoutEnabled

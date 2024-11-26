@@ -1,24 +1,13 @@
 /*
- Copyright 2015 OpenMarket Ltd
- Copyright 2017 Vector Creations Ltd
- Copyright 2018 New Vector Ltd
- 
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
- http://www.apache.org/licenses/LICENSE-2.0
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
+Copyright 2018-2024 New Vector Ltd.
+Copyright 2017 Vector Creations Ltd
+Copyright 2015 OpenMarket Ltd
+
+SPDX-License-Identifier: AGPL-3.0-only
+Please see LICENSE in the repository root for full details.
  */
 
 #import "SettingsViewController.h"
-
-#import <OLMKit/OLMKit.h>
 
 #import "AvatarGenerator.h"
 
@@ -1553,8 +1542,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     
     NSString *sdkVersionInfo = [NSString stringWithFormat:@"Matrix SDK %@", MatrixSDKVersion];
     
-    NSString *olmVersionInfo = [NSString stringWithFormat:@"OLM %@", [OLMKit versionString]];    
-    
     // Tchap: Hide user and homeserver infos
 //    [footerText appendFormat:@"%@\n", loggedUserInfo];
 //    [footerText appendFormat:@"%@\n", homeserverInfo];
@@ -2211,7 +2198,18 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
-            labelAndSwitchCell.mxkLabel.text = VectorL10n.settingsEnableInappNotifications;
+            // Tchap: add explanation to "enable notifications by email"
+//            labelAndSwitchCell.mxkLabel.text = VectorL10n.settingsEnableInappNotifications;
+  
+            NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString: VectorL10n.settingsEnableInappNotifications
+                                                                                               attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
+                                                                                                            NSFontAttributeName: [UIFont systemFontOfSize:17.0]}];
+            [attributedText appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:4]}]];
+            [attributedText appendAttributedString:[[NSMutableAttributedString alloc] initWithString: TchapL10n.settingsEnableInappNotificationsDescription
+                                                                                          attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textSecondaryColor,
+                                                                                                       NSFontAttributeName: [UIFont systemFontOfSize:14.0]}]];
+            labelAndSwitchCell.mxkLabel.attributedText = attributedText;
+
             labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.showInAppNotifications;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = account.pushNotificationServiceIsActive;
@@ -2237,7 +2235,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     
 
 
-            // Tchap: add explanation to "enable notiofications by email"
+            // Tchap: add explanation to "enable notifications by email"
 //            labelAndSwitchCell.mxkLabel.text = TchapL10n.settingsNotificationEmail;
 
             NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString: TchapL10n.settingsNotificationEmail

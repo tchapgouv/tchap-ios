@@ -1814,7 +1814,7 @@
 "room_displayname_two_members" = "%@ et %@";
 // Settings
 "settings" = "Paramètres";
-"settings_enable_inapp_notifications" = "Activer les notifications dans l’application";
+"settings_enable_inapp_notifications" = "Activer les notifications pour ce compte"; // Tchap
 "settings_enable_push_notifications" = "Activer les notifications push";
 "settings_enter_validation_token_for" = "Saisir le jeton de validation pour %@ :";
 "notification_settings_room_rule_title" = "Salon : « %@ »";
@@ -2299,7 +2299,7 @@
 "authentication_verify_email_waiting_hint" = "Vous n’avez pas reçu l’e-mail ?";
 /* The placeholder will show the email address that was entered. */
 "authentication_verify_email_waiting_message" = "Suivez les instructions envoyées à %@";
-"authentication_verify_email_text_field_placeholder" = "Adresse mail"; // Tchap
+"authentication_verify_email_text_field_placeholder" = "Adresse mail professionnelle"; // Tchap
 /* The placeholder will show the homeserver's domain */
 "authentication_verify_email_input_message" = "%@ doit vérifier votre compte";
 "authentication_verify_email_input_title" = "Entrez votre e-mail";

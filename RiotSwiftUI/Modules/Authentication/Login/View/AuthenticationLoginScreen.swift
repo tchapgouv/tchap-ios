@@ -1,17 +1,8 @@
 //
-// Copyright 2021 New Vector Ltd
+// Copyright 2021-2024 New Vector Ltd.
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// SPDX-License-Identifier: AGPL-3.0-only
+// Please see LICENSE in the repository root for full details.
 //
 
 import SwiftUI
@@ -38,15 +29,14 @@ struct AuthenticationLoginScreen: View {
                     .padding(.top, OnboardingMetrics.topPaddingToNavigationBar)
                     .padding(.bottom, 28)
                 
-                // Tchap: Hide server selection
-//                serverInfo
-//                    .padding(.leading, 12)
-//                    .padding(.bottom, 16)
-//                
-//                Rectangle()
-//                    .fill(theme.colors.quinaryContent)
-//                    .frame(height: 1)
-//                    .padding(.bottom, 22)
+                serverInfo
+                    .padding(.leading, 12)
+                    .padding(.bottom, 16)
+                
+                Rectangle()
+                    .fill(theme.colors.quinaryContent)
+                    .frame(height: 1)
+                    .padding(.bottom, 22)
                 
                 if viewModel.viewState.homeserver.showLoginForm {
                     loginForm
@@ -99,12 +89,10 @@ struct AuthenticationLoginScreen: View {
     /// The form with text fields for username and password, along with a submit button.
     var loginForm: some View {
         VStack(spacing: 14) {
-            // Tchap: Update placeholder and set keyboard type to email address
-            RoundedBorderTextField(placeHolder: VectorL10n.authenticationVerifyEmailTextFieldPlaceholder,
+            RoundedBorderTextField(placeHolder: VectorL10n.authenticationLoginUsername,
                                    text: $viewModel.username,
                                    isFirstResponder: false,
-                                   configuration: UIKitTextInputConfiguration(keyboardType: .emailAddress,
-                                                                              returnKeyType: .next,
+                                   configuration: UIKitTextInputConfiguration(returnKeyType: .next,
                                                                               autocapitalizationType: .none,
                                                                               autocorrectionType: .no),
                                    onEditingChanged: usernameEditingChanged,

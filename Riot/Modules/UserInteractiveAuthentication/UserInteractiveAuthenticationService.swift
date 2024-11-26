@@ -1,17 +1,8 @@
 // 
-// Copyright 2020 New Vector Ltd
+// Copyright 2020-2024 New Vector Ltd.
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// SPDX-License-Identifier: AGPL-3.0-only
+// Please see LICENSE in the repository root for full details.
 //
 
 import Foundation
@@ -211,7 +202,10 @@ final class UserInteractiveAuthenticationService: NSObject {
     /// - Parameter authenticationSession: An authentication session for a given request.
     /// - Returns: The fallback URL for the first uncompleted stage found.
     func firstUncompletedStageAuthenticationFallbackURL(for authenticationSession: MXAuthenticationSession) -> URL? {
-        guard let sessiondId = authenticationSession.session, let firstUncompletedStageIdentifier = self.firstUncompletedFlowIdentifier(in: authenticationSession) else {
+        guard let sessiondId = authenticationSession.session, 
+                // Tchap: give priority to SSO authentication if SSO handling is activated by feature flag.
+//              let firstUncompletedStageIdentifier = self.firstUncompletedFlowIdentifier(in: authenticationSession) else {
+                let firstUncompletedStageIdentifier = self.firstUncompletedFlowIdentifier(in: authenticationSession, priorityToSso: BuildSettings.tchapFeatureHandleSSO) else {
             return nil
         }
         return self.authenticationFallbackURL(for: firstUncompletedStageIdentifier, sessionId: sessiondId)
@@ -235,8 +229,10 @@ final class UserInteractiveAuthenticationService: NSObject {
     /// Find the first uncompleted login flow stage in a MXauthenticationSession.
     /// - Parameter authenticationSession: An authentication session for a given request.
     /// - Returns: Uncompleted login flow stage identifier.
-    func firstUncompletedFlowIdentifier(in authenticationSession: MXAuthenticationSession) -> String? {
-        
+    // Tchap: Add `priorityToSso` parameter
+//    func firstUncompletedFlowIdentifier(in authenticationSession: MXAuthenticationSession) -> String? {
+    func firstUncompletedFlowIdentifier(in authenticationSession: MXAuthenticationSession, priorityToSso: Bool = false) -> String? {
+
         let completedStages = authenticationSession.completed ?? []
         
         guard let flows = authenticationSession.flows else {
@@ -256,6 +252,11 @@ final class UserInteractiveAuthenticationService: NSObject {
         let completedStagesSet = NSOrderedSet(array: completedStages)
         uncompletedStages.minus(completedStagesSet)
         
+        // Tchap: return SSO if priority is given to SSO login flow type and SSO flow type is available on the homeServer.
+        if priorityToSso && uncompletedStages.contains(kMXLoginFlowTypeSSO) {
+            return kMXLoginFlowTypeSSO
+        }
+        
         let firstUncompletedFlowIdentifier = uncompletedStages.firstObject as? String
         return firstUncompletedFlowIdentifier
     }
@@ -269,6 +270,12 @@ final class UserInteractiveAuthenticationService: NSObject {
         }
         
         return false
+    }
+    
+    // Tchap
+    /// Check if an array of login flows contains "m.login.sso" flow.
+    func tchapHasSsoFlowAvailable(authenticationSession: MXAuthenticationSession) -> Bool {
+        return self.firstUncompletedFlowIdentifier(in: authenticationSession, priorityToSso: BuildSettings.tchapFeatureHandleSSO) == kMXLoginFlowTypeSSO
     }
     
     // MARK: - Private

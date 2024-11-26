@@ -32,7 +32,9 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     enum EntryPoint {
         case registration
-        case login
+        // Tchap: allow override home server's preferred login mode
+//        case login
+        case login(LoginMode? = nil)
     }
     
     // MARK: - Properties
@@ -88,9 +90,17 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     // MARK: - Public
     
+    // Tchap: allow override home server's preferred login mode
     func start() {
+        start(forcedAuthenticationMode: nil)
+    }
+    
+    // Tchap: allow override home server's preferred login mode
+    func start(forcedAuthenticationMode: LoginMode? = nil) {
         Task { @MainActor in
-            await startAuthenticationFlow()
+            // Tchap: allow override home server's preferred login mode
+//            await startAuthenticationFlow()
+            await startAuthenticationFlow(forcedAuthenticationMode: forcedAuthenticationMode)
             callback?(.didStart)
             authenticationService.delegate = self
         }
@@ -114,7 +124,9 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     // MARK: - Private
     
     /// Starts the authentication flow.
-    @MainActor private func startAuthenticationFlow() async {
+    // Tchap: allow override home server's preferred login mode
+//    @MainActor private func startAuthenticationFlow() async {
+    @MainActor private func startAuthenticationFlow(forcedAuthenticationMode: LoginMode? = nil) async {
         if let softLogoutCredentials = authenticationService.softLogoutCredentials,
            let homeserverAddress = softLogoutCredentials.homeServer {
             do {
@@ -129,7 +141,15 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
             return
         }
 
-        let flow: AuthenticationFlow = initialScreen == .login ? .login : .register
+        // Tchap: allow override home server's preferred login mode
+        //        let flow: AuthenticationFlow = initialScreen == .login ? .login : .register
+        let flow: AuthenticationFlow = {
+            if case .login(_) = initialScreen {
+                return .login
+            } else {
+                return .register
+            }
+        }()
 
         // Check if the user must select a server
         if BuildSettings.forceHomeserverSelection, authenticationService.provisioningLink?.homeserverUrl == nil {
@@ -137,27 +157,32 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
             return
         }
         
-        do {
-            // Start the flow (if homeserverAddress is nil, the default server will be used).
-            try await authenticationService.startFlow(flow)
-        } catch {
-            MXLog.error("[AuthenticationCoordinator] start: Failed to start, showing server selection.")
-            showServerSelectionScreen(for: flow)
-            return
-        }
+        // Tchap: Don't use default home server
+//        do {
+//            // Start the flow (if homeserverAddress is nil, the default server will be used).
+//            try await authenticationService.startFlow(flow)
+//        } catch {
+//            MXLog.error("[AuthenticationCoordinator] start: Failed to start, showing server selection.")
+//            showServerSelectionScreen(for: flow)
+//            return
+//        }
 
         switch initialScreen {
         case .registration:
             if authenticationService.state.homeserver.needsRegistrationFallback {
                 showFallback(for: flow)
             } else {
-                showRegistrationScreen()
+                // Tchap: force email registration mode
+//                showRegistrationScreen()
+                await TchapShowVerifyEmailScreen()
             }
         case .login:
             if authenticationService.state.homeserver.needsLoginFallback {
                 showFallback(for: flow)
             } else {
-                showLoginScreen()
+                // Tchap: allow override home server's preferred login mode
+//                showLoginScreen()
+                showLoginScreen(forcedAuthenticationMode: forcedAuthenticationMode)
             }
         }
     }
@@ -260,13 +285,17 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     // MARK: - Login
     
     /// Shows the login screen.
-    @MainActor private func showLoginScreen() {
+    // Tchap: allow override home server's preferred login mode
+//    @MainActor private func showLoginScreen() {
+    @MainActor private func showLoginScreen(forcedAuthenticationMode: LoginMode? = nil) {
         MXLog.debug("[AuthenticationCoordinator] showLoginScreen")
         
         let homeserver = authenticationService.state.homeserver
         let parameters = AuthenticationLoginCoordinatorParameters(navigationRouter: navigationRouter,
                                                                   authenticationService: authenticationService,
-                                                                  loginMode: homeserver.preferredLoginMode)
+                                                                  // Tchap: allow override home server's preferred login mode
+                                                                  // loginMode: homeserver.preferredLoginMode)
+                                                                  loginMode: forcedAuthenticationMode ?? homeserver.preferredLoginMode)
         let coordinator = AuthenticationLoginCoordinator(parameters: parameters)
         coordinator.callback = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
@@ -298,8 +327,8 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         let store = MXFileStore(credentials: credentials)
         let userDisplayName = await store.displayName(ofUserWithId: userId) ?? ""
 
-        let cryptoStore = MXRealmCryptoStore(credentials: credentials)
-        let keyBackupNeeded = (cryptoStore?.inboundGroupSessions(toBackup: 1) ?? []).count > 0
+        // The backup is now handled by Rust
+        let keyBackupNeeded = false
 
         let softLogoutCredentials = SoftLogoutCredentials(userId: userId,
                                                           homeserverName: credentials.homeServerName() ?? "",
@@ -378,6 +407,41 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
             }
         }
     }
+    
+    // Tchap: start Registration with VerifyEmail screen
+    /// Shows the login screen.
+    @MainActor private func TchapShowVerifyEmailScreen() async {
+        MXLog.debug("[AuthenticationCoordinator] TchapShowVerifyEmailScreen")
+        
+        // Call `startFlow` here to get `registrationWizard` initialized.
+        try? await authenticationService.startFlow(.register)
+        
+        guard let registrationWizard = authenticationService.registrationWizard else {
+            MXLog.failure("[AuthenticationCoordinator] showStage: Missing the RegistrationWizard needed to complete the stage.")
+            displayError(message: VectorL10n.errorCommonMessage)
+            return
+        }
+        let homeserver = authenticationService.state.homeserver
+
+        let parameters = AuthenticationVerifyEmailCoordinatorParameters(registrationWizard: registrationWizard,
+                                                                        homeserver: authenticationService.state.homeserver)
+        let coordinator = AuthenticationVerifyEmailCoordinator(parameters: parameters)
+        coordinator.callback = { [weak self] result in
+            self?.registrationStageDidComplete(with: result)
+        }
+
+        coordinator.start()
+        add(childCoordinator: coordinator)
+        
+        if navigationRouter.modules.isEmpty {
+            navigationRouter.setRootModule(coordinator, popCompletion: nil)
+        } else {
+            navigationRouter.push(coordinator, animated: true) { [weak self] in
+                self?.remove(childCoordinator: coordinator)
+            }
+        }
+    }
+
     
     /// Displays the next view in the flow based on the result from the registration screen.
     @MainActor private func registrationCoordinator(_ coordinator: AuthenticationRegistrationCoordinator,

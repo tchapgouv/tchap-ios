@@ -43,11 +43,6 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.RoomCreationViewController>(storyboard: RoomCreationViewController.self)
   }
-  internal enum WelcomeViewController: StoryboardType {
-    internal static let storyboardName = "WelcomeViewController"
-
-    internal static let initialScene = InitialSceneType<Tchap.WelcomeViewController>(storyboard: WelcomeViewController.self)
-  }
 }
 // swiftlint:enable explicit_type_interface identifier_name line_length prefer_self_in_static_references
 // swiftlint:enable type_body_length type_name
