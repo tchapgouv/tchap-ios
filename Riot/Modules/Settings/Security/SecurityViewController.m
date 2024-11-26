@@ -688,6 +688,8 @@ MXKDocumentPickerPresenterDelegate>
             numberOfRowsInCrossSigningSection = CROSSSIGNING_FIRST_ACTION + 1;
             break;
         case MXCrossSigningStateCrossSigningExists:             // Actions: Verify this session, Reset
+            numberOfRowsInCrossSigningSection = CROSSSIGNING_FIRST_ACTION + 2;
+            break;
         case MXCrossSigningStateTrustCrossSigning:              // Actions: Request keys, Reset
             numberOfRowsInCrossSigningSection = CROSSSIGNING_FIRST_ACTION + 1;
             break;
@@ -707,7 +709,7 @@ MXKDocumentPickerPresenterDelegate>
             crossSigningInformation = [VectorL10n securitySettingsCrosssigningInfoNotBootstrapped];
             break;
         case MXCrossSigningStateCrossSigningExists:
-            crossSigningInformation = [VectorL10n securitySettingsCrosssigningInfoNotBootstrapped]; // Tchap : simply tell user cross-signing is not configured.
+            crossSigningInformation = [VectorL10n securitySettingsCrosssigningInfoExists]; // Tchap : tell user cross-signing exists on the account but is not trusted.
             break;
         case MXCrossSigningStateTrustCrossSigning:
             crossSigningInformation = [VectorL10n securitySettingsCrosssigningInfoTrusted];

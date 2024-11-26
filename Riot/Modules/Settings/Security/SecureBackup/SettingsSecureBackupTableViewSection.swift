@@ -150,18 +150,25 @@ private enum BackupRows {
                     ]
                 }
             case .keyBackupNotTrusted(let keyBackupVersion, _):
+                // Tchap: if backup is not trusted, treats it as if no backup is present (like on Android)
+//                backupRows = [
+//                    .info(text: VectorL10n.securitySettingsSecureBackupInfoValid, icon: UIImage(systemName: "checkmark.circle.fill"), tint: .systemGreen),
+//                    .restoreFromKeyBackupAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.securitySettingsSecureBackupRestore),
+//                    .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion)
+//                ]
+                let noBackup = VectorL10n.settingsKeyBackupInfoNotValid
+                
                 backupRows = [
-                    .info(text: VectorL10n.securitySettingsSecureBackupInfoValid, icon: UIImage(systemName: "checkmark.circle.fill"), tint: .systemGreen),
-                    .restoreFromKeyBackupAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.securitySettingsSecureBackupRestore),
-//                    .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion) // Tchap : no more "Delete backup" button
+                    .info(text: noBackup, icon: UIImage(systemName: "xmark.circle.fill"), tint: .systemGray),
+                    .createSecureBackupAction
                 ]
             }
         case .secureBackup(let keyBackupState):
             switch keyBackupState {
             case .noKeyBackup:
                 let noBackup = VectorL10n.settingsKeyBackupInfoNone
-                let signoutWarning = VectorL10n.settingsKeyBackupInfoSignoutWarning
                 // Tchap
+//                let signoutWarning = VectorL10n.settingsKeyBackupInfoSignoutWarning
 //                let infoText = [noBackup, signoutWarning].joined(separator: "\n")
                 let infoText = noBackup
                                 
