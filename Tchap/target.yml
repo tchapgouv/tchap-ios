@@ -260,6 +260,7 @@ targetTemplates:
     - path: ../Riot/Modules/Rendezvous
     - path: ../Riot/Modules/Room
       excludes:
+        - "EmojiPicker/Data/EmojiMart/EmojiJSONStore.swift"
 #        - "Location"
 #        - "RoomViewController+LocationSharing.swift"
 #        - "TimelineCells/LocationView"

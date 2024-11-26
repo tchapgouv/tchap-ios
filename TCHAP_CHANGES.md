@@ -1,8 +1,12 @@
-## Changes in 2.8.2 (2024-11-26)
+## Changes in 2.8.4 (2024-11-26)
 
 🙌 Improvements
 
 - Permettre les appels vidéos sur Education et Agent. ([#1109](https://github.com/tchapgouv/tchap-ios/issues/1109))
+- Update Sentry pod dependency to compile with Xcode 16.1 ([#1118](https://github.com/tchapgouv/tchap-ios/issues/1118))
+- Modifier le commentaire lorsqu'on active l'accès à un salon par lien ([#1120](https://github.com/tchapgouv/tchap-ios/issues/1120))
+- Amélioration de la description de l'état de la signature croisée et des actions possibles (pour être au même niveau que le client Tchap Android). ([#1125](https://github.com/tchapgouv/tchap-ios/issues/1125))
+- Activation des appels vidéo pour toutes les instances en Production. ([#1126](https://github.com/tchapgouv/tchap-ios/issues/1126))
 
 
 ## Changes in 2.8.2 (2024-11-06)
