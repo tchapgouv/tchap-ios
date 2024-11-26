@@ -1,3 +1,10 @@
+## Changes in 2.8.2 (2024-11-26)
+
+🙌 Improvements
+
+- Permettre les appels vidéos sur Education et Agent. ([#1109](https://github.com/tchapgouv/tchap-ios/issues/1109))
+
+
 ## Changes in 2.8.2 (2024-11-06)
 
 ✨ Features
