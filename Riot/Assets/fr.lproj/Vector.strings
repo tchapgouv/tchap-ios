@@ -1331,6 +1331,7 @@
 "secrets_recovery_reset_action_part_1" = "Vous avez perdu votre Code de Récupération ? "; // Tchap
 "bug_report_background_mode" = "Poursuivre en arrière-plan";
 "call_actions_unhold" = "Reprendre";
+"call_unsupported_matrix_rtc_call" = "Type d'appel non supporté actuellement."; // Tchap
 "event_formatter_call_back" = "Rappeler";
 "event_formatter_call_you_declined" = "Appel rejeté";
 "event_formatter_call_has_ended" = "Appel terminé";

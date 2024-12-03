@@ -663,7 +663,7 @@ public class TchapL10n: NSObject {
   public static var roomSettingsEnableRoomAccessByLink: String { 
     return TchapL10n.tr("Tchap", "room_settings_enable_room_access_by_link") 
   }
-  /// Les utilisateurs pourront rejoindre ce salon à partir d'un lien puis le partager à d'autres utilisateurs.
+  /// Tous les agents disposant du lien peuvent rejoindre ce salon et inviter d'autres agents
   public static var roomSettingsEnableRoomAccessByLinkInfoOff: String { 
     return TchapL10n.tr("Tchap", "room_settings_enable_room_access_by_link_info_off") 
   }

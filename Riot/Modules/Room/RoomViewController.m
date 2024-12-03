@@ -3254,21 +3254,14 @@ static CGSize kThreadListBarButtonItemImageSize;
     {
         cellIdentifier = RoomTimelineCellIdentifierDirectCallStatus;
     }
-<<<<<<< HEAD
 //    else if (bubbleData.tag == RoomBubbleCellDataTagGroupCall)
 //    {
 //        cellIdentifier = RoomTimelineCellIdentifierGroupCallStatus;
 //    }
-=======
-    else if (bubbleData.tag == RoomBubbleCellDataTagGroupCall)
-    {
-        cellIdentifier = RoomTimelineCellIdentifierGroupCallStatus;
-    }
     else if (bubbleData.tag == RoomBubbleCellDataTagRTCCallNotify)
     {
         cellIdentifier = RoomTimelineCellIdentifierMatrixRTCCall;
     }
->>>>>>> v1.11.21
     else if (bubbleData.attachment.type == MXKAttachmentTypeVoiceMessage || bubbleData.attachment.type == MXKAttachmentTypeAudio)
     {
         if (bubbleData.isIncoming)
