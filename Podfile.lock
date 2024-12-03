@@ -39,16 +39,16 @@ PODS:
   - LoggerAPI (1.9.200):
     - Logging (~> 1.1)
   - Logging (1.4.0)
-  - MatrixSDK (0.27.15):
-    - MatrixSDK/Core (= 0.27.15)
-  - MatrixSDK/Core (0.27.15):
+  - MatrixSDK (0.27.16):
+    - MatrixSDK/Core (= 0.27.16)
+  - MatrixSDK/Core (0.27.16):
     - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.3.0)
     - libbase58 (~> 0.1.4)
     - MatrixSDKCrypto (= 0.4.3)
     - Realm (= 10.27.0)
     - SwiftyBeaver (= 1.9.5)
-  - MatrixSDK/JingleCallStack (0.27.15):
+  - MatrixSDK/JingleCallStack (0.27.16):
     - JitsiMeetSDKLite (= 8.1.2-lite)
     - MatrixSDK/Core
   - MatrixSDKCrypto (0.4.3)
@@ -68,9 +68,9 @@ PODS:
   - Reusable/Storyboard (4.1.2)
   - Reusable/View (4.1.2)
   - RxSwift (5.1.3)
-  - Sentry (7.15.0):
-    - Sentry/Core (= 7.15.0)
-  - Sentry/Core (7.15.0)
+  - Sentry (8.40.1):
+    - Sentry/Core (= 8.40.1)
+  - Sentry/Core (8.40.1)
   - SideMenu (6.5.0)
   - SwiftBase32 (0.9.0)
   - SwiftFormat/CLI (0.54.5)
@@ -109,7 +109,7 @@ DEPENDENCIES:
   - ReadMoreTextView (~> 3.0.1)
   - Reusable (~> 4.1)
   - RxSwift (~> 5.1.1)
-  - Sentry (~> 7.15.0)
+  - Sentry (~> 8.40.1)
   - SideMenu (~> 6.5)
   - SwiftBase32 (~> 0.9.0)
   - SwiftFormat/CLI
@@ -192,7 +192,7 @@ SPEC CHECKSUMS:
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
-  MatrixSDK: 12b379749b84ab5b3662042acb1914b9f9bb692b
+  MatrixSDK: ce8f2cec670c2212144a129cc617d4144c89b97f
   MatrixSDKCrypto: 27bee960e0e8b3a3039f3f3e93dd2ec88299c77e
   OLMKit: da115f16582e47626616874e20f7bb92222c7a51
   PostHog: f9e5c13ceea86bb5314218c85d16125b797eb332
@@ -200,7 +200,7 @@ SPEC CHECKSUMS:
   Realm: 9ca328bd7e700cc19703799785e37f77d1a130f2
   Reusable: 6bae6a5e8aa793c9c441db0213c863a64bce9136
   RxSwift: 915abbdfb62214aa89ccd0b194d44fb478019b27
-  Sentry: 63ca44f5e0c8cea0ee5a07686b02e56104f41ef7
+  Sentry: e9215d7b17f7902692b4f8700e061e4f853e3521
   SideMenu: f583187d21c5b1dd04c72002be544b555a2627a2
   SwiftBase32: 9399c25a80666dc66b51e10076bf591e3bbb8f17
   SwiftFormat: 543a7b1ab4a6ce2d88bd5616a17903446ca3dc5c
@@ -214,6 +214,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: 71717d585bff57965402647a1ac31c47351d3cc7
+PODFILE CHECKSUM: a4732b13f538318a3f022f2debaeb134099493e7
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.15.2
