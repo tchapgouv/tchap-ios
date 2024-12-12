@@ -209,12 +209,12 @@ final class BuildSettings: NSObject {
                                                                termsURL: URL(string: "https://tchap.beta.gouv.fr/politique-de-confidentialite")!) // Tchap: dev posthog,
     #else
     /// The configuration to use for analytics. Set `isEnabled` to false to disable analytics.
-    static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: false,
-                                                               host: "",
-                                                               apiKey: "",
-                                                               termsURL: URL(string: "https://")!)
+    static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: true, // Tchap: enable PostHog analytics on production
+                                                               host: "https://posthogdev.tchap.incubateur.net", // Tchap: prod posthog,
+                                                               apiKey: "phc_FFa4pkvmuWjF9nZOMmYJWUXMibuYnCnPyf3DqPGZs4L", // Tchap: prod posthog,
+                                                               termsURL: URL(string: "https://tchap.beta.gouv.fr/politique-de-confidentialite")!)
     #endif
-    
+
     // MARK: - Bug report
     static let bugReportEndpointUrlString = ""
     static let bugReportDefaultHost = "agent.tchap.gouv.fr"
