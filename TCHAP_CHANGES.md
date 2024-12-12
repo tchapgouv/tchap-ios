@@ -1,3 +1,12 @@
+## Changes in 2.8.6 (2024-12-12)
+
+🙌 Improvements
+
+- Activer ProConnect sur la Preprod ([#1129](https://github.com/tchapgouv/tchap-ios/issues/1129))
+- Rebase sur Element 1.11.21 ([#1131](https://github.com/tchapgouv/tchap-ios/issues/1131))
+- Ajouter la configuration posthog pour vérifier la charge en production ([#1135](https://github.com/tchapgouv/tchap-ios/issues/1135))
+
+
 ## Changes in 2.8.4 (2024-11-26)
 
 🙌 Improvements
