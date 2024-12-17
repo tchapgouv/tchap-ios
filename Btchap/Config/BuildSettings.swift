@@ -118,7 +118,7 @@ final class BuildSettings: NSObject {
     // MARK: - Legal URLs
  
     // Note: Set empty strings to hide the related entry in application settings
-    static let applicationTermsConditionsUrlString = "https://www.tchap.gouv.fr/tac.html"
+    static let applicationTermsConditionsUrlString = "https://tchap.numerique.gouv.fr/cgu" // Tchap: redirect to CGU
     static let clientConfigURL = "https://www.tchap.gouv.fr/client/config/preprod/ios"
     static let applicationHelpUrlString = "https://www.beta.tchap.gouv.fr/faq"
     static let applicationServicesStatusUrlString = "https://status.tchap.numerique.gouv.fr/"
@@ -177,7 +177,7 @@ final class BuildSettings: NSObject {
     static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: true, // Tchap: enable PostHog analytics on DEBUG
                                                                host: "https://us.i.posthog.com", // Tchap: dev posthog,
                                                                apiKey: "phc_eQOeaQiaIxdX9kaQmqYTD7RJLyFubYmGYKUI9czqqQD", // Tchap: dev posthog,
-                                                               termsURL: URL(string: "https://tchap.beta.gouv.fr/politique-de-confidentialite")!) // Tchap: dev posthog,
+                                                               termsURL: URL(string: "https://tchap.numerique.gouv.fr/politique-de-confidentialite")!) // Tchap: dev posthog,
     #else
     /// The configuration to use for analytics. Set `isEnabled` to false to disable analytics.
     static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: false,
