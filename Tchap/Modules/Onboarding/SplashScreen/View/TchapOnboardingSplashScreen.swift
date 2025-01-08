@@ -30,6 +30,7 @@ struct TchapOnboardingSplashScreen: View {
     @ObservedObject var viewModel: OnboardingSplashScreenViewModel.Context
     
     @State var appTheme = ThemeService.shared()
+    @State var presentProConnectInfo = false
     
     var body: some View {
         GeometryReader { geometry in
@@ -59,6 +60,10 @@ struct TchapOnboardingSplashScreen: View {
         .accentColor(theme.colors.accent)
         .navigationBarHidden(true)
         .track(screen: .welcome)
+        .sheet(isPresented: $presentProConnectInfo) {
+            WebSheetView(targetUrl: URL(string: BuildSettings.proConnectInfoUrlString)!)
+        }
+
     }
     
     var header: some View {
@@ -166,7 +171,7 @@ struct TchapOnboardingSplashScreen: View {
     }
 
     func openProConnectWebsite() {
-        TchapWebLinks.openProConnectInfo()
+        presentProConnectInfo = true
     }
 }
 

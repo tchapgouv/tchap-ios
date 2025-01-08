@@ -26,7 +26,9 @@ struct TchapAuthenticationLoginScreen: View {
     /// A boolean that can be toggled to give focus to the password text field.
     /// This must be manually set back to `false` when the text field finishes editing.
     @State private var isPasswordFocused = false
-        
+    @State private var presentProConnectInfo = false
+    @State private var presentProConnectAvailabilityFaqArticle = false
+
     // MARK: Public
     
     @ObservedObject var viewModel: AuthenticationLoginViewModel.Context
@@ -50,6 +52,12 @@ struct TchapAuthenticationLoginScreen: View {
         .background(theme.colors.background.ignoresSafeArea())
         .alert(item: $viewModel.alertInfo) { $0.alert }
         .accentColor(theme.colors.accent)
+        .sheet(isPresented: $presentProConnectAvailabilityFaqArticle) {
+            WebSheetView(targetUrl: URL(string: BuildSettings.proConnectAvailabilityFaqArticleUrlString)!)
+        }
+        .sheet(isPresented: $presentProConnectInfo) {
+            WebSheetView(targetUrl: URL(string: BuildSettings.proConnectInfoUrlString)!)
+        }
     }
     
     /// The header containing a Welcome Back title.
@@ -151,10 +159,10 @@ struct TchapAuthenticationLoginScreen: View {
     }
     
     var ssoInformation: some View {
-        Text(LocalizedStringKey(TchapL10n.authenticationSsoWarning))
+        Button(action: { openProConnectAvailabilityFaqArticle() }, label: {
+            Text(TchapL10n.authenticationSsoWarning)
+        })
         .padding(.horizontal, 16.0)
-        .font(.footnote)
-        .foregroundColor(Color(UIColor(rgb: 0x000091)))
     }
     
     /// Parses the username for a homeserver.
@@ -240,7 +248,11 @@ struct TchapAuthenticationLoginScreen: View {
     }
 
     func openProConnectWebsite() {
-        TchapWebLinks.openProConnectInfo()
+        presentProConnectInfo = true
+    }
+
+    func openProConnectAvailabilityFaqArticle() {
+        presentProConnectAvailabilityFaqArticle = true
     }
 }
 

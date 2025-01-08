@@ -195,3 +195,20 @@ extension WebSheetViewController: WKNavigationDelegate {
         // Called when the web view’s web content process is terminated.
     }
 }
+
+import SwiftUI
+
+struct WebSheetView: UIViewControllerRepresentable {
+    typealias UIViewControllerType = WebSheetViewController
+    let targetUrl: URL
+    
+    func makeUIViewController(context: Context) -> WebSheetViewController {
+        let vc = WebSheetViewController(targetUrl: targetUrl)
+        // Do some configurations here if needed.
+        return vc
+    }
+    
+    func updateUIViewController(_ uiViewController: WebSheetViewController, context: Context) {
+        // Updates the state of the specified view controller with new information from SwiftUI.
+    }
+}

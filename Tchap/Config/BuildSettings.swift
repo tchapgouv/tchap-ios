@@ -138,7 +138,8 @@ final class BuildSettings: NSObject {
     static let applicationServicesStatusUrlString = "https://status.tchap.numerique.gouv.fr/"
     static let applicationAcceptableUsePolicyUrlString = ""
     static let proConnectInfoUrlString = "https://proconnect.gouv.fr/"
-    
+    static let proConnectAvailabilityFaqArticleUrlString = "https://aide.tchap.beta.gouv.fr/fr/article/se-connecter-a-tchap-avec-proconnect-1dh1peg"
+
     // MARK: - Matrix permalinks
     // Hosts/Paths for URLs that will considered as valid permalinks. Those permalinks are opened within the app.
     static let permalinkSupportedHosts: [String: [String]] = [
