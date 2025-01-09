@@ -71,8 +71,8 @@ struct OnboardingCongratulationsScreen: View {
                     .foregroundColor(.white)
                 
                 // Tchap: replace deprecated `StyleText` with `Text(AttributedString)`
-                StyledText(viewModel.viewState.messageString)
-//                Text(AttributedString(viewModel.viewState.messageString))
+//                StyledText(viewModel.viewState.messageString)
+                Text(AttributedString(viewModel.viewState.messageString))
                     .font(theme.fonts.body)
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
