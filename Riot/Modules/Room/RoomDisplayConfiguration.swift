@@ -18,7 +18,7 @@ class RoomDisplayConfiguration: NSObject {
         guard _tchapCallsEnabled,
               let account = MXKAccountManager.shared().activeAccounts.first
         else { return false }
-        // Tchap: actually, only allow VoIP for DINUM homeServer.
+        // Tchap: actually, only allow VoIP by homeServer.
         if (account.isFeatureActivated(BuildSettings.tchapFeatureVoiceOverIP) || account.isFeatureActivated(BuildSettings.tchapFeatureVideoOverIP)) {
             return true
         }

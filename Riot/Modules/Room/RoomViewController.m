@@ -3258,6 +3258,10 @@ static CGSize kThreadListBarButtonItemImageSize;
 //    {
 //        cellIdentifier = RoomTimelineCellIdentifierGroupCallStatus;
 //    }
+    else if (bubbleData.tag == RoomBubbleCellDataTagRTCCallNotify)
+    {
+        cellIdentifier = RoomTimelineCellIdentifierMatrixRTCCall;
+    }
     else if (bubbleData.attachment.type == MXKAttachmentTypeVoiceMessage || bubbleData.attachment.type == MXKAttachmentTypeAudio)
     {
         if (bubbleData.isIncoming)
