@@ -1,3 +1,16 @@
+## Changes in 2.8.8 (2025-01-09)
+
+🙌 Improvements
+
+- ProConnect - Message d'avertissement et lien vers la FAQ à propos de la disponibilité du service ProConnect sur tous les HomeServers ([#1100](https://github.com/tchapgouv/tchap-ios/issues/1100))
+- Améliorer l'UI de succès de création de compte ([#1139](https://github.com/tchapgouv/tchap-ios/issues/1139))
+- Update TAC and private policy URLs ([#1141](https://github.com/tchapgouv/tchap-ios/issues/1141))
+
+🐛 Bugfixes
+
+- Réactiver l'affichage des albums dans le sélecteur de media sous iOS 18. ([#1143](https://github.com/tchapgouv/tchap-ios/issues/1143))
+
+
 ## Changes in 2.8.6 (2024-12-12)
 
 🙌 Improvements
