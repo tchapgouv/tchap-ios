@@ -34,7 +34,7 @@ final class ReauthenticationCoordinator: ReauthenticationCoordinatorType {
     private let authenticationParametersBuilder: AuthenticationParametersBuilder
     private let uiaViewControllerFactory: UserInteractiveAuthenticationViewControllerFactory
     
-    private var ssoAuthenticationPresenter: SSOAuthenticationPresenter?
+//    private var ssoAuthenticationPresenter: SSOAuthenticationPresenter?
     
     private var authenticationSession: SSOAuthentificationSessionProtocol?
     
@@ -43,6 +43,15 @@ final class ReauthenticationCoordinator: ReauthenticationCoordinatorType {
     }
     
     private weak var passwordViewController: UIViewController?
+    
+    /// The presenter used to handler authentication via SSO.
+    private var ssoAuthenticationPresenter: SSOAuthenticationPresenter?
+    /// The transaction ID used when presenting the SSO screen. Used when completing via a deep link.
+    private var ssoTransactionID: String?
+    private let authenticationService = AuthenticationService.shared
+    /// The type of authentication that was used to complete the flow.
+    private var authenticationType: AuthenticationType?
+
     
     // MARK: Public
 
@@ -95,7 +104,18 @@ final class ReauthenticationCoordinator: ReauthenticationCoordinatorType {
         // Tchap: give priority to SSO reauthentication if a SSO flow is available and not completed
         if self.userInteractiveAuthenticationService.tchapHasSsoFlowAvailable(authenticationSession: authenticationSession),
            let authenticationFallbackURL = self.userInteractiveAuthenticationService.firstUncompletedStageAuthenticationFallbackURL(for: authenticationSession) {
-            self.showFallbackAuthentication(with: authenticationFallbackURL, authenticationSession: authenticationSession)
+            
+            Task {
+                let (client, server) = try await authenticationService.loginFlow(for: parameters.session)
+                switch server.preferredLoginMode {
+                case .sso(let ssoIdentityProviders), .ssoAndPassword(let ssoIdentityProviders):
+                    await presentSSOAuthentication(for: ssoIdentityProviders.first!)
+                default:
+                    break
+                }
+//                self.showFallbackAuthentication(with: authenticationFallbackURL, authenticationSession: authenticationSession)
+                //            presentSSOAuthentication(for: )
+            }
         }
         else if self.userInteractiveAuthenticationService.hasPasswordFlow(inFlows: authenticationSession.flows) {
             self.showPasswordAuthentication(with: authenticationSession)
@@ -177,4 +197,86 @@ final class ReauthenticationCoordinator: ReauthenticationCoordinatorType {
         
         self.presentingViewController.present(navigationController, animated: true)
     }
+}
+
+
+extension ReauthenticationCoordinator: SSOAuthenticationPresenterDelegate {
+    /// Presents SSO authentication for the specified identity provider.
+    @MainActor private func presentSSOAuthentication(for identityProvider: SSOIdentityProvider) {
+        let service = SSOAuthenticationService(homeserverStringURL: authenticationService.state.homeserver.address)
+        let presenter = SSOAuthenticationPresenter(ssoAuthenticationService: service)
+        presenter.delegate = self
+        
+        let transactionID = MXTools.generateTransactionId()
+        presenter.present(forIdentityProvider: identityProvider, with: transactionID, from: toPresentable(), animated: true)
+        
+        ssoAuthenticationPresenter = presenter
+        ssoTransactionID = transactionID
+        authenticationType = .sso(identityProvider)
+    }
+    
+    func ssoAuthenticationPresenter(_ presenter: SSOAuthenticationPresenter, authenticationSucceededWithToken token: String, usingIdentityProvider identityProvider: SSOIdentityProvider?) {
+        MXLog.debug("[AuthenticationCoordinator] SSO authentication succeeded.")
+        
+        guard let sessionId = self.parameters.authenticationSession?.session else {
+            self.delegate?.reauthenticationCoordinator(self, didFailWithError: ReauthenticationCoordinatorError.failToBuildPasswordParameters)
+            return
+        }
+        
+        let authenticationParameters = self.authenticationParametersBuilder.buildOAuthParameters(with: sessionId)
+        // Tchap: dismiss controller
+//        navigationController.dismiss(animated: true)
+        self.delegate?.reauthenticationCoordinatorDidComplete(self, withAuthenticationParameters: authenticationParameters)
+        
+        
+//        guard let loginWizard = authenticationService.loginWizard else {
+//            MXLog.failure("[ReauthenticationCoordinator] The login wizard was requested before getting the login flow.")
+//            return
+//        }
+        
+//        Task { await handleLoginToken(token, using: loginWizard) }
+    }
+    
+    func ssoAuthenticationPresenter(_ presenter: SSOAuthenticationPresenter, authenticationDidFailWithError error: Error) {
+        MXLog.debug("[ReauthenticationCoordinator] SSO authentication failed.")
+        
+        Task { @MainActor in
+            displayError(message: error.localizedDescription)
+            ssoAuthenticationPresenter = nil
+            ssoTransactionID = nil
+            authenticationType = nil
+        }
+    }
+    
+    func ssoAuthenticationPresenterDidCancel(_ presenter: SSOAuthenticationPresenter) {
+        MXLog.debug("[ReauthenticationCoordinator] SSO authentication cancelled.")
+        ssoAuthenticationPresenter = nil
+        ssoTransactionID = nil
+        authenticationType = nil
+        self.delegate?.reauthenticationCoordinatorDidCancel(self)
+    }
+    
+    /// Performs the last step of the login process for a flow that authenticated via SSO.
+    @MainActor private func handleLoginToken(_ token: String, using loginWizard: LoginWizard) async {
+        do {
+            let session = try await loginWizard.login(with: token)
+//            onSessionCreated(session: session, flow: authenticationService.state.flow)
+            MXLog.info("[ReauthenticationCoordinator] Login with SSO token: \(token).")
+        } catch {
+            MXLog.error("[ReauthenticationCoordinator] Login with SSO token failed.")
+            displayError(message: error.localizedDescription)
+            authenticationType = nil
+        }
+        
+        ssoAuthenticationPresenter = nil
+        ssoTransactionID = nil
+    }
+    
+    /// Presents an alert on top of the navigation router with the supplied error message.
+    @MainActor private func displayError(message: String) {
+        let alert = UIAlertController(title: VectorL10n.error, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: VectorL10n.ok, style: .default))
+        toPresentable().present(alert, animated: true)
+    }
+
 }

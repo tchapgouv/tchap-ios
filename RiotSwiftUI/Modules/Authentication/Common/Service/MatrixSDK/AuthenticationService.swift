@@ -284,7 +284,7 @@ class AuthenticationService: NSObject {
     /// Request the supported login flows for the corresponding session.
     /// This method is used to get the flows for a server after a soft-logout.
     /// - Parameter session: The MXSession where a soft-logout has occurred.
-    private func loginFlow(for session: MXSession) async throws -> (AuthenticationRestClient, AuthenticationState.Homeserver) {
+    /*private*/ func loginFlow(for session: MXSession) async throws -> (AuthenticationRestClient, AuthenticationState.Homeserver) {
         guard let client = session.matrixRestClient else {
             MXLog.error("[AuthenticationService] loginFlow called on a session that doesn't have a matrixRestClient.")
             throw AuthenticationError.missingMXRestClient
