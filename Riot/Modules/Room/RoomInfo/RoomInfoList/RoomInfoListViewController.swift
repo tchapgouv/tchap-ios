@@ -228,16 +228,18 @@ final class RoomInfoListViewController: UIViewController {
                                    rows: [rowLeave],
                                    footer: nil)
         
-        let rowReport = Row(type: .destructive, icon: Asset.Images.error.image, text: VectorL10n.roomEventActionReport, accessoryType: .disclosureIndicator) {
-            self.viewModel.process(viewAction: .report)
-        }
-        let sectionReport = Section(header: nil,
-                                    rows: [rowReport],
-                                    footer: nil)
+        // Tchap: remove unused button "Report room" in room details.
+//        let rowReport = Row(type: .destructive, icon: Asset.Images.error.image, text: VectorL10n.roomEventActionReport, accessoryType: .disclosureIndicator) {
+//            self.viewModel.process(viewAction: .report)
+//        }
+//        let sectionReport = Section(header: nil,
+//                                    rows: [rowReport],
+//                                    footer: nil)
         
         tmpSections.append(sectionSettings)
         tmpSections.append(sectionLeave)
-        tmpSections.append(sectionReport)
+        // Tchap: remove unused button "Report room" in room details.
+//        tmpSections.append(sectionReport)
         
         sections = tmpSections
     }
