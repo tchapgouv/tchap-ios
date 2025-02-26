@@ -30,7 +30,7 @@
 // MARK: Authentication
 "authentication_password_title" = "Se connecter à Tchap";
 "authentication_sso_title" = "S'identifier avec ProConnect";
-"authentication_sso_connect_title" = "**S'identifier avec ProConnect**"; // Markdown string for SwiftUI Text()
+"authentication_sso_connect_title" = "**Continuer avec ProConnect**"; // Markdown string for SwiftUI Text()
 "authentication_mail_placeholder" = "Adresse mail professionnelle";
 "authentication_password_placeholder" = "Mot de passe Tchap";
 "authentication_forgot_password" = "Mot de passe oublié ?";
