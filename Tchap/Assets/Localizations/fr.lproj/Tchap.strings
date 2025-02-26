@@ -22,15 +22,15 @@
 "welcome_subtitle" = "La messagerie instantanée du secteur public";
 "welcome_login_action" = "J'ai un compte";
 "welcome_register_action" = "Je n'ai pas de compte";
-"welcome_pro_connect_title" = "Se connecter avec\n**ProConnect**"; // Markdown string for SwiftUI Text()
+"welcome_pro_connect_title" = "S'identifier avec\n**ProConnect**"; // Markdown string for SwiftUI Text()
 "welcome_pro_connect_info" = "→ Qu'est-ce que ProConnect ?";
 "welcome_password_title" = "Se connecter par mot de passe";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Authentication
 "authentication_password_title" = "Se connecter à Tchap";
-"authentication_sso_title" = "Se connecter avec ProConnect";
-"authentication_sso_connect_title" = "**Continuer avec ProConnect**"; // Markdown string for SwiftUI Text()
+"authentication_sso_title" = "S'identifier avec ProConnect";
+"authentication_sso_connect_title" = "**S'identifier avec ProConnect**"; // Markdown string for SwiftUI Text()
 "authentication_mail_placeholder" = "Adresse mail professionnelle";
 "authentication_password_placeholder" = "Mot de passe Tchap";
 "authentication_forgot_password" = "Mot de passe oublié ?";
