@@ -104,6 +104,7 @@ struct TchapOnboardingSplashScreen: View {
                         HStack {
                             Image(uiImage: Asset_tchap.Images.proConnectIcon.image)
                             Text(LocalizedStringKey(TchapL10n.welcomeProConnectTitle)) // LocalizedStringKey is needed for markdown interpretation.
+                                .multilineTextAlignment(.leading)
                                 .fixedSize(horizontal: false, vertical: true) // .lineLimit(Int.max) doesn't work here.
                                 .foregroundColor(.white)
                         }
