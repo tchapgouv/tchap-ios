@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "MXKAccountData.h"
+#import "GeneratedInterface-Swift.h" // Tchap: to access BuildSettings to fix wrong `_pushGatewayURL`.
 
 @interface MXKAccountData ()
 
@@ -60,6 +61,10 @@
         if ([coder decodeObjectForKey:@"pushgatewayurl"])
         {
             _pushGatewayURL = [coder decodeObjectForKey:@"pushgatewayurl"];
+            // Tchap: fix wrong `_pushGatewayURL` if necessary.
+            if ([_pushGatewayURL containsString:@"matrix.org"]) {
+                _pushGatewayURL = BuildSettings.serverConfigSygnalAPIUrlString;
+            }
         }
         
         _hasPusherForPushNotifications = [coder decodeBoolForKey:@"_enablePushNotifications"];
