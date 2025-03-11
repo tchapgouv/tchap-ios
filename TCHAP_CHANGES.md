@@ -1,3 +1,15 @@
+## Changes in 2.9.2 (2025-03-11)
+
+🙌 Improvements
+
+- Activer ProConnect en Prod pour tests externes et supprimer le bouton de signalement de salon (signalement global) ([#1151](https://github.com/tchapgouv/tchap-ios/issues/1151))
+- Modifier le bouton ProConnect pour s'harmoniser avec la Suite Numérique. ([#1153](https://github.com/tchapgouv/tchap-ios/issues/1153))
+
+🐛 Bugfixes
+
+- Correction (si nécessaire) de l'adresse du serveur de push notifications stocké localement dans les données utilisateur. ([#1150](https://github.com/tchapgouv/tchap-ios/issues/1150))
+
+
 ## Changes in 2.8.8 (2025-01-09)
 
 🙌 Improvements
