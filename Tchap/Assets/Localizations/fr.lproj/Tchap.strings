@@ -68,7 +68,7 @@
 "registration_mail_placeholder" = "Adresse email";
 "registration_mail_additional_info" = "Utilisez votre adresse professionnelle";
 "registration_password_placeholder" = "Mot de passe Tchap";
-"registration_password_additional_info" = "Votre mot de passe doit contenir au moins 8 caractères, avec au moins un caractère de chaque type\U00A0:\U00A0majuscule, minuscule, chiffre, caractère spécial";
+"registration_password_additional_info" = "Votre mot de passe doit contenir au moins 12 caractères, avec au moins un caractère de chaque type\U00A0:\U00A0majuscule, minuscule, chiffre, caractère spécial";
 "registration_confirm_password_placeholder" = "Confirmer le mot de passe";
 
 "registration_warning_for_external_user_title" = "Information concernant votre inscription";
@@ -92,7 +92,7 @@
 
 "password_policy_too_short_pwd_error" = "Mot de passe trop court";
 "password_policy_too_short_pwd_detailed_error" = "Mot de passe trop court (min %d)";
-"password_policy_weak_pwd_error" = "Ce mot de passe est trop faible. Il doit contenir au moins 8 caractères, avec au moins un caractère de chaque type\U00A0:\U00A0majuscule, minuscule, chiffre, caractère spécial";
+"password_policy_weak_pwd_error" = "Ce mot de passe est trop faible. Il doit contenir au moins 12 caractères, avec au moins un caractère de chaque type\U00A0:\U00A0majuscule, minuscule, chiffre, caractère spécial";
 "password_policy_pwd_in_dict_error" = "Ce mot de passe a été trouvé dans un dictionnaire, il n’est pas autorisé";
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -272,7 +272,7 @@
 "change_password_current_password_validate_action" = "Valider";
 // New password
 "change_password_new_password_title" = "Nouveau mot de passe";
-"change_password_new_password_instructions" = "Votre nouveau mot de passe doit contenir au moins 8 caractères, avec au moins un caractère de chaque type\U00A0:\U00A0majuscule, minuscule, chiffre, caractère spécial.";
+"change_password_new_password_instructions" = "Votre nouveau mot de passe doit contenir au moins 12 caractères, avec au moins un caractère de chaque type\U00A0:\U00A0majuscule, minuscule, chiffre, caractère spécial.";
 "change_password_new_password_password_placeholder" = "Nouveau mot de passe";
 "change_password_new_password_confirm_password_placeholder" = "Confirmez votre nouveau mot de passe";
 "change_password_new_password_validate_action" = "Valider";
