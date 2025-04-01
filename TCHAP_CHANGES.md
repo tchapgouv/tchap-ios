@@ -1,3 +1,11 @@
+## Changes in 2.9.6 (2025-04-01)
+
+🙌 Improvements
+
+- Use preprod pusher url for BTchap. ([#1158](https://github.com/tchapgouv/tchap-ios/issues/1158))
+- Permettre l'envoi de plus de 5 photos depuis le partage de la galerie photo. ([#1163](https://github.com/tchapgouv/tchap-ios/issues/1163))
+
+
 ## Changes in 2.9.2 (2025-03-11)
 
 🙌 Improvements
