@@ -33,7 +33,7 @@
 				<key>NSExtensionActivationSupportsFileWithMaxCount</key>
 				<integer>5</integer>
 				<key>NSExtensionActivationSupportsImageWithMaxCount</key>
-				<integer>5</integer>
+				<integer>25</integer>
 				<key>NSExtensionActivationSupportsMovieWithMaxCount</key>
 				<integer>1</integer>
 				<key>NSExtensionActivationSupportsText</key>
