@@ -53,4 +53,6 @@ Copyright (c) 2017-2024 New Vector Ltd
 
 SPDX-License-Identifier: AGPL-3.0-only. Please see [LICENSE](LICENSE) in the repository root for full details.
 
+2024-2025, Direction interministérielle du numérique
+
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
