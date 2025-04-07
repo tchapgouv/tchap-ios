@@ -18,8 +18,10 @@ enum AuthenticationLoginViewModelResult: CustomStringConvertible {
     case forgotPassword
     /// Login using the supplied credentials.
     case login(username: String, password: String)
+    // Tchap: add `loginHint` string parameter for SSO
+    //    case continueWithSSO(SSOIdentityProvider)
     /// Continue using the supplied SSO provider.
-    case continueWithSSO(SSOIdentityProvider)
+    case continueWithSSO(SSOIdentityProvider, String? = nil)
     /// Continue using the fallback page
     case fallback
     /// Continue with QR login
@@ -119,8 +121,10 @@ enum AuthenticationLoginViewAction {
     case next
     /// Continue using the fallback page
     case fallback
+    // Tchap; add `loginHint` string parameter for SSO
+//    case continueWithSSO(SSOIdentityProvider)
     /// Continue using the supplied SSO provider.
-    case continueWithSSO(SSOIdentityProvider)
+    case continueWithSSO(SSOIdentityProvider, String? = nil)
     /// Continue using QR login
     case qrLogin
 }

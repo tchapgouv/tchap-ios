@@ -191,7 +191,9 @@ struct TchapAuthenticationLoginScreen: View {
                     // Then, now that homeServer is known, start authentication flow.
                     if case .sso = viewModel.viewState.tchapAuthenticationMode,
                        let proConnectProvider = userHomeServerViewData.ssoIdentityProviders.first {
-                        viewModel.send(viewAction: .continueWithSSO(proConnectProvider))
+                        // Tchap: add `loginHint` string parameter for SSO
+//                        viewModel.send(viewAction: .continueWithSSO(proConnectProvider))
+                        viewModel.send(viewAction: .continueWithSSO(proConnectProvider, viewModel.username))
                     } else {
                         guard viewModel.viewState.canSubmit else { return }
                         viewModel.send(viewAction: .next)

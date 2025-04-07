@@ -28,7 +28,9 @@ final class SSOAccountService: NSObject, SSOAuthenticationServiceProtocol {
     
     // MARK: - Public
     
-    func authenticationURL(for identityProvider: String?, transactionId: String) -> URL? {
+    // Tchap: add `loginHint` string parameter for SSO
+//    func authenticationURL(for identityProvider: String?, transactionId: String) -> URL? {
+    func authenticationURL(for identityProvider: String?, loginHint: String? = nil, transactionId: String) -> URL? {
         accountURL
     }
     

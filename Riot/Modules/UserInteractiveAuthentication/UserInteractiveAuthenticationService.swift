@@ -221,7 +221,15 @@ final class UserInteractiveAuthenticationService: NSObject {
             return nil
         }                
         
-        let fallbackPath =  "\(kMXAPIPrefixPathR0)/auth/\(flowIdentifier)/fallback/web?session=\(sessionId)"
+        // Tchap: handle `loginHint` query parameter for SSO in UIA action
+//        let fallbackPath =  "\(kMXAPIPrefixPathR0)/auth/\(flowIdentifier)/fallback/web?session=\(sessionId)"
+        let fallbackPath = if let mainAccount = MXKAccountManager.shared().activeAccounts.first,
+                              let accountEmail = mainAccount.linkedEmails.first {
+            "\(kMXAPIPrefixPathR0)/auth/\(flowIdentifier)/fallback/web?session=\(sessionId)&login_hint=\(accountEmail)"
+        }
+        else {
+            "\(kMXAPIPrefixPathR0)/auth/\(flowIdentifier)/fallback/web?session=\(sessionId)"
+        }
         
         return URL(string: fallbackPath, relativeTo: homeserverURL)
     }

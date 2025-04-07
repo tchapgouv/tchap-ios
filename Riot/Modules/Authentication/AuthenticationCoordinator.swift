@@ -366,8 +366,11 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     @MainActor private func loginCoordinator(_ coordinator: AuthenticationLoginCoordinator,
                                              didCallbackWith result: AuthenticationLoginCoordinatorResult) {
         switch result {
-        case .continueWithSSO(let provider):
-            presentSSOAuthentication(for: provider)
+            // Tchap: add `loginHint` string parameter for SSO
+//        case .continueWithSSO(let provider):
+//            presentSSOAuthentication(for: provider)
+        case .continueWithSSO(let provider, let loginHint):
+            presentSSOAuthentication(for: provider, loginHint: loginHint)
         case .success(let session, let loginPassword):
             password = loginPassword
             authenticationType = .password
@@ -723,14 +726,18 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
 // MARK: - SSO
 
 extension AuthenticationCoordinator: SSOAuthenticationPresenterDelegate {
+    // Tchap: add `loginHint` string parameter for SSO
+//    @MainActor private func presentSSOAuthentication(for identityProvider: SSOIdentityProvider) {
     /// Presents SSO authentication for the specified identity provider.
-    @MainActor private func presentSSOAuthentication(for identityProvider: SSOIdentityProvider) {
+    @MainActor private func presentSSOAuthentication(for identityProvider: SSOIdentityProvider, loginHint: String? = nil) {
         let service = SSOAuthenticationService(homeserverStringURL: authenticationService.state.homeserver.address)
         let presenter = SSOAuthenticationPresenter(ssoAuthenticationService: service)
         presenter.delegate = self
         
         let transactionID = MXTools.generateTransactionId()
-        presenter.present(forIdentityProvider: identityProvider, with: transactionID, from: toPresentable(), animated: true)
+        // Tchap: add `loginHint` string parameter for SSO
+//        presenter.present(forIdentityProvider: identityProvider, with: transactionID, from: toPresentable(), animated: true)
+        presenter.present(forIdentityProvider: identityProvider, loginHint: loginHint, with: transactionID, from: toPresentable(), animated: true)
         
         ssoAuthenticationPresenter = presenter
         ssoTransactionID = transactionID

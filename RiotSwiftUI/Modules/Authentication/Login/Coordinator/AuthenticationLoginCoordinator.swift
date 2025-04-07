@@ -17,8 +17,10 @@ struct AuthenticationLoginCoordinatorParameters {
 }
 
 enum AuthenticationLoginCoordinatorResult: CustomStringConvertible {
+    // Tchap: add `loginHint` string parameter for SSO
+//    case continueWithSSO(SSOIdentityProvider)
     /// Continue using the supplied SSO provider.
-    case continueWithSSO(SSOIdentityProvider)
+    case continueWithSSO(SSOIdentityProvider, String? = nil)
     /// Login was successful with the associated session created.
     case success(session: MXSession, password: String)
     /// Login was successful with the associated session created.
@@ -29,7 +31,9 @@ enum AuthenticationLoginCoordinatorResult: CustomStringConvertible {
     /// A string representation of the result, ignoring any associated values that could leak PII.
     var description: String {
         switch self {
-        case .continueWithSSO(let provider):
+        // Tchap: add `loginHint` string parameter for SSO
+//        case .continueWithSSO(let provider):
+        case .continueWithSSO(let provider, _):
             return "continueWithSSO: \(provider)"
         case .success:
             return "success"
@@ -128,8 +132,8 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
                 self.showForgotPasswordScreen()
             case .login(let username, let password):
                 self.login(username: username, password: password)
-            case .continueWithSSO(let identityProvider):
-                self.callback?(.continueWithSSO(identityProvider))
+            case .continueWithSSO(let identityProvider, let loginHint):
+                self.callback?(.continueWithSSO(identityProvider, loginHint))
             case .fallback:
                 self.callback?(.fallback)
             case .qrLogin:
