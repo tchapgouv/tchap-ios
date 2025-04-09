@@ -247,6 +247,9 @@ private extension MXKSlashCommand {
             return VectorL10n.roomCommandChangeRoomTopicDescription
         case .discardSession:
             return VectorL10n.roomCommandDiscardSessionDescription
+        // Tchap: add visio command
+        case .visio:
+            return TchapL10n.roomCommandVisioDescription
         }
     }
 

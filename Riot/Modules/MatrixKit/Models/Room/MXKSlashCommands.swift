@@ -28,7 +28,9 @@
     case resetUserPowerLevel
     case changeRoomTopic
     case discardSession
-
+    // Tchap: add visio command
+    case visio
+    
     var cmd: String {
         switch self {
         case .changeDisplayName:
@@ -55,6 +57,9 @@
             return "/topic"
         case .discardSession:
             return "/discardsession"
+        // Tchap: add visio command
+        case .visio:
+            return "/visio"
         }
     }
 
@@ -87,6 +92,9 @@
             return "<topic>"
         case .discardSession:
             return ""
+        // Tchap: add visio command
+        case .visio:
+            return "<message>"
         }
     }
 }
