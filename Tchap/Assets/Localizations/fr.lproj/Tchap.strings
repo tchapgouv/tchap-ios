@@ -359,3 +359,7 @@
 "settings_enable_email_notif_text" = "Recevez un e-mail si au moins un message récent non lu pendant 72h.";
 "settings_enable_email_notif_link" = "En savoir plus.";
 "settings_enable_inapp_notifications_description" = "Le compte correspond à tous vos appareils connectés à Tchap.";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Commands
+"room_command_visio_description" = "Crée un lien Visio avec le message suivant";

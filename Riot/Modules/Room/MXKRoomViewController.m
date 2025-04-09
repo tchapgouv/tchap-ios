@@ -1288,6 +1288,8 @@ static const CGFloat kCellVisibilityMinimumHeight = 8.0;
     NSString* kMXKSlashCmdJoinRoom = [MXKSlashCommandsHelper commandNameFor:MXKSlashCommandJoinRoom];
     NSString* kMXKSlashCmdPartRoom = [MXKSlashCommandsHelper commandNameFor:MXKSlashCommandPartRoom];
     NSString* kMXKSlashCmdChangeRoomTopic = [MXKSlashCommandsHelper commandNameFor:MXKSlashCommandChangeRoomTopic];
+    // Tchap: add visio command
+    NSString* kMXKSlashCmdVisioTopic = [MXKSlashCommandsHelper commandNameFor:MXKSlashCommandVisio];
 
     
     if ([cmd isEqualToString:[MXKSlashCommandsHelper commandNameFor:MXKSlashCommandEmote]])
@@ -1458,6 +1460,32 @@ static const CGFloat kCellVisibilityMinimumHeight = 8.0;
         [roomDataSource.mxSession.crypto discardOutboundGroupSessionForRoomWithRoomId:roomDataSource.roomId onComplete:^{
             MXLogDebug(@"[MXKRoomVC] Manually discarded outbound group session");
         }];
+    }
+    // Tchap: add visio command
+    else if ([string hasPrefix:[MXKSlashCommandsHelper commandNameFor:MXKSlashCommandVisio]])
+    {
+        NSString* (^segment)(int) = ^ NSString* (int length) {
+            static NSString* ROOM_ID_ALLOWED_CHARACTERS = @"abcdefghijklmnopqrstuvwxyz";
+        
+            NSMutableString *segment = [NSMutableString string];
+            for(int i=0; i < length; i++) {
+                NSString *c = [ROOM_ID_ALLOWED_CHARACTERS substringWithRange:NSMakeRange(arc4random_uniform((uint32_t)ROOM_ID_ALLOWED_CHARACTERS.length), 1)];
+                [segment appendString:c];
+            }
+            return segment;
+        };
+        
+        static NSString* LASUITE_VISIO_URL = @"https://visio.numerique.gouv.fr/";
+        
+        NSMutableString *visioId = [NSMutableString string];
+        [visioId appendFormat:@"%@%@-%@-%@", LASUITE_VISIO_URL, segment(3), segment(4), segment(3)];
+        
+        // add following strings after command.
+        if (components.count > 1) {
+            [visioId appendString:[NSString stringWithFormat:@" %@", [[components subarrayWithRange:NSMakeRange(1, components.count-1)] componentsJoinedByString:@" "]]];
+        }
+        
+        [self sendTextMessage:visioId];
     }
     else
     {
