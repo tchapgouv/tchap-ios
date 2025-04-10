@@ -54,9 +54,9 @@ struct AuthenticationVerifyEmailViewState: BindableState {
     
     /// Whether the current `password` is invalid.
     var isPasswordInvalid: Bool {
-        // Tchap: raise the password min length to 12
+        // Tchap: password policy
 //        bindings.password.count < 8
-        bindings.password.count < 12
+        bindings.password.count < FormRules.passwordMinLength
     }
     
     /// `true` if it is possible to continue, otherwise `false`.

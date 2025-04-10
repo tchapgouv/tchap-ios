@@ -31,13 +31,13 @@ extension MXError {
         case kMXErrCodeStringPasswordTooShort:
             message = TchapL10n.passwordPolicyTooShortPwdError // Tchap
         case kMXErrCodeStringPasswordNoDigit:
-            message = TchapL10n.passwordPolicyWeakPwdError // Tchap
+            message = TchapL10n.registrationErrorPasswordPolicyErrorNoDigit // Tchap: password policy
         case kMXErrCodeStringPasswordNoLowercase:
-            message = TchapL10n.passwordPolicyWeakPwdError // Tchap
+            message = TchapL10n.registrationErrorPasswordPolicyErrorNoLowercase // Tchap: password policy
         case kMXErrCodeStringPasswordNoUppercase:
-            message = TchapL10n.passwordPolicyWeakPwdError // Tchap
+            message = TchapL10n.registrationErrorPasswordPolicyErrorNoUppercase // Tchap: password policy
         case kMXErrCodeStringPasswordNoSymbol:
-            message = TchapL10n.passwordPolicyWeakPwdError // Tchap
+            message = TchapL10n.registrationErrorPasswordPolicyErrorNoSymbol // Tchap: password policy
         case kMXErrCodeStringWeakPassword:
             message = TchapL10n.passwordPolicyWeakPwdError // Tchap
         case kMXErrCodeStringPasswordInDictionary:

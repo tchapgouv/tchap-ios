@@ -32,6 +32,11 @@ enum ChangePasswordNewPasswordViewModelError: Error {
     case invalidPassword
     case passwordsDontMatch
     case invalidOldPassword
+    // Tchap: password policy
+    case passwordPolicyNoDigit
+    case passwordPolicyNoUppercase
+    case passwordPolicyNoLowercase
+    case passwordPolicyNoSymbol
 }
 
 /// Protocol describing the view model used by `ChangePasswordNewPasswordViewController`
