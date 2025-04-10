@@ -284,7 +284,7 @@
 "auth_identity_server_placeholder" = "URL (e.g. https://vector.im)";
 "auth_invalid_login_param" = "Incorrect username and/or password";
 "auth_invalid_user_name" = "User names may only contain letters, numbers, dots, hyphens and underscores";
-"auth_invalid_password" = "Password too short (min 6)";
+"auth_invalid_password" = "Your password is too short. It should be at least 12 characters long."; // Tchap: password policy
 "auth_invalid_email" = "This doesn't look like a valid email address";
 "auth_invalid_phone" = "This doesn't look like a valid phone number";
 "auth_missing_password" = "Missing password";

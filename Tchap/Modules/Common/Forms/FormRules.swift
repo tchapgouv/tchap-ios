@@ -18,5 +18,7 @@ import Foundation
 
 /// General form validation constants
 struct FormRules {
-    static let passwordMinLength = 8
+    // Tchap: password policy
+//    static let passwordMinLength = 8
+    static let passwordMinLength = 12
 }
