@@ -12,6 +12,8 @@ enum SSOURLConstants {
     enum Parameters {
         static let callbackLoginToken = "loginToken"
         static let redirectURL = "redirectUrl"
+        // Tchap: add `loginHint` query parameter for SSO
+        static let loginHint = "login_hint"
     }
     
     enum Paths {

@@ -16,7 +16,9 @@ enum SSOAuthenticationServiceError: Error {
 @objc protocol SSOAuthenticationServiceProtocol {
     var callBackURLScheme: String? { get }
 
-    func authenticationURL(for identityProvider: String?, transactionId: String) -> URL?
+    // Tchap: add `loginHint` string parameter for SSO
+//    func authenticationURL(for identityProvider: String?, transactionId: String) -> URL?
+    func authenticationURL(for identityProvider: String?, loginHint: String?, transactionId: String) -> URL?
 
     func loginToken(from url: URL) -> String?
 }
@@ -42,7 +44,9 @@ final class SSOAuthenticationService: NSObject, SSOAuthenticationServiceProtocol
     
     // MARK: - Public
     
-    func authenticationURL(for identityProvider: String?, transactionId: String) -> URL? {
+    // Tchap: add `loginHint` string parameter for SSO
+//    func authenticationURL(for identityProvider: String?, transactionId: String) -> URL? {
+    func authenticationURL(for identityProvider: String?, loginHint: String? = nil, transactionId: String) -> URL? {
         guard var authenticationComponent = URLComponents(string: self.homeserverStringURL) else {
             return nil
         }
@@ -61,8 +65,13 @@ final class SSOAuthenticationService: NSObject, SSOAuthenticationServiceProtocol
             queryItems.append(URLQueryItem(name: SSOURLConstants.Parameters.redirectURL, value: callBackURLScheme))
         }
         
-        authenticationComponent.queryItems = queryItems
+        // Tchap: add `loginHint` string query parameter to URL
+        if let loginHint {
+            queryItems.append(URLQueryItem(name: SSOURLConstants.Parameters.loginHint, value: loginHint))
+        }
         
+        authenticationComponent.queryItems = queryItems
+
         return authenticationComponent.url
     }
     

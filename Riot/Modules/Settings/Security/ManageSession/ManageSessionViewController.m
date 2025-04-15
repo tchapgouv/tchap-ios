@@ -680,7 +680,9 @@ enum {
         presenter.delegate = self;
         self.ssoAuthenticationPresenter = presenter;
         
-        [presenter presentForIdentityProvider:nil with:@"" from:self animated:YES];
+        // Tchap: add `loginHint` string parameter for SSO
+//        [presenter presentForIdentityProvider:nil with:@"" from:self animated:YES];
+        [presenter presentForIdentityProvider:nil loginHint: nil with:@"" from:self animated:YES];
     }];
     
     [alert addAction: action];
