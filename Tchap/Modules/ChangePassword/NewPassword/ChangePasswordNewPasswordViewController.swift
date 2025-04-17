@@ -179,6 +179,15 @@ final class ChangePasswordNewPasswordViewController: UIViewController {
                 errorMessage = TchapL10n.passwordPolicyTooShortPwdDetailedError(FormRules.passwordMinLength)
             case .invalidPassword:
                 errorMessage = TchapL10n.registrationPasswordAdditionalInfo
+            // Tchap: password policy
+            case .passwordPolicyNoDigit:
+                errorMessage = TchapL10n.registrationErrorPasswordPolicyErrorNoDigit
+            case .passwordPolicyNoUppercase:
+                errorMessage = TchapL10n.registrationErrorPasswordPolicyErrorNoUppercase
+            case .passwordPolicyNoLowercase:
+                errorMessage = TchapL10n.registrationErrorPasswordPolicyErrorNoLowercase
+            case .passwordPolicyNoSymbol:
+                errorMessage = TchapL10n.registrationErrorPasswordPolicyErrorNoSymbol
             }
         } else {
             let builder = MXKErrorPresentableBuilder()

@@ -50,7 +50,7 @@
 "auth_repeat_new_password_placeholder" = "Confirmer le nouveau mot de passe";
 "auth_invalid_login_param" = "Nom d’utilisateur et/ou mot de passe incorrect";
 "auth_invalid_user_name" = "Les noms d’utilisateur ne peuvent contenir que des lettres, des chiffres, des points, des traits d’union ou des tirets bas";
-"auth_invalid_password" = "Mot de passe trop court (min 8)";
+"auth_invalid_password" = "Votre mot de passe est trop court. Il doit comporter au moins 12 caractères."; // Tchap: password policy
 "auth_invalid_email" = "L’adresse e-mail ne semble pas valide";
 "auth_invalid_phone" = "Le numéro de téléphone ne semble pas valide";
 "auth_missing_password" = "Mot de passe manquant";
@@ -2285,7 +2285,7 @@
 "authentication_choose_password_submit_button" = "Réinitialiser le mot de passe";
 "authentication_choose_password_signout_all_devices" = "Déconnecter tous les appareils";
 "authentication_choose_password_text_field_placeholder" = "Nouveau mot de passe";
-"authentication_choose_password_input_message" = "Assurez-vous qu’il fait 8 caractères ou plus";
+"authentication_choose_password_input_message" = "Assurez-vous qu’il fait 12 caractères ou plus"; // Tchap
 "authentication_choose_password_input_title" = "Choisissez un nouveau mot de passe";
 "authentication_forgot_password_waiting_button" = "Renvoyer l’email";
 /* The placeholder will show the email address that was entered. */
@@ -2317,7 +2317,7 @@
 "authentication_server_info_title" = "Où seront vous conversations";
 /* The placeholder will show the full Matrix ID that has been entered. */
 "authentication_registration_username_footer_available" = "Les autres peuvent vous trouver %@";
-"authentication_registration_password_footer" = "Le mot de passe doit contenir au moins 8 caractères";
+"authentication_registration_password_footer" = "Le mot de passe doit contenir au moins 12 caractères"; // Tchap
 "authentication_registration_username_footer" = "Vous ne pourrez pas le changer par la suite";
 "authentication_registration_username" = "Nom d'utilisateur.ice";
 
@@ -2767,7 +2767,7 @@
 "settings_labs_enable_crypto_sdk" = "Chiffrement de bout en bout en Rust";
 "settings_push_rules_error" = "Nous avons rencontré une erreur lors de la mise à jours de vos préférences de notification. Veuillez réactiver l'option.";
 "password_policy_pwd_in_dict_error" = "Ce mot de passe a été trouvé dans un dictionnaire, et son usage n'est donc pas autorisé.";
-"password_policy_weak_pwd_error" = "Ce mot de passe est trop faible. Il doit contenir au moins 8 caractères, dont au moins une majuscule, une minuscule, un chiffre et un caractère spécial.";
+"password_policy_weak_pwd_error" = "Ce mot de passe est trop faible. Il doit contenir au moins 12 caractères, dont au moins une majuscule, une minuscule, un chiffre et un caractère spécial."; // Tchap
 
 // MARK: Password policy errors
 "password_policy_too_short_pwd_error" = "Mot de passe trop court";

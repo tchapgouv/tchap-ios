@@ -68,7 +68,7 @@
 "registration_mail_placeholder" = "Adresse email";
 "registration_mail_additional_info" = "Utilisez votre adresse professionnelle";
 "registration_password_placeholder" = "Mot de passe Tchap";
-"registration_password_additional_info" = "Votre mot de passe doit contenir au moins 8 caractères, avec au moins un caractère de chaque type\U00A0:\U00A0majuscule, minuscule, chiffre, caractère spécial";
+"registration_password_additional_info" = "Votre mot de passe doit contenir au moins 12 caractères, avec au moins un caractère de chaque type\U00A0:\U00A0majuscule, minuscule, chiffre, caractère spécial";
 "registration_confirm_password_placeholder" = "Confirmer le mot de passe";
 
 "registration_warning_for_external_user_title" = "Information concernant votre inscription";
@@ -82,6 +82,10 @@
 
 "registration_error_unchecked_terms" = "Vous devez accepter les Conditions Générales d'Utilisation";
 "registration_error_passwords_dont_match" = "Les mots de passe ne correspondent pas";
+"registration_error_password_policy_error_no_digit" = "Le mot de passe doit comporter au moins 1 chiffre.";
+"registration_error_password_policy_error_no_lowercase" = "Le mot de passe doit comporter au moins 1 lettre minuscule.";
+"registration_error_password_policy_error_no_uppercase" = "Le mot de passe doit comporter au moins 1 lettre majuscule.";
+"registration_error_password_policy_error_no_symbol" = "Le mot de passe doit comporter au moins 1 symbole.";
 
 "registration_email_sent_info" = "Un email vous a été envoyé à l'adresse suivante, sauf si un compte Tchap lui a déjà été associé\U00A0:\U00A0";
 "registration_email_sent_instructions" = "Merci de cliquer sur le lien proposé dans cet email afin de terminer la création de votre compte. Vous pourrez alors vous connecter en allant sur l'écran de connexion.";
@@ -91,8 +95,8 @@
 "registration_email_validation_failed_msg" = "Le lien a expiré, ou il n'est pas valide";
 
 "password_policy_too_short_pwd_error" = "Mot de passe trop court";
-"password_policy_too_short_pwd_detailed_error" = "Mot de passe trop court (min %d)";
-"password_policy_weak_pwd_error" = "Ce mot de passe est trop faible. Il doit contenir au moins 8 caractères, avec au moins un caractère de chaque type\U00A0:\U00A0majuscule, minuscule, chiffre, caractère spécial";
+"password_policy_too_short_pwd_detailed_error" = "Votre mot de passe est trop court. Il doit comporter au moins %d caractères."; // Tchap: password policy
+"password_policy_weak_pwd_error" = "Ce mot de passe est trop faible. Il doit contenir au moins 12 caractères, avec au moins un caractère de chaque type\U00A0:\U00A0majuscule, minuscule, chiffre, caractère spécial";
 "password_policy_pwd_in_dict_error" = "Ce mot de passe a été trouvé dans un dictionnaire, il n’est pas autorisé";
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -272,7 +276,7 @@
 "change_password_current_password_validate_action" = "Valider";
 // New password
 "change_password_new_password_title" = "Nouveau mot de passe";
-"change_password_new_password_instructions" = "Votre nouveau mot de passe doit contenir au moins 8 caractères, avec au moins un caractère de chaque type\U00A0:\U00A0majuscule, minuscule, chiffre, caractère spécial.";
+"change_password_new_password_instructions" = "Votre nouveau mot de passe doit contenir au moins 12 caractères, avec au moins un caractère de chaque type\U00A0:\U00A0majuscule, minuscule, chiffre, caractère spécial.";
 "change_password_new_password_password_placeholder" = "Nouveau mot de passe";
 "change_password_new_password_confirm_password_placeholder" = "Confirmez votre nouveau mot de passe";
 "change_password_new_password_validate_action" = "Valider";

@@ -100,7 +100,9 @@ struct AuthenticationRegistrationViewState: BindableState {
     
     /// Whether the current `password` is invalid.
     var isPasswordInvalid: Bool {
-        bindings.password.count < 8
+        // Tchap: password policy
+//        bindings.password.count < 8
+        bindings.password.count < FormRules.passwordMinLength
     }
     
     /// `true` if it is possible to continue, otherwise `false`.

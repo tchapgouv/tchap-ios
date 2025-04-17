@@ -165,8 +165,17 @@ final class ChangePasswordNewPasswordViewModel: ChangePasswordNewPasswordViewMod
                             passwordError = .invalidOldPassword
                         case kMXErrCodeStringPasswordTooShort:
                             passwordError = .passwordTooShort
-                        case kMXErrCodeStringPasswordNoDigit, kMXErrCodeStringPasswordNoUppercase, kMXErrCodeStringPasswordNoLowercase, kMXErrCodeStringPasswordNoSymbol:
-                            passwordError = .invalidPassword
+                        // Tchap: password policy
+//                        case kMXErrCodeStringPasswordNoDigit, kMXErrCodeStringPasswordNoUppercase, kMXErrCodeStringPasswordNoLowercase, kMXErrCodeStringPasswordNoSymbol:
+//                            passwordError = .invalidPassword
+                        case kMXErrCodeStringPasswordNoDigit:
+                            passwordError = .passwordPolicyNoDigit
+                        case kMXErrCodeStringPasswordNoUppercase:
+                            passwordError = .passwordPolicyNoUppercase
+                        case kMXErrCodeStringPasswordNoLowercase:
+                            passwordError = .passwordPolicyNoLowercase
+                        case kMXErrCodeStringPasswordNoSymbol:
+                            passwordError = .passwordPolicyNoSymbol
                         default:
                             passwordError = nil
                         }

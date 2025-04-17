@@ -150,7 +150,7 @@
 "authentication_registration_username_footer" = "You can’t change this later";
 /* The placeholder will show the full Matrix ID that has been entered. */
 "authentication_registration_username_footer_available" = "Others can discover you %@";
-"authentication_registration_password_footer" = "Must be 8 characters or more";
+"authentication_registration_password_footer" = "Must be 12 characters or more"; // Tchap
 "authentication_server_info_title" = "Where your conversations will live";
 
 "authentication_login_title" = "Welcome back!";
@@ -188,7 +188,7 @@
 "authentication_forgot_password_waiting_button" = "Resend email";
 
 "authentication_choose_password_input_title" = "Choose a new password";
-"authentication_choose_password_input_message" = "Make sure it’s 8 characters or more";
+"authentication_choose_password_input_message" = "Make sure it’s 12 characters or more"; // Tchap
 "authentication_choose_password_text_field_placeholder" = "New Password";
 "authentication_choose_password_signout_all_devices" = "Sign out of all devices";
 "authentication_choose_password_submit_button" = "Reset Password";
@@ -259,7 +259,7 @@
 
 // MARK: Password policy errors
 "password_policy_too_short_pwd_error" = "Too short password";
-"password_policy_weak_pwd_error" = "This password is too weak. It must contain at least 8 characters, with at least one character of each type: uppercase, lowercase, digit and special character.";
+"password_policy_weak_pwd_error" = "This password is too weak. It must contain at least 12 characters, with at least one character of each type: uppercase, lowercase, digit and special character."; // Tchap
 "password_policy_pwd_in_dict_error" = "This password has been found in a dictionary, and is not allowed.";
 
 // MARK: Legacy Authentication
@@ -284,7 +284,7 @@
 "auth_identity_server_placeholder" = "URL (e.g. https://vector.im)";
 "auth_invalid_login_param" = "Incorrect username and/or password";
 "auth_invalid_user_name" = "User names may only contain letters, numbers, dots, hyphens and underscores";
-"auth_invalid_password" = "Password too short (min 6)";
+"auth_invalid_password" = "Your password is too short. It should be at least 12 characters long."; // Tchap: password policy
 "auth_invalid_email" = "This doesn't look like a valid email address";
 "auth_invalid_phone" = "This doesn't look like a valid phone number";
 "auth_missing_password" = "Missing password";
