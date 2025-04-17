@@ -1,3 +1,11 @@
+## Changes in 2.9.8 (2025-04-17)
+
+🙌 Improvements
+
+- Éviter la ressaisie de l'email dans ProConnect ([#1156](https://github.com/tchapgouv/tchap-ios/issues/1156))
+- Gérer correctement les erreurs retournées par le backend à la création ou changement du mot de passe. ([#1160](https://github.com/tchapgouv/tchap-ios/issues/1160))
+
+
 ## Changes in 2.9.6 (2025-04-10)
 
 🙌 Improvements
