@@ -55,19 +55,30 @@ final class SignOutAlertPresenter: NSObject {
     // MARK: - Private
     
     private func presentExistingBackupAlert(animated: Bool) {
+        // Tchap: add a warning message on sign out.
+//        let alertController = UIAlertController(title: VectorL10n.signOutExistingKeyBackupAlertTitle,
+//                                               message: nil,
+//                                               preferredStyle: .actionSheet)
         let alertController = UIAlertController(title: VectorL10n.signOutExistingKeyBackupAlertTitle,
-                                               message: nil,
+                                                message: TchapL10n.signOutExistingKeyBackupAlertMessage,
                                                preferredStyle: .actionSheet)
         
         let signoutAction = UIAlertAction(title: VectorL10n.signOutExistingKeyBackupAlertSignOutAction, style: .destructive) { (_) in
             self.delegate?.signOutAlertPresenterDidTapSignOutAction(self)
         }
         
+        // Tchap: add a "More info" button" on sign out.
+        let moreInfoAction = UIAlertAction(title: TchapL10n.signOutExistingKeyBackupAlertLinkMessage, style: .default) { (_) in
+            self.presentingViewController?.present(WebSheetViewController(targetUrl: URL(string: BuildSettings.signoutAlertFaqArticleUrlString)!), animated: true)
+        }
+        
         let cancelAction = UIAlertAction(title: VectorL10n.cancel, style: .cancel)
         
         alertController.addAction(signoutAction)
+        // Tchap: add a "More info" button" on sign out.
+        alertController.addAction(moreInfoAction)
         alertController.addAction(cancelAction)
-        
+
         self.present(alertController: alertController, animated: animated)
     }
     

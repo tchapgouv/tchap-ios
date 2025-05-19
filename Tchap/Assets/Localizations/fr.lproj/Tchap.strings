@@ -27,6 +27,11 @@
 "welcome_password_title" = "Se connecter par mot de passe";
 
 ////////////////////////////////////////////////////////////////////////////////
+// MARK: Sign out
+"sign_out_existing_key_backup_alert_message" = "Gardez au moins un appareil connecté pour ne pas perdre les messages reçus en votre absence.";
+"sign_out_existing_key_backup_alert_link_message" = "En savoir plus";
+
+////////////////////////////////////////////////////////////////////////////////
 // MARK: Authentication
 "authentication_password_title" = "Se connecter à Tchap";
 "authentication_sso_title" = "S'identifier avec ProConnect";

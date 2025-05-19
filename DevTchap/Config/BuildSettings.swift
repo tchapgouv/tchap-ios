@@ -96,7 +96,8 @@ final class BuildSettings: NSObject {
     // Tchap servers
     static let serverUrlPrefix = "https://matrix."
     static let preferredIdentityServerNames = [
-        "dev01.tchap.incubateur.net",
+        "mas02.tchap.incubateur.net",
+//        "dev01.tchap.incubateur.net",
 //        "dev02.tchap.incubateur.net"
     ]
     static let otherIdentityServerNames: [String] = [
@@ -125,6 +126,10 @@ final class BuildSettings: NSObject {
     static let applicationAcceptableUsePolicyUrlString = ""
     static let proConnectInfoUrlString = "https://proconnect.gouv.fr/"
     static let proConnectAvailabilityFaqArticleUrlString = "https://aide.tchap.beta.gouv.fr/fr/article/se-connecter-a-tchap-avec-proconnect-1dh1peg"
+    static let signoutAlertFaqArticleUrlString = "https://aide.tchap.beta.gouv.fr/fr/article/dechiffrement-en-cours-mes-messages-restent-verrouilles-atnp15/"
+    static let unableToDecryptFaqArticleUrlString = "https://aide.tchap.beta.gouv.fr/fr/article/dechiffrement-impossible-de-mes-messages-comment-y-remedier-iphone-xotgv1"
+    static let emailNotificationFaqArticleUrlString = "https://aide.tchap.beta.gouv.fr/fr/article/notification-par-email-draft-6k7k8"
+    static let newDeviceVerificationFaqArticleUrlString = "https://aide.tchap.beta.gouv.fr/fr/article/comment-verifier-un-nouvel-appareil-sur-tchap-xm0b0y"
 
     // MARK: - Matrix permalinks
     // Hosts/Paths for URLs that will considered as valid permalinks. Those permalinks are opened within the app.
