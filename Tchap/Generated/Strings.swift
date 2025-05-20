@@ -107,9 +107,13 @@ public class TchapL10n: NSObject {
   public static var authenticationSsoConnectTitle: String { 
     return TchapL10n.tr("Tchap", "authentication_sso_connect_title") 
   }
-  /// Se connecter avec ProConnect
+  /// S'identifier avec ProConnect
   public static var authenticationSsoTitle: String { 
     return TchapL10n.tr("Tchap", "authentication_sso_title") 
+  }
+  /// → Est-ce que ProConnect est activé pour mon administration ?
+  public static var authenticationSsoWarning: String { 
+    return TchapL10n.tr("Tchap", "authentication_sso_warning") 
   }
   /// Veuillez saisir votre mot de passe actuel.
   public static var changePasswordCurrentPasswordInstructions: String { 
@@ -131,7 +135,7 @@ public class TchapL10n: NSObject {
   public static var changePasswordNewPasswordConfirmPasswordPlaceholder: String { 
     return TchapL10n.tr("Tchap", "change_password_new_password_confirm_password_placeholder") 
   }
-  /// Votre nouveau mot de passe doit contenir au moins 8 caractères, avec au moins un caractère de chaque type : majuscule, minuscule, chiffre, caractère spécial.
+  /// Votre nouveau mot de passe doit contenir au moins 12 caractères, avec au moins un caractère de chaque type : majuscule, minuscule, chiffre, caractère spécial.
   public static var changePasswordNewPasswordInstructions: String { 
     return TchapL10n.tr("Tchap", "change_password_new_password_instructions") 
   }
@@ -415,7 +419,7 @@ public class TchapL10n: NSObject {
   public static var passwordPolicyPwdInDictError: String { 
     return TchapL10n.tr("Tchap", "password_policy_pwd_in_dict_error") 
   }
-  /// Mot de passe trop court (min %d)
+  /// Votre mot de passe est trop court. Il doit comporter au moins %d caractères.
   public static func passwordPolicyTooShortPwdDetailedError(_ p1: Int) -> String {
     return TchapL10n.tr("Tchap", "password_policy_too_short_pwd_detailed_error", p1)
   }
@@ -423,7 +427,7 @@ public class TchapL10n: NSObject {
   public static var passwordPolicyTooShortPwdError: String { 
     return TchapL10n.tr("Tchap", "password_policy_too_short_pwd_error") 
   }
-  /// Ce mot de passe est trop faible. Il doit contenir au moins 8 caractères, avec au moins un caractère de chaque type : majuscule, minuscule, chiffre, caractère spécial
+  /// Ce mot de passe est trop faible. Il doit contenir au moins 12 caractères, avec au moins un caractère de chaque type : majuscule, minuscule, chiffre, caractère spécial
   public static var passwordPolicyWeakPwdError: String { 
     return TchapL10n.tr("Tchap", "password_policy_weak_pwd_error") 
   }
@@ -467,6 +471,22 @@ public class TchapL10n: NSObject {
   public static var registrationEmailValidationFailedTitle: String { 
     return TchapL10n.tr("Tchap", "registration_email_validation_failed_title") 
   }
+  /// Le mot de passe doit comporter au moins 1 chiffre.
+  public static var registrationErrorPasswordPolicyErrorNoDigit: String { 
+    return TchapL10n.tr("Tchap", "registration_error_password_policy_error_no_digit") 
+  }
+  /// Le mot de passe doit comporter au moins 1 lettre minuscule.
+  public static var registrationErrorPasswordPolicyErrorNoLowercase: String { 
+    return TchapL10n.tr("Tchap", "registration_error_password_policy_error_no_lowercase") 
+  }
+  /// Le mot de passe doit comporter au moins 1 symbole.
+  public static var registrationErrorPasswordPolicyErrorNoSymbol: String { 
+    return TchapL10n.tr("Tchap", "registration_error_password_policy_error_no_symbol") 
+  }
+  /// Le mot de passe doit comporter au moins 1 lettre majuscule.
+  public static var registrationErrorPasswordPolicyErrorNoUppercase: String { 
+    return TchapL10n.tr("Tchap", "registration_error_password_policy_error_no_uppercase") 
+  }
   /// Les mots de passe ne correspondent pas
   public static var registrationErrorPasswordsDontMatch: String { 
     return TchapL10n.tr("Tchap", "registration_error_passwords_dont_match") 
@@ -483,7 +503,7 @@ public class TchapL10n: NSObject {
   public static var registrationMailPlaceholder: String { 
     return TchapL10n.tr("Tchap", "registration_mail_placeholder") 
   }
-  /// Votre mot de passe doit contenir au moins 8 caractères, avec au moins un caractère de chaque type : majuscule, minuscule, chiffre, caractère spécial
+  /// Votre mot de passe doit contenir au moins 12 caractères, avec au moins un caractère de chaque type : majuscule, minuscule, chiffre, caractère spécial
   public static var registrationPasswordAdditionalInfo: String { 
     return TchapL10n.tr("Tchap", "registration_password_additional_info") 
   }
@@ -554,6 +574,10 @@ public class TchapL10n: NSObject {
   /// Privé
   public static var roomCategoryPrivateRoom: String { 
     return TchapL10n.tr("Tchap", "room_category_private_room") 
+  }
+  /// Crée un lien Visio avec le message suivant
+  public static var roomCommandVisioDescription: String { 
+    return TchapL10n.tr("Tchap", "room_command_visio_description") 
   }
   /// Ajouter une photo
   public static var roomCreationAddAvatarAction: String { 
@@ -931,7 +955,7 @@ public class TchapL10n: NSObject {
   public static var welcomeProConnectInfo: String { 
     return TchapL10n.tr("Tchap", "welcome_pro_connect_info") 
   }
-  /// Se connecter avec\n**ProConnect**
+  /// S'identifier avec\n**ProConnect**
   public static var welcomeProConnectTitle: String { 
     return TchapL10n.tr("Tchap", "welcome_pro_connect_title") 
   }

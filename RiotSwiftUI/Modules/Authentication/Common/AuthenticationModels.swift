@@ -1,8 +1,8 @@
 //
 // Copyright 2022-2024 New Vector Ltd.
 //
-// SPDX-License-Identifier: AGPL-3.0-only
-// Please see LICENSE in the repository root for full details.
+// SPDX-License-Identifier: AGPL-3.0-only OR LicenseRef-Element-Commercial
+// Please see LICENSE files in the repository root for full details.
 //
 
 import Foundation
@@ -45,6 +45,7 @@ enum AuthenticationError: String, LocalizedError {
 /// Errors that can be thrown from `RegistrationWizard`
 enum RegistrationError: String, LocalizedError {
     case registrationDisabled
+    case delegatedOIDCRequiresReplacementApp
     case createAccountNotCalled
     case missingThreePIDData
     case missingThreePIDURL
@@ -61,6 +62,8 @@ enum RegistrationError: String, LocalizedError {
             return VectorL10n.authMsisdnValidationError
         case .invalidPhoneNumber:
             return VectorL10n.authenticationVerifyMsisdnInvalidPhoneNumber
+        case .delegatedOIDCRequiresReplacementApp:
+            return VectorL10n.sunsetDelegatedOidcRegistrationNotSupportedGenericError
         default:
             return VectorL10n.errorCommonMessage
         }

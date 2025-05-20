@@ -1,8 +1,8 @@
 //
 // Copyright 2021-2024 New Vector Ltd.
 //
-// SPDX-License-Identifier: AGPL-3.0-only
-// Please see LICENSE in the repository root for full details.
+// SPDX-License-Identifier: AGPL-3.0-only OR LicenseRef-Element-Commercial
+// Please see LICENSE files in the repository root for full details.
 //
 
 import Foundation
@@ -20,6 +20,7 @@ enum MockAuthenticationRegistrationScreenState: MockScreenState, CaseIterable {
     case passwordWithUsernameError
     case ssoOnly
     case fallback
+    case mas
 
     /// The associated screen
     var screenType: Any.Type {
@@ -31,22 +32,29 @@ enum MockAuthenticationRegistrationScreenState: MockScreenState, CaseIterable {
         let viewModel: AuthenticationRegistrationViewModel
         switch self {
         case .matrixDotOrg:
-            viewModel = AuthenticationRegistrationViewModel(homeserver: .mockMatrixDotOrg)
+            viewModel = AuthenticationRegistrationViewModel(homeserver: .mockMatrixDotOrg, showReplacementAppBanner: false)
         case .passwordOnly:
-            viewModel = AuthenticationRegistrationViewModel(homeserver: .mockBasicServer)
+            viewModel = AuthenticationRegistrationViewModel(homeserver: .mockBasicServer, showReplacementAppBanner: false)
         case .passwordWithCredentials:
-            viewModel = AuthenticationRegistrationViewModel(homeserver: .mockBasicServer)
+            viewModel = AuthenticationRegistrationViewModel(homeserver: .mockBasicServer, showReplacementAppBanner: false)
             viewModel.context.username = "alice"
             viewModel.context.password = "password"
             Task { await viewModel.confirmUsernameAvailability("alice") }
         case .passwordWithUsernameError:
-            viewModel = AuthenticationRegistrationViewModel(homeserver: .mockBasicServer)
+            viewModel = AuthenticationRegistrationViewModel(homeserver: .mockBasicServer, showReplacementAppBanner: false)
             viewModel.state.hasEditedUsername = true
             Task { await viewModel.displayError(.usernameUnavailable(VectorL10n.authInvalidUserName)) }
         case .ssoOnly:
-            viewModel = AuthenticationRegistrationViewModel(homeserver: .mockEnterpriseSSO)
+            viewModel = AuthenticationRegistrationViewModel(homeserver: .mockEnterpriseSSO, showReplacementAppBanner: false)
         case .fallback:
-            viewModel = AuthenticationRegistrationViewModel(homeserver: .mockFallback)
+            viewModel = AuthenticationRegistrationViewModel(homeserver: .mockFallback, showReplacementAppBanner: false)
+        case .mas:
+            viewModel = AuthenticationRegistrationViewModel(homeserver: .init(address: "beta.matrix.org",
+                                                                              showLoginForm: false,
+                                                                              showRegistrationForm: false,
+                                                                              showQRLogin: false,
+                                                                              ssoIdentityProviders: []), // The initial discovery failed so the OIDC provider is not known.
+                                                            showReplacementAppBanner: true)
         }
         
         // can simulate service and viewModel actions here if needs be.

@@ -87,6 +87,12 @@ targets:
     - path: .
       excludes:
         - "Modules/Room/EmojiPicker/Data/EmojiMart/EmojiJSONStore.swift"
+        # RTL is broken so languages are disabled for now
+        - "Assets/ar.lproj/**"
+        - "Assets/he.lproj/**"
+        - "Assets/enm.lproj/**"
+        - "Assets/pr.lproj/**" # Unsupported language on iOS
+# Tchap exclusions START
         - "**/*.strings" # Exclude all strings files
         - "Modules/Application"
         - "Modules/BadgeLabel"
@@ -112,6 +118,7 @@ targets:
         - "Modules/TabBar"
         - "Modules/User"
         - "Modules/UserInteractiveAuthentication"
+# Tchap exclusions END
     - path: ../RiotShareExtension/Shared
     - path: Modules/MatrixKit
       excludes:

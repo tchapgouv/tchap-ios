@@ -1,8 +1,8 @@
 //
 // Copyright 2021-2024 New Vector Ltd.
 //
-// SPDX-License-Identifier: AGPL-3.0-only
-// Please see LICENSE in the repository root for full details.
+// SPDX-License-Identifier: AGPL-3.0-only OR LicenseRef-Element-Commercial
+// Please see LICENSE files in the repository root for full details.
 //
 
 import SwiftUI
@@ -51,9 +51,12 @@ struct AuthenticationRegistrationScreen: View {
                     ssoButtons
                         .padding(.top, 16)
                 }
+                
+                sunsetBanners
 
                 if !viewModel.viewState.homeserver.showRegistrationForm, !viewModel.viewState.showSSOButtons {
                     fallbackButton
+                        .disabled(viewModel.viewState.showReplacementAppBanner) // This button conveniently shows in the EX banner state, so use it as the disabled button.
                 }
             }
             .readableFrame()
@@ -134,6 +137,22 @@ struct AuthenticationRegistrationScreen: View {
                 }
                 .accessibilityIdentifier("ssoButton")
             }
+        }
+    }
+    
+    @ViewBuilder
+    var sunsetBanners: some View {
+        if viewModel.viewState.showReplacementAppBanner, let replacementApp = BuildSettings.replacementApp {
+            VStack(spacing: 20) {
+                SunsetOIDCRegistrationBanner(homeserverAddress: viewModel.viewState.homeserver.address, 
+                                             replacementApp: replacementApp)
+                
+                SunsetDownloadBanner(replacementApp: replacementApp) {
+                    viewModel.send(viewAction: .downloadReplacementApp(replacementApp))
+                }
+            }
+            .padding(.bottom, 20)
+            .accessibilityIdentifier("sunsetBanners")
         }
     }
 
