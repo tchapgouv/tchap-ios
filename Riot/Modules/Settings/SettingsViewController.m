@@ -5130,9 +5130,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
 // Tchap: display email notification faq
 - (void)displayEmailNotificationFaq {
-    NSString *targetUrlString = @"https://aide.tchap.beta.gouv.fr/fr/article/notification-par-email-draft-6k7k89/";
-    
-    WebSheetViewController *webCtrl = [[WebSheetViewController alloc] initWithTargetUrl:[NSURL URLWithString:targetUrlString]];
+    WebSheetViewController *webCtrl = [[WebSheetViewController alloc] initWithTargetUrl:[NSURL URLWithString:BuildSettings.emailNotificationFaqArticleUrlString]];
     [self presentViewController:webCtrl animated:YES completion:nil];
 }
 
