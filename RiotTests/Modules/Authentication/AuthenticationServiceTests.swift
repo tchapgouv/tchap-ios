@@ -1,8 +1,8 @@
 // 
 // Copyright 2022-2024 New Vector Ltd.
 //
-// SPDX-License-Identifier: AGPL-3.0-only
-// Please see LICENSE in the repository root for full details.
+// SPDX-License-Identifier: AGPL-3.0-only OR LicenseRef-Element-Commercial
+// Please see LICENSE files in the repository root for full details.
 //
 
 import XCTest
@@ -319,7 +319,7 @@ import XCTest
         let ssoIdentityProviders = [SSOIdentityProvider(id: "1", name: "SAML", brand: nil, iconURL: nil)]
         let homeserver = AuthenticationState.Homeserver(address: address,
                                                         addressFromUser: addressFromUser,
-                                                        preferredLoginMode: .sso(ssoIdentityProviders: ssoIdentityProviders),
+                                                        preferredLoginMode: .sso(ssoIdentityProviders: ssoIdentityProviders, providesDelegatedOIDCCompatibility: false),
                                                         registrationFlow: nil)
         
         // When creating view data for that homeserver.

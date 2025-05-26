@@ -78,19 +78,19 @@ final class BuildSettings: NSObject {
     }
     
     static var pushKitAppId: String {
-        #if DEBUG
+#if DEBUG
         return pushKitAppIdDev
-        #else
+#else
         return pushKitAppIdProd
-        #endif
+#endif
     }
     
     static var pusherAppId: String {
-        #if DEBUG
+#if DEBUG
         return pusherAppIdDev
-        #else
+#else
         return pusherAppIdProd
-        #endif
+#endif
     }
     
     // Tchap servers
@@ -114,9 +114,9 @@ final class BuildSettings: NSObject {
     static let serverConfigSygnalAPIUrlString = "https://sygnal.tchap.incubateur.net/_matrix/push/v1/notify"
     /// Force the user to set a homeserver instead of using the default one
     static let forceHomeserverSelection = false
-
+    
     // MARK: - Legal URLs
-
+    
     // Note: Set empty strings to hide the related entry in application settings
     static let applicationTermsConditionsUrlString = "https://tchap.numerique.gouv.fr/cgu" // Tchap: redirect to CGU
     static let clientConfigURL = "https://www.tchap.incubateur.net/client/config/agent/ios"
@@ -141,11 +141,11 @@ final class BuildSettings: NSObject {
     
     // MARK: - VoIP
     static var allowVoIPUsage: Bool {
-        #if canImport(JitsiMeetSDK)
+#if canImport(JitsiMeetSDK)
         return true
-        #else
+#else
         return false
-        #endif
+#endif
     }
     static let stunServerFallbackUrlString: String? = nil
     
@@ -177,19 +177,19 @@ final class BuildSettings: NSObject {
         let termsURL: URL
     }
     
-    #if DEBUG
+#if DEBUG
     /// The configuration to use for analytics during development. Set `isEnabled` to false to disable analytics in debug builds.
     static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: true, // Tchap: enable PostHog analytics on DEBUG
                                                                host: "https://us.i.posthog.com", // Tchap: dev posthog,
                                                                apiKey: "phc_eQOeaQiaIxdX9kaQmqYTD7RJLyFubYmGYKUI9czqqQD", // Tchap: dev posthog,
                                                                termsURL: URL(string: "https://tchap.numerique.gouv.fr/politique-de-confidentialite")!) // Tchap: dev posthog,
-    #else
+#else
     /// The configuration to use for analytics. Set `isEnabled` to false to disable analytics.
     static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: false,
                                                                host: "",
                                                                apiKey: "",
                                                                termsURL: URL(string: "")!)
-    #endif
+#endif
     
     // MARK: - Bug report
     static let bugReportEndpointUrlString = ""
@@ -214,7 +214,7 @@ final class BuildSettings: NSObject {
     // Setting this to nil effectively disables Jitsi conference calls (given that there is no wellknown override).
     // Note: this will not remove the conference call button, use roomScreenAllowVoIPForNonDirectRoom setting.
     static let jitsiServerUrl: URL? = URL(string: "https://jitsi.riot.im")
-
+    
     
     // MARK: - Features
     
@@ -234,12 +234,12 @@ final class BuildSettings: NSObject {
     static let allowInviteExernalUsers: Bool = true
     
     static let allowBackgroundAudioMessagePlayback: Bool = true
-
+    
     // Tchap: Feature activation by Instance
     static let tchapFeatureAnyFeature = "*"  // To allow any feature for some instances
     static let tchapFeatureAnyHomeServer = "*" // To allow a feature for any instance
-                                             //     tchapFeatureAnyFeature : [ <instance> ] to allow any feature for an instance
-                                             //     "<feature ID>" : [ tchapFeatureAnyHomeServer ] to allow a feature to any instance
+                                               //     tchapFeatureAnyFeature : [ <instance> ] to allow any feature for an instance
+                                               //     "<feature ID>" : [ tchapFeatureAnyHomeServer ] to allow a feature to any instance
     static let tchapFeatureNotificationByEmail = "tchapFeatureNotificationByEmail"
     static let tchapFeatureVoiceOverIP = "tchapFeatureVoiceOverIP"
     static let tchapFeatureVideoOverIP = "tchapFeatureVideoOverIP"    // Tchap: in Dev, allow any feature to any instance.
@@ -247,7 +247,7 @@ final class BuildSettings: NSObject {
     static var tchapFeaturesAllowedHomeServersForFeature: [String: [String]] = [
         tchapFeatureAnyFeature: [ tchapFeatureAnyHomeServer ]
     ]
-
+    
     // Tchap: handle SSO feature flag. Presents SSO button on Onboarding screen and give priority to SSO on UIA.
     static let tchapFeatureHandleSSO = true
     
@@ -283,7 +283,7 @@ final class BuildSettings: NSObject {
     static let homeScreenShowPeopleTab: Bool = true
     static let homeScreenShowRoomsTab: Bool = true
     static let homeScreenShowCommunitiesTab: Bool = false
-
+    
     // MARK: - General Settings Screen
     
     static let settingsScreenShowUserFirstName: Bool = false
@@ -313,13 +313,13 @@ final class BuildSettings: NSObject {
     static let settingsSecurityScreenShowAdvancedUnverifiedDevices: Bool = true
     /// A setting to enable the presence configuration settings section.
     static let settingsScreenPresenceAllowConfiguration: Bool = false
-
+    
     // MARK: - Timeline settings
     static let roomInputToolbarCompressionMode: MediaCompressionMode = .prompt
     
     enum MediaCompressionMode {
-            case prompt, small, medium, large, none
-        }
+        case prompt, small, medium, large, none
+    }
     
     // MARK: - Room Creation Screen
     
@@ -346,20 +346,20 @@ final class BuildSettings: NSObject {
         return self.roomScreenTimelineDefaultStyleIdentifier == .bubble
     }
     static let roomScreenUseOnlyLatestUserAvatarAndName: Bool = false
-
+    
     /// Allow split view detail view stacking
     static let allowSplitViewDetailsScreenStacking: Bool = true
     
     // MARK: - Room Contextual Menu
-
+    
     static let roomContextualMenuShowMoreOptionForMessages: Bool = true
     static let roomContextualMenuShowMoreOptionForStates: Bool = true
     static let roomContextualMenuShowReportContentOption: Bool = true
-
+    
     // MARK: - Room Info Screen
     
     static let roomInfoScreenShowIntegrations: Bool = false
-
+    
     // MARK: - Room Settings Screen
     
     static let roomSettingsScreenShowLowPriorityOption: Bool = false
@@ -370,11 +370,11 @@ final class BuildSettings: NSObject {
     static let roomSettingsScreenShowAdvancedSettings: Bool = false
     static let roomSettingsScreenAdvancedShowEncryptToVerifiedOption: Bool = false
     static let roomSettingsScreenShowNotificationsV2: Bool = false
-
+    
     // MARK: - Room Member Screen
     
     static let roomMemberScreenShowIgnore: Bool = true
-
+    
     // MARK: - Message
     static let messageDetailsAllowShare: Bool = true
     static let messageDetailsAllowPermalink: Bool = true
@@ -398,7 +398,7 @@ final class BuildSettings: NSObject {
     static let authScreenShowForgotPassword = true
     static let authScreenShowCustomServerOptions = false
     static let authScreenShowSocialLoginSection = false
-        
+    
     // MARK: - Authentication Options
     static let authEnableRefreshTokens = false
     
@@ -429,13 +429,13 @@ final class BuildSettings: NSObject {
         case ign = "https://data.geopf.fr/annexes/ressources/vectorTiles/styles/PLAN.IGN/standard.json"
     }
     static let defaultTileServerMapStyleURL = URL(string: TchapMapProvider.geoDataGouv.rawValue)!
-
+    
     static let locationSharingEnabled = true
-
+    
     // MARK: - Voice Broadcast
     static let voiceBroadcastChunkLength: Int = 120
     static let voiceBroadcastMaxLength: UInt = 14400 // 240min.
-
+    
     // MARK: - MXKAppSettings
     static let enableBotCreation: Bool = false
     static let maxAllowedMediaCacheSize: Int = 1073741824
@@ -462,7 +462,30 @@ final class BuildSettings: NSObject {
     static let qrLoginEnableDisplayingQRs = false
     
     static let rendezvousServerBaseURL = URL(string: "https://rendezvous.lab.element.dev/")!
-
+    
     // MARK: - Alerts
     static let showUnverifiedSessionsAlert = true
+    
+    // MARK: - Sunset
+    
+    /// Meta data about the app that will replaces this one with Matrix 2.0 support.
+    struct ReplacementApp {
+        /// The app's display name, used in marketing banners.
+        let name = "Element X"
+        /// A link that will be opened to tell the user more about the new app, Matrix 2.0 and the migration.
+        let learnMoreURL = URL(string: "https://element.io/app-for-productivity")!
+        /// The app's iTunes/product ID, used to show the App Store page in-app.
+        let productID = "1631335820"
+        /// A fallback URL that will be opened if there are any issues showing the App Store page in-app.
+        let appStoreURL = URL(string: "https://apps.apple.com/app/element-x-secure-chat-call/id1631335820")!
+    }
+    
+    // Tchap: don't instanciate replacementApp for the moment.
+    /// Information about the Matrix 2.0 compatible app that will replace this one in the future.
+    ///
+    /// The presence of this setting acts as a feature flag to show marketing banners for the app
+    /// when it is detected that the homeserver is running Matrix 2.0. Set this to `nil` until you
+    /// are ready to migrate your users.
+    //    static let replacementApp: ReplacementApp? = .init()
+    static let replacementApp: ReplacementApp? = nil
 }

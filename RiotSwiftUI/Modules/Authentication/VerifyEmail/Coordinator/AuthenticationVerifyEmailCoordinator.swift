@@ -1,8 +1,8 @@
 //
 // Copyright 2021-2024 New Vector Ltd.
 //
-// SPDX-License-Identifier: AGPL-3.0-only
-// Please see LICENSE in the repository root for full details.
+// SPDX-License-Identifier: AGPL-3.0-only OR LicenseRef-Element-Commercial
+// Please see LICENSE files in the repository root for full details.
 //
 
 import CommonKit
@@ -252,7 +252,7 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
             switch registrationError {
             case .registrationDisabled:
                 authenticationVerifyEmailViewModel.displayError(.registrationDisabled)
-            case .createAccountNotCalled, .missingThreePIDData, .missingThreePIDURL, .threePIDClientFailure, .threePIDValidationFailure, .waitingForThreePIDValidation, .invalidPhoneNumber:
+            case .createAccountNotCalled, .missingThreePIDData, .missingThreePIDURL, .threePIDClientFailure, .threePIDValidationFailure, .waitingForThreePIDValidation, .invalidPhoneNumber, .delegatedOIDCRequiresReplacementApp:
                 // Shouldn't happen at this stage
                 authenticationVerifyEmailViewModel.displayError(.unknown)
             }

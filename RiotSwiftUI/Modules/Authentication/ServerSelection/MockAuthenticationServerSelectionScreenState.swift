@@ -1,8 +1,8 @@
 //
 // Copyright 2021-2024 New Vector Ltd.
 //
-// SPDX-License-Identifier: AGPL-3.0-only
-// Please see LICENSE in the repository root for full details.
+// SPDX-License-Identifier: AGPL-3.0-only OR LicenseRef-Element-Commercial
+// Please see LICENSE files in the repository root for full details.
 //
 
 import Foundation
@@ -19,6 +19,7 @@ enum MockAuthenticationServerSelectionScreenState: MockScreenState, CaseIterable
     case invalidAddress
     case login
     case nonModal
+    case mas
     
     /// The associated screen
     var screenType: Any.Type {
@@ -50,6 +51,11 @@ enum MockAuthenticationServerSelectionScreenState: MockScreenState, CaseIterable
             viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: "matrix.org",
                                                                flow: .register,
                                                                hasModalPresentation: false)
+        case .mas:
+            viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: "beta.matrix.org",
+                                                               flow: .register,
+                                                               hasModalPresentation: false)
+            Task { await viewModel.displayError(.requiresReplacementApp) }
         }
         
         // can simulate service and viewModel actions here if needs be.

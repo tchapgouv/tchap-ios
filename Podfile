@@ -1,4 +1,4 @@
-source 'https://cdn.cocoapods.org/'
+source 'https://github.com/CocoaPods/Specs.git'
 
 # Uncomment this line to define a global platform for your project
 platform :ios, '15.0'
@@ -24,7 +24,6 @@ end
 
 def import_SwiftUI_pods
     pod 'Introspect', '~> 0.1'
-    pod 'DSBottomSheet', '~> 0.3'
     pod 'ZXingObjC', '~> 3.6.9'
 end
 
@@ -50,12 +49,12 @@ abstract_target 'TchapPods' do
   pod 'WeakDictionary', '~> 2.0'
 
   # PostHog for analytics
-  pod 'PostHog', '~> 2.0.0'
+#  pod 'PostHog', '~> 2.0.0'
   pod 'Sentry', '~> 8.40.1'
 
   pod 'RxSwift', '~> 5.1.1'
 
-  pod 'OLMKit'
+#  pod 'OLMKit'
   pod 'zxcvbn-ios'
 
   # Tools

@@ -100,7 +100,7 @@ struct TchapOnboardingSplashScreen: View {
                 // Display ProConnect option only if enabled by feature flag.
                 if BuildSettings.tchapFeatureHandleSSO {
                     // Button ProConnect
-                    Button(action: { viewModel.send(viewAction: .login(.sso(ssoIdentityProviders: []))) }, label: {
+                    Button(action: { viewModel.send(viewAction: .login(.sso(ssoIdentityProviders: [], providesDelegatedOIDCCompatibility: true))) }, label: {
                         HStack {
                             Image(uiImage: Asset_tchap.Images.proConnectIcon.image)
                             Text(LocalizedStringKey(TchapL10n.welcomeProConnectTitle)) // LocalizedStringKey is needed for markdown interpretation.
