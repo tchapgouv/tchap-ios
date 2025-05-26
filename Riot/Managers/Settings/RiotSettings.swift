@@ -121,8 +121,10 @@ final class RiotSettings: NSObject {
         RiotSettings.defaults.bool(forKey: UserDefaultsKeys.matomoAnalytics)
     }
     
+    // Tchap: enable analytics by default.
     /// `true` when the user has opted in to send analytics.
-    @UserDefault(key: UserDefaultsKeys.enableAnalytics, defaultValue: false, storage: defaults)
+//    @UserDefault(key: UserDefaultsKeys.enableAnalytics, defaultValue: false, storage: defaults)
+    @UserDefault(key: UserDefaultsKeys.enableAnalytics, defaultValue: true, storage: defaults)
     var enableAnalytics
     
     /// Indicates if the device has already called identify for this session to PostHog.

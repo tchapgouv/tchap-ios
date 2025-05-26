@@ -367,7 +367,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 //            [attributedStringWithRerequestMessage appendString:[NSString stringWithFormat:@" %@\n", VectorL10n.noticeCryptoErrorUnknownInboundSessionId]];
             NSString *linkActionString = [NSString stringWithFormat:@"%@%@%@", EventFormatterFaqLinkAction,
                                           EventFormatterLinkActionSeparator,
-                                          @"https://aide.tchap.beta.gouv.fr/fr/article/dechiffrement-impossible-de-mes-messages-comment-y-remedier-iphone-xotgv1"];
+                                          BuildSettings.unableToDecryptFaqArticleUrlString];
             
             [attributedStringWithRerequestMessage appendAttributedString:
              [[NSAttributedString alloc] initWithString: [TchapL10n roomDecryptionErrorFaqLinkMessage]

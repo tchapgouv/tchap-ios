@@ -271,7 +271,7 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     
     // Tchap: Help button action
     private func tchapHelpButtonAction() {
-        self.present(WebSheetViewController(targetUrl: URL(string: "https://aide.tchap.beta.gouv.fr/fr/article/comment-verifier-un-nouvel-appareil-sur-tchap-xm0b0y/")!), animated: true)
+        self.present(WebSheetViewController(targetUrl: URL(string: BuildSettings.newDeviceVerificationFaqArticleUrlString)!), animated: true)
     }
 }
 
