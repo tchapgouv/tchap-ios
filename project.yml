@@ -53,6 +53,7 @@ packages:
   AnalyticsEvents:
     url: https://github.com/matrix-org/matrix-analytics-events
     exactVersion: 0.23.1
+#    path: ../matrix-analytics-events
   Mapbox:
     url: https://github.com/maplibre/maplibre-gl-native-distribution
     minVersion: 5.12.2

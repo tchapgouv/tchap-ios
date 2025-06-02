@@ -1,3 +1,12 @@
+## Changes in 2.10.0 (2025-06-02)
+
+🙌 Improvements
+
+- Activer la remontée de l'analytics dans Posthog par défaut ([#1175](https://github.com/tchapgouv/tchap-ios/issues/1175))
+- Rebase on Element 1.11.27 ([#1179](https://github.com/tchapgouv/tchap-ios/issues/1179))
+- Ajout d'un message d'avertissement (pour éviter la perte de messages) en cas de déconnexion manuelle
+
+
 ## Changes in 2.9.8 (2025-04-17)
 
 🙌 Improvements
