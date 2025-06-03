@@ -188,7 +188,7 @@ final class BuildSettings: NSObject {
     static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: false,
                                                                host: "",
                                                                apiKey: "",
-                                                               termsURL: URL(string: "https://")!)
+                                                               termsURL: URL(string: "https://tchap.numerique.gouv.fr/politique-de-confidentialite")!)
     #endif
     
     // MARK: - Bug report
