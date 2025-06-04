@@ -911,6 +911,14 @@ public class TchapL10n: NSObject {
   public static var sideMenuActionTermsAndConditions: String { 
     return TchapL10n.tr("Tchap", "side_menu_action_terms_and_conditions") 
   }
+  /// En savoir plus
+  public static var signOutExistingKeyBackupAlertLinkMessage: String { 
+    return TchapL10n.tr("Tchap", "sign_out_existing_key_backup_alert_link_message") 
+  }
+  /// Gardez au moins un appareil connecté pour ne pas perdre les messages reçus en votre absence.
+  public static var signOutExistingKeyBackupAlertMessage: String { 
+    return TchapL10n.tr("Tchap", "sign_out_existing_key_backup_alert_message") 
+  }
   /// Votre correspondant a quitté définitivement cette discussion.\nVous devez en créer une nouvelle pour le recontacter, s'il est toujours joignable sur Tchap.
   public static var tchapCannotInviteDeactivatedAccountUser: String { 
     return TchapL10n.tr("Tchap", "tchap_cannot_invite_deactivated_account_user") 

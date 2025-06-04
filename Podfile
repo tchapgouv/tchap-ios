@@ -48,13 +48,10 @@ abstract_target 'TchapPods' do
   pod 'KeychainAccess', '~> 4.2.2'
   pod 'WeakDictionary', '~> 2.0'
 
-  # PostHog for analytics
-#  pod 'PostHog', '~> 2.0.0'
-  pod 'Sentry', '~> 8.40.1'
+  pod 'Sentry', '~> 8.46.0'
 
   pod 'RxSwift', '~> 5.1.1'
 
-#  pod 'OLMKit'
   pod 'zxcvbn-ios'
 
   # Tools

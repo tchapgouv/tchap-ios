@@ -32,7 +32,7 @@ final class FormTextViewModel: FormTextViewModelType {
         }
     }
     
-    private (set) var hasBeenAutoFilled: Bool
+    private(set) var hasBeenAutoFilled: Bool
     
     func updateValue(value: String?, comesFromAutoFill: Bool = false) {
         self.hasBeenAutoFilled = comesFromAutoFill
