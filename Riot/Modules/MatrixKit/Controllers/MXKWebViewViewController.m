@@ -48,6 +48,9 @@ NSString *const kMXKWebViewViewControllerJavaScriptEnableLog =
     if (self)
     {
         enableDebug = NO;
+
+        // Tchap: initialize Tchap domain flag.
+        self.ImOnATchapGouvFrPage = NO;
     }
     return self;
 }
@@ -58,6 +61,9 @@ NSString *const kMXKWebViewViewControllerJavaScriptEnableLog =
     if (self)
     {
         _URL = URL;
+
+        // Tchap: initialize Tchap domain flag.
+        self.ImOnATchapGouvFrPage = [self urlIsOnTchapGouvFrDomain:[NSURL URLWithString:URL]];
     }
     return self;
 }
@@ -267,6 +273,15 @@ NSString *const kMXKWebViewViewControllerJavaScriptEnableLog =
     
     // Check first whether there are some pinned certificates (certificate included in the bundle).
     NSArray *paths = [[NSBundle mainBundle] pathsForResourcesOfType:@"cer" inDirectory:@"."];
+    
+    // Tchap: if current request doesn't belong to Tchap domain, ignore Certificate Pinning system.
+    // It is to avoid activating Certificate Pinning (using Certigna Root Certificate) on ProConnect (agentconnect.gouv.fr) page
+    // that is using Let's Encrypt certificate actually.
+    // This case happens when launching UIA on a ProConnect SSO logged user.
+    if (!self.ImOnATchapGouvFrPage) {
+        paths = @[];
+    }
+    
     if (paths.count)
     {
         NSMutableArray *pinnedCertificates = [NSMutableArray array];
@@ -322,6 +337,15 @@ NSString *const kMXKWebViewViewControllerJavaScriptEnableLog =
             }
         }
     }
+}
+
+// Tchap: public method to help subclasses know if current request belongs to Tchap domain.
+- (BOOL)urlIsOnTchapGouvFrDomain:(NSURL *)url
+{
+    // Tchap: Tchap domain substring.
+    static NSString *const kTchapMXKWebViewViewControllerTchapGouvFrHostnamePart = @".tchap.gouv.fr";
+
+    return [url.host containsString:kTchapMXKWebViewViewControllerTchapGouvFrHostnamePart];
 }
 
 #pragma mark - WKUIDelegate
