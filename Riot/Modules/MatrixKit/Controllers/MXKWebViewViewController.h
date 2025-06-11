@@ -64,6 +64,6 @@ Please see LICENSE in the repository root for full details.
 @property (nonatomic) BOOL ImOnATchapGouvFrPage;
 
 // Tchap: method to call to know if a request url belongs to Tchap domain.
-- (BOOL)urlIsOnTchapGouvFrDomain:(NSURL *)url;
+- (BOOL)urlBelongsToTchapGouvFrDomain:(NSURL *)url;
 
 @end

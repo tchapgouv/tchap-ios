@@ -63,7 +63,7 @@ NSString *const kMXKWebViewViewControllerJavaScriptEnableLog =
         _URL = URL;
 
         // Tchap: initialize Tchap domain flag.
-        self.ImOnATchapGouvFrPage = [self urlIsOnTchapGouvFrDomain:[NSURL URLWithString:URL]];
+        self.ImOnATchapGouvFrPage = [self urlBelongsToTchapGouvFrDomain:[NSURL URLWithString:URL]];
     }
     return self;
 }
@@ -340,7 +340,7 @@ NSString *const kMXKWebViewViewControllerJavaScriptEnableLog =
 }
 
 // Tchap: public method to help subclasses know if current request belongs to Tchap domain.
-- (BOOL)urlIsOnTchapGouvFrDomain:(NSURL *)url
+- (BOOL)urlBelongsToTchapGouvFrDomain:(NSURL *)url
 {
     // Tchap: Tchap domain substring.
     static NSString *const kTchapMXKWebViewViewControllerTchapGouvFrHostnamePart = @".tchap.gouv.fr";

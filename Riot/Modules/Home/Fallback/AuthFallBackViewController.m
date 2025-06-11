@@ -144,7 +144,7 @@ NSString *FallBackViewControllerJavascriptOnLogin = @"window.matrixLogin.onLogin
     NSString *urlString = navigationAction.request.URL.absoluteString;
 
     // Tchap: set flag meaning the webview is handling a Tchap domain request.
-    self.ImOnATchapGouvFrPage = [self urlIsOnTchapGouvFrDomain:navigationAction.request.URL];
+    self.ImOnATchapGouvFrPage = [self urlBelongsToTchapGouvFrDomain:navigationAction.request.URL];
 
     // TODO: We should use the WebKit PostMessage API and the
     // `didReceiveScriptMessage` delegate to manage the JS<->Native bridge
