@@ -60,4 +60,10 @@ Please see LICENSE in the repository root for full details.
 // Tchap: give access to backButton to allow a 'Cancel' functionnality.
 - (void)setBackButton:(UIBarButtonItem *)button;
 
+// Tchap: flag to get and set if the current loading request belong to Tchap domain.
+@property (nonatomic) BOOL ImOnATchapGouvFrPage;
+
+// Tchap: method to call to know if a request url belongs to Tchap domain.
+- (BOOL)urlBelongsToTchapGouvFrDomain:(NSURL *)url;
+
 @end
