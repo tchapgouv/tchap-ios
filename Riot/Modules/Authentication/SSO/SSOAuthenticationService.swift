@@ -44,9 +44,11 @@ final class SSOAuthenticationService: NSObject, SSOAuthenticationServiceProtocol
     
     // MARK: - Public
     
-    // Tchap: add `loginHint` string parameter for SSO
+    // Tchap: add `loginHint` string parameter for SSO and pass it into url query parameter to SSO portal.
+    // Tchap: rewrite `authenticationURL(for:loginHint:transactionId:) method because of problem with email addresses containing `+` character
+    // in URL query parameters automatically encoded in a way not supported by ProConnect backend (double encoding done by URLComponents).
+    // Methods added in URLComponents and URL that could help us require iOS 16+ or iOS 17+. We need to support iOS 15.
 //    func authenticationURL(for identityProvider: String?, transactionId: String) -> URL? {
-//    func authenticationURL(for identityProvider: String?, loginHint: String? = nil, transactionId: String) -> URL? {
 //        guard var authenticationComponent = URLComponents(string: self.homeserverStringURL) else {
 //            return nil
 //        }
@@ -65,19 +67,11 @@ final class SSOAuthenticationService: NSObject, SSOAuthenticationServiceProtocol
 //            queryItems.append(URLQueryItem(name: SSOURLConstants.Parameters.redirectURL, value: callBackURLScheme))
 //        }
 //        
-//        // Tchap: add `loginHint` string query parameter to URL
-//        if let loginHint {
-//            queryItems.append(URLQueryItem(name: SSOURLConstants.Parameters.loginHint, value: loginHint))
-//        }
-//        
 //        authenticationComponent.queryItems = queryItems
 //
 //        return authenticationComponent.url
 //    }
     
-    // Tchap: rewrite `authenticationURL(for:loginHint:transactionId:) method because of problem with email addresses containing `+` character
-    // in URL query parameters automatically encoded in a way not supported by ProConnect backend (double encoding done by URLComponents).
-    // Methods added in URLComponents and URL that could help us require iOS 16+ or iOS 17+. We need to support iOS 15.
     func authenticationURL(for identityProvider: String?, loginHint: String? = nil, transactionId: String) -> URL? {
         // Don't Verify that homeserverStringURL is encodable for URL because the scheme `https` is contained in the string
         // and it will be escaped and this encoding will break on usage.
