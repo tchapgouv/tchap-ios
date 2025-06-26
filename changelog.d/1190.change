@@ -1,0 +1,1 @@
+Gestion de l'encodage du `login_hint` dans l'URL ProConnect pour qu'elle passe correctement même avec certains caractères particuliers.
