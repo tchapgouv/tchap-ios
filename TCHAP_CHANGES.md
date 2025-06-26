@@ -1,3 +1,17 @@
+## Changes in 2.10.2 (2025-06-26)
+
+🙌 Improvements
+
+- Rebase on Element 1.11.29 ([#1184](https://github.com/tchapgouv/tchap-ios/issues/1184))
+- Remplacer les URL de FAQ encore en "tchap.beta.gouv.fr" ([#1186](https://github.com/tchapgouv/tchap-ios/issues/1186))
+- Permettre l'identification par ProConnect pour les opérations sécurisées par une ré-authentification (comme la régénération du Code de Récupération) ([#1188](https://github.com/tchapgouv/tchap-ios/issues/1188))
+- Gestion de l'encodage du `login_hint` dans l'URL ProConnect pour qu'elle passe correctement même avec certains caractères particuliers. ([#1190](https://github.com/tchapgouv/tchap-ios/issues/1190))
+
+🐛 Bugfixes
+
+- Correction d'un plantage au lancement dû à une mauvaise configuration de l'analytics ([#1182](https://github.com/tchapgouv/tchap-ios/issues/1182))
+
+
 ## Changes in 2.10.0 (2025-06-02)
 
 🙌 Improvements
