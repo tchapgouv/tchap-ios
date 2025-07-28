@@ -930,7 +930,7 @@ Tap the + to start adding people.";
 "settings_presence_offline_mode_description" = "If enabled, you will always appear offline to other users, even when using the application.";
 
 // Security settings
-"security_settings_title" = "Security";
+"security_settings_title" = "Encrypted messages and devices"; // Tchap
 "security_settings_crypto_sessions" = "CONNECTED DEVICES"; // Tchap
 "security_settings_crypto_sessions_loading" = "Loading sessions…";
 "security_settings_crypto_sessions_description_2" = "If you don’t recognise a login, change your Matrix account password and reset Secure Backup.";
