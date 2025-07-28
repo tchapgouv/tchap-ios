@@ -209,14 +209,14 @@ final class BuildSettings: NSObject {
 #if DEBUG
     /// The configuration to use for analytics during development. Set `isEnabled` to false to disable analytics in debug builds.
     static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: true, // Tchap: enable PostHog analytics on DEBUG
-                                                               host: "https://us.i.posthog.com", // Tchap: dev posthog,
-                                                               apiKey: "phc_eQOeaQiaIxdX9kaQmqYTD7RJLyFubYmGYKUI9czqqQD", // Tchap: dev posthog,
+                                                               host: "https://posthog.tchap.numerique.gouv.fr",
+                                                               apiKey: "phc_gm2O25mu8NTQtKpozdoVwZCixWqdq7PUHLLjDNDzVIe", // Tchap: dev posthog,
                                                                termsURL: URL(string: "https://tchap.numerique.gouv.fr/politique-de-confidentialite")!) // Tchap: dev posthog,
 #else
     /// The configuration to use for analytics. Set `isEnabled` to false to disable analytics.
     static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: true, // Tchap: enable PostHog analytics on production
-                                                               host: "https://posthogdev.tchap.incubateur.net", // Tchap: prod posthog,
-                                                               apiKey: "phc_FFa4pkvmuWjF9nZOMmYJWUXMibuYnCnPyf3DqPGZs4L", // Tchap: prod posthog,
+                                                               host: "https://posthog.tchap.numerique.gouv.fr",
+                                                               apiKey: "phc_gm2O25mu8NTQtKpozdoVwZCixWqdq7PUHLLjDNDzVIe", // Tchap: dev posthog,
                                                                termsURL: URL(string: "https://tchap.numerique.gouv.fr/politique-de-confidentialite")!)
 #endif
     
