@@ -963,7 +963,7 @@
 "settings_labs_enable_cross_signing" = "Activer la vérification croisée pour vérifier par utilisateurs plutôt que par appareil (en développement)";
 "settings_security" = "SÉCURITÉ";
 // Security settings
-"security_settings_title" = "Sécurité";
+"security_settings_title" = "Messages chiffrés et appareils"; // Tchap
 "security_settings_crypto_sessions" = "APPAREILS CONNECTÉS"; // Tchap
 "security_settings_crypto_sessions_description" = "Faites confiance à des sessions pour leur accorder l’accès aux messages chiffrés de bout en bout. Si vous ne reconnaissez pas une session, modifiez votre mot de passe de connexion et réinitialisez votre mot de passe de messages utilisé pour la sauvegarde des messages.";
 "security_settings_backup" = "SAUVEGARDE DES MESSAGES";
