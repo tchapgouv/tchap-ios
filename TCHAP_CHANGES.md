@@ -1,3 +1,12 @@
+## Changes in 2.10.4 (2025-07-28)
+
+🙌 Improvements
+
+- Modifier la formulation du bouton d'affichage de notifications dans les réglages ([#1192](https://github.com/tchapgouv/tchap-ios/issues/1192))
+- Changer le wording des sections liées à la sécurité et au chiffrement ([#1193](https://github.com/tchapgouv/tchap-ios/issues/1193))
+- [Posthog] Utiliser l'url posthog de la Suite ([#1194](https://github.com/tchapgouv/tchap-ios/issues/1194))
+
+
 ## Changes in 2.10.2 (2025-06-26)
 
 🙌 Improvements
