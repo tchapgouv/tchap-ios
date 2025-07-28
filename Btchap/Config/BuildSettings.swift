@@ -177,19 +177,19 @@ final class BuildSettings: NSObject {
         let termsURL: URL
     }
     
-    #if DEBUG
+#if DEBUG
     /// The configuration to use for analytics during development. Set `isEnabled` to false to disable analytics in debug builds.
-    static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: true, // Tchap: enable PostHog analytics on DEBUG
-                                                               host: "https://us.i.posthog.com", // Tchap: dev posthog,
-                                                               apiKey: "phc_eQOeaQiaIxdX9kaQmqYTD7RJLyFubYmGYKUI9czqqQD", // Tchap: dev posthog,
+    static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: false,
+                                                               host: "",
+                                                               apiKey: "",
                                                                termsURL: URL(string: "https://tchap.numerique.gouv.fr/politique-de-confidentialite")!) // Tchap: dev posthog,
-    #else
+#else
     /// The configuration to use for analytics. Set `isEnabled` to false to disable analytics.
     static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: false,
                                                                host: "",
                                                                apiKey: "",
                                                                termsURL: URL(string: "https://tchap.numerique.gouv.fr/politique-de-confidentialite")!)
-    #endif
+#endif
     
     // MARK: - Bug report
     static let bugReportEndpointUrlString = ""
