@@ -327,7 +327,8 @@ Matrix session observer used to detect new opened sessions.
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler
 {
     NSDictionary *userInfo = notification.request.content.userInfo;
-    if (RiotSettings.shared.showInAppNotifications || userInfo[Constants.userInfoKeyPresentNotificationOnForeground])
+    // Tchap: always presents push notifications even in-app (application laucnhed in foreground)
+//    if (RiotSettings.shared.showInAppNotifications || userInfo[Constants.userInfoKeyPresentNotificationOnForeground])
     {
         if (!userInfo[Constants.userInfoKeyPresentNotificationInRoom]
             && [[AppDelegate theDelegate].visibleRoomId isEqualToString:userInfo[@"room_id"]])
@@ -343,10 +344,11 @@ Matrix session observer used to detect new opened sessions.
                               | UNNotificationPresentationOptionList);
         }
     }
-    else
-    {
-        completionHandler(UNNotificationPresentationOptionNone);
-    }
+    // Tchap: always presents push notifications even in-app (application laucnhed in foreground)
+//    else
+//    {
+//        completionHandler(UNNotificationPresentationOptionNone);
+//    }
 }
 
 // iOS 10+, see application:handleActionWithIdentifier:forLocalNotification:withResponseInfo:completionHandler:

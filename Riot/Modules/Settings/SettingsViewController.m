@@ -473,7 +473,8 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     Section *sectionNotificationSettings = [Section sectionWithTag:SECTION_TAG_NOTIFICATIONS];
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX];
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_SYSTEM_SETTINGS];
-    [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_SHOW_IN_APP_INDEX];
+    // Tchap: remove "Show notifications in-app" setting.
+//    [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_SHOW_IN_APP_INDEX];
     if (RiotSettings.shared.settingsScreenShowNotificationDecodedContentOption)
     {
         [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_SHOW_DECODED_CONTENT];
