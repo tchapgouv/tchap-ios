@@ -1,3 +1,12 @@
+## Changes in 2.10.6 (2025-09-02)
+
+🙌 Improvements
+
+- Ajout de l'URL Posthog Dev et Staging ([#1198](https://github.com/tchapgouv/tchap-ios/issues/1198))
+- Ajout de l'autorité de certification Certigna Server Authentication OVCP EU CA G1 ([#1203](https://github.com/tchapgouv/tchap-ios/issues/1203))
+- Mise à jour de l'URL Posthog de BTchap ([#1204](https://github.com/tchapgouv/tchap-ios/issues/1204))
+
+
 ## Changes in 2.10.4 (2025-07-28)
 
 🙌 Improvements
