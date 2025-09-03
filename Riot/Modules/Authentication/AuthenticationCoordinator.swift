@@ -294,6 +294,11 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     @MainActor private func showLoginScreen(forcedAuthenticationMode: LoginMode? = nil) {
         MXLog.debug("[AuthenticationCoordinator] showLoginScreen")
         
+        // Tchap: reset authenticationService.
+        // Needed when canceling a login process to reset login mode
+        // (else, if canceling SSO login, when starting a password flow,
+        // login and password are not displayed).
+        authenticationService.reset()
         let homeserver = authenticationService.state.homeserver
         let parameters = AuthenticationLoginCoordinatorParameters(navigationRouter: navigationRouter,
                                                                   authenticationService: authenticationService,
