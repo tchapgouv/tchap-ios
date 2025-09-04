@@ -38,7 +38,7 @@ enum AuthenticationLoginViewModelResult: CustomStringConvertible {
             return "forgotPassword"
         case .login:
             return "login"
-        case .continueWithSSO(let provider):
+        case .continueWithSSO(let provider, _):
             return "continueWithSSO: \(provider)"
         case .fallback:
             return "fallback"
@@ -139,4 +139,8 @@ enum AuthenticationLoginErrorType: Hashable {
     // Tchap: Add unauthorizedThirdPartyID
     /// Unauthorized third party ID.
     case unauthorizedThirdPartyID
+    // Tchap: Add unauthorizedThirdPartyID
+    /// Unsupported Login Identifier (trying to log with login/password on MAS-only instance)
+    case unsupportedLoginIdentifier
+
 }

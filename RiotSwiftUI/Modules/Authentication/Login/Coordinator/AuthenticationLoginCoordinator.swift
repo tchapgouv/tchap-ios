@@ -173,7 +173,7 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
                                                           initialDeviceName: UIDevice.current.initialDisplayName)
                 
                 guard !Task.isCancelled else { return }
-                callback?(.success(session: session, password: password))
+                self?.callback?(.success(session: session, password: password))
                 
                 self?.stopLoading()
             } catch {
@@ -183,11 +183,45 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
         }
     }
     
+    func tchapRedirectToRegisterOrLoginSSO() {
+        // Tchap: try to determine the homeServer from the user's email
+        // and request this homeServer about its Authentication capabilities. (Does it offer SSO?)
+        
+        // First, request any HomeServer to get the HomeServer of the user's email domain.
+        Task {
+            let viewModel = authenticationLoginViewModel.context
+            if let instanceDomain = try? await TchapAuthenticationHelper.GetInstance(for: viewModel.username) {
+                if let userHomeServerViewData = try? await TchapAuthenticationHelper.UpdateAuthServiceForDirectAuthentication(forHomeServer: "\(BuildSettings.serverUrlPrefix)\(instanceDomain)") {
+                    viewModel.viewState.homeserver = userHomeServerViewData
+                   
+                    // Then, now that homeServer is known, start authentication flow with SSO (MAS) forced.
+                       if let proConnectProvider = userHomeServerViewData.ssoIdentityProviders.first {
+                        // Tchap: add `loginHint` string parameter for SSO
+                        viewModel.send(viewAction: .continueWithSSO(proConnectProvider, viewModel.username))
+                       }
+                }
+            }
+        }
+    }
+
     /// Processes an error to either update the flow or display it to the user.
     @MainActor private func handleError(_ error: Error) {
         if let mxError = MXError(nsError: error as NSError) {
-            let message = mxError.authenticationErrorMessage()
-            authenticationLoginViewModel.displayError(.mxError(message))
+            // Tchap: Handle MAS-only login
+//            let message = mxError.authenticationErrorMessage()
+//            authenticationLoginViewModel.displayError(.mxError(message))
+            if mxError.isUnsupportedLoginIdentifier {
+                authenticationLoginViewModel.context.viewState.bindings.alertInfo = AlertInfo(id: .unsupportedLoginIdentifier,
+                                                                                              title: VectorL10n.warning,
+                                                                                              message: TchapL10n.authenticationMasEnabledAlertMessage(BuildSettings.bundleDisplayName),
+                                                                                              primaryButton: (title: VectorL10n.ok, action: {
+                    self.tchapRedirectToRegisterOrLoginSSO()
+                }))
+            }
+            else {
+                let message = mxError.authenticationErrorMessage()
+                authenticationLoginViewModel.displayError(.mxError(message))
+            }
             return
         }
         
@@ -356,5 +390,12 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
         if homeserver.needsLoginFallback {
             callback?(.fallback)
         }
+    }
+}
+
+// Tchap: handle MAS-only login error
+extension MXError {
+    var isUnsupportedLoginIdentifier: Bool {
+        errcode == kMXErrCodeStringUnknown && error == "Unsupported login identifier"
     }
 }
