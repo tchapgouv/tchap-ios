@@ -54,4 +54,19 @@ enum TchapAuthenticationHelper {
             return nil
         }
     }
+    
+    // Tchap: try to determine the homeServer from the user's email
+    // and request this homeServer about its Authentication capabilities. (Does it offer SSO?)
+    static public func RedirectToSSO(for username: String, redirectAction: @escaping (SSOIdentityProvider?) -> Void) {
+        // First, request any HomeServer to get the HomeServer of the user's email domain.
+        Task {
+            if let instanceDomain = try? await TchapAuthenticationHelper.GetInstance(for: username) {
+                if let userHomeServerViewData = try? await TchapAuthenticationHelper.UpdateAuthServiceForDirectAuthentication(forHomeServer: "\(BuildSettings.serverUrlPrefix)\(instanceDomain)") {
+                   
+                    // Then, now that homeServer is known, call Redirection action with possible SSO provider (eventually nil).
+                    redirectAction(userHomeServerViewData.ssoIdentityProviders.first)
+                }
+            }
+        }
+    }
 }

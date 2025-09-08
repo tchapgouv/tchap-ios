@@ -63,6 +63,10 @@ class AuthenticationForgotPasswordViewModel: AuthenticationForgotPasswordViewMod
             state.bindings.alertInfo = AlertInfo(id: type,
                                                  title: VectorL10n.error,
                                                  message: TchapL10n.authenticationErrorUnauthorizedEmail)
+            // Tchap: Handle MAS-only password reset
+        case .unrecognizedRequest:
+            // Error must be displayed by calling code.
+            break
         }
     }
 }

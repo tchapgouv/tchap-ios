@@ -139,8 +139,7 @@ enum AuthenticationLoginErrorType: Hashable {
     // Tchap: Add unauthorizedThirdPartyID
     /// Unauthorized third party ID.
     case unauthorizedThirdPartyID
-    // Tchap: Add unauthorizedThirdPartyID
+    // Tchap: Add Unsupported Login Identifier
     /// Unsupported Login Identifier (trying to log with login/password on MAS-only instance)
     case unsupportedLoginIdentifier
-
 }
