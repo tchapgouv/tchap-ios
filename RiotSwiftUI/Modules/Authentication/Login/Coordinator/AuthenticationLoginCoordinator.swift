@@ -183,26 +183,26 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
         }
     }
     
-    func tchapRedirectToRegisterOrLoginSSO() {
-        // Tchap: try to determine the homeServer from the user's email
-        // and request this homeServer about its Authentication capabilities. (Does it offer SSO?)
-        
-        // First, request any HomeServer to get the HomeServer of the user's email domain.
-        Task {
-            let viewModel = authenticationLoginViewModel.context
-            if let instanceDomain = try? await TchapAuthenticationHelper.GetInstance(for: viewModel.username) {
-                if let userHomeServerViewData = try? await TchapAuthenticationHelper.UpdateAuthServiceForDirectAuthentication(forHomeServer: "\(BuildSettings.serverUrlPrefix)\(instanceDomain)") {
-                    viewModel.viewState.homeserver = userHomeServerViewData
-                   
-                    // Then, now that homeServer is known, start authentication flow with SSO (MAS) forced.
-                       if let proConnectProvider = userHomeServerViewData.ssoIdentityProviders.first {
-                        // Tchap: add `loginHint` string parameter for SSO
-                        viewModel.send(viewAction: .continueWithSSO(proConnectProvider, viewModel.username))
-                       }
-                }
-            }
-        }
-    }
+//    func tchapRedirectToRegisterOrLoginSSO() {
+//        // Tchap: try to determine the homeServer from the user's email
+//        // and request this homeServer about its Authentication capabilities. (Does it offer SSO?)
+//        
+//        // First, request any HomeServer to get the HomeServer of the user's email domain.
+//        Task {
+//            let viewModel = authenticationLoginViewModel.context
+//            if let instanceDomain = try? await TchapAuthenticationHelper.GetInstance(for: viewModel.username) {
+//                if let userHomeServerViewData = try? await TchapAuthenticationHelper.UpdateAuthServiceForDirectAuthentication(forHomeServer: "\(BuildSettings.serverUrlPrefix)\(instanceDomain)") {
+//                    viewModel.viewState.homeserver = userHomeServerViewData
+//                   
+//                    // Then, now that homeServer is known, start authentication flow with SSO (MAS) forced.
+//                       if let proConnectProvider = userHomeServerViewData.ssoIdentityProviders.first {
+//                        // Tchap: add `loginHint` string parameter for SSO
+//                        viewModel.send(viewAction: .continueWithSSO(proConnectProvider, viewModel.username))
+//                       }
+//                }
+//            }
+//        }
+//    }
 
     /// Processes an error to either update the flow or display it to the user.
     @MainActor private func handleError(_ error: Error) {
@@ -215,7 +215,14 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
                                                                                               title: VectorL10n.warning,
                                                                                               message: TchapL10n.authenticationMasEnabledAlertMessage(BuildSettings.bundleDisplayName),
                                                                                               primaryButton: (title: VectorL10n.ok, action: {
-                    self.tchapRedirectToRegisterOrLoginSSO()
+                    let viewModel = self.authenticationLoginViewModel.context
+                    TchapAuthenticationHelper.RedirectToSSO(for: viewModel.username) { ssoProvider in
+                        guard let ssoProvider else {
+                            return
+                        }
+                        // Tchap: add `loginHint` string parameter for SSO
+                        viewModel.send(viewAction: .continueWithSSO(ssoProvider, viewModel.username))
+                    }
                 }))
             }
             else {
