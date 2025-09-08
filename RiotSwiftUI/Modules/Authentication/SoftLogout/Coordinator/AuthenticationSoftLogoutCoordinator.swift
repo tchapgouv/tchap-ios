@@ -156,6 +156,9 @@ final class AuthenticationSoftLogoutCoordinator: Coordinator, Presentable {
                 self.successIndicator = self.indicatorPresenter.present(.success(label: VectorL10n.done))
             case .cancel:
                 self.navigationRouter.dismissModule(animated: true, completion: nil)
+                // Tchap: handle reset password via SSO case.
+            case .tchapResetWithSSO:
+                self.navigationRouter.dismissModule(animated: true, completion: nil)
             }
             self.remove(childCoordinator: coordinator)
         }
