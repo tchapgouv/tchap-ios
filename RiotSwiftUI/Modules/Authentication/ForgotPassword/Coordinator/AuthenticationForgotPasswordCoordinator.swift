@@ -20,6 +20,8 @@ enum AuthenticationForgotPasswordCoordinatorResult {
     case success
     /// Forgot password flow cancelled
     case cancel
+    // Tchap: need to connect to SSO to reset password
+    case tchapResetWithSSO(String)
 }
 
 final class AuthenticationForgotPasswordCoordinator: Coordinator, Presentable {
@@ -191,8 +193,27 @@ final class AuthenticationForgotPasswordCoordinator: Coordinator, Presentable {
     /// Processes an error to either update the flow or display it to the user.
     @MainActor private func handleError(_ error: Error) {
         if let mxError = MXError(nsError: error as NSError) {
-            let message = mxError.authenticationErrorMessage()
-            authenticationForgotPasswordViewModel.displayError(.mxError(message))
+            
+            // Tchap: Handle MAS-only password reset
+//            let message = mxError.authenticationErrorMessage()
+//            authenticationForgotPasswordViewModel.displayError(.mxError(message))
+            if mxError.isUnrecognizedRequest {
+                authenticationForgotPasswordViewModel.context.viewState.bindings.alertInfo = AlertInfo(id: .unrecognizedRequest,
+                                                                                              title: VectorL10n.warning,
+                                                                                              message: TchapL10n.authenticationMasEnabledAlertMessage(BuildSettings.bundleDisplayName),
+                                                                                              primaryButton: (title: VectorL10n.ok, action: {
+                    TchapAuthenticationHelper.RedirectToSSO(for: self.authenticationForgotPasswordViewModel.context.emailAddress) { ssoProvider in
+                        Task { @MainActor in
+                            self.callback?(.tchapResetWithSSO(self.authenticationForgotPasswordViewModel.context.emailAddress))
+                        }
+                    }
+                }))
+            }
+            else {
+                let message = mxError.authenticationErrorMessage()
+                authenticationForgotPasswordViewModel.displayError(.mxError(message))
+            }
+            
             return
         }
         
@@ -207,5 +228,12 @@ final class AuthenticationForgotPasswordCoordinator: Coordinator, Presentable {
         }
         
         authenticationForgotPasswordViewModel.displayError(.unknown)
+    }
+}
+
+// Tchap: handle MAS-only reset password error
+extension MXError {
+    var isUnrecognizedRequest: Bool {
+        errcode == kMXErrCodeStringUnrecognized && error == "Unrecognized request"
     }
 }

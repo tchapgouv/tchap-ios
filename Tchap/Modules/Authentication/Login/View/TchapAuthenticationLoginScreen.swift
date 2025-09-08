@@ -181,24 +181,14 @@ struct TchapAuthenticationLoginScreen: View {
     func submit() {
         // Tchap: try to determine the homeServer from the user's email
         // and request this homeServer about its Authentication capabilities. (Does it offer SSO?)
-        
-        // First, request any HomeServer to get the HomeServer of the user's email domain.
-        Task {
-            if let instanceDomain = try? await TchapAuthenticationHelper.GetInstance(for: viewModel.username) {
-                if let userHomeServerViewData = try? await TchapAuthenticationHelper.UpdateAuthServiceForDirectAuthentication(forHomeServer: "\(BuildSettings.serverUrlPrefix)\(instanceDomain)") {
-                    viewModel.viewState.homeserver = userHomeServerViewData
-
-                    // Then, now that homeServer is known, start authentication flow.
-                    if case .sso = viewModel.viewState.tchapAuthenticationMode,
-                       let proConnectProvider = userHomeServerViewData.ssoIdentityProviders.first {
-                        // Tchap: add `loginHint` string parameter for SSO
-//                        viewModel.send(viewAction: .continueWithSSO(proConnectProvider))
-                        viewModel.send(viewAction: .continueWithSSO(proConnectProvider, viewModel.username))
-                    } else {
-                        guard viewModel.viewState.canSubmit else { return }
-                        viewModel.send(viewAction: .next)
-                    }
-                }
+        TchapAuthenticationHelper.RedirectToSSO(for: viewModel.username) { ssoProvider in
+            if case .sso = viewModel.viewState.tchapAuthenticationMode,
+               let ssoProvider {
+                // Tchap: add `loginHint` string parameter for SSO
+                viewModel.send(viewAction: .continueWithSSO(ssoProvider, viewModel.username))
+            } else {
+                guard viewModel.viewState.canSubmit else { return }
+                viewModel.send(viewAction: .next)
             }
         }
     }

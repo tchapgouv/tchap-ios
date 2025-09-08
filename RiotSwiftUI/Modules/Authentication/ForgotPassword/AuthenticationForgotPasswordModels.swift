@@ -70,4 +70,7 @@ enum AuthenticationForgotPasswordErrorType: Hashable {
     // Tchap: Add unauthorizedThirdPartyID
     /// Unauthorized third party ID.
     case unauthorizedThirdPartyID
+    // Tchap: Add Unrecognized Request
+    /// Unrecognized Request (trying to reset password before login on MAS-only instance)
+    case unrecognizedRequest
 }
