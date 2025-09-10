@@ -381,7 +381,10 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     // Tchap: Remove Display Name because the function is blocked by back-end
     //    [sectionUserSettings addRowWithTag:USER_SETTINGS_DISPLAYNAME_INDEX];
     
-    if (RiotSettings.shared.settingsScreenShowChangePassword)
+    // Tchap: Hide CHANGE PASSWORD entry if the homeserver well-known announce MAS.
+    // Then, account password can be modified in the MAS account management.
+//    if (RiotSettings.shared.settingsScreenShowChangePassword)
+    if (RiotSettings.shared.settingsScreenShowChangePassword && !self.mainSession.homeserverWellknown.authentication)
     {
         [sectionUserSettings addRowWithTag:USER_SETTINGS_CHANGE_PASSWORD_INDEX];
     }
