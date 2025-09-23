@@ -212,15 +212,16 @@ struct TchapAuthenticationLoginScreen: View {
     private func tchapGetInstance(for email: String) async throws -> String {
         struct InstanceReturnValue: Decodable {
             let hs: String
+            // Ignore other field named `new_hs`. Useless for us.
         }
         
         let homeServerAddress = AuthenticationService.shared.state.homeserver.address
         
         // MXRestClient has no global `request` method exposed.
         // So, I have to make my own and use the shared URLSession.
-        guard let url = URL(string: "\(homeServerAddress)/\(kMXIdentityAPIPrefixPathV1)/info?medium=&address=\(email)") else {
+        guard let url = URL(string: "\(homeServerAddress)/\(kMXIdentityAPIPrefixPathV1)/info?medium=email&address=\(email)") else {
             throw ClientError.invalidURL
-            }
+        }
         
         let (data, _) = try await URLSession.shared.data(from: url)
 
