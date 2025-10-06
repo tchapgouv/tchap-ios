@@ -1,3 +1,10 @@
+## Changes in 2.10.8 (2025-10-06)
+
+🐛 Bugfixes
+
+- Block back navigation while avatar is uploaded (to avoid crash on callback) ([#1208](https://github.com/tchapgouv/tchap-ios/issues/1208))
+
+
 ## Changes in 2.10.6 (2025-09-02)
 
 🙌 Improvements
