@@ -3701,6 +3701,15 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     [self pushViewController:newPhoneNumberCountryPicker];
 }
 
+// Tchap: enable/disable back navigation while uploading new avatar
+// to avoid crash if leaving screen while upload is not finished.
+- (void)setBackNavigationEnabled:(BOOL)enabled {
+    // Show/hide navigation bar's back button.
+    self.navigationItem.hidesBackButton = !enabled;
+    // Enable/disable back navigation via swipe gesture.
+    self.navigationController.interactivePopGestureRecognizer.enabled = enabled;
+}
+
 - (void)onSave:(id)sender
 {
     // sanity check
@@ -3708,6 +3717,9 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     {
         return;
     }
+    
+    // Tchap: disable back navigation while uploading avatar.
+    [self setBackNavigationEnabled:NO];
     
     self.navigationItem.rightBarButtonItem.enabled = NO;
     [self startActivityIndicator];
@@ -3825,6 +3837,9 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     {
         [self updateSections];
     }
+
+    // Tchap: enable back navigation once avatar is uploaded.
+    [self setBackNavigationEnabled:YES];
 }
 
 - (void)handleErrorDuringProfileChangeSaving:(NSError*)error
