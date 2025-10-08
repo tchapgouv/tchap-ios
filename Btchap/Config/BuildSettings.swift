@@ -244,6 +244,7 @@ final class BuildSettings: NSObject {
     static let tchapFeatureVoiceOverIP = "tchapFeatureVoiceOverIP"
     static let tchapFeatureVideoOverIP = "tchapFeatureVideoOverIP"    // Tchap: in pre-prod, allow any feature to any instance.
     static let tchapFeatureGeolocationSharing = "tchapFeatureGeolocationSharing" // linked to `locationSharingEnabled` property (see above)
+    static let tchapFeatureAntivirus = "tchapFeatureAntivirus" // Allow usage of antivirus
     static var tchapFeaturesAllowedHomeServersForFeature: [String: [String]] = [
         tchapFeatureAnyFeature: [ tchapFeatureAnyHomeServer ]
     ]

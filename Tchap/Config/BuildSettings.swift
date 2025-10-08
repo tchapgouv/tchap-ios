@@ -273,6 +273,7 @@ final class BuildSettings: NSObject {
     static let tchapFeatureVoiceOverIP = "tchapFeatureVoiceOverIP"
     static let tchapFeatureVideoOverIP = "tchapFeatureVideoOverIP"
     static let tchapFeatureGeolocationSharing = "tchapFeatureGeolocationSharing" // linked to `locationSharingEnabled` property (see above)
+    static let tchapFeatureAntivirus = "tchapFeatureAntivirus" // Allow usage of antivirus
     static var tchapFeaturesAllowedHomeServersForFeature: [String: [String]] = [
         tchapFeatureNotificationByEmail: [
             tchapFeatureAnyHomeServer
@@ -318,6 +319,9 @@ final class BuildSettings: NSObject {
             "agent.education.tchap.gouv.fr"
         ],
         tchapFeatureGeolocationSharing: [
+            tchapFeatureAnyHomeServer
+        ],
+        tchapFeatureAntivirus: [
             tchapFeatureAnyHomeServer
         ]
     ]

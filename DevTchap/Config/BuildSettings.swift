@@ -244,8 +244,10 @@ final class BuildSettings: NSObject {
     static let tchapFeatureVoiceOverIP = "tchapFeatureVoiceOverIP"
     static let tchapFeatureVideoOverIP = "tchapFeatureVideoOverIP"    // Tchap: in Dev, allow any feature to any instance.
     static let tchapFeatureGeolocationSharing = "tchapFeatureGeolocationSharing" // linked to `locationSharingEnabled` property (see above)
+    static let tchapFeatureAntivirus = "tchapFeatureAntivirus" // Allow usage of antivirus
     static var tchapFeaturesAllowedHomeServersForFeature: [String: [String]] = [
-        tchapFeatureAnyFeature: [ tchapFeatureAnyHomeServer ]
+        tchapFeatureAnyFeature: [ tchapFeatureAnyHomeServer ],
+        tchapFeatureAntivirus: [] // Temporary test: disable AV on Dev client.
     ]
     
     // Tchap: handle SSO feature flag. Presents SSO button on Onboarding screen and give priority to SSO on UIA.
