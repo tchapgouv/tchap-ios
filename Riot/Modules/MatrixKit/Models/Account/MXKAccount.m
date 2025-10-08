@@ -984,15 +984,18 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     mxSession = [[MXSession alloc] initWithMatrixRestClient:mxRestClient];
     mxSession.preferredSyncPresence = self.preferredSyncPresence;
     
-    // Check whether an antivirus url is defined.
-    if (_antivirusServerURL)
-    {
-        // Enable the antivirus scanner in the current session.
-        [mxSession setAntivirusServerURL:_antivirusServerURL];
-    }
-    // Tchap: else hard code antivirus server URL with homeServer URL like in Tchap Android.
-    else {
-        [mxSession setAntivirusServerURL:self.mxCredentials.homeServer];
+    // Tchap: initialize antivirus only if feature is activated.
+    if ([self isFeatureActivated:BuildSettings.tchapFeatureAntivirus]) {
+        // Check whether an antivirus url is defined.
+        if (_antivirusServerURL)
+        {
+            // Enable the antivirus scanner in the current session.
+            [mxSession setAntivirusServerURL:_antivirusServerURL];
+        }
+        // Tchap: else hard code antivirus server URL with homeServer URL like in Tchap Android.
+        else {
+            [mxSession setAntivirusServerURL:self.mxCredentials.homeServer];
+        }
     }
     
     // Set default MXEvent -> NSString formatter
