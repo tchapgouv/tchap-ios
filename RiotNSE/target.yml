@@ -84,3 +84,7 @@ targets:
     - path: ../Riot/Modules/VoiceBroadcast/VoiceBroadcastSDK/MatrixSDK
     - path: ../Riot/Managers/Theme
     - path: ../Riot/Categories/UIColor.swift
+
+    # Tchap
+    - path: ../RiotNSE/BuildSettings.swift
+    - path: ../Tchap/Extensions/Account+Tchap.swift
