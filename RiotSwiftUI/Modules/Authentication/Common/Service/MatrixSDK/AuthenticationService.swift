@@ -172,6 +172,11 @@ class AuthenticationService: NSObject {
                 }
                 
                 // Continue without throwing when registration is disabled but SSO is available.
+                
+                // Tchap: Catch and Redirect Legacy Registration on MAS-only homeServer
+                // As HomeServer has SSO (MAS) and error is `registrationDisabled`,
+                // throw error to redirect directly to MAS UI.
+                throw error
             }
         }
         
