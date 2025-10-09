@@ -13,21 +13,22 @@ installFile() {
 
 
 cd $(dirname $0)
-echo "installfiles for : $PRODUCT_MODULE_NAME"
+BUILDING_PRODUCT="$BUNDLE_DISPLAY_NAME"
+echo "installfiles for : $PRODUCT"
 
 echo "Install NSE target files"
-installFile "Common.xcconfig" $PRODUCT_MODULE_NAME"NSE" "RiotNSE"
-installFile "BuildSettings.swift" $PRODUCT_MODULE_NAME"/Config" "RiotNSE"
+installFile "Common.xcconfig" $BUILDING_PRODUCT"NSE" "RiotNSE"
+installFile "BuildSettings.swift" $BUILDING_PRODUCT"/Config" "RiotNSE"
 
 echo "Install Shared Extension target files"
-installFile "Common.xcconfig" $PRODUCT_MODULE_NAME"ShareExtension" "RiotShareExtension" 
-installFile "BuildSettings.swift" $PRODUCT_MODULE_NAME"/Config" "RiotShareExtension"
+installFile "Common.xcconfig" $BUILDING_PRODUCT"ShareExtension" "RiotShareExtension" 
+installFile "BuildSettings.swift" $BUILDING_PRODUCT"/Config" "RiotShareExtension"
 
 echo "Install AppIdentifiers Config file"
-installFile "AppIdentifiers.xcconfig" $PRODUCT_MODULE_NAME"/Config" "/Config"
+installFile "AppIdentifiers.xcconfig" $BUILDING_PRODUCT"/Config" "/Config"
 
 echo "Install AppIcon files"
-installFile "AppIcon.appiconset" $PRODUCT_MODULE_NAME"/Assets/"$PRODUCT_MODULE_NAME"SharedImages.xcassets" "/Riot/Assets/SharedImages.xcassets"
-installFile "TchapLogo.imageset" $PRODUCT_MODULE_NAME"/Assets/"$PRODUCT_MODULE_NAME"SharedImages.xcassets" "/Riot/Assets/SharedImages.xcassets"
+installFile "AppIcon.appiconset" $BUILDING_PRODUCT"/Assets/"$BUILDING_PRODUCT"SharedImages.xcassets" "/Riot/Assets/SharedImages.xcassets"
+installFile "TchapLogo.imageset" $BUILDING_PRODUCT"/Assets/"$BUILDING_PRODUCT"SharedImages.xcassets" "/Riot/Assets/SharedImages.xcassets"
 
 cd -
