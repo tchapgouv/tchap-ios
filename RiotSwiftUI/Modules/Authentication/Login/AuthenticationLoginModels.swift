@@ -121,7 +121,7 @@ enum AuthenticationLoginViewAction {
     case next
     /// Continue using the fallback page
     case fallback
-    // Tchap; add `loginHint` string parameter for SSO
+    // Tchap: add `loginHint` string parameter for SSO
 //    case continueWithSSO(SSOIdentityProvider)
     /// Continue using the supplied SSO provider.
     case continueWithSSO(SSOIdentityProvider, String? = nil)
