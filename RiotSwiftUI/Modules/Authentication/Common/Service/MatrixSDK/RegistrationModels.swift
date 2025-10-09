@@ -14,6 +14,8 @@ enum AuthenticationRegistrationStageResult {
     case completed(RegistrationResult)
     /// The user would like to cancel the registration.
     case cancel
+    // Tchap: need to register with SSO
+    case tchapRegisterWithSSO(SSOIdentityProvider, String)
 }
 
 /// The result from a response of a registration flow step.

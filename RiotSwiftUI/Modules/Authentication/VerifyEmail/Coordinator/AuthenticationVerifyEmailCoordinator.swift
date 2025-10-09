@@ -229,8 +229,28 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
     /// Processes an error to either update the flow or display it to the user.
     @MainActor private func handleError(_ error: Error) {
         if let mxError = MXError(nsError: error as NSError) {
-            let message = mxError.authenticationErrorMessage()
-            authenticationVerifyEmailViewModel.displayError(.mxError(message))
+            // Tchap: Handle MAS-only Register account
+//            let message = mxError.authenticationErrorMessage()
+//            authenticationVerifyEmailViewModel.displayError(.mxError(message))
+            if mxError.isRegistrationDisabled {
+                authenticationVerifyEmailViewModel.context.viewState.bindings.alertInfo = AlertInfo(id: .registrationDisabled,
+                                                                                              title: VectorL10n.warning,
+                                                                                              message: TchapL10n.authenticationMasEnabledAlertMessage(BuildSettings.bundleDisplayName),
+                                                                                              primaryButton: (title: VectorL10n.ok, action: {
+                    TchapAuthenticationHelper.RedirectToSSO(for: self.authenticationVerifyEmailViewModel.context.emailAddress) { ssoProvider in
+                        if let ssoProvider {
+                            Task { @MainActor in
+                                self.callback?(.tchapRegisterWithSSO(ssoProvider, self.authenticationVerifyEmailViewModel.context.emailAddress))
+                            }
+                        }
+                    }
+                }))
+            }
+            else {
+                let message = mxError.authenticationErrorMessage()
+                authenticationVerifyEmailViewModel.displayError(.mxError(message))
+            }
+            
             return
         }
         
@@ -365,5 +385,12 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
         webViewController.title = VectorL10n.settingsTermConditions
         webViewController.vc_setLargeTitleDisplayMode(.never)
         authenticationVerifyEmailHostingController.navigationController?.pushViewController(webViewController, animated: true)
+    }
+}
+
+// Tchap: handle MAS-only reset password error
+extension MXError {
+    var isRegistrationDisabled: Bool {
+        errcode == kMXErrCodeStringForbidden && error == "Registration has been disabled. Only m.login.application_service registrations are allowed."
     }
 }

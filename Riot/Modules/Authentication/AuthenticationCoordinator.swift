@@ -560,6 +560,10 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
             handleRegistrationResult(result)
         case .cancel:
             displayCancelConfirmation()
+            // Tchap: handle Registration via SSO
+        case .tchapRegisterWithSSO(let provider, let username):
+            self.navigationRouter.dismissModule(animated: true, completion: nil)
+            self.presentSSOAuthentication(for: provider, loginHint: username)
         }
     }
     
