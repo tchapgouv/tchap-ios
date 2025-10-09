@@ -425,7 +425,24 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         MXLog.debug("[AuthenticationCoordinator] TchapShowVerifyEmailScreen")
         
         // Call `startFlow` here to get `registrationWizard` initialized.
-        try? await authenticationService.startFlow(.register)
+        do {
+            try await authenticationService.startFlow(.register)
+        }
+        catch RegistrationError.registrationDisabled {
+            // If Registration is disabled on this homeServer and SSO (MAS) is available,
+            // redirect to MAS UI.
+            TchapAuthenticationHelper.RedirectToSSO(for: "") { ssoProvider in
+                if let provider = ssoProvider {
+                    Task { @MainActor in
+                        self.presentSSOAuthentication(for: provider)
+                    }
+                }
+            }
+            return
+        }
+        catch {
+            
+        }
         
         guard let registrationWizard = authenticationService.registrationWizard else {
             MXLog.failure("[AuthenticationCoordinator] showStage: Missing the RegistrationWizard needed to complete the stage.")
