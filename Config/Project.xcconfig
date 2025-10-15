@@ -46,3 +46,8 @@ CLANG_ENABLE_MODULES = YES
 CLANG_ENABLE_OBJC_ARC = YES
 
 SWIFT_OBJC_INTERFACE_HEADER_NAME = GeneratedInterface-Swift.h
+
+// Tchap:
+// Xcode 26: to discard error "Unable to find module dependency: 'libcmark'"
+// Needed here to affect targets and extensions.
+SWIFT_ENABLE_EXPLICIT_MODULES = NO
