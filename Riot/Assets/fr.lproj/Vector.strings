@@ -612,15 +612,15 @@
 "key_backup_recover_from_passphrase_info" = "Utilisez votre phrase secrète de récupération pour déverrouiller votre historique de messages sécurisés";
 "key_backup_recover_from_passphrase_passphrase_title" = "Saisir";
 "key_backup_recover_from_passphrase_passphrase_placeholder" = "Saisir la phrase secrète";
-"key_backup_recover_from_passphrase_recover_action" = "Utiliser le Code de Vérification"; // Tchap
+"key_backup_recover_from_passphrase_recover_action" = "Utiliser le code de vérification"; // Tchap
 "key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Vous ne connaissez pas votre phrase secrète de récupération ? Vous pouvez ";
 "key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "utiliser votre code de vérificatiion"; // Tchap
 "key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
-"key_backup_recover_from_recovery_key_info" = "Insérez votre Code de Vérification pour récupérer vos messages"; // Tchap
+"key_backup_recover_from_recovery_key_info" = "Insérez votre code de vérification pour récupérer vos messages"; // Tchap
 "key_backup_recover_from_recovery_key_recovery_key_title" = "Saisir";
 "key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Saisir le code de vérification"; // Tchap
-"key_backup_recover_from_recovery_key_recover_action" = "Utiliser le Code de Vérification"; // Tchap
-"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Vous avez perdu votre Code de Vérification ?"; // Tchap
+"key_backup_recover_from_recovery_key_recover_action" = "Utiliser le code de vérification"; // Tchap
+"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Vous avez perdu votre code de vérification ?"; // Tchap
 "key_backup_recover_success_info" = "Sauvegarde restaurée !";
 "key_backup_recover_done_action" = "Terminer"; // Tchap
 "key_backup_setup_banner_title_part1" = "Configurer la récupération de messages sécurisée";
@@ -1071,7 +1071,7 @@
 "device_verification_self_verify_wait_additional_information" = "ou un autre client Matrix qui prend en charge la signature croisée.";
 "device_verification_self_verify_open_on_other_device_title" = "Vérifiez cet appareil"; // Tchap
 "device_verification_self_verify_open_on_other_device_information" = "Vérifiez cet appareil pour récupérer vos messages.\n\nSi vous avez un autre appareil connecté à Tchap, ouvrez l’application et suivez les instructions."; // Tchap
-"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Utiliser le Code de Vérification"; // Tchap
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Utiliser le code de vérification"; // Tchap
 "device_verification_self_verify_wait_recover_secrets_additional_help" = "Vous n’avez pas d’autre appareil ?"; // Tchap
 // MARK: - Device Verification
 "key_verification_other_session_title" = "Vérifier l’appareil";
@@ -1123,12 +1123,12 @@
 "secrets_recovery_with_passphrase_invalid_passphrase_message" = "Vérifiez que vous avez saisi la bonne phrase secrète de récupération.";
 "secrets_recovery_with_key_title" = "Récupération des messages"; // Tchap
 "secrets_recovery_with_key_information_default" = "Accédez à l’historique de vos messages sécurisés et à votre identité de signature croisée pour vérifier d’autres sessions en renseignant votre code de vérification."; // Tchap
-"secrets_recovery_with_key_information_verify_device" = "Insérez votre Code de Vérification pour récupérer vos messages."; // Tchap
+"secrets_recovery_with_key_information_verify_device" = "Insérez votre code de vérification pour récupérer vos messages."; // Tchap
 "secrets_recovery_with_key_recovery_key_title" = "Saisir";
-"secrets_recovery_with_key_recovery_key_placeholder" = "Saisir le Code de Vérification"; // Tchap
-"secrets_recovery_with_key_recover_action" = "Utiliser le Code de Vérification"; // Tchap
+"secrets_recovery_with_key_recovery_key_placeholder" = "Saisir le code de vérification"; // Tchap
+"secrets_recovery_with_key_recover_action" = "Utiliser le code de vérification"; // Tchap
 "secrets_recovery_with_key_invalid_recovery_key_title" = "Code erroné"; // Tchap
-"secrets_recovery_with_key_invalid_recovery_key_message" = "Vérifiez que vous avez saisi le Code de Vérification le plus récent."; // Tchap
+"secrets_recovery_with_key_invalid_recovery_key_message" = "Vérifiez que vous avez saisi le code de vérification le plus récent."; // Tchap
 "secure_key_backup_setup_intro_title" = "Sauvegarde automatique des messages"; // Tchap
 "secure_key_backup_setup_intro_info" = "Protection afin d’éviter de perdre l’accès aux messages et données chiffrés en sauvegardant les clés Tchap sur votre serveur."; // Tchap
 "secure_key_backup_setup_intro_use_security_key_title" = "Utiliser une clé de sauvegarde Tchap"; // Tchap
@@ -1137,7 +1137,7 @@
 "secure_key_backup_setup_intro_use_security_passphrase_info" = "Saisissez une phrase secrète que vous êtes seul à connaître et générez une clé pour la sauvegarde.";
 "secure_key_backup_setup_cancel_alert_title" = "En êtes-vous sûr ?";
 "secure_key_backup_setup_cancel_alert_message" = "Si vous annulez maintenant, vous pourriez perdre les messages et données chiffrés si vous perdez l’accès à vos connexions.\n\nVous pouvez également configurer la sauvegarde automatique des messages et gérer vos clés dans les paramètres."; // Tchap
-"secrets_setup_recovery_key_title" = "Notez votre Code de Vérification"; // Tchap
+"secrets_setup_recovery_key_title" = "Notez votre code de vérification"; // Tchap
 "secrets_setup_recovery_key_information" = "Notez ce code dans un endroit sûr.  Vous aurez à le copier / coller pour récupérer vos messages, donc évitez la capture d’écran."; // Tchap
 "secrets_setup_recovery_key_loading" = "Chargement…";
 "secrets_setup_recovery_key_export_action" = "Copier le code"; // Tchap
@@ -1328,7 +1328,7 @@
 
 // MARK: - Secrets recovery
 
-"secrets_recovery_reset_action_part_1" = "Vous avez perdu votre Code de Vérification ? "; // Tchap
+"secrets_recovery_reset_action_part_1" = "Vous avez perdu votre code de vérification ? "; // Tchap
 "bug_report_background_mode" = "Poursuivre en arrière-plan";
 "call_actions_unhold" = "Reprendre";
 "call_unsupported_matrix_rtc_call" = "Type d'appel non supporté actuellement."; // Tchap
