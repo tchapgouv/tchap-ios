@@ -648,7 +648,7 @@
 "key_backup_recover_invalid_passphrase_title" = "Phrase secrète de récupération incorrecte";
 "key_backup_recover_invalid_passphrase" = "La sauvegarde n’a pas pu être déchiffrée avec cette phrase secrète : vérifiez que vous avez saisi la bonne phrase secrète de récupération.";
 "key_backup_recover_invalid_recovery_key_title" = "Le code de vérification ne correspond pas"; // Tchap
-"key_backup_recover_invalid_recovery_key" = "La sauvegarde n’a pas pu être déchiffrée avec cette clé : vérifiez que vous avez saisi le bon code de vérification."; // Tchap
+"key_backup_recover_invalid_recovery_key" = "La sauvegarde n’a pas pu être déchiffrée avec ce code : vérifiez que vous avez saisi le bon code de vérification."; // Tchap
 "key_backup_setup_banner_title" = "Ne perdez jamais vos messages chiffrés";
 "key_backup_setup_banner_subtitle" = "Mettre en place la sauvegarde de clés";
 "key_backup_recover_banner_title" = "Ne perdez jamais vos messages chiffrés";
