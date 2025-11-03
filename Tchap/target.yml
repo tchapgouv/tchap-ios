@@ -44,8 +44,8 @@ targetTemplates:
     platform: iOS
 
     dependencies:
-    - target: RiotShareExtension
-    - target: RiotNSE
+#    - target: RiotShareExtension
+#    - target: RiotNSE
     - target: DesignKit
     - target: CommonKit
     - package: OrderedCollections
@@ -342,6 +342,10 @@ targets:
     templates: 
       - BaseTarget
 
+    dependencies:
+    - target: Tchap-NSE
+    - target: Tchap-ShareExtension
+
     configFiles:
       Debug: ../Tchap/SupportingFiles/App-Debug.xcconfig
       Release: ../Tchap/SupportingFiles/App-Release.xcconfig
@@ -361,6 +365,10 @@ targets:
     templates: 
       - BaseTarget
 
+    dependencies:
+    - target: BTchap-NSE
+    - target: BTchap-ShareExtension
+
     configFiles:
       Debug: ../Btchap/SupportingFiles/Btchap-App-Debug.xcconfig
       Release: ../Btchap/SupportingFiles/Btchap-App-Release.xcconfig
@@ -378,6 +386,10 @@ targets:
   DevTchap:
     templates: 
       - BaseTarget
+
+    dependencies:
+    - target: DevTchap-NSE
+    - target: DevTchap-ShareExtension
 
     configFiles:
       Debug: ../DevTchap/SupportingFiles/DevTchap-App-Debug.xcconfig

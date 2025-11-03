@@ -1,14 +1,14 @@
 name: RiotNSE
 
-schemes:
-  RiotNSE:
+schemeTemplates:
+  BaseScheme-NSE:
     analyze:
       config: Debug
     archive:
       config: Release
     build:
       targets:
-        RiotNSE:
+        ${scheme_name}:
         - running
         - testing
         - profiling
@@ -26,8 +26,19 @@ schemes:
       config: Debug
       disableMainThreadChecker: true
 
-targets:
-  RiotNSE:
+schemes:
+  Tchap-NSE:
+    templates:
+      - BaseScheme-NSE
+  BTchap-NSE:
+    templates:
+      - BaseScheme-NSE
+  DevTchap-NSE:
+    templates:
+      - BaseScheme-NSE
+
+targetTemplates:
+  BaseTarget-NSE:
     platform: iOS
     type: app-extension
 
@@ -37,12 +48,11 @@ targets:
     - package: DTCoreText
     - package: PostHog
 
-    configFiles:
-      Debug: Debug.xcconfig
-      Release: Release.xcconfig
-
     sources: 
     - path: .
+#Tchap exclusion because of specific targets
+      excludes:
+        - BuildSettings.swift
     - path: ../Riot/Managers/Settings/RiotSettings.swift
     - path: ../Config/MDMSettings.swift
     - path: ../Riot/Utils/DataProtectionHelper.swift
@@ -85,6 +95,39 @@ targets:
     - path: ../Riot/Managers/Theme
     - path: ../Riot/Categories/UIColor.swift
 
-    # Tchap
-    - path: ../RiotNSE/BuildSettings.swift
+targets:
+  Tchap-NSE:
+    templates: 
+      - BaseTarget-NSE
+
+    configFiles:
+      Debug: Debug-Tchap.xcconfig
+      Release: Release-Tchap.xcconfig
+
+    sources:
+    - path: ../Tchap/Config/BuildSettings.swift
+    - path: ../Tchap/Extensions/Account+Tchap.swift
+
+  BTchap-NSE:
+    templates: 
+      - BaseTarget-NSE
+
+    configFiles:
+      Debug: Debug-BTchap.xcconfig
+      Release: Release-BTchap.xcconfig
+
+    sources:
+    - path: ../BTchap/Config/BuildSettings.swift
+    - path: ../Tchap/Extensions/Account+Tchap.swift
+    
+  DevTchap-NSE:
+    templates: 
+      - BaseTarget-NSE
+
+    configFiles:
+      Debug: Debug-DevTchap.xcconfig
+      Release: Release-DevTchap.xcconfig
+
+    sources:
+    - path: ../DevTchap/Config/BuildSettings.swift
     - path: ../Tchap/Extensions/Account+Tchap.swift
