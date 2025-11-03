@@ -1,14 +1,14 @@
 name: RiotShareExtension
 
-schemes:
-  RiotShareExtension:
+schemeTemplates:
+  BaseScheme-ShareExtension:
     analyze:
       config: Debug
     archive:
       config: Release
     build:
       targets:
-        RiotShareExtension:
+        ${scheme_name}:
         - running
         - testing
         - profiling
@@ -26,8 +26,19 @@ schemes:
       config: Debug
       disableMainThreadChecker: true
 
-targets:
-  RiotShareExtension:
+schemes:
+  Tchap-ShareExtension:
+    templates:
+      - BaseScheme-ShareExtension
+  BTchap-ShareExtension:
+    templates:
+      - BaseScheme-ShareExtension
+  DevTchap-ShareExtension:
+    templates:
+      - BaseScheme-ShareExtension
+
+targetTemplates:
+  BaseTarget-ShareExtension:  
     platform: iOS
     type: app-extension
 
@@ -37,12 +48,11 @@ targets:
     - package: DTCoreText
     - package: PostHog
 
-    configFiles:
-      Debug: Debug.xcconfig
-      Release: Release.xcconfig
-
     sources:
     - path: .
+#Tchap exclusion because of specific targets
+      excludes:
+        - BuildSettings.swift    
     - path: ../Config/CommonConfiguration.swift
     - path: ../Config/Configurable.swift
     - path: ../Riot/Categories/Bundle.swift
@@ -103,7 +113,6 @@ targets:
     - path: ../Riot/Modules/Encryption/EncryptionTrustLevel.swift
 
     # Tchap
-    - path: ../RiotShareExtension/BuildSettings.swift
     - path: ../Tchap/Extensions
       excludes:
       - WebLinks+Tchap.swift
@@ -117,3 +126,40 @@ targets:
     - path: ../Tchap/Managers/DisplayName
     - path: ../Tchap/Model
     - path: ../Tchap/Utils
+
+targets:
+  Tchap-ShareExtension:
+    templates: 
+      - BaseTarget-ShareExtension
+
+    configFiles:
+      Debug: Debug-Tchap.xcconfig
+      Release: Release-Tchap.xcconfig
+
+    sources:
+    - path: ../Tchap/Config/BuildSettings.swift
+    - path: ../Tchap/Extensions/Account+Tchap.swift
+
+  BTchap-ShareExtension:
+    templates: 
+      - BaseTarget-ShareExtension
+
+    configFiles:
+      Debug: Debug-BTchap.xcconfig
+      Release: Release-BTchap.xcconfig
+
+    sources:
+    - path: ../BTchap/Config/BuildSettings.swift
+    - path: ../Tchap/Extensions/Account+Tchap.swift
+
+  DevTchap-ShareExtension:
+    templates: 
+      - BaseTarget-ShareExtension
+
+    configFiles:
+      Debug: Debug-DevTchap.xcconfig
+      Release: Release-DevTchap.xcconfig
+
+    sources:
+    - path: ../DevTchap/Config/BuildSettings.swift
+    - path: ../Tchap/Extensions/Account+Tchap.swift

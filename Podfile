@@ -41,6 +41,18 @@ def import_Common_pods
     pod 'FLEX', '~> 5.22.10', :configurations => ['Debug'], :inhibit_warnings => true
 end
 
+def import_tchap_app_dependencies
+    import_MatrixSDK
+    import_MatrixKit_pods
+    import_SwiftUI_pods
+    import_Common_pods
+end
+
+def import_tchap_ext_dependencies
+    import_MatrixSDK
+    import_MatrixKit_pods
+end
+
 abstract_target 'TchapPods' do
 
   pod 'GBDeviceInfo', '~> 7.1.0'
@@ -60,12 +72,7 @@ abstract_target 'TchapPods' do
   pod 'SwiftFormat/CLI'
 
   target "Tchap" do
-    import_MatrixSDK
-    import_MatrixKit_pods
-
-    import_SwiftUI_pods
-
-    import_Common_pods
+    import_tchap_app_dependencies
 
     target 'TchapTests' do
       inherit! :search_paths
@@ -73,26 +80,28 @@ abstract_target 'TchapPods' do
   end
 
   target "Btchap" do
-    import_MatrixSDK
-    import_MatrixKit_pods
-
-    import_SwiftUI_pods
-
-    import_Common_pods
+    import_tchap_app_dependencies
   end
-  
+
   target "DevTchap" do
-    import_MatrixSDK
-    import_MatrixKit_pods
-
-    import_SwiftUI_pods
-
-    import_Common_pods
+    import_tchap_app_dependencies
   end
-    
-  target "RiotShareExtension" do
-    import_MatrixSDK
-    import_MatrixKit_pods
+
+#  target "RiotShareExtension" do
+#    import_MatrixSDK
+#    import_MatrixKit_pods
+#  end
+
+  target "Tchap-ShareExtension" do
+    import_tchap_ext_dependencies
+  end
+
+  target "BTchap-ShareExtension" do
+    import_tchap_ext_dependencies
+  end
+
+  target "DevTchap-ShareExtension" do
+    import_tchap_ext_dependencies
   end
 
   target "RiotSwiftUI" do
@@ -103,10 +112,23 @@ abstract_target 'TchapPods' do
     import_SwiftUI_pods
   end
 
-  target "RiotNSE" do
-    import_MatrixSDK
-    import_MatrixKit_pods
+#  target "RiotNSE" do
+#    import_MatrixSDK
+#    import_MatrixKit_pods
+#  end
+
+  target "Tchap-NSE" do
+    import_tchap_ext_dependencies
   end
+
+  target "BTchap-NSE" do
+    import_tchap_ext_dependencies
+  end
+
+  target "DevTchap-NSE" do
+    import_tchap_ext_dependencies
+  end
+
 
   # Disabled due to crypto corruption issues.
   # https://github.com/element-hq/element-ios/issues/7618
