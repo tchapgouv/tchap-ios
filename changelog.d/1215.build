@@ -1,1 +1,0 @@
-Fix build pipeline (propagation of BuildSettings to application's extensions)

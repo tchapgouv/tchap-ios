@@ -1,3 +1,22 @@
+## Changes in 2.11.0 (2025-11-05)
+
+🙌 Improvements
+
+- Set Antivirus as a feature ([#1212](https://github.com/tchapgouv/tchap-ios/issues/1212))
+- Changer "Clé de Récupération" pour "Code de Vérification" ([#1217](https://github.com/tchapgouv/tchap-ios/issues/1217))
+- [Build] Allow app extension to access build settings ([#1223](https://github.com/tchapgouv/tchap-ios/issues/1223))
+- [Build] Add missing config files to #1223 ([#1225](https://github.com/tchapgouv/tchap-ios/issues/1225))
+
+🐛 Bugfixes
+
+- Fix typo in wording ([#1218](https://github.com/tchapgouv/tchap-ios/issues/1218))
+- Fix libcmark error in Xcode 26 ([#1219](https://github.com/tchapgouv/tchap-ios/issues/1219))
+
+🧱 Build
+
+- Fix build pipeline (propagation of BuildSettings to application's extensions) ([#1215](https://github.com/tchapgouv/tchap-ios/issues/1215))
+
+
 ## Changes in 2.10.8 (2025-10-06)
 
 🐛 Bugfixes
