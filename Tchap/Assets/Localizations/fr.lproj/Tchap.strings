@@ -372,3 +372,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Commands
 "room_command_visio_description" = "Crée un lien Visio avec le message suivant";
+
+////////////////////////////////////////////////////////////////////////////////
+// Chat participants
+"room_participants_leave_not_allowed_for_last_owner_msg" = "Vous ne pouvez pas quitter ce salon car vous êtes le seul administrateur.";
+
