@@ -14,16 +14,6 @@
 // limitations under the License.
 //
 
-<<<<<<< HEAD
-=======
-
-// App identity
-BUNDLE_DISPLAY_NAME = Element Classic
-BASE_BUNDLE_IDENTIFIER = im.vector.app
-APPLICATION_GROUP_IDENTIFIER = group.im.vector
-APPLICATION_SCHEME = element
-
->>>>>>> v1.11.32
 // Team
 DEVELOPMENT_TEAM = NVMQD635C6
 

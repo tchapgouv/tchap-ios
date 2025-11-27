@@ -13,11 +13,7 @@
 ![GitHub](https://img.shields.io/github/license/element-hq/element-ios)
 [![Twitter URL](https://img.shields.io/twitter/url?label=Element&url=https%3A%2F%2Ftwitter.com%2Felement_hq)](https://twitter.com/element_hq)
 
-<<<<<<< HEAD
 Tchap iOS is an iOS [Matrix](https://matrix.org/) client. It is based on [MatrixSDK](https://github.com/matrix-org/matrix-ios-sdk).
-=======
-Element Classic iOS is a previous-generation [Matrix](https://matrix.org/) client provided by [Element](https://element.io/). It is based on [MatrixSDK](https://github.com/matrix-org/matrix-ios-sdk). This client is still supported and receives security updates but no new features or usability enhancements are made. It is recommended to use [Element X](https://github.com/element-hq/element-x-ios) that is the next-generation mobile app.
->>>>>>> v1.11.32
 
 <p align="center">  
   <a href=https://apps.apple.com/fr/app/tchap/id1446253779?mt=8>

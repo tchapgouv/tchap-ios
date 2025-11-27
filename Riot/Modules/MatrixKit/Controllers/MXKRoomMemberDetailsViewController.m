@@ -21,6 +21,9 @@ Please see LICENSE in the repository root for full details.
 
 #import "MXKSwiftHeader.h"
 
+// Tchap:
+#import "GeneratedInterface-Swift.h"
+
 @interface MXKRoomMemberDetailsViewController ()
 {
     id membersListener;
