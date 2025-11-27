@@ -21,7 +21,7 @@ platform :ios do
 
   before_all do
     # Ensure used Xcode version
-    xcversion(version: "16.3")
+    xcversion(version: "16.4")
   end
 
   #### Public ####
@@ -79,7 +79,6 @@ platform :ios do
 
   desc "Run tests"
   lane :test do
-    xcodegen(spec: "project.yml")
     cocoapods
 
 #    run_tests(
@@ -115,7 +114,6 @@ platform :ios do
   
   desc "Run UI tests"
   lane :uitest do
-    xcodegen(spec: "project.yml")
     cocoapods
     
     run_tests(

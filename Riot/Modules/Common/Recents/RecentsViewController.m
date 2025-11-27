@@ -1,10 +1,10 @@
 /*
-Copyright 2018-2024 New Vector Ltd.
-Copyright 2017 Vector Creations Ltd
-Copyright 2015 OpenMarket Ltd
-
-SPDX-License-Identifier: AGPL-3.0-only
-Please see LICENSE in the repository root for full details.
+ Copyright 2018-2024 New Vector Ltd.
+ Copyright 2017 Vector Creations Ltd
+ Copyright 2015 OpenMarket Ltd
+ 
+ SPDX-License-Identifier: AGPL-3.0-only
+ Please see LICENSE in the repository root for full details.
  */
 
 #import "RecentsViewController.h"
@@ -117,6 +117,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     _enableStickyHeaders = NO;
     _stickyHeaderHeight = 30.0;
     
+<<<<<<< HEAD
     // Tchap: Disable Fake SearchBar
 //    // Create the fake search bar
 //    tableSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 600, 44)];
@@ -136,6 +137,25 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 //    self.contextMenuProvider.serviceDelegate = self;
 //    self.contextMenuProvider.menuProviderDelegate = self;
 
+=======
+    // Create the fake search bar
+    tableSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 600, 44)];
+    tableSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    tableSearchBar.showsCancelButton = NO;
+    tableSearchBar.placeholder = [VectorL10n searchFilterPlaceholder];
+    [tableSearchBar setImage:AssetImages.filterOff.image
+            forSearchBarIcon:UISearchBarIconSearch
+                       state:UIControlStateNormal];
+    
+    tableSearchBar.delegate = self;
+    
+    displayedSectionHeaders = [NSMutableArray array];
+    
+    _contextMenuProvider = [RecentCellContextMenuProvider new];
+    self.contextMenuProvider.serviceDelegate = self;
+    self.contextMenuProvider.menuProviderDelegate = self;
+    
+>>>>>>> v1.11.32
     // Set itself as delegate by default.
     self.delegate = self;
 }
@@ -153,10 +173,10 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     
     // Register key backup banner cells
     [self.recentsTableView registerNib:SecureBackupBannerCell.nib forCellReuseIdentifier:SecureBackupBannerCell.defaultReuseIdentifier];
-
+    
     // Register key verification banner cells
     [self.recentsTableView registerNib:CrossSigningSetupBannerCell.nib forCellReuseIdentifier:CrossSigningSetupBannerCell.defaultReuseIdentifier];
-
+    
     [self.recentsTableView registerClass:SectionHeaderView.class
       forHeaderFooterViewReuseIdentifier:SectionHeaderView.defaultReuseIdentifier];
     
@@ -183,8 +203,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     [self.recentsSearchBar setImage:AssetImages.filterOff.image
                    forSearchBarIcon:UISearchBarIconSearch
                               state:UIControlStateNormal];
+<<<<<<< HEAD
     [self.recentsSearchBar setShowsCancelButton:FALSE];
 
+=======
+    
+>>>>>>> v1.11.32
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -199,7 +223,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 - (void)userInterfaceThemeDidChange
 {
     [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
-
+    
     self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
     // Use the primary bg color for the recents table view in plain style.
@@ -207,13 +231,14 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     self.recentsTableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
     topview.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
-
+    
     [ThemeService.shared.theme applyStyleOnSearchBar:tableSearchBar];
     [ThemeService.shared.theme applyStyleOnSearchBar:self.recentsSearchBar];
-
+    
     // Force table refresh
     [self.recentsTableView reloadData];
     
+<<<<<<< HEAD
     if (self.recentsSearchBar)
     {
         [ThemeService.shared.theme applyStyleOnSearchBar:self.recentsSearchBar];
@@ -227,6 +252,10 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     
 //    [self.emptyView updateWithTheme:ThemeService.shared.theme];
 
+=======
+    [self.emptyView updateWithTheme:ThemeService.shared.theme];
+    
+>>>>>>> v1.11.32
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
@@ -286,7 +315,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     isViewVisible = YES;
     
     [self.screenTracker trackScreen];
-
+    
     // Reset back user interactions
     self.userInteractionEnabled = YES;
     
@@ -360,7 +389,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         // the selected room (if any) is highlighted.
         [self refreshCurrentSelectedCell:YES];
     }
-
+    
     if (self.recentsDataSource)
     {
         [self refreshRecentsTable];
@@ -932,10 +961,10 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     {
         Analytics.shared.joinedRoomTrigger = AnalyticsJoinedRoomTriggerInvite;
     }
-
+    
     // Avoid multiple openings of rooms
     self.userInteractionEnabled = NO;
-
+    
     // Do not stack views when showing room
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
     
@@ -953,6 +982,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)showRoomPreviewWithData:(RoomPreviewData*)roomPreviewData
 {
+<<<<<<< HEAD
     // Tchap: Show room preview disabled
 //    Analytics.shared.joinedRoomTrigger = AnalyticsJoinedRoomTriggerRoomDirectory;
 //
@@ -962,6 +992,16 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 //    RoomPreviewNavigationParameters *parameters = [[RoomPreviewNavigationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:presentationParameters];
 //
 //    [[AppDelegate theDelegate] showRoomPreviewWithParameters:parameters];
+=======
+    Analytics.shared.joinedRoomTrigger = AnalyticsJoinedRoomTriggerRoomDirectory;
+    
+    // Do not stack views when showing room
+    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO sender:nil sourceView:nil];
+    
+    RoomPreviewNavigationParameters *parameters = [[RoomPreviewNavigationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:presentationParameters];
+    
+    [[AppDelegate theDelegate] showRoomPreviewWithParameters:parameters];
+>>>>>>> v1.11.32
 }
 
 // Disable UI interactions in this screen while we are going to open another screen.
@@ -1029,7 +1069,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     {
         // Retrieve the invited room
         MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
-                
+        
         if (invitedRoom.summary.roomType == MXRoomTypeSpace)
         {
             // Indicates that spaces are not supported
@@ -1044,7 +1084,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     {
         // Retrieve the invited room
         MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
-                
+        
         if (invitedRoom.summary.roomType == MXRoomTypeSpace)
         {
             // Indicates that spaces are not supported
@@ -1083,7 +1123,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         [super dataSource:dataSource didCellChange:changes];
         return;
     }
-
+    
     if ([changes isKindOfClass:NSIndexPath.class])
     {
         NSIndexPath *indexPath = (NSIndexPath *)changes;
@@ -1094,7 +1134,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
             
             TableViewCellWithCollectionView *collectionViewCell = (TableViewCellWithCollectionView *)cell;
             [collectionViewCell.collectionView reloadData];
-
+            
             CGRect headerFrame = [self.recentsTableView rectForHeaderInSection:indexPath.section];
             UIView *headerView = [self.recentsTableView headerViewForSection:indexPath.section];
             UIView *updatedHeaderView = [self.dataSource viewForHeaderInSection:indexPath.section withFrame:headerFrame inTableView:self.recentsTableView];
@@ -1132,7 +1172,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }
     
     [self showEmptyViewIfNeeded];
-
+    
     if (dataSource.state == MXKDataSourceStateReady)
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:RecentsViewControllerDataReadyNotification
@@ -1141,6 +1181,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 }
 
 #pragma mark - Swipe actions
+<<<<<<< HEAD
 
 - (void)tableView:(UITableView*)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -1329,6 +1370,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     return swipeActionConfiguration;
 }
 
+=======
+>>>>>>> v1.11.32
 - (void)leaveEditedRoom
 {
     if (editedRoomId)
@@ -1340,6 +1383,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         }
         
         NSString *currentRoomId = editedRoomId;
+<<<<<<< HEAD
         
         __weak typeof(self) weakSelf = self;
         
@@ -1516,6 +1560,116 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
             [lastAdminAlert mxk_setAccessibilityIdentifier:@"LeaveEditedRoomAlert"];
             [self presentViewController:lastAdminAlert animated:YES completion:nil];
             self->currentAlert = lastAdminAlert;
+=======
+        MXWeakify(self);
+        MXRoom *room = [self.mainSession roomWithRoomId:currentRoomId];
+        __weak typeof(room) weakRoom = room;
+        [room isLastOwnerWithCompletionHandler:^(BOOL isLastOwner, NSError* error){
+            if (isLastOwner)
+            {
+                UIAlertController *isLastOwnerPrompt = [UIAlertController alertControllerWithTitle:[VectorL10n error]
+                                                                                           message:[VectorL10n roomParticipantsLeaveNotAllowedForLastOwnerMsg]
+                                                                                    preferredStyle:UIAlertControllerStyleAlert];
+                
+                [isLastOwnerPrompt addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
+                                                                      style:UIAlertActionStyleCancel
+                                                                    handler:^(UIAlertAction * action) {
+                    MXStrongifyAndReturnIfNil(self);
+                    self->currentAlert = nil;
+                }]];
+                
+                MXStrongifyAndReturnIfNil(self);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self presentViewController:isLastOwnerPrompt animated:YES completion:nil];
+                    self->currentAlert = isLastOwnerPrompt;
+                });
+            }
+            else
+            {
+                NSString *title, *message;
+                MXStrongifyAndReturnIfNil(self);
+                if ([self.mainSession roomWithRoomId:currentRoomId].isDirect)
+                {
+                    title = [VectorL10n roomParticipantsLeavePromptTitleForDm];
+                    message = [VectorL10n roomParticipantsLeavePromptMsgForDm];
+                }
+                else
+                {
+                    title = [VectorL10n roomParticipantsLeavePromptTitle];
+                    message = [VectorL10n roomParticipantsLeavePromptMsg];
+                }
+                
+                // confirm leave
+                UIAlertController *leavePrompt = [UIAlertController alertControllerWithTitle:title
+                                                                                     message:message
+                                                                              preferredStyle:UIAlertControllerStyleAlert];
+                
+                MXWeakify(self);
+                [leavePrompt addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
+                                                                style:UIAlertActionStyleCancel
+                                                              handler:^(UIAlertAction * action) {
+                    
+                    MXStrongifyAndReturnIfNil(self);
+                    self->currentAlert = nil;
+                }]];
+                
+                [leavePrompt addAction:[UIAlertAction actionWithTitle:[VectorL10n leave]
+                                                                style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                    MXStrongifyAndReturnIfNil(self);
+                    self->currentAlert = nil;
+                    
+                    // Check whether the user didn't leave the room yet
+                    // TODO: Handle multi-account
+                    if (weakRoom)
+                    {
+                        [self startActivityIndicatorWithLabel:[VectorL10n roomParticipantsLeaveProcessing]];
+                        // cancel pending uploads/downloads
+                        // they are useless by now
+                        [MXMediaManager cancelDownloadsInCacheFolder:weakRoom.roomId];
+                        
+                        // TODO GFO cancel pending uploads related to this room
+                        
+                        MXLogDebug(@"[RecentsViewController] Leave room (%@)", weakRoom.roomId);
+                        
+                        MXWeakify(self);
+                        [weakRoom leave:^{
+                            MXStrongifyAndReturnIfNil(self);
+                            [self stopActivityIndicator];
+                            [self.userIndicatorStore presentSuccessWithLabel:[VectorL10n roomParticipantsLeaveSuccess]];
+                            // Force table refresh
+                            [self cancelEditionMode:YES];
+                            
+                        } failure:^(NSError *error) {
+                            
+                            MXLogDebug(@"[RecentsViewController] Failed to leave room");
+                            MXStrongifyAndReturnIfNil(self);
+                            // Notify the end user
+                            NSString *userId = room.mxSession.myUser.userId;
+                            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification
+                                                                                object:error
+                                                                              userInfo:userId ? @{kMXKErrorUserIdKey: userId} : nil];
+                            
+                            [self stopActivityIndicator];
+                            
+                            // Leave editing mode
+                            [self cancelEditionMode:self->isRefreshPending];
+                            
+                        }];
+                    }
+                    else
+                    {
+                        // Leave editing mode
+                        [self cancelEditionMode:self->isRefreshPending];
+                    }
+                    
+                }]];
+                [leavePrompt mxk_setAccessibilityIdentifier:@"LeaveEditedRoomAlert"];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self presentViewController:leavePrompt animated:YES completion:nil];
+                    self->currentAlert = leavePrompt;
+                });
+            }
+>>>>>>> v1.11.32
         }];
     }
 }
