@@ -77,7 +77,9 @@ final class RoomInfoListViewController: UIViewController {
     
     private lazy var isLastOwnerAlertController: UIAlertController = {
         let title = VectorL10n.error
-        let message = VectorL10n.roomParticipantsLeaveNotAllowedForLastOwnerMsg
+        // Tchap: use Tchap message
+//        let message = VectorL10n.roomParticipantsLeaveNotAllowedForLastOwnerMsg
+        let message = TchapL10n.roomParticipantsLeaveNotAllowedForLastOwnerMsg
         let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
         controller.addAction(UIAlertAction(title: VectorL10n.ok, style: .default, handler: nil))

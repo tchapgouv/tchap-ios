@@ -140,7 +140,7 @@ class RoomContextActionService: NSObject, RoomContextActionServiceProtocol {
         Task {
             if try await room.isLastOwner() {
                 await MainActor.run {
-                    let alertController = UIAlertController(title: VectorL10n.error, message: VectorL10n.roomParticipantsLeaveNotAllowedForLastOwnerMsg, preferredStyle: .alert)
+                    let alertController = UIAlertController(title: VectorL10n.error, message: TchapL10n.roomParticipantsLeaveNotAllowedForLastOwnerMsg, preferredStyle: .alert) // Tchap: use Tchap message
                     alertController.addAction(UIAlertAction(title: VectorL10n.ok, style: .cancel, handler: nil))
                     self.delegate?.roomContextActionService(self, presentAlert: alertController)
                 }

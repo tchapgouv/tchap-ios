@@ -1386,7 +1386,7 @@ Please see LICENSE in the repository root for full details.
         {
             MXStrongifyAndReturnIfNil(self);
             self->currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n error]
-                                                               message:[VectorL10n roomParticipantsLeaveNotAllowedForLastOwnerMsg]
+                                                               message:TchapL10n.roomParticipantsLeaveNotAllowedForLastOwnerMsg // Tchap: use Tchap message
                                                         preferredStyle:UIAlertControllerStyleAlert];
             
             [self->currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]

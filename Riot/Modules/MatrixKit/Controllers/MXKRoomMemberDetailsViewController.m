@@ -228,7 +228,7 @@ Please see LICENSE in the repository root for full details.
                     if (isLastOwner)
                     {
                         UIAlertController *isLastOwnerPrompt = [UIAlertController alertControllerWithTitle:[VectorL10n error]
-                                                                                                   message:[VectorL10n roomParticipantsLeaveNotAllowedForLastOwnerMsg]
+                                                                                                   message:TchapL10n.roomParticipantsLeaveNotAllowedForLastOwnerMsg // Tchap: use Tchap message
                                                                                             preferredStyle:UIAlertControllerStyleAlert];
                         
                         [isLastOwnerPrompt addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]

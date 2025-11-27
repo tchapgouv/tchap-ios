@@ -63,6 +63,11 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
         self.room = room
         super.init()
         startObservingSummaryChanges()
+        // Tchap: update `isLastOwner` property now if possible.
+        // Avoid to wait for the next sync (which will call `roomSummaryUpdated`) to prevent the user to quit the room if he is the last admin in the meantime.
+        Task {
+            self.isLastOwner = (try? await room.isLastOwner()) == true
+        }
     }
     
     deinit {
