@@ -18,7 +18,7 @@ import Foundation
 
 @objc extension MXRoom {
     
-    /// Check whether the current user is\ the last administrator of the room.
+    /// Check whether the current user is\the last administrator of the room.
     ///
     /// - Parameters:
     /// - success: A block object called when the operation succeeded.
