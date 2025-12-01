@@ -85,6 +85,14 @@ Please see LICENSE in the repository root for full details.
         self.displayNameTextField.enabled = NO;
     }
     self.displayNameTextField.hidden = NO;
+    
+    // Tchap: quick and dirty fix to display long room titles on iOS 26.
+    // Tested on large devices (9)iPhone Air) and narrow devices (iPhone 12 mini).
+    // Field larger than 170.0 pixels is too large and not displayed on iPhone 12 mini running iOS 26.
+    if (@available(iOS 26, *)) {
+        CGFloat maxWidth = 170.0;
+        [self.displayNameTextField.widthAnchor constraintLessThanOrEqualToConstant:maxWidth].active = YES;
+    }
 }
 
 - (void)destroy
