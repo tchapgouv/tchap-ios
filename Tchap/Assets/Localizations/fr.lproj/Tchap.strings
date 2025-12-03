@@ -49,7 +49,7 @@
 
 "authentication_sso_warning" = "→ Est-ce que ProConnect est activé pour mon administration ?";
 
-"authentication_mas_enabled_alert_message" = "Pour plus de sécurité, vous allez être redirigé vers le nouveau service d’authentification de %@ depuis le navigateur de votre appareil.";
+"authentication_mas_enabled_alert_message" = "Pour plus de sécurité, une redirection vers le nouveau service d’authentification de %@ va s’effectuer dans une nouvelle fenêtre de l'application.";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Forgot password
