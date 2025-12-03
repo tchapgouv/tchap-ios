@@ -131,7 +131,7 @@ final class RoomAccessByLinkViewModel: RoomAccessByLinkViewModelType {
                 return
             }
         
-        let oneSelfPowerLevel = powerLevels.powerLevelOfUser(withUserID: userId)
+        let oneSelfPowerLevel = roomState.powerLevelOfUser(withUserID: userId)
         let isAdmin = oneSelfPowerLevel >= RoomPowerLevel.admin.rawValue
         
         self.isEditable = isAdmin && (self.isForum != nil && self.isForum == false)

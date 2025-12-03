@@ -138,11 +138,11 @@ final class BuildSettings: NSObject {
     static let applicationServicesStatusUrlString = "https://status.tchap.numerique.gouv.fr/"
     static let applicationAcceptableUsePolicyUrlString = ""
     static let proConnectInfoUrlString = "https://proconnect.gouv.fr/"
-    static let proConnectAvailabilityFaqArticleUrlString = "https://aide.tchap.beta.gouv.fr/fr/article/se-connecter-a-tchap-avec-proconnect-1dh1peg"
-    static let signoutAlertFaqArticleUrlString = "https://aide.tchap.beta.gouv.fr/fr/article/dechiffrement-en-cours-mes-messages-restent-verrouilles-atnp15/"
-    static let unableToDecryptFaqArticleUrlString = "https://aide.tchap.beta.gouv.fr/fr/article/dechiffrement-impossible-de-mes-messages-comment-y-remedier-iphone-xotgv1"
-    static let emailNotificationFaqArticleUrlString = "https://aide.tchap.beta.gouv.fr/fr/article/notification-par-email-draft-6k7k8"
-    static let newDeviceVerificationFaqArticleUrlString = "https://aide.tchap.beta.gouv.fr/fr/article/comment-verifier-un-nouvel-appareil-sur-tchap-xm0b0y"
+    static let proConnectAvailabilityFaqArticleUrlString = "https://aide.tchap.numerique.gouv.fr/fr/article/se-connecter-a-tchap-avec-proconnect-1dh1peg"
+    static let signoutAlertFaqArticleUrlString = "https://aide.tchap.numerique.gouv.fr/fr/article/dechiffrement-en-cours-mes-messages-restent-verrouilles-atnp15/"
+    static let unableToDecryptFaqArticleUrlString = "https://aide.tchap.numerique.gouv.fr/fr/article/dechiffrement-impossible-de-mes-messages-comment-y-remedier-iphone-xotgv1"
+    static let emailNotificationFaqArticleUrlString = "https://aide.tchap.numerique.gouv.fr/fr/article/notification-par-email-draft-6k7k8"
+    static let newDeviceVerificationFaqArticleUrlString = "https://aide.tchap.numerique.gouv.fr/fr/article/comment-verifier-un-nouvel-appareil-sur-tchap-xm0b0y"
     
     // MARK: - Matrix permalinks
     // Hosts/Paths for URLs that will considered as valid permalinks. Those permalinks are opened within the app.
@@ -209,14 +209,14 @@ final class BuildSettings: NSObject {
 #if DEBUG
     /// The configuration to use for analytics during development. Set `isEnabled` to false to disable analytics in debug builds.
     static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: true, // Tchap: enable PostHog analytics on DEBUG
-                                                               host: "https://us.i.posthog.com", // Tchap: dev posthog,
-                                                               apiKey: "phc_eQOeaQiaIxdX9kaQmqYTD7RJLyFubYmGYKUI9czqqQD", // Tchap: dev posthog,
+                                                               host: "https://posthog.tchap.numerique.gouv.fr",
+                                                               apiKey: "phc_gm2O25mu8NTQtKpozdoVwZCixWqdq7PUHLLjDNDzVIe", // Tchap: dev posthog,
                                                                termsURL: URL(string: "https://tchap.numerique.gouv.fr/politique-de-confidentialite")!) // Tchap: dev posthog,
 #else
     /// The configuration to use for analytics. Set `isEnabled` to false to disable analytics.
     static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: true, // Tchap: enable PostHog analytics on production
-                                                               host: "https://posthogdev.tchap.incubateur.net", // Tchap: prod posthog,
-                                                               apiKey: "phc_FFa4pkvmuWjF9nZOMmYJWUXMibuYnCnPyf3DqPGZs4L", // Tchap: prod posthog,
+                                                               host: "https://posthog.tchap.numerique.gouv.fr",
+                                                               apiKey: "phc_gm2O25mu8NTQtKpozdoVwZCixWqdq7PUHLLjDNDzVIe", // Tchap: dev posthog,
                                                                termsURL: URL(string: "https://tchap.numerique.gouv.fr/politique-de-confidentialite")!)
 #endif
     
@@ -273,6 +273,7 @@ final class BuildSettings: NSObject {
     static let tchapFeatureVoiceOverIP = "tchapFeatureVoiceOverIP"
     static let tchapFeatureVideoOverIP = "tchapFeatureVideoOverIP"
     static let tchapFeatureGeolocationSharing = "tchapFeatureGeolocationSharing" // linked to `locationSharingEnabled` property (see above)
+    static let tchapFeatureAntivirus = "tchapFeatureAntivirus" // Allow usage of antivirus
     static var tchapFeaturesAllowedHomeServersForFeature: [String: [String]] = [
         tchapFeatureNotificationByEmail: [
             tchapFeatureAnyHomeServer
@@ -318,6 +319,9 @@ final class BuildSettings: NSObject {
             "agent.education.tchap.gouv.fr"
         ],
         tchapFeatureGeolocationSharing: [
+            tchapFeatureAnyHomeServer
+        ],
+        tchapFeatureAntivirus: [
             tchapFeatureAnyHomeServer
         ]
     ]

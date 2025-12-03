@@ -311,7 +311,7 @@ public class TchapL10n: NSObject {
   public static var expiredAccountOnNewSentEmailTitle: String { 
     return TchapL10n.tr("Tchap", "expired_account_on_new_sent_email_title") 
   }
-  /// Emvoyer un nouvel email
+  /// Envoyer un nouvel email
   public static var expiredAccountRequestRenewalEmailButton: String { 
     return TchapL10n.tr("Tchap", "expired_account_request_renewal_email_button") 
   }

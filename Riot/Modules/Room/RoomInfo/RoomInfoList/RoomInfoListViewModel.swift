@@ -26,6 +26,7 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
 
     private let session: MXSession
     private let room: MXRoom
+    private var isLastOwner = false
     
     // MARK: Public
 
@@ -51,7 +52,8 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
         return RoomInfoListViewData(numberOfMembers: Int(room.summary.membersCount.joined),
                                     isEncrypted: room.summary.isEncrypted,
                                     isDirect: room.isDirect,
-                                    basicInfoViewData: basicInfoViewData)
+                                    basicInfoViewData: basicInfoViewData,
+                                    isLastOwner: isLastOwner)
     }
     
     // MARK: - Setup
@@ -61,6 +63,11 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
         self.room = room
         super.init()
         startObservingSummaryChanges()
+        // Tchap: update `isLastOwner` property now if possible.
+        // Avoid to wait for the next sync (which will call `roomSummaryUpdated`) to prevent the user to quit the room if he is the last admin in the meantime.
+        Task {
+            self.isLastOwner = (try? await room.isLastOwner()) == true
+        }
     }
     
     deinit {
@@ -97,6 +104,9 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
     @objc private func roomSummaryUpdated(_ notification: Notification) {
         //  force update view
         self.update(viewState: .loaded(viewData: viewData))
+        Task {
+            isLastOwner = (try? await room.isLastOwner()) == true
+        }
     }
     
     private func loadData() {

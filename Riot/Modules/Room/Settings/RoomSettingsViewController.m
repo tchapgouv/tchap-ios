@@ -624,7 +624,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             {
                 // Check user's power level to know whether the user is allowed to turn on the encryption mode
                 MXRoomPowerLevels *powerLevels = [mxRoomState powerLevels];
-                NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
+                NSInteger oneSelfPowerLevel = [mxRoomState powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
                 
                 if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomEncryption])
                 {
@@ -667,7 +667,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             return;
         
         MXRoomPowerLevels *powerLevels = [mxRoomState powerLevels];
-        NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
+        NSInteger oneSelfPowerLevel = [mxRoomState powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
         
         if (oneSelfPowerLevel < [powerLevels minimumPowerLevelForSendingEventAsStateEvent:eventTypeForSelectedField])
             return;
@@ -2093,7 +2093,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     
     // Check user's power level to know which settings are editable.
     MXRoomPowerLevels *powerLevels = [mxRoomState powerLevels];
-    NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
+    NSInteger oneSelfPowerLevel = [mxRoomState powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
     
     // general settings
     if (section == SECTION_TAG_MAIN)
@@ -3366,7 +3366,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     {
         // Check user's power level to know whether the user is allowed to set the main address
         MXRoomPowerLevels *powerLevels = [mxRoomState powerLevels];
-        NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
+        NSInteger oneSelfPowerLevel = [mxRoomState powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
 
         if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomAliases])
         {

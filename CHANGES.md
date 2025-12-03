@@ -1,3 +1,34 @@
+## Changes in 1.11.32 (2025-10-14)
+
+🙌 Improvements
+
+- Rename the app to Element Classic. ([#7972](https://github.com/element-hq/element-ios/issues/7972))
+
+🧱 Build
+
+- Switch to building the project with Xcode 16.4. ([#7973](https://github.com/element-hq/element-ios/pull/7973))
+
+## Changes in 1.11.31 (2025-07-28)
+
+✨ Features
+
+- Support for MSC 4289. ([#7950](https://github.com/element-hq/element-ios/pull/7950))
+
+🙌 Improvements
+
+- PL 150 users will be displayed as Owners. ([#7951](https://github.com/element-hq/element-ios/issues/7951))
+- Owners can't leave the room if they are the last owners while also not being the last member. ([#7952](https://github.com/element-hq/element-ios/issues/7952))
+
+🐛 Bugfixes
+
+- Room continuity fix for room version 12. ([#7953](https://github.com/element-hq/element-ios/pull/7953))
+
+
+## Changes in 1.11.30 (2025-06-10)
+
+No significant changes.
+
+
 ## Changes in 1.11.29 (2025-05-29)
 
 No significant changes.
