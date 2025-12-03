@@ -2798,3 +2798,8 @@
 "local_contacts_access_discovery_warning" = "Afin d’afficher qui parmi vos contacts utilise déjà Tchap, nous pouvons exploiter les adresses e-mails de votre carnet d'adresse. Ces données ne seront pas mémorisées. Pour plus d'informations, veuillez consulter les Termes et Conditions disponibles dans les paramètres de l'application.";
 // Events formatter
 "notice_crypto_unable_to_decrypt" = "Message verrouillé."; // Tchap
+
+// Account managment // Tchap
+"settings_manage_account_title" = "Compte";
+"settings_manage_account_action" = "Gérer votre compte";
+"settings_manage_account_description" = "Gérer votre compte à %@";
