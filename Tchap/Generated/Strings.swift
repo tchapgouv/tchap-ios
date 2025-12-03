@@ -663,6 +663,10 @@ public class TchapL10n: NSObject {
   public static var roomMembersTabTitle: String { 
     return TchapL10n.tr("Tchap", "room_members_tab_title") 
   }
+  /// Vous ne pouvez pas quitter ce salon car vous êtes le seul administrateur.
+  public static var roomParticipantsLeaveNotAllowedForLastOwnerMsg: String { 
+    return TchapL10n.tr("Tchap", "room_participants_leave_not_allowed_for_last_owner_msg") 
+  }
   /// Le fichier est trop lourd pour être envoyé. La taille limite est de %ldMo, mais la taille de votre fichier est de %ldMo.
   public static func roomSendFileTooBigMessage(_ p1: Int, _ p2: Int) -> String {
     return TchapL10n.tr("Tchap", "room_send_file_too_big_message", p1, p2)
