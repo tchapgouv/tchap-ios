@@ -1,3 +1,28 @@
+## Changes in 2.11.2 (2025-12-03)
+
+🙌 Improvements
+
+- [Privacy] Remove activation of Sentry crash report ([#1229](https://github.com/tchapgouv/tchap-ios/issues/1229))
+- Rebase on Element 1.11.32 (fFrom 1.11.29) : https://github.com/element-hq/element-ios/releases/tag/v1.11.32
+
+  v1.11.30 :
+  - Upgrade the matrix-rust-sdk to resolve a High severity security issue
+
+  v1.11.31 :
+  - Support for MSC 4289 and V12 room version power levels
+  - PL 150 users will be displayed as Owners
+  - Owners can't leave the room if they are the last owners while also not being the last member
+  - Room continuity fix for room version 12.
+
+  v1.11.32 :
+  - Rename the app to Element Classic
+  - Switch to building the project with Xcode 16.4. ([#1230](https://github.com/tchapgouv/tchap-ios/issues/1230))
+
+🐛 Bugfixes
+
+- Set maximum width constraint for displayname to avoid header room to vanish on iOS 26 ([#1228](https://github.com/tchapgouv/tchap-ios/issues/1228))
+
+
 ## Changes in 2.11.0 (2025-11-05)
 
 🙌 Improvements
