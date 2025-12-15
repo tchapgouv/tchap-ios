@@ -1791,6 +1791,14 @@ static NSString *const kTchapRepliedTextPattern = @"(?s)<mx-reply>.*<blockquote>
     {
         MXJSONModelSetString(body, event.content[kMXMessageBodyKey]);
     }
+    // Tchap: more and more crashes are reported on the following line because `body` parameter seems to be nil.
+//    NSRange bodyRange = [str.string rangeOfString:body];
+    if (body == nil) {
+        // Return like if nody is not found in the whole string rather than going to crash.
+        [self postRenderAttributedString:str];
+        return str;
+    }
+    // Tchap: Now we are sure `body` is not nil.
     NSRange bodyRange = [str.string rangeOfString:body];
     if (bodyRange.location == NSNotFound)
     {
