@@ -1,0 +1,1 @@
+Try to fix a crash in message rendering when body is nil.
