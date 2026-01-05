@@ -1348,19 +1348,26 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         [room isLastOwnerWithCompletionHandler:^(BOOL isLastOwner, NSError* error){
             if (isLastOwner)
             {
-                UIAlertController *isLastOwnerPrompt = [UIAlertController alertControllerWithTitle:[VectorL10n error]
-                                                                                           message:TchapL10n.roomParticipantsLeaveNotAllowedForLastOwnerMsg // Tchap: use Tchap message
-                                                                                    preferredStyle:UIAlertControllerStyleAlert];
+                // Tchap: don't define AlertController on background thread (else it crashes)
+//                UIAlertController *isLastOwnerPrompt = [UIAlertController alertControllerWithTitle:[VectorL10n error]
+//                                                                                           message:TchapL10n.roomParticipantsLeaveNotAllowedForLastOwnerMsg // Tchap: use Tchap message
+//                                                                                    preferredStyle:UIAlertControllerStyleAlert];
                 
-                [isLastOwnerPrompt addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
-                                                                      style:UIAlertActionStyleCancel
-                                                                    handler:^(UIAlertAction * action) {
+                // Tchap: don't define AlertController on background thread (else it crashes)
+                UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:[VectorL10n ok]
+                                                                        style:UIAlertActionStyleCancel
+                                                                      handler:^(UIAlertAction * action) {
                     MXStrongifyAndReturnIfNil(self);
                     self->currentAlert = nil;
-                }]];
+                }];
                 
                 MXStrongifyAndReturnIfNil(self);
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    // Tchap: define AlertController on main thread (else it crashes)
+                    UIAlertController *isLastOwnerPrompt = [UIAlertController alertControllerWithTitle:[VectorL10n error]
+                                                                                               message:TchapL10n.roomParticipantsLeaveNotAllowedForLastOwnerMsg // Tchap: use Tchap message
+                                                                                        preferredStyle:UIAlertControllerStyleAlert];
+                    [isLastOwnerPrompt addAction:confirmAction];
                     [self presentViewController:isLastOwnerPrompt animated:YES completion:nil];
                     self->currentAlert = isLastOwnerPrompt;
                 });
@@ -1381,20 +1388,23 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                 }
                 
                 // confirm leave
-                UIAlertController *leavePrompt = [UIAlertController alertControllerWithTitle:title
-                                                                                     message:message
-                                                                              preferredStyle:UIAlertControllerStyleAlert];
+                // Tchap: don't define AlertController on background thread (else it crashes)
+//                UIAlertController *leavePrompt = [UIAlertController alertControllerWithTitle:title
+//                                                                                     message:message
+//                                                                              preferredStyle:UIAlertControllerStyleAlert];
                 
                 MXWeakify(self);
-                [leavePrompt addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
-                                                                style:UIAlertActionStyleCancel
-                                                              handler:^(UIAlertAction * action) {
+                // Tchap: don't define AlertController on background thread (else it crashes)
+                UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:[VectorL10n cancel]
+                                                                       style:UIAlertActionStyleCancel
+                                                                     handler:^(UIAlertAction * action) {
                     
                     MXStrongifyAndReturnIfNil(self);
                     self->currentAlert = nil;
-                }]];
+                }];
                 
-                [leavePrompt addAction:[UIAlertAction actionWithTitle:[VectorL10n leave]
+                // Tchap: don't define AlertController on background thread (else it crashes)
+                UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:[VectorL10n leave]
                                                                 style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                     MXStrongifyAndReturnIfNil(self);
                     self->currentAlert = nil;
@@ -1443,9 +1453,16 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                         [self cancelEditionMode:self->isRefreshPending];
                     }
                     
-                }]];
-                [leavePrompt mxk_setAccessibilityIdentifier:@"LeaveEditedRoomAlert"];
+                }];
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    // Tchap: define AlertController on main thread (else it crashes)
+                    UIAlertController *leavePrompt = [UIAlertController alertControllerWithTitle:title
+                                                                                         message:message
+                                                                                  preferredStyle:UIAlertControllerStyleAlert];
+                    [leavePrompt addAction:cancelAction];
+                    [leavePrompt addAction:confirmAction];
+                    
+                    [leavePrompt mxk_setAccessibilityIdentifier:@"LeaveEditedRoomAlert"];
                     [self presentViewController:leavePrompt animated:YES completion:nil];
                     self->currentAlert = leavePrompt;
                 });
