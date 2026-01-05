@@ -1385,18 +1385,25 @@ Please see LICENSE in the repository root for full details.
         if (isLastOwner)
         {
             MXStrongifyAndReturnIfNil(self);
-            self->currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n error]
-                                                               message:TchapL10n.roomParticipantsLeaveNotAllowedForLastOwnerMsg // Tchap: use Tchap message
-                                                        preferredStyle:UIAlertControllerStyleAlert];
+            // Tchap: don't define AlertController on background thread (else it crashes)
+//            self->currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n error]
+//                                                               message:TchapL10n.roomParticipantsLeaveNotAllowedForLastOwnerMsg // Tchap: use Tchap message
+//                                                        preferredStyle:UIAlertControllerStyleAlert];
             
-            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
+            // Tchap: don't define AlertController on background thread (else it crashes)
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                              style:UIAlertActionStyleCancel
                                                            handler:^(UIAlertAction * action) {
                                                                
                                                                MXStrongifyAndReturnIfNil(self);
                                                                self->currentAlert = nil;
-                                                           }]];
+                                                           }];
             dispatch_async(dispatch_get_main_queue(), ^{
+                // Tchap: define AlertController on main thread (else it crashes)
+                self->currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n error]
+                                                                   message:TchapL10n.roomParticipantsLeaveNotAllowedForLastOwnerMsg // Tchap: use Tchap message
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+                [self->currentAlert addAction:cancelAction];
                 [self presentViewController:self->currentAlert animated:YES completion:nil];
             });
         }
@@ -1416,48 +1423,59 @@ Please see LICENSE in the repository root for full details.
                 message = [VectorL10n roomParticipantsLeavePromptMsg];
             }
             
-            self->currentAlert = [UIAlertController alertControllerWithTitle:title
-                                                               message:message
-                                                        preferredStyle:UIAlertControllerStyleAlert];
+            // Tchap: don't define AlertController on background thread (else it crashes)
+//            self->currentAlert = [UIAlertController alertControllerWithTitle:title
+//                                                               message:message
+//                                                        preferredStyle:UIAlertControllerStyleAlert];
             
             MXWeakify(self);
-            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
-                                                             style:UIAlertActionStyleCancel
-                                                           handler:^(UIAlertAction * action) {
-                                                               
-                                                               MXStrongifyAndReturnIfNil(self);
-                                                               self->currentAlert = nil;
-                                                               
-                                                           }]];
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:[VectorL10n cancel]
+                                                                   style:UIAlertActionStyleCancel
+                                                                 handler:^(UIAlertAction * action) {
+                
+                MXStrongifyAndReturnIfNil(self);
+                self->currentAlert = nil;
+                
+            }];
             
-            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n leave]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
-                                                               
-                                                               MXStrongifyAndReturnIfNil(self);
-                                                               self->currentAlert = nil;
-                                                               
-                                                               [self addPendingActionMask];
-                                                               MXWeakify(self);
-                                                               [self.mxRoom leave:^{
-                                                                   
-                                                                   MXStrongifyAndReturnIfNil(self);
-                                                                   [self withdrawViewControllerAnimated:YES completion:nil];
-                                                                   
-                                                               } failure:^(NSError *error) {
-                                                                   
-                                                                   MXStrongifyAndReturnIfNil(self);
-                                                                   [self removePendingActionMask];
-                                                                   MXLogDebug(@"[RoomParticipantsVC] Leave room %@ failed", self.mxRoom.roomId);
-                                                                   // Alert user
-                                                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                   
-                                                               }];
-                                                               
-                                                           }]];
+            UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:[VectorL10n leave]
+                                                                    style:UIAlertActionStyleDefault
+                                                                  handler:^(UIAlertAction * action) {
+                
+                MXStrongifyAndReturnIfNil(self);
+                self->currentAlert = nil;
+                
+                [self addPendingActionMask];
+                MXWeakify(self);
+                [self.mxRoom leave:^{
+                    
+                    MXStrongifyAndReturnIfNil(self);
+                    [self withdrawViewControllerAnimated:YES completion:nil];
+                    
+                } failure:^(NSError *error) {
+                    
+                    MXStrongifyAndReturnIfNil(self);
+                    [self removePendingActionMask];
+                    MXLogDebug(@"[RoomParticipantsVC] Leave room %@ failed", self.mxRoom.roomId);
+                    // Alert user
+                    [[AppDelegate theDelegate] showErrorAsAlert:error];
+                    
+                }];
+                
+            }];
             
-            [self->currentAlert mxk_setAccessibilityIdentifier:@"RoomParticipantsVCLeaveAlert"];
-            [self presentViewController:self->currentAlert animated:YES completion:nil];
+            // Tchap: define AlertController on main thread (else it crashes)
+//            [self->currentAlert mxk_setAccessibilityIdentifier:@"RoomParticipantsVCLeaveAlert"];
+//            [self presentViewController:self->currentAlert animated:YES completion:nil];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self->currentAlert = [UIAlertController alertControllerWithTitle:title
+                                                                         message:message
+                                                                  preferredStyle:UIAlertControllerStyleAlert];
+                [self->currentAlert addAction:cancelAction];
+                [self->currentAlert addAction:confirmAction];
+                [self->currentAlert mxk_setAccessibilityIdentifier:@"RoomParticipantsVCLeaveAlert"];
+                [self presentViewController:self->currentAlert animated:YES completion:nil];
+            });
         }
     }];
 }
