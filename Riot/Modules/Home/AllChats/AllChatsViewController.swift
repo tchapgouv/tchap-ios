@@ -80,9 +80,15 @@ class AllChatsViewController: HomeViewController {
     
     private func setToolbarHidden(_ isHidden: Bool, animated: Bool) {
         UIView.animate(withDuration: animated ? 0.3 : 0) {
-            self.isToolbarHidden = isHidden
+            // Tchap: don't hide toolbar when scrolling with iOS 26,
+            // else it make the `plus` button slides under the searchBar
+            // and make it very difficult to use.
+            if #available(iOS 26.0, *) {
+                self.isToolbarHidden = false
+            } else {
+                self.isToolbarHidden = isHidden
+            }
         }
-
     }
     
     // MARK: - SplitViewMasterViewControllerProtocol
