@@ -556,12 +556,18 @@ class AllChatsViewController: HomeViewController {
         self.isToolbarHidden = false
         self.update(with: theme)
         
+        // Tchap: Define custom "Plus" icon usable as colored under iOS 26 Liquid Glass.
+        let homePlusImage = UIImage(systemName: "plus.circle.fill")!
+            .withRenderingMode(.alwaysTemplate)
+            .applyingSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 40.0))!
+            .applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors:[.white, theme.colors.accent]))
+
         var toolbarItems = [
             // Tchap: Hide space button
             /*spacesButton,*/
             UIBarButtonItem.flexibleSpace(),
             // Tchap: Update icon
-            UIBarButtonItem(image: Asset_tchap.Images.homePlus.image, menu: menu)
+            UIBarButtonItem(image: homePlusImage, menu: menu),
         ]
         
         if let userID = UserSessionsService.shared.mainUserSession?.userId,
