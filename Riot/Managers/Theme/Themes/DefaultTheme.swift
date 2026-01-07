@@ -142,7 +142,13 @@ class DefaultTheme: NSObject, Theme {
             ]
 
             navigationBar.standardAppearance = appearance
-            navigationBar.scrollEdgeAppearance = modernScrollEdgeAppearance ? nil : appearance
+            // Tchap: on iOS 26, navigationBar title is not displayed in large format if `scrollEdgeAppearance` is set to `appearance`.
+//            navigationBar.scrollEdgeAppearance = modernScrollEdgeAppearance ? nil : appearance
+            if #available(iOS 26.0, *) {
+                navigationBar.scrollEdgeAppearance = nil
+            } else {
+                navigationBar.scrollEdgeAppearance = modernScrollEdgeAppearance ? nil : appearance
+            }
         } else {
             navigationBar.titleTextAttributes = [
                 NSAttributedString.Key.foregroundColor: textPrimaryColor
