@@ -1,3 +1,17 @@
+## Changes in 2.11.4 (2026-01-08)
+
+🙌 Improvements
+
+- Coloriser le bouton de création de room sur l'accueil pour qu'il soit plus visible. ([#1240](https://github.com/tchapgouv/tchap-ios/issues/1240))
+- Correction du bug masquant le titre principal de la liste des conversations en grand format sous iOS 26. ([#1242](https://github.com/tchapgouv/tchap-ios/issues/1242))
+
+🐛 Bugfixes
+
+- Try to fix a crash in message rendering when body is nil. ([#1234](https://github.com/tchapgouv/tchap-ios/issues/1234))
+- Fix crash when leaving room. ([#1236](https://github.com/tchapgouv/tchap-ios/issues/1236))
+- Corrige le glissement du bouton de création de salon sous la barre de recherche lors du scroll de la liste de salons sous iOS 26. ([#1238](https://github.com/tchapgouv/tchap-ios/issues/1238))
+
+
 ## Changes in 2.11.2 (2025-12-03)
 
 🙌 Improvements
