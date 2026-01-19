@@ -240,7 +240,7 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
                     TchapAuthenticationHelper.RedirectToSSO(for: self.authenticationVerifyEmailViewModel.context.emailAddress) { ssoProvider in
                         if let ssoProvider {
                             Task { @MainActor in
-                                self.callback?(.tchapRegisterWithSSO(ssoProvider, self.authenticationVerifyEmailViewModel.context.emailAddress))
+                                self.callback?(.tchapRegisterWithSSO(ssoProvider, "register", self.authenticationVerifyEmailViewModel.context.emailAddress))
                             }
                         }
                     }

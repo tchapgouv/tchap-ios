@@ -52,18 +52,20 @@ final class SSOAuthenticationPresenter: NSObject {
     // MARK: - Public
     
     // Tchap: add `loginHint` string parameter for SSO
+    // Tchap: add `action` string parameter for SSO and pass it into url query parameter to SSO portal.
 //    func present(forIdentityProvider identityProvider: SSOIdentityProvider?,
 //                 with transactionId: String,
 //                 from presentingViewController: UIViewController,
 //                 animated: Bool) {
     func present(forIdentityProvider identityProvider: SSOIdentityProvider?,
+                 action: String? = nil,
                  loginHint: String? = nil,
                  with transactionId: String,
                  from presentingViewController: UIViewController,
                  animated: Bool) {
         // Tchap: add `loginHint` string parameter for SSO
 //        guard let authenticationURL = self.ssoAuthenticationService.authenticationURL(for: identityProvider?.id, transactionId: transactionId) else {
-        guard let authenticationURL = self.ssoAuthenticationService.authenticationURL(for: identityProvider?.id, loginHint: loginHint, transactionId: transactionId) else {
+        guard let authenticationURL = self.ssoAuthenticationService.authenticationURL(for: identityProvider?.id, action: action, loginHint: loginHint, transactionId: transactionId) else {
             self.delegate?.ssoAuthenticationPresenter(self, authenticationDidFailWithError: SSOAuthenticationPresenterError.failToLoadAuthenticationURL)
              return
         }

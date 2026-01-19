@@ -185,7 +185,7 @@ struct TchapAuthenticationLoginScreen: View {
             if case .sso = viewModel.viewState.tchapAuthenticationMode,
                let ssoProvider {
                 // Tchap: add `loginHint` string parameter for SSO
-                viewModel.send(viewAction: .continueWithSSO(ssoProvider, viewModel.username))
+                viewModel.send(viewAction: .continueWithSSO(ssoProvider, "login", viewModel.username))
             } else {
                 guard viewModel.viewState.canSubmit else { return }
                 viewModel.send(viewAction: .next)
