@@ -18,9 +18,10 @@ struct AuthenticationLoginCoordinatorParameters {
 
 enum AuthenticationLoginCoordinatorResult: CustomStringConvertible {
     // Tchap: add `loginHint` string parameter for SSO
+    // Tchap: add `action` string parameter for SSO
 //    case continueWithSSO(SSOIdentityProvider)
     /// Continue using the supplied SSO provider.
-    case continueWithSSO(SSOIdentityProvider, String? = nil)
+    case continueWithSSO(SSOIdentityProvider, String? = nil, String? = nil)
     /// Login was successful with the associated session created.
     case success(session: MXSession, password: String)
     /// Login was successful with the associated session created.
@@ -33,8 +34,8 @@ enum AuthenticationLoginCoordinatorResult: CustomStringConvertible {
         switch self {
         // Tchap: add `loginHint` string parameter for SSO
 //        case .continueWithSSO(let provider):
-        case .continueWithSSO(let provider, _):
-            return "continueWithSSO: \(provider)"
+        case .continueWithSSO(let provider, let action, let loginHint):
+            return "continueWithSSO: \(provider) for action: \(action) and loginHint: \(loginHint)"
         case .success:
             return "success"
         case .loggedInWithQRCode:
@@ -132,8 +133,8 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
                 self.showForgotPasswordScreen()
             case .login(let username, let password):
                 self.login(username: username, password: password)
-            case .continueWithSSO(let identityProvider, let loginHint):
-                self.callback?(.continueWithSSO(identityProvider, loginHint))
+            case .continueWithSSO(let identityProvider, let action, let loginHint):
+                self.callback?(.continueWithSSO(identityProvider, action, loginHint))
             case .fallback:
                 self.callback?(.fallback)
             case .qrLogin:
@@ -221,7 +222,8 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
                             return
                         }
                         // Tchap: add `loginHint` string parameter for SSO
-                        viewModel.send(viewAction: .continueWithSSO(ssoProvider, viewModel.username))
+                        // Tchap: add `action` string parameter for SSO
+                        viewModel.send(viewAction: .continueWithSSO(ssoProvider, "login", viewModel.username))
                     }
                 }))
             }

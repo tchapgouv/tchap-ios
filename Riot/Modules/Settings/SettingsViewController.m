@@ -4262,7 +4262,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         presenter.delegate = self;
         self.ssoAuthenticationPresenter = presenter;
         
-        [presenter presentForIdentityProvider:nil loginHint:nil with:@"" from:self animated:YES];
+        [presenter presentForIdentityProvider:nil action: nil loginHint:nil with:@"" from:self animated:YES];
     }
 }
     

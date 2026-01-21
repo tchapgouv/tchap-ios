@@ -49,8 +49,8 @@ class AuthenticationLoginViewModel: AuthenticationLoginViewModelType, Authentica
         // Tchap: add `loginHint` string parameter for SSO
 //        case .continueWithSSO(let provider):
 //            Task { await callback?(.continueWithSSO(provider)) }
-        case .continueWithSSO(let provider, let loginHint):
-            Task { await callback?(.continueWithSSO(provider, loginHint)) }
+        case .continueWithSSO(let provider, let action, let loginHint):
+            Task { await callback?(.continueWithSSO(provider, action, loginHint)) }
         case .qrLogin:
             Task { await callback?(.qrLogin) }
         }
