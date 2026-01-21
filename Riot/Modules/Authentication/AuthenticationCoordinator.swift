@@ -563,7 +563,8 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
             displayCancelConfirmation()
             // Tchap: handle Registration via SSO
         case .tchapRegisterWithSSO(let provider, let action, let username):
-            self.navigationRouter.dismissModule(animated: true, completion: nil)
+            // Tchap: don't dismiss navigationRouter else the user will land on AllChats view if he canceled the register process.
+        //    self.navigationRouter.dismissModule(animated: true, completion: nil)
             self.presentSSOAuthentication(for: provider, action: action, loginHint: username)
         }
     }
@@ -786,6 +787,13 @@ extension AuthenticationCoordinator: SSOAuthenticationPresenterDelegate {
         ssoAuthenticationPresenter = nil
         ssoTransactionID = nil
         authenticationType = nil
+        // Tchap: call cancel callback.
+        switch initialScreen {
+        case .registration:
+            self.callback?(.cancel(.register))
+        case .login(_):
+            self.callback?(.cancel(.login))
+        }
     }
     
     /// Performs the last step of the login process for a flow that authenticated via SSO.
