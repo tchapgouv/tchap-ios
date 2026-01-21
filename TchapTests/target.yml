@@ -48,7 +48,6 @@ targets:
         SWIFT_OBJC_BRIDGING_HEADER: TchapTests/SupportingFiles/TchapTests-Bridging-Header.h
         TEST_HOST: $(BUILT_PRODUCTS_DIR)/Tchap.app/Tchap
       configs:
-        Debug:
         Release:
           PROVISIONING_PROFILE: $(TCHAP_PROVISIONING_PROFILE)
           PROVISIONING_PROFILE_SPECIFIER: $(TCHAP_PROVISIONING_PROFILE_SPECIFIER)
