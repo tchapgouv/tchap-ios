@@ -668,8 +668,10 @@ enum {
 
 -(void) removeDeviceRedirectWithURL: (NSURL * _Nonnull) url
 {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle: [VectorL10n manageSessionRedirect] message: nil preferredStyle:UIAlertControllerStyleAlert];
-    
+    // Tchap: use Tchap warning message for MAS redirection.
+//    UIAlertController *alert = [UIAlertController alertControllerWithTitle: [VectorL10n manageSessionRedirect] message: nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: [TchapL10n authenticationMasEnabledAlertMessage:BuildSettings.bundleDisplayName] message: nil preferredStyle:UIAlertControllerStyleAlert];
+
     MXWeakify(self);
     UIAlertAction *action = [UIAlertAction actionWithTitle:[VectorL10n ok]
                                                      style:UIAlertActionStyleDefault
@@ -682,7 +684,7 @@ enum {
         
         // Tchap: add `loginHint` string parameter for SSO
 //        [presenter presentForIdentityProvider:nil with:@"" from:self animated:YES];
-        [presenter presentForIdentityProvider:nil loginHint: nil with:@"" from:self animated:YES];
+        [presenter presentForIdentityProvider:nil action: nil loginHint: nil with:@"" from:self animated:YES];
     }];
     
     [alert addAction: action];

@@ -19,9 +19,10 @@ enum AuthenticationLoginViewModelResult: CustomStringConvertible {
     /// Login using the supplied credentials.
     case login(username: String, password: String)
     // Tchap: add `loginHint` string parameter for SSO
+    // Tchap: add `action` string parameter for SSO
     //    case continueWithSSO(SSOIdentityProvider)
     /// Continue using the supplied SSO provider.
-    case continueWithSSO(SSOIdentityProvider, String? = nil)
+    case continueWithSSO(SSOIdentityProvider, String? = nil, String? = nil)
     /// Continue using the fallback page
     case fallback
     /// Continue with QR login
@@ -38,8 +39,8 @@ enum AuthenticationLoginViewModelResult: CustomStringConvertible {
             return "forgotPassword"
         case .login:
             return "login"
-        case .continueWithSSO(let provider):
-            return "continueWithSSO: \(provider)"
+        case .continueWithSSO(let provider, let action, let loginHint):
+            return "continueWithSSO: \(provider) for action: \(action) and loginHint: \(loginHint)"
         case .fallback:
             return "fallback"
         case .qrLogin:
@@ -121,10 +122,11 @@ enum AuthenticationLoginViewAction {
     case next
     /// Continue using the fallback page
     case fallback
-    // Tchap; add `loginHint` string parameter for SSO
+    // Tchap: add `loginHint` string parameter for SSO
+    // Tchap: add `action` string parameter for SSO
 //    case continueWithSSO(SSOIdentityProvider)
     /// Continue using the supplied SSO provider.
-    case continueWithSSO(SSOIdentityProvider, String? = nil)
+    case continueWithSSO(SSOIdentityProvider, String? = nil, String? = nil)
     /// Continue using QR login
     case qrLogin
 }
@@ -139,4 +141,7 @@ enum AuthenticationLoginErrorType: Hashable {
     // Tchap: Add unauthorizedThirdPartyID
     /// Unauthorized third party ID.
     case unauthorizedThirdPartyID
+    // Tchap: Add Unsupported Login Identifier
+    /// Unsupported Login Identifier (trying to log with login/password on MAS-only instance)
+    case unsupportedLoginIdentifier
 }

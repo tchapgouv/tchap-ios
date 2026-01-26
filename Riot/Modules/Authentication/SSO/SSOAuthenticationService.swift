@@ -17,8 +17,9 @@ enum SSOAuthenticationServiceError: Error {
     var callBackURLScheme: String? { get }
 
     // Tchap: add `loginHint` string parameter for SSO
+    // Tchap: add `action` string parameter for SSO and pass it into url query parameter to SSO portal.
 //    func authenticationURL(for identityProvider: String?, transactionId: String) -> URL?
-    func authenticationURL(for identityProvider: String?, loginHint: String?, transactionId: String) -> URL?
+    func authenticationURL(for identityProvider: String?, action: String?, loginHint: String?, transactionId: String) -> URL?
 
     func loginToken(from url: URL) -> String?
 }
@@ -45,6 +46,7 @@ final class SSOAuthenticationService: NSObject, SSOAuthenticationServiceProtocol
     // MARK: - Public
     
     // Tchap: add `loginHint` string parameter for SSO and pass it into url query parameter to SSO portal.
+    // Tchap: add `action` string parameter for SSO and pass it into url query parameter to SSO portal. It value must be UPPERCASED.
     // Tchap: rewrite `authenticationURL(for:loginHint:transactionId:) method because of problem with email addresses containing `+` character
     // in URL query parameters automatically encoded in a way not supported by ProConnect backend (double encoding done by URLComponents).
     // Methods added in URLComponents and URL that could help us require iOS 16+ or iOS 17+. We need to support iOS 15.
@@ -72,7 +74,7 @@ final class SSOAuthenticationService: NSObject, SSOAuthenticationServiceProtocol
 //        return authenticationComponent.url
 //    }
     
-    func authenticationURL(for identityProvider: String?, loginHint: String? = nil, transactionId: String) -> URL? {
+    func authenticationURL(for identityProvider: String?, action: String? = nil, loginHint: String? = nil, transactionId: String) -> URL? {
         // Don't Verify that homeserverStringURL is encodable for URL because the scheme `https` is contained in the string
         // and it will be escaped and this encoding will break on usage.
         // Just check that it is convertible to an URL.
@@ -105,6 +107,13 @@ final class SSOAuthenticationService: NSObject, SSOAuthenticationServiceProtocol
             queryItems.append(URLQueryItem(name: SSOURLConstants.Parameters.redirectURL, value: callBackURLSchemeUrlEncoded))
         }
         
+        // Tchap: https://github.com/tchapgouv/tchap-ios/issues/1245
+        // Add action parameter uppercased.
+        // Legacy uses the unstable version of action.
+        if let action {
+            queryItems.append(URLQueryItem(name: SSOURLConstants.Parameters.action, value: action.uppercased()))
+        }
+
         // Tchap: https://github.com/tchapgouv/tchap-ios/issues/1190
         // We want to allow email addresses containing `+` character as URL query parameters. But the `+` char is historically replaced with SPACE backend side.
         // We have to percent encode it. So we must use a customized allowed Character Set: URLQuesryAllowd minus `+` char.
@@ -118,7 +127,7 @@ final class SSOAuthenticationService: NSObject, SSOAuthenticationServiceProtocol
            let loginHinturlEncoded = loginHint.addingPercentEncoding(withAllowedCharacters: urlQueryMinusPlusAllowed) {
             queryItems.append(URLQueryItem(name: SSOURLConstants.Parameters.loginHint, value: loginHinturlEncoded))
         }
-        
+
         let queryString = queryItems.reduce(into: "") { result, item in
             result += "\(result.isEmpty ? "" : "&")\(item.name)=\(item.value ?? "")"
         }

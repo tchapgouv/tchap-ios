@@ -1092,7 +1092,7 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
 
     private func showOnboardingFlowAndResetSessionFlags(_ resetSessionFlags: Bool) {
         // Check whether an authentication screen is not already shown or preparing
-        guard self.self.onboardingCoordinatorBridgePresenter == nil && !self.isOnboardingCoordinatorPreparing else {
+        guard self.onboardingCoordinatorBridgePresenter == nil && !self.isOnboardingCoordinatorPreparing else {
             return
         }
 
