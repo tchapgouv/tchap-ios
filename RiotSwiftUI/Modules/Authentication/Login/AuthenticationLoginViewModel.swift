@@ -49,8 +49,8 @@ class AuthenticationLoginViewModel: AuthenticationLoginViewModelType, Authentica
         // Tchap: add `loginHint` string parameter for SSO
 //        case .continueWithSSO(let provider):
 //            Task { await callback?(.continueWithSSO(provider)) }
-        case .continueWithSSO(let provider, let loginHint):
-            Task { await callback?(.continueWithSSO(provider, loginHint)) }
+        case .continueWithSSO(let provider, let action, let loginHint):
+            Task { await callback?(.continueWithSSO(provider, action, loginHint)) }
         case .qrLogin:
             Task { await callback?(.qrLogin) }
         }
@@ -81,6 +81,10 @@ class AuthenticationLoginViewModel: AuthenticationLoginViewModelType, Authentica
             state.bindings.alertInfo = AlertInfo(id: type,
                                                  title: VectorL10n.error,
                                                  message: TchapL10n.authenticationErrorUnauthorizedEmail)
+            // Tchap: Handle MAS-only login
+        case .unsupportedLoginIdentifier:
+            // Error must be displayed by calling code.
+            break
         }
     }
 }

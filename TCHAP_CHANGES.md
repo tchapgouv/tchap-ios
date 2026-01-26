@@ -1,3 +1,12 @@
+## Changes in 2.11.6 (2026-01-26)
+
+🙌 Improvements
+
+- Gérer la création de compte et l'authentification avec MAS ou sans MAS ([#1207](https://github.com/tchapgouv/tchap-ios/issues/1207))
+- Passage du paramètre `action` au MAS ([#1245](https://github.com/tchapgouv/tchap-ios/issues/1245))
+- Corrige les fichiers de configuration `xcodegen` de Tchap ([#1249](https://github.com/tchapgouv/tchap-ios/issues/1249))
+
+
 ## Changes in 2.11.4 (2026-01-08)
 
 🙌 Improvements

@@ -13,6 +13,8 @@ enum SSOURLConstants {
         static let callbackLoginToken = "loginToken"
         static let redirectURL = "redirectUrl"
         // Tchap: add `loginHint` query parameter for SSO
+        static let action = "org.matrix.msc3824.action"
+        // Tchap: add `loginactionHint` query parameter for SSO
         static let loginHint = "login_hint"
     }
     

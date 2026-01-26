@@ -14,7 +14,7 @@ installFile() {
 
 cd $(dirname $0)
 BUILDING_PRODUCT="$BUNDLE_DISPLAY_NAME"
-echo "installfiles for : $PRODUCT"
+echo "installfiles for : $BUILDING_PRODUCT"
 
 echo "Install NSE target files"
 installFile "Common.xcconfig" $BUILDING_PRODUCT"NSE" "RiotNSE"

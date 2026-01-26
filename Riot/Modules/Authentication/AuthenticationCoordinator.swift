@@ -294,6 +294,11 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     @MainActor private func showLoginScreen(forcedAuthenticationMode: LoginMode? = nil) {
         MXLog.debug("[AuthenticationCoordinator] showLoginScreen")
         
+        // Tchap: reset authenticationService.
+        // Needed when canceling a login process to reset login mode
+        // (else, if canceling SSO login, when starting a password flow,
+        // login and password are not displayed).
+        authenticationService.reset()
         let homeserver = authenticationService.state.homeserver
         let parameters = AuthenticationLoginCoordinatorParameters(navigationRouter: navigationRouter,
                                                                   authenticationService: authenticationService,
@@ -371,10 +376,11 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
                                              didCallbackWith result: AuthenticationLoginCoordinatorResult) {
         switch result {
             // Tchap: add `loginHint` string parameter for SSO
+            // Tchap: add `action` string parameter for SSO and pass it into url query parameter to SSO portal.
 //        case .continueWithSSO(let provider):
 //            presentSSOAuthentication(for: provider)
-        case .continueWithSSO(let provider, let loginHint):
-            presentSSOAuthentication(for: provider, loginHint: loginHint)
+        case .continueWithSSO(let provider, let action, let loginHint):
+            presentSSOAuthentication(for: provider, action: action, loginHint: loginHint)
         case .success(let session, let loginPassword):
             password = loginPassword
             authenticationType = .password
@@ -555,6 +561,11 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
             handleRegistrationResult(result)
         case .cancel:
             displayCancelConfirmation()
+            // Tchap: handle Registration via SSO
+        case .tchapRegisterWithSSO(let provider, let action, let username):
+            // Tchap: don't dismiss navigationRouter else the user will land on AllChats view if he canceled the register process.
+        //    self.navigationRouter.dismissModule(animated: true, completion: nil)
+            self.presentSSOAuthentication(for: provider, action: action, loginHint: username)
         }
     }
     
@@ -730,17 +741,19 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
 
 extension AuthenticationCoordinator: SSOAuthenticationPresenterDelegate {
     // Tchap: add `loginHint` string parameter for SSO
+    // Tchap: add `action` string parameter for SSO and pass it into url query parameter to SSO portal.
 //    @MainActor private func presentSSOAuthentication(for identityProvider: SSOIdentityProvider) {
     /// Presents SSO authentication for the specified identity provider.
-    @MainActor private func presentSSOAuthentication(for identityProvider: SSOIdentityProvider, loginHint: String? = nil) {
+    @MainActor private func presentSSOAuthentication(for identityProvider: SSOIdentityProvider, action: String? = nil, loginHint: String? = nil) {
         let service = SSOAuthenticationService(homeserverStringURL: authenticationService.state.homeserver.address)
         let presenter = SSOAuthenticationPresenter(ssoAuthenticationService: service)
         presenter.delegate = self
         
         let transactionID = MXTools.generateTransactionId()
         // Tchap: add `loginHint` string parameter for SSO
+        // Tchap: add `action` string parameter for SSO and pass it into url query parameter to SSO portal.
 //        presenter.present(forIdentityProvider: identityProvider, with: transactionID, from: toPresentable(), animated: true)
-        presenter.present(forIdentityProvider: identityProvider, loginHint: loginHint, with: transactionID, from: toPresentable(), animated: true)
+        presenter.present(forIdentityProvider: identityProvider, action: action, loginHint: loginHint, with: transactionID, from: toPresentable(), animated: true)
         
         ssoAuthenticationPresenter = presenter
         ssoTransactionID = transactionID
@@ -774,6 +787,13 @@ extension AuthenticationCoordinator: SSOAuthenticationPresenterDelegate {
         ssoAuthenticationPresenter = nil
         ssoTransactionID = nil
         authenticationType = nil
+        // Tchap: call cancel callback.
+        switch initialScreen {
+        case .registration:
+            self.callback?(.cancel(.register))
+        case .login(_):
+            self.callback?(.cancel(.login))
+        }
     }
     
     /// Performs the last step of the login process for a flow that authenticated via SSO.

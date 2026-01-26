@@ -304,7 +304,9 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
             navigationRouter.popAllModules(animated: false)
             
             showSplashScreen()
-            showUseCaseSelectionScreen(animated: false)
+            // Tchap: don't display Use case selector when canceling authentication.
+            // We want to go back to start screen.
+//            showUseCaseSelectionScreen(animated: false)
         case .login:
             navigationRouter.popAllModules(animated: false)
 

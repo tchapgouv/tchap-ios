@@ -18,9 +18,10 @@ struct AuthenticationLoginCoordinatorParameters {
 
 enum AuthenticationLoginCoordinatorResult: CustomStringConvertible {
     // Tchap: add `loginHint` string parameter for SSO
+    // Tchap: add `action` string parameter for SSO
 //    case continueWithSSO(SSOIdentityProvider)
     /// Continue using the supplied SSO provider.
-    case continueWithSSO(SSOIdentityProvider, String? = nil)
+    case continueWithSSO(SSOIdentityProvider, String? = nil, String? = nil)
     /// Login was successful with the associated session created.
     case success(session: MXSession, password: String)
     /// Login was successful with the associated session created.
@@ -33,8 +34,8 @@ enum AuthenticationLoginCoordinatorResult: CustomStringConvertible {
         switch self {
         // Tchap: add `loginHint` string parameter for SSO
 //        case .continueWithSSO(let provider):
-        case .continueWithSSO(let provider, _):
-            return "continueWithSSO: \(provider)"
+        case .continueWithSSO(let provider, let action, let loginHint):
+            return "continueWithSSO: \(provider) for action: \(action) and loginHint: \(loginHint)"
         case .success:
             return "success"
         case .loggedInWithQRCode:
@@ -132,8 +133,8 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
                 self.showForgotPasswordScreen()
             case .login(let username, let password):
                 self.login(username: username, password: password)
-            case .continueWithSSO(let identityProvider, let loginHint):
-                self.callback?(.continueWithSSO(identityProvider, loginHint))
+            case .continueWithSSO(let identityProvider, let action, let loginHint):
+                self.callback?(.continueWithSSO(identityProvider, action, loginHint))
             case .fallback:
                 self.callback?(.fallback)
             case .qrLogin:
@@ -173,7 +174,7 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
                                                           initialDeviceName: UIDevice.current.initialDisplayName)
                 
                 guard !Task.isCancelled else { return }
-                callback?(.success(session: session, password: password))
+                self?.callback?(.success(session: session, password: password))
                 
                 self?.stopLoading()
             } catch {
@@ -183,11 +184,53 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
         }
     }
     
+//    func tchapRedirectToRegisterOrLoginSSO() {
+//        // Tchap: try to determine the homeServer from the user's email
+//        // and request this homeServer about its Authentication capabilities. (Does it offer SSO?)
+//        
+//        // First, request any HomeServer to get the HomeServer of the user's email domain.
+//        Task {
+//            let viewModel = authenticationLoginViewModel.context
+//            if let instanceDomain = try? await TchapAuthenticationHelper.GetInstance(for: viewModel.username) {
+//                if let userHomeServerViewData = try? await TchapAuthenticationHelper.UpdateAuthServiceForDirectAuthentication(forHomeServer: "\(BuildSettings.serverUrlPrefix)\(instanceDomain)") {
+//                    viewModel.viewState.homeserver = userHomeServerViewData
+//                   
+//                    // Then, now that homeServer is known, start authentication flow with SSO (MAS) forced.
+//                       if let proConnectProvider = userHomeServerViewData.ssoIdentityProviders.first {
+//                        // Tchap: add `loginHint` string parameter for SSO
+//                        viewModel.send(viewAction: .continueWithSSO(proConnectProvider, viewModel.username))
+//                       }
+//                }
+//            }
+//        }
+//    }
+
     /// Processes an error to either update the flow or display it to the user.
     @MainActor private func handleError(_ error: Error) {
         if let mxError = MXError(nsError: error as NSError) {
-            let message = mxError.authenticationErrorMessage()
-            authenticationLoginViewModel.displayError(.mxError(message))
+            // Tchap: Handle MAS-only login
+//            let message = mxError.authenticationErrorMessage()
+//            authenticationLoginViewModel.displayError(.mxError(message))
+            if mxError.isUnsupportedLoginIdentifier {
+                authenticationLoginViewModel.context.viewState.bindings.alertInfo = AlertInfo(id: .unsupportedLoginIdentifier,
+                                                                                              title: VectorL10n.warning,
+                                                                                              message: TchapL10n.authenticationMasEnabledAlertMessage(BuildSettings.bundleDisplayName),
+                                                                                              primaryButton: (title: VectorL10n.ok, action: {
+                    let viewModel = self.authenticationLoginViewModel.context
+                    TchapAuthenticationHelper.RedirectToSSO(for: viewModel.username) { ssoProvider in
+                        guard let ssoProvider else {
+                            return
+                        }
+                        // Tchap: add `loginHint` string parameter for SSO
+                        // Tchap: add `action` string parameter for SSO
+                        viewModel.send(viewAction: .continueWithSSO(ssoProvider, "login", viewModel.username))
+                    }
+                }))
+            }
+            else {
+                let message = mxError.authenticationErrorMessage()
+                authenticationLoginViewModel.displayError(.mxError(message))
+            }
             return
         }
         
@@ -308,6 +351,15 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
                     self.successIndicator = self.indicatorPresenter.present(.success(label: VectorL10n.done))
                 case .cancel:
                     self.navigationRouter.dismissModule(animated: true, completion: nil)
+                    // Tchap: handle passwords reset via SSO
+                case .tchapResetWithSSO(let username):
+                    self.navigationRouter.dismissModule(animated: true, completion: nil)
+                    TchapAuthenticationHelper.RedirectToSSO(for: username) { ssoProvider in
+                        guard let ssoProvider else {
+                            return
+                        }
+                        self.callback?(.continueWithSSO(ssoProvider, username))
+                    }
                 }
                 self.remove(childCoordinator: coordinator)
             }
@@ -356,5 +408,12 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
         if homeserver.needsLoginFallback {
             callback?(.fallback)
         }
+    }
+}
+
+// Tchap: handle MAS-only login error
+extension MXError {
+    var isUnsupportedLoginIdentifier: Bool {
+        errcode == kMXErrCodeStringUnknown && error == "Unsupported login identifier"
     }
 }

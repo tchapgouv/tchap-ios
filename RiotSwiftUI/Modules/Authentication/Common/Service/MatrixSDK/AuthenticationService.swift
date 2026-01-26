@@ -172,6 +172,10 @@ class AuthenticationService: NSObject {
                 }
                 
                 // Continue without throwing when registration is disabled but SSO is available.
+                
+                // Tchap: Handle Registration via MAS. Init registration flow with 1 step asking for mandatory email only.
+                homeserver.registrationFlow = .flowResponse(FlowResult(missingStages: [.email(isMandatory: true)], completedStages: []))
+                self.registrationWizard = RegistrationWizard(client: client, sessionCreator: sessionCreator)
             }
         }
         
