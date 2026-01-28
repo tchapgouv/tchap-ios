@@ -358,7 +358,7 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
                         guard let ssoProvider else {
                             return
                         }
-                        self.callback?(.continueWithSSO(ssoProvider, username))
+                        self.callback?(.continueWithSSO(ssoProvider, "login", username))
                     }
                 }
                 self.remove(childCoordinator: coordinator)
