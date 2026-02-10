@@ -1,3 +1,14 @@
+## Changes in 2.11.8 (2026-02-02)
+
+🙌 Improvements
+
+- Upgrade version to 2.11.8 ([#1254](https://github.com/tchapgouv/tchap-ios/issues/1254))
+
+🐛 Bugfixes
+
+- Correction d'une erreur du MAS au reset du mot de passe ([#1255](https://github.com/tchapgouv/tchap-ios/issues/1255))
+
+
 ## Changes in 2.11.6 (2026-01-26)
 
 🙌 Improvements
