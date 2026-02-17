@@ -1,3 +1,11 @@
+## Changes in 2.12.0 (2026-02-17)
+
+🙌 Improvements
+
+- Mise à jour des certificats de sécurité. ([#1263](https://github.com/tchapgouv/tchap-ios/issues/1263))
+- Change certificate file extension. ([#1266](https://github.com/tchapgouv/tchap-ios/issues/1266))
+
+
 ## Changes in 2.11.8 (2026-02-02)
 
 🙌 Improvements
