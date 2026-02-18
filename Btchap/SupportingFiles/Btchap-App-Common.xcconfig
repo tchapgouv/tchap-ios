@@ -20,7 +20,7 @@
 #include "Config/AppIdentifiers.xcconfig"
 #include "Config/AppVersion.xcconfig"
 
-BUNDLE_DISPLAY_NAME = Btchap
+BUNDLE_DISPLAY_NAME = Btchap Classique
 BASE_BUNDLE_IDENTIFIER = fr.gouv.btchap
 APPLICATION_GROUP_IDENTIFIER = group.$(BASE_BUNDLE_IDENTIFIER)
 PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER)
