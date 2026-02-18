@@ -20,7 +20,7 @@
 #include "Config/AppIdentifiers.xcconfig"
 #include "Config/AppVersion.xcconfig"
 
-BUNDLE_DISPLAY_NAME = DevTchap
+BUNDLE_DISPLAY_NAME = DevTchap Classique
 BASE_BUNDLE_IDENTIFIER = fr.gouv.tchap.dev
 APPLICATION_GROUP_IDENTIFIER = group.$(BASE_BUNDLE_IDENTIFIER)
 PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER)
