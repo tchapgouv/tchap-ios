@@ -19,3 +19,5 @@
 
 #include "Common.xcconfig"
 #include "Pods/Target Support Files/Pods-TchapPods-Tchap-ShareExtension/Pods-TchapPods-Tchap-ShareExtension.debug.xcconfig"
+
+BASE_BUNDLE_IDENTIFIER = fr.gouv.tchap
