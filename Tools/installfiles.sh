@@ -13,7 +13,7 @@ installFile() {
 
 
 cd $(dirname $0)
-BUILDING_PRODUCT="$BUNDLE_DISPLAY_NAME"
+BUILDING_PRODUCT="$PRODUCT_NAME"
 echo "installfiles for : $BUILDING_PRODUCT"
 
 echo "Install NSE target files"
