@@ -48,6 +48,9 @@ targetTemplates:
     - package: DTCoreText
     - package: PostHog
 
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: ${BASE_BUNDLE_IDENTIFIER}.nse
+      
     sources: 
     - path: .
 #Tchap exclusion because of specific targets

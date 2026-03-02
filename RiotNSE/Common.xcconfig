@@ -23,7 +23,7 @@
 // Tchap: Customize TchapNSE user-agent for back-end logs.
 // PRODUCT_NAME = RiotNSE
 PRODUCT_NAME = TchapNSE
-PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER).nse
+// PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER).nse
 
 INFOPLIST_FILE = RiotNSE/Info.plist
 
