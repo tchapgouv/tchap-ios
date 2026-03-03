@@ -20,6 +20,8 @@
 #include "Common.xcconfig"
 #include "Pods/Target Support Files/Pods-TchapPods-Tchap-NSE/Pods-TchapPods-Tchap-NSE.release.xcconfig"
 
+BASE_BUNDLE_IDENTIFIER = fr.gouv.tchap
+
 PROVISIONING_PROFILE = $(NSE_PROVISIONING_PROFILE)
 PROVISIONING_PROFILE_SPECIFIER = $(NSE_PROVISIONING_PROFILE_SPECIFIER)
 

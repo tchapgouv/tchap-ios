@@ -20,6 +20,8 @@
 #include "Common.xcconfig"
 #include "Pods/Target Support Files/Pods-TchapPods-Tchap-ShareExtension/Pods-TchapPods-Tchap-ShareExtension.release.xcconfig"
 
+BASE_BUNDLE_IDENTIFIER = fr.gouv.tchap
+
 PROVISIONING_PROFILE = $(SHARE_EXTENSION_PROVISIONING_PROFILE)
 PROVISIONING_PROFILE_SPECIFIER = $(SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER)
 
