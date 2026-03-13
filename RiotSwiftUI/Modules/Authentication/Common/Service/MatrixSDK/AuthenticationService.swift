@@ -320,7 +320,9 @@ class AuthenticationService: NSObject {
     }
     
     /// Perform a well-known request on the specified homeserver URL.
-    private func wellKnown(for homeserverURL: URL) async throws -> MXWellKnown {
+    // Tchap: make wellknown() method available outside (needed in AllChatsCoordinator to check the existence of new Tchap application).
+    //    private func wellKnown(for homeserverURL: URL) async throws -> MXWellKnown {
+    func wellKnown(for homeserverURL: URL) async throws -> MXWellKnown {
         let wellKnownClient = clientType.init(homeServer: homeserverURL, unrecognizedCertificateHandler: nil)
         
         // The .well-known/matrix/client API is often just a static file returned with no content type.
