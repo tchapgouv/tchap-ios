@@ -270,6 +270,24 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         self.addMatrixSessionToAllChatsController(userSession.matrixSession)
         // Tchap: Add external account management
         self.createLeftButtonItem(for: allChatsViewController)
+        
+        // Tchap: check for new Tchap advertizing in wellknown.
+        Task {
+            if let homeServerName = MXTools.serverName(inMatrixIdentifier: userSession.userId),
+               let newTchapAppStoreUrl = await newTchapAppStoreUrl(for: homeServerName) {
+                let checkMigrateToNewTchapCoordinator = MigrateToNewTchapCoordinator(appStoreUrl: newTchapAppStoreUrl) { [weak self] in
+                    self?.navigationRouter.dismissModule(animated: true, completion: nil)
+                }
+                Task { @MainActor in
+                    checkMigrateToNewTchapCoordinator.start()
+                    // If any coordinator is already present, we can dismiss it by default before presenting our coordinator.
+//                    navigationRouter.dismissModule(animated: true) { [weak self] in
+//                        self?.navigationRouter.present(checkMigrateToNewTchapCoordinator, animated: true)
+//                    }
+                    navigationRouter.present(checkMigrateToNewTchapCoordinator, animated: true)
+                }
+            }
+        }
     }
     
     @objc private func userSessionsServiceWillRemoveUserSession(_ notification: Notification) {
@@ -701,6 +719,33 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         let viewController: SettingsViewController = SettingsViewController.instantiate()
         viewController.loadViewIfNeeded()
         return viewController
+    }
+    
+    
+    // Tchap: check advertizing of new Tchap in returned wellknown
+    //
+    // Tchap: the key "fr.gouv.tchap.tchapx" is present in the payload if the homeserver advertizes the new Tchap.
+    // Check matrix/client wellknown content for "fr.gouv.tchap.tchapx" key.
+    //
+    // The awaited content is the urls of the applications on the application stores.
+    //
+    //   "fr.gouv.tchap.tchapx": {
+    //     "android": "https://store.tchapx.android",
+    //     "ios": "https://apps.apple.com/fr/app/tchap-x/id6736991029"
+    //    }
+    //
+    // Returns the new Tchap appStore URL if found in well-known.
+    private func newTchapAppStoreUrl(for homeserverName: String) async -> URL? {
+        let homeserverAddress = HomeserverAddress.sanitized(homeserverName)
+        guard let homeserverURL = URL(string: homeserverAddress),
+              let wellknown = try? await AuthenticationService.shared.wellKnown(for: homeserverURL),
+              let wellknownEntries = wellknown.jsonDictionary() as? [String: Any],
+              let newTchapEntry = wellknownEntries["fr.gouv.tchap.tchapx"] as? [String: String],
+              let newTchapIosEntry = newTchapEntry["ios"],
+              let appStoreUrl = URL(string: newTchapIosEntry) else {
+            return nil
+        }
+        return appStoreUrl
     }
 }
 
