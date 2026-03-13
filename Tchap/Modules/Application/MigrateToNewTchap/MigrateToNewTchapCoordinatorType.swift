@@ -21,6 +21,6 @@ protocol MigrateToNewTchapCoordinatorDelegate: AnyObject {
 }
 
 /// `AppVersionUpdateCoordinatorType` is a protocol describing a Coordinator that handle application version update navigation flow.
-protocol MigrateToNewTchapCoordinatorType: Coordinator {
+protocol MigrateToNewTchapCoordinatorType: Coordinator, Presentable {
     var delegate: MigrateToNewTchapCoordinatorDelegate? { get set }
 }

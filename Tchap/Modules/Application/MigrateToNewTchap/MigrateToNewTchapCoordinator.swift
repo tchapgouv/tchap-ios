@@ -20,8 +20,7 @@ final class MigrateToNewTchapCoordinator: MigrateToNewTchapCoordinatorType {
     
     // MARK: Constant
     
-    private enum Constants {        
-        static let nextTchapAppStoreAppURL = "https://apps.apple.com/fr/app/tchap-x/id6736991029"
+    private enum Constants {
         static let nextTchapHelpURL = "https://app.crisp.chat/website/6dacc68e-de3a-4511-8177-1339616098de/helpdesk/articles/fr/45a1de71-1093-4392-ab09-c88a6338c181/"
     }
     
@@ -29,7 +28,7 @@ final class MigrateToNewTchapCoordinator: MigrateToNewTchapCoordinatorType {
     
     // MARK: Private
     
-    private let rootRouter: RootRouterType
+    private(set) var migrateToNewTchapViewController: MigrateToNewTchapViewController!
     
     // MARK: Public
     
@@ -39,32 +38,20 @@ final class MigrateToNewTchapCoordinator: MigrateToNewTchapCoordinatorType {
     
     // MARK: - Setup
     
-    init(rootRouter: RootRouterType) {
-        self.rootRouter = rootRouter
+    init(appStoreUrl: URL, cancelAction: @escaping () -> Void) {
+        let migrateToNewTchapViewModel = MigrateToNewTchapViewModel(
+            appStoreAppUrl: appStoreUrl,
+            helpArticleUrl: URL(string: Constants.nextTchapHelpURL)!, // swiftlint:disable:this force_unwrapping
+            actionCancel: cancelAction)
+        migrateToNewTchapViewController = MigrateToNewTchapViewController.instantiate(with: migrateToNewTchapViewModel)
     }
     
     // MARK: - Public methods
     
     func start() {
-        let migrateToNewTchapViewModel = MigrateToNewTchapViewModel(
-            appStoreAppUrl: URL(string: Constants.nextTchapAppStoreAppURL)!, // swiftlint:disable:this force_unwrapping
-            helpArticleUrl: URL(string: Constants.nextTchapHelpURL)!, // swiftlint:disable:this force_unwrapping
-            actionCancel: { [weak self] in
-            self?.migrateToNewTchapViewControllerDidTapSkipAction()
-        })
-        
-        let migrateToNewTchapViewController = MigrateToNewTchapViewController.instantiate(with: migrateToNewTchapViewModel)
-        
-        self.rootRouter.presentModule(migrateToNewTchapViewController, animated: true, completion: nil)
     }
-}
-
-// MARK: - delegate
-extension MigrateToNewTchapCoordinator {
     
-    func migrateToNewTchapViewControllerDidTapSkipAction() {
-        self.rootRouter.dismissModule(animated: true) {
-            self.delegate?.migrateToNewTchapCoordinatorDidCancel(self)
-        }
+    func toPresentable() -> UIViewController {
+        return self.migrateToNewTchapViewController
     }
 }
