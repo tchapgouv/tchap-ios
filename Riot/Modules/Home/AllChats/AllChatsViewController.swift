@@ -18,6 +18,7 @@ protocol AllChatsViewControllerDelegate: AnyObject {
     // Tchap: Add methods to use Tchap specific flows.
     func allChatsViewControllerShouldOpenRoomCreation(_ allChatsViewController: AllChatsViewController)
     func allChatsViewControllerShouldOpenRoomList(_ allChatsViewController: AllChatsViewController)
+    func allChatsViewControllerShouldShowNewTchapMigration(_ allChatsViewController: AllChatsViewController)
 }
 
 class AllChatsViewController: HomeViewController {
@@ -178,7 +179,10 @@ class AllChatsViewController: HomeViewController {
             return
         }
 
-        AppDelegate.theDelegate().checkAppVersion()
+        // Tchap: Tchap doesn't check for version update anymore.
+//        AppDelegate.theDelegate().checkAppVersion()
+        
+        allChatsDelegate?.allChatsViewControllerShouldShowNewTchapMigration(self)
 
         if BuildSettings.newAppLayoutEnabled && !RiotSettings.shared.allChatsOnboardingHasBeenDisplayed {
             // Tchap: Disable new layout tutorials. Wait for an updated tutorials before show it.

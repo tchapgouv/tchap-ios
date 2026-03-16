@@ -270,17 +270,19 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         self.addMatrixSessionToAllChatsController(userSession.matrixSession)
         // Tchap: Add external account management
         self.createLeftButtonItem(for: allChatsViewController)
-
-        // Tchap: check if Migration to new Tchap View should be presented to user.
-        tchapCheckMigration(userSession: userSession)
     }
     
     // Tchap: check if Migration to new Tchap View should be presented to user.
     private func tchapCheckMigration(userSession: UserSession) {
         // Tchap: check for new Tchap advertizing in wellknown.
         Task {
-            // Wait a moment to let "Verifiy device" view pop-up if necessary.
-            try? await Task.sleep(nanoseconds: 1_000_000_000)
+            
+            // Don't present alert more than once a day.
+            guard Date.now.timeIntervalSince(RiotSettings.shared.tchapNewTchapMigrationAlertLastPresentationDate) > 86400 else {
+                return
+            }
+            
+            RiotSettings.shared.tchapNewTchapMigrationAlertLastPresentationDate = .now
             
             if let homeServerName = MXTools.serverName(inMatrixIdentifier: userSession.userId),
                let newTchapAppStoreUrl = await newTchapAppStoreUrl(for: homeServerName) {
@@ -834,6 +836,16 @@ extension AllChatsCoordinator: AllChatsViewControllerDelegate {
         router.setRootModule(publicRoomsViewController.toPresentable())
         self.navigationRouter.present(router, animated: true)
 
+    }
+    
+    // Tchap: new Tchap migration
+    func allChatsViewControllerShouldShowNewTchapMigration(_ allChatsViewController: AllChatsViewController) {
+        // This method can be called by `viewDidAppear` before device is verified.
+        // In this case, userSession will be nil.
+        guard let userSession = self.parameters.userSessionsService.mainUserSession else {
+            return
+        }
+        tchapCheckMigration(userSession: userSession)
     }
 }
 
