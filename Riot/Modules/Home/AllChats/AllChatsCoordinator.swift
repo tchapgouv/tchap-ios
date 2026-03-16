@@ -270,21 +270,45 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         self.addMatrixSessionToAllChatsController(userSession.matrixSession)
         // Tchap: Add external account management
         self.createLeftButtonItem(for: allChatsViewController)
-        
+
+        // Tchap: check if Migration to new Tchap View should be presented to user.
+        tchapCheckMigration(userSession: userSession)
+    }
+    
+    // Tchap: check if Migration to new Tchap View should be presented to user.
+    private func tchapCheckMigration(userSession: UserSession) {
         // Tchap: check for new Tchap advertizing in wellknown.
         Task {
+            // Wait a moment to let "Verifiy device" view pop-up if necessary.
+            try? await Task.sleep(nanoseconds: 1_000_000_000)
+            
             if let homeServerName = MXTools.serverName(inMatrixIdentifier: userSession.userId),
                let newTchapAppStoreUrl = await newTchapAppStoreUrl(for: homeServerName) {
-                let checkMigrateToNewTchapCoordinator = MigrateToNewTchapCoordinator(appStoreUrl: newTchapAppStoreUrl) { [weak self] in
-                    self?.navigationRouter.dismissModule(animated: true, completion: nil)
-                }
+                
+                // Check if a ViewController is already presented. If so, present our Migration view from this presented view controller.
                 Task { @MainActor in
+                    
+                    let presentingViewController = (navigationRouter as? NavigationRouter)?.presentedViewController()
+                    
+                    // Prepare Coordinator
+                    let checkMigrateToNewTchapCoordinator = MigrateToNewTchapCoordinator(appStoreUrl: newTchapAppStoreUrl) { [weak self] in
+                        // Dismiss Migration to new Tchap View from right context.
+                        if let presentingViewController {
+                            presentingViewController.dismiss(animated: true, completion: nil)
+                        } else {
+                            self?.navigationRouter.dismissModule(animated: true, completion: nil)
+                        }
+                    }
+                    
+                    // Start Coordinator
                     checkMigrateToNewTchapCoordinator.start()
-                    // If any coordinator is already present, we can dismiss it by default before presenting our coordinator.
-//                    navigationRouter.dismissModule(animated: true) { [weak self] in
-//                        self?.navigationRouter.present(checkMigrateToNewTchapCoordinator, animated: true)
-//                    }
-                    navigationRouter.present(checkMigrateToNewTchapCoordinator, animated: true)
+                    
+                    // Present Coordinator in right context.
+                    if let presentingViewController {
+                        presentingViewController.present(checkMigrateToNewTchapCoordinator.toPresentable(), animated: true)
+                    } else {
+                        navigationRouter.present(checkMigrateToNewTchapCoordinator, animated: true)
+                    }
                 }
             }
         }
