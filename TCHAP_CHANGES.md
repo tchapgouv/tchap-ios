@@ -1,3 +1,8 @@
+## Changes in 2.12.2 (2026-03-24)
+
+No significant changes.
+
+
 ## Changes in 2.12.0 (2026-02-17)
 
 🙌 Improvements
