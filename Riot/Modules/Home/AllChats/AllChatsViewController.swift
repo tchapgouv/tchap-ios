@@ -889,15 +889,16 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
     }
     
     func presentVerificationRequiredBanner(with session: MXSession) {
-        guard bannerView == nil else {
-            return
-        }
-        
-        let banner = VerificationRequiredBanner {  AppDelegate.theDelegate().presentCompleteSecurity(for: session) }
-        let hostingController = VectorHostingController(rootView: banner)
-        let bannerView = VerificationRequiredBannerView()
-        bannerView.contentView = hostingController.view
-        presentBannerView(bannerView, animated: true)
+        // Tchap: don't display Verification Required banner.
+//        guard bannerView == nil else {
+//            return
+//        }
+//        
+//        let banner = VerificationRequiredBanner {  AppDelegate.theDelegate().presentCompleteSecurity(for: session) }
+//        let hostingController = VectorHostingController(rootView: banner)
+//        let bannerView = VerificationRequiredBannerView()
+//        bannerView.contentView = hostingController.view
+//        presentBannerView(bannerView, animated: true)
     }
     
     func dismissVerificationRequiredBanner() {
