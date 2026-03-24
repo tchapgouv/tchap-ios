@@ -1,3 +1,9 @@
+## Changes in 2.12.2 (2026-03-24)
+
+🙌 Improvements
+
+- Rebase on Element 1.11.35 (from 1.11.32) ([#1276](https://github.com/tchapgouv/tchap-ios/issues/1276))
+
 ## Changes in 2.12.0 (2026-02-17)
 
 🙌 Improvements
