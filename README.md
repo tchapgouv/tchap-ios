@@ -47,9 +47,10 @@ When you are experiencing an issue on Tchap iOS, please first search in [GitHub 
 
 ## Copyright & License
 
-Copyright (c) 2014-2017 OpenMarket Ltd  
-Copyright (c) 2017 Vector Creations Ltd  
-Copyright (c) 2017-2025 New Vector Ltd
+Copyright (c) 2014-2017 OpenMarket Ltd.
+Copyright (c) 2017 Vector Creations Ltd.
+Copyright (c) 2017-2025 New Vector Ltd.
+Copyright (c) 2025 Element Creations Ltd.
 
 Copyright (c) 2024-2025, Direction interministérielle du numérique
 

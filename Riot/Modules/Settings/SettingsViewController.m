@@ -377,6 +377,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     
     Section *sectionUserSettings = [Section sectionWithTag:SECTION_TAG_USER_SETTINGS];
     [sectionUserSettings addRowWithTag:USER_SETTINGS_PROFILE_PICTURE_INDEX];
+<<<<<<< HEAD
     
     // Tchap: Remove Display Name because the function is blocked by back-end
     //    [sectionUserSettings addRowWithTag:USER_SETTINGS_DISPLAYNAME_INDEX];
@@ -385,6 +386,10 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     // Then, account password can be modified in the MAS account management.
 //    if (RiotSettings.shared.settingsScreenShowChangePassword)
     if (RiotSettings.shared.settingsScreenShowChangePassword && !self.mainSession.homeserverWellknown.authentication)
+=======
+    [sectionUserSettings addRowWithTag:USER_SETTINGS_DISPLAYNAME_INDEX];
+    if (RiotSettings.shared.settingsScreenShowChangePassword && self.mainSession.homeserverCapabilitiesService.canChangePassword)
+>>>>>>> v1.11.35
     {
         [sectionUserSettings addRowWithTag:USER_SETTINGS_CHANGE_PASSWORD_INDEX];
     }
@@ -431,8 +436,13 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     
     sectionUserSettings.headerTitle = [VectorL10n settingsUserSettings];
     [tmpSections addObject:sectionUserSettings];
+<<<<<<< HEAD
             
     NSString *manageAccountURL = self.mainSession.homeserverWellknown.authentication.account;
+=======
+    
+    NSString *manageAccountURL = self.mainSession.accountManagementURI;
+>>>>>>> v1.11.35
     if (manageAccountURL)
     {
         Section *account = [Section sectionWithTag: SECTION_TAG_ACCOUNT];
@@ -680,12 +690,16 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         }
     }
     
+<<<<<<< HEAD
     // Tchap : sign out moved to end of settings
     Section *sectionSignOut = [Section sectionWithTag:SECTION_TAG_SIGN_OUT];
     [sectionSignOut addRowWithTag:0];
     [tmpSections addObject:sectionSignOut];
     
     if (BuildSettings.settingsScreenAllowDeactivatingAccount && !self.mainSession.homeserverWellknown.authentication)
+=======
+    if (BuildSettings.settingsScreenAllowDeactivatingAccount && !self.mainSession.hasOAuth2APIEnabled)
+>>>>>>> v1.11.35
     {
         Section *sectionDeactivate = [Section sectionWithTag:SECTION_TAG_DEACTIVATE_ACCOUNT];
         [sectionDeactivate addRowWithTag:0];
@@ -4255,7 +4269,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
 - (void)onManageAccountTap
 {
-    NSURL *url = [NSURL URLWithString: self.mainSession.homeserverWellknown.authentication.account];
+    NSURL *url = [NSURL URLWithString: self.mainSession.accountManagementURI];
     if (url) {
         SSOAccountService *service = [[SSOAccountService alloc] initWithAccountURL:url];
         SSOAuthenticationPresenter *presenter = [[SSOAuthenticationPresenter alloc] initWithSsoAuthenticationService:service];
