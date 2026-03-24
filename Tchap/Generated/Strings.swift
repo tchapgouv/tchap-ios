@@ -95,6 +95,10 @@ public class TchapL10n: NSObject {
   public static var authenticationMailPlaceholder: String { 
     return TchapL10n.tr("Tchap", "authentication_mail_placeholder") 
   }
+  /// Pour plus de sécurité, une redirection vers le nouveau service d’authentification de %@ va s’effectuer dans une nouvelle fenêtre de l'application.
+  public static func authenticationMasEnabledAlertMessage(_ p1: String) -> String {
+    return TchapL10n.tr("Tchap", "authentication_mas_enabled_alert_message", p1)
+  }
   /// Mot de passe Tchap
   public static var authenticationPasswordPlaceholder: String { 
     return TchapL10n.tr("Tchap", "authentication_password_placeholder") 
