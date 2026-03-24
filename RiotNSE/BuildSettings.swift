@@ -1,5 +1,5 @@
 // 
-// Copyright 2020 Vector Creations Ltd
+// Copyright 2022 Vector Creations Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -96,45 +96,31 @@ final class BuildSettings: NSObject {
     // Tchap servers
     static let serverUrlPrefix = "https://matrix."
     static let preferredIdentityServerNames = [
-        "agent.externe.tchap.gouv.fr",
-        "agent.collectivites.tchap.gouv.fr",
-        "agent.tchap.gouv.fr",
-        "agent.elysee.tchap.gouv.fr",
-        "agent.pm.tchap.gouv.fr",
-        "agent.ssi.tchap.gouv.fr",
-        "agent.finances.tchap.gouv.fr",
-        "agent.social.tchap.gouv.fr",
-        "agent.interieur.tchap.gouv.fr",
-        "agent.agriculture.tchap.gouv.fr",
-        "agent.justice.tchap.gouv.fr",
-        "agent.diplomatie.tchap.gouv.fr",
-        "agent.intradef.tchap.gouv.fr",
-        "agent.dinum.tchap.gouv.fr",
-        "agent.culture.tchap.gouv.fr",
-        "agent.dev-durable.tchap.gouv.fr",
-        "agent.education.tchap.gouv.fr"
+        "dev01.tchap.incubateur.net",
+        "dev02.tchap.incubateur.net"
     ]
-    static let otherIdentityServerNames: [String] = []
+    static let otherIdentityServerNames: [String] = [
+        "ext01.tchap.incubateur.net"
+    ]
     
     // Tchap-Web instance for the app
-    static let applicationWebAppUrlString = "https://www.tchap.gouv.fr"
+    static let applicationWebAppUrlString = "https://www.tchap.incubateur.net"
     
     /// Whether to allow the app to use a right to left layout or force left to right for all languages
     static let disableRightToLeftLayout = true
     
     // MARK: - Server configuration
     // Tchap sygnal server url
-    static let serverConfigSygnalAPIUrlString = "https://sygnal.tchap.gouv.fr/_matrix/push/v1/notify"
+    static let serverConfigSygnalAPIUrlString = "https://sygnal.tchap.incubateur.net/_matrix/push/v1/notify"
     /// Force the user to set a homeserver instead of using the default one
     static let forceHomeserverSelection = false
-    
     
     // MARK: - Legal URLs
     
     // Note: Set empty strings to hide the related entry in application settings
     static let applicationTermsConditionsUrlString = "https://tchap.numerique.gouv.fr/cgu" // Tchap: redirect to CGU
-    static let clientConfigURL = "https://www.tchap.gouv.fr/client/config/agent/ios"
-    static let applicationHelpUrlString = "https://www.tchap.gouv.fr/faq"
+    static let clientConfigURL = "https://www.tchap.incubateur.net/client/config/agent/ios"
+    static let applicationHelpUrlString = "https://www.tchap.incubateur.net/faq"
     static let applicationServicesStatusUrlString = "https://status.tchap.numerique.gouv.fr/"
     static let applicationAcceptableUsePolicyUrlString = ""
     static let proConnectInfoUrlString = "https://proconnect.gouv.fr/"
@@ -143,15 +129,14 @@ final class BuildSettings: NSObject {
     static let unableToDecryptFaqArticleUrlString = "https://aide.tchap.numerique.gouv.fr/fr/article/dechiffrement-impossible-de-mes-messages-comment-y-remedier-iphone-xotgv1"
     static let emailNotificationFaqArticleUrlString = "https://aide.tchap.numerique.gouv.fr/fr/article/notification-par-email-draft-6k7k8"
     static let newDeviceVerificationFaqArticleUrlString = "https://aide.tchap.numerique.gouv.fr/fr/article/comment-verifier-un-nouvel-appareil-sur-tchap-xm0b0y"
-    
+
     // MARK: - Matrix permalinks
     // Hosts/Paths for URLs that will considered as valid permalinks. Those permalinks are opened within the app.
     static let permalinkSupportedHosts: [String: [String]] = [
-        "matrix.to": ["/"],
-        "tchap.gouv.fr": ["/"],
-        "www.tchap.gouv.fr": ["/"]
+        "tchap.incubateur.net": ["/"],
+        "www.tchap.incubateur.net": ["/"],
     ]
-    static let clientPermalinkBaseUrl: String? = "https://tchap.gouv.fr"
+    static let clientPermalinkBaseUrl: String? = "https://www.tchap.incubateur.net"
     
     
     // MARK: - VoIP
@@ -168,22 +153,8 @@ final class BuildSettings: NSObject {
     // MARK: -  Public rooms Directory
     // List of homeservers for the public rooms directory
     static let publicRoomsDirectoryServers = [
-        "agent.collectivites.tchap.gouv.fr",
-        "agent.tchap.gouv.fr",
-        "agent.elysee.tchap.gouv.fr",
-        "agent.pm.tchap.gouv.fr",
-        "agent.ssi.tchap.gouv.fr",
-        "agent.finances.tchap.gouv.fr",
-        "agent.social.tchap.gouv.fr",
-        "agent.interieur.tchap.gouv.fr",
-        "agent.agriculture.tchap.gouv.fr",
-        "agent.justice.tchap.gouv.fr",
-        "agent.diplomatie.tchap.gouv.fr",
-        "agent.intradef.tchap.gouv.fr",
-        "agent.dinum.tchap.gouv.fr",
-        "agent.culture.tchap.gouv.fr",
-        "agent.dev-durable.tchap.gouv.fr",
-        "agent.education.tchap.gouv.fr"
+        "dev01.tchap.incubateur.net",
+        "dev02.tchap.incubateur.net"
     ]
     
     // MARK: -  Rooms Screen
@@ -205,27 +176,27 @@ final class BuildSettings: NSObject {
         /// The URL to open with more information about analytics terms.
         let termsURL: URL
     }
-    
+
 #if DEBUG
     /// The configuration to use for analytics during development. Set `isEnabled` to false to disable analytics in debug builds.
-    static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: true, // Tchap: enable PostHog analytics on DEBUG
-                                                               host: "https://posthog.tchap.numerique.gouv.fr",
-                                                               apiKey: "phc_gm2O25mu8NTQtKpozdoVwZCixWqdq7PUHLLjDNDzVIe", // Tchap: dev posthog,
+    static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: true,
+                                                               host: "https://posthog.tchap.incubateur.net",
+                                                               apiKey: "phc_yf5yr3PrgiUTZMZpSmUlR6hdtqAejwhcUMQGsK8Nx5w",
                                                                termsURL: URL(string: "https://tchap.numerique.gouv.fr/politique-de-confidentialite")!) // Tchap: dev posthog,
 #else
     /// The configuration to use for analytics. Set `isEnabled` to false to disable analytics.
-    static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: true, // Tchap: enable PostHog analytics on production
-                                                               host: "https://posthog.tchap.numerique.gouv.fr",
-                                                               apiKey: "phc_gm2O25mu8NTQtKpozdoVwZCixWqdq7PUHLLjDNDzVIe", // Tchap: dev posthog,
+    static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: true,
+                                                               host: "https://posthog.tchap.incubateur.net",
+                                                               apiKey: "phc_yf5yr3PrgiUTZMZpSmUlR6hdtqAejwhcUMQGsK8Nx5w",
                                                                termsURL: URL(string: "https://tchap.numerique.gouv.fr/politique-de-confidentialite")!)
 #endif
-    
+
     // MARK: - Bug report
     static let bugReportEndpointUrlString = ""
-    static let bugReportDefaultHost = "agent.tchap.gouv.fr"
+    static let bugReportDefaultHost = "dev01.tchap.incubateur.net"
     static let bugReportEndpointUrlSuffix = "/bugreports"
     // Use the name allocated by the bug report server
-    static let bugReportApplicationId = "tchap-ios"
+    static let bugReportApplicationId = "devtchap-ios"
     
     
     // MARK: - Integrations
@@ -271,59 +242,12 @@ final class BuildSettings: NSObject {
                                                //     "<feature ID>" : [ tchapFeatureAnyHomeServer ] to allow a feature to any instance
     static let tchapFeatureNotificationByEmail = "tchapFeatureNotificationByEmail"
     static let tchapFeatureVoiceOverIP = "tchapFeatureVoiceOverIP"
-    static let tchapFeatureVideoOverIP = "tchapFeatureVideoOverIP"
+    static let tchapFeatureVideoOverIP = "tchapFeatureVideoOverIP"    // Tchap: in Dev, allow any feature to any instance.
     static let tchapFeatureGeolocationSharing = "tchapFeatureGeolocationSharing" // linked to `locationSharingEnabled` property (see above)
     static let tchapFeatureAntivirus = "tchapFeatureAntivirus" // Allow usage of antivirus
     static var tchapFeaturesAllowedHomeServersForFeature: [String: [String]] = [
-        tchapFeatureNotificationByEmail: [
-            tchapFeatureAnyHomeServer
-        ],
-        // Audio calls for all instances in Tchap Production.
-        tchapFeatureVoiceOverIP: [
-            "agent.externe.tchap.gouv.fr",
-            "agent.collectivites.tchap.gouv.fr",
-            "agent.tchap.gouv.fr",
-            "agent.elysee.tchap.gouv.fr",
-            "agent.pm.tchap.gouv.fr",
-            "agent.ssi.tchap.gouv.fr",
-            "agent.finances.tchap.gouv.fr",
-            "agent.social.tchap.gouv.fr",
-            "agent.interieur.tchap.gouv.fr",
-            "agent.agriculture.tchap.gouv.fr",
-            "agent.justice.tchap.gouv.fr",
-            "agent.diplomatie.tchap.gouv.fr",
-            "agent.intradef.tchap.gouv.fr",
-            "agent.dinum.tchap.gouv.fr",
-            "agent.culture.tchap.gouv.fr",
-            "agent.dev-durable.tchap.gouv.fr",
-            "agent.education.tchap.gouv.fr"
-        ],
-        // Video calls for all instances in Tchap Production.
-        tchapFeatureVideoOverIP: [
-            "agent.externe.tchap.gouv.fr",
-            "agent.collectivites.tchap.gouv.fr",
-            "agent.tchap.gouv.fr",
-            "agent.elysee.tchap.gouv.fr",
-            "agent.pm.tchap.gouv.fr",
-            "agent.ssi.tchap.gouv.fr",
-            "agent.finances.tchap.gouv.fr",
-            "agent.social.tchap.gouv.fr",
-            "agent.interieur.tchap.gouv.fr",
-            "agent.agriculture.tchap.gouv.fr",
-            "agent.justice.tchap.gouv.fr",
-            "agent.diplomatie.tchap.gouv.fr",
-            "agent.intradef.tchap.gouv.fr",
-            "agent.dinum.tchap.gouv.fr",
-            "agent.culture.tchap.gouv.fr",
-            "agent.dev-durable.tchap.gouv.fr",
-            "agent.education.tchap.gouv.fr"
-        ],
-        tchapFeatureGeolocationSharing: [
-            tchapFeatureAnyHomeServer
-        ],
-        tchapFeatureAntivirus: [
-            tchapFeatureAnyHomeServer
-        ]
+        tchapFeatureAnyFeature: [ tchapFeatureAnyHomeServer ],
+        tchapFeatureAntivirus: [] // Temporary test: disable AV on Dev client.
     ]
     
     // Tchap: handle SSO feature flag. Presents SSO button on Onboarding screen and give priority to SSO on UIA.
@@ -366,14 +290,14 @@ final class BuildSettings: NSObject {
     
     static let settingsScreenShowUserFirstName: Bool = false
     static let settingsScreenShowUserSurname: Bool = false
-    static let settingsScreenAllowAddingEmailThreepids: Bool = false
-    static let settingsScreenAllowAddingPhoneThreepids: Bool = false
-    static let settingsScreenShowThreepidExplanatory: Bool = false
-    static let settingsScreenShowDiscoverySettings: Bool = false
-    static let settingsScreenAllowIdentityServerConfig: Bool = false
+    static let settingsScreenAllowAddingEmailThreepids: Bool = true
+    static let settingsScreenAllowAddingPhoneThreepids: Bool = true
+    static let settingsScreenShowThreepidExplanatory: Bool = true
+    static let settingsScreenShowDiscoverySettings: Bool = true
+    static let settingsScreenAllowIdentityServerConfig: Bool = true
     static let settingsScreenShowConfirmMediaSize: Bool = true
     static let settingsScreenShowAdvancedSettings: Bool = true
-    static let settingsScreenShowLabSettings: Bool = false
+    static let settingsScreenShowLabSettings: Bool = true
     static let settingsScreenAllowChangingRageshakeSettings: Bool = true
     static let settingsScreenAllowChangingCrashUsageDataSettings: Bool = true
     static let settingsScreenAllowBugReportingManually: Bool = true
@@ -381,14 +305,14 @@ final class BuildSettings: NSObject {
     static let settingsScreenShowChangePassword: Bool = true
     static let settingsScreenShowEnableStunServerFallback: Bool = true
     static let settingsScreenShowNotificationDecodedContentOption: Bool = true
-    static let settingsScreenShowNsfwRoomsOption: Bool = false
+    static let settingsScreenShowNsfwRoomsOption: Bool = true
     static let settingsSecurityScreenShowSessions: Bool = true
     static let settingsSecurityScreenShowSetupBackup: Bool = true
     static let settingsSecurityScreenShowRestoreBackup: Bool = true
     static let settingsSecurityScreenShowDeleteBackup: Bool = true
     static let settingsSecurityScreenShowCryptographyInfo: Bool = true
     static let settingsSecurityScreenShowCryptographyExport: Bool = true
-    static let settingsSecurityScreenShowAdvancedUnverifiedDevices: Bool = false
+    static let settingsSecurityScreenShowAdvancedUnverifiedDevices: Bool = true
     /// A setting to enable the presence configuration settings section.
     static let settingsScreenPresenceAllowConfiguration: Bool = false
     
@@ -566,4 +490,9 @@ final class BuildSettings: NSObject {
     /// are ready to migrate your users.
     //    static let replacementApp: ReplacementApp? = .init()
     static let replacementApp: ReplacementApp? = nil
+    
+    // MARK: - Verification Required Banner
+    
+    static let verificationRequiredBannerLearnMoreURL = URL(string: "https://docs.element.io/latest/element-support/device-verification/how-to-verify-devices")!
+
 }
