@@ -490,4 +490,9 @@ final class BuildSettings: NSObject {
     /// are ready to migrate your users.
     //    static let replacementApp: ReplacementApp? = .init()
     static let replacementApp: ReplacementApp? = nil
+    
+    // MARK: - Verification Required Banner
+    
+    static let verificationRequiredBannerLearnMoreURL = URL(string: "https://docs.element.io/latest/element-support/device-verification/how-to-verify-devices")!
+
 }

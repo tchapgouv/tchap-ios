@@ -203,7 +203,7 @@ final class BuildSettings: NSObject {
     
     
     // MARK: - Bug report
-    static let bugReportEndpointUrlString = "https://riot.im/bugreports"
+    static let bugReportEndpointUrlString = "https://rageshakes.element.io/api"
     // Use the name allocated by the bug report server
     static let bugReportApplicationId = "riot-ios"
     static let bugReportUISIId = "element-auto-uisi"
@@ -478,4 +478,8 @@ final class BuildSettings: NSObject {
     /// when it is detected that the homeserver is running Matrix 2.0. Set this to `nil` until you
     /// are ready to migrate your users.
     static let replacementApp: ReplacementApp? = .init()
+    
+    // MARK: - Verification Required Banner
+    
+    static let verificationRequiredBannerLearnMoreURL = URL(string: "https://docs.element.io/latest/element-support/device-verification/how-to-verify-devices")!
 }

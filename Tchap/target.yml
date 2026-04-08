@@ -235,6 +235,7 @@ targetTemplates:
     - path: ../Riot/Modules/Home/Fallback
     - path: ../Riot/Modules/Home/HomeViewController.h
     - path: ../Riot/Modules/Home/HomeViewController.m
+    - path: ../Riot/Modules/Home/VerificationRequiredBanner
     - path: ../Riot/Modules/Home/VersionCheck
     - path: ../Riot/Modules/Home/Views
     - path: ../Riot/Modules/GDPR
