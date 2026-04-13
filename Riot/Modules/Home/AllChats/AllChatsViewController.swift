@@ -71,9 +71,12 @@ class AllChatsViewController: HomeViewController {
     @IBOutlet private var toolbar: UIToolbar!
     private var isToolbarHidden: Bool = false {
         didSet {
+            // Tchap: fix iOS 26.3.1 blank screen
+            guard oldValue != isToolbarHidden else { return }
             if isViewLoaded {
                 toolbar.transform = isToolbarHidden ? CGAffineTransform(translationX: 0, y: 2 * toolbarHeight) : .identity
-                self.view.layoutIfNeeded()
+                // Tchap: fix iOS 26.3.1 blank screen
+//                self.view.layoutIfNeeded()
             }
         }
     }
