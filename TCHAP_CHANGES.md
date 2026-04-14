@@ -1,3 +1,8 @@
+## Changes in 2.12.3 (2026-04-13)
+
+🐛 Bugfixes
+- Correction d'un bug d'écran figé concernant les utilisateurs sous iOS 26.3.1 ([#1279](https://github.com/tchapgouv/tchap-ios/pull/1279))
+
 ## Changes in 2.12.2 (2026-03-24)
 
 🙌 Improvements
