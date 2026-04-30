@@ -1,3 +1,8 @@
+## Changes in 2.12.4 (2026-04-21)
+
+🐛 Bugfixes
+- Rétablir la création de compte via MAS ([#1281](https://github.com/tchapgouv/tchap-ios/pull/1281))
+
 ## Changes in 2.12.3 (2026-04-13)
 
 🐛 Bugfixes
