@@ -163,9 +163,10 @@ class AuthenticationService: NSObject {
                 homeserver.registrationFlow = try await registrationWizard.registrationFlow()
                 self.registrationWizard = registrationWizard
             } catch {
-                if homeserver.preferredLoginMode.providesDelegatedOIDCCompatibility {
-                    throw RegistrationError.delegatedOIDCRequiresReplacementApp
-                }
+                // Tchap: disable error to continue with MAS Registration
+//                if homeserver.preferredLoginMode.providesDelegatedOIDCCompatibility {
+//                    throw RegistrationError.delegatedOIDCRequiresReplacementApp
+//                }
                 
                 guard homeserver.preferredLoginMode.hasSSO, error as? RegistrationError == .registrationDisabled else {
                     throw error
