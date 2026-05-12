@@ -150,7 +150,7 @@ targets:
       Release: Release-BTchap.xcconfig
 
     sources:
-    - path: ../BTchap/Config/BuildSettings.swift
+    - path: ../Btchap/Config/BuildSettings.swift
     - path: ../Tchap/Extensions/Account+Tchap.swift
 
   DevTchap-ShareExtension:
