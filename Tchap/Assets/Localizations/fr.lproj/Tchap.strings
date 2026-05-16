@@ -379,3 +379,10 @@
 // Chat participants
 "room_participants_leave_not_allowed_for_last_owner_msg" = "Vous ne pouvez pas quitter ce salon car vous êtes le seul administrateur.";
 
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Migrate to New Tchap
+"migrate_to_new_tchap_title" = "Tchap évolue !";
+"migrate_to_new_tchap_message" = "Une nouvelle application est disponible pour iPhone. Veuillez la télécharger pour accéder à de nouvelles fonctionnalités.";
+"migrate_to_new_tchap_warning" = "L'ancienne application sera bientôt abandonnée. Pour migrer, installez la nouvelle application, connectez-vous en vérifiant votre identité, puis supprimez l'ancienne.";
+"migrate_to_new_tchap_action_accept_title" = "Télécharger";
+"migrate_to_new_tchap_action_help_title" = "Aide à la migration";

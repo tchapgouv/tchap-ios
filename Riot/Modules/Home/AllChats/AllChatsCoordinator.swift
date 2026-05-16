@@ -272,6 +272,50 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         self.createLeftButtonItem(for: allChatsViewController)
     }
     
+    // Tchap: check if Migration to new Tchap View should be presented to user.
+    private func tchapCheckMigration(userSession: UserSession) {
+        // Tchap: check for new Tchap advertizing in wellknown.
+        Task {
+            
+            // Don't present alert more than once a day.
+            guard Date.now.timeIntervalSince(RiotSettings.shared.tchapNewTchapMigrationAlertLastPresentationDate) > 86400 else {
+                return
+            }
+            
+            RiotSettings.shared.tchapNewTchapMigrationAlertLastPresentationDate = .now
+            
+            if let homeServerName = MXTools.serverName(inMatrixIdentifier: userSession.userId),
+               let newTchapAppStoreUrl = await newTchapAppStoreUrl(for: homeServerName) {
+                
+                // Check if a ViewController is already presented. If so, present our Migration view from this presented view controller.
+                Task { @MainActor in
+                    
+                    let presentingViewController = (navigationRouter as? NavigationRouter)?.presentedViewController()
+                    
+                    // Prepare Coordinator
+                    let checkMigrateToNewTchapCoordinator = MigrateToNewTchapCoordinator(appStoreUrl: newTchapAppStoreUrl) { [weak self] in
+                        // Dismiss Migration to new Tchap View from right context.
+                        if let presentingViewController {
+                            presentingViewController.dismiss(animated: true, completion: nil)
+                        } else {
+                            self?.navigationRouter.dismissModule(animated: true, completion: nil)
+                        }
+                    }
+                    
+                    // Start Coordinator
+                    checkMigrateToNewTchapCoordinator.start()
+                    
+                    // Present Coordinator in right context.
+                    if let presentingViewController {
+                        presentingViewController.present(checkMigrateToNewTchapCoordinator.toPresentable(), animated: true)
+                    } else {
+                        navigationRouter.present(checkMigrateToNewTchapCoordinator, animated: true)
+                    }
+                }
+            }
+        }
+    }
+    
     @objc private func userSessionsServiceWillRemoveUserSession(_ notification: Notification) {
         guard let userSession = notification.userInfo?[UserSessionsService.NotificationUserInfoKey.userSession] as? UserSession else {
             return
@@ -702,6 +746,33 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         viewController.loadViewIfNeeded()
         return viewController
     }
+    
+    
+    // Tchap: check advertizing of new Tchap in returned wellknown
+    //
+    // Tchap: the key "fr.gouv.tchap.tchapx" is present in the payload if the homeserver advertizes the new Tchap.
+    // Check matrix/client wellknown content for "fr.gouv.tchap.tchapx" key.
+    //
+    // The awaited content is the urls of the applications on the application stores.
+    //
+    //   "fr.gouv.tchap.tchapx": {
+    //     "android": "https://store.tchapx.android",
+    //     "ios": "https://apps.apple.com/fr/app/tchap-x/id6736991029"
+    //    }
+    //
+    // Returns the new Tchap appStore URL if found in well-known.
+    private func newTchapAppStoreUrl(for homeserverName: String) async -> URL? {
+        let homeserverAddress = HomeserverAddress.sanitized(homeserverName)
+        guard let homeserverURL = URL(string: homeserverAddress),
+              let wellknown = try? await AuthenticationService.shared.wellKnown(for: homeserverURL),
+              let wellknownEntries = wellknown.jsonDictionary() as? [String: Any],
+              let newTchapEntry = wellknownEntries["fr.gouv.tchap.tchapx"] as? [String: String],
+              let newTchapIosEntry = newTchapEntry["ios"],
+              let appStoreUrl = URL(string: newTchapIosEntry) else {
+            return nil
+        }
+        return appStoreUrl
+    }
 }
 
 extension AllChatsCoordinator: SignOutFlowPresenterDelegate {
@@ -765,6 +836,16 @@ extension AllChatsCoordinator: AllChatsViewControllerDelegate {
         router.setRootModule(publicRoomsViewController.toPresentable())
         self.navigationRouter.present(router, animated: true)
 
+    }
+    
+    // Tchap: new Tchap migration
+    func allChatsViewControllerShouldShowNewTchapMigration(_ allChatsViewController: AllChatsViewController) {
+        // This method can be called by `viewDidAppear` before device is verified.
+        // In this case, userSession will be nil.
+        guard let userSession = self.parameters.userSessionsService.mainUserSession else {
+            return
+        }
+        tchapCheckMigration(userSession: userSession)
     }
 }
 

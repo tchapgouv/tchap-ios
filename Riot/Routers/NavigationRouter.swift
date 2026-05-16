@@ -403,3 +403,10 @@ extension NavigationRouter {
         static let navigationController = "navigationController"
     }
 }
+
+// Tchap: Used to know from which controller or coordinator to present New Tchap Migration View.
+extension NavigationRouter {
+    func presentedViewController() -> UIViewController? {
+        navigationController.presentedViewController
+    }
+}
