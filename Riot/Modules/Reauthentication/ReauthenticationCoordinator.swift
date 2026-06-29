@@ -38,6 +38,8 @@ final class ReauthenticationCoordinator: ReauthenticationCoordinatorType {
     
     private var authenticationSession: SSOAuthentificationSessionProtocol?
     
+    private weak var presentedNavigationController: UINavigationController?
+    
     private var presentingViewController: UIViewController {
         return self.parameters.presenter.toPresentable()
     }
@@ -58,7 +60,7 @@ final class ReauthenticationCoordinator: ReauthenticationCoordinatorType {
         self.userInteractiveAuthenticationService = UserInteractiveAuthenticationService(session: parameters.session)
         self.authenticationParametersBuilder = AuthenticationParametersBuilder()
         self.uiaViewControllerFactory = UserInteractiveAuthenticationViewControllerFactory()
-    }    
+    }
     
     // MARK: - Public methods
     
@@ -146,35 +148,35 @@ final class ReauthenticationCoordinator: ReauthenticationCoordinatorType {
         // NOTE: Prefer use a callback and the same mechanism as SSOAuthentificationSession instead of using custom WKWebView
         let reauthFallbackViewController: ReauthFallBackViewController = ReauthFallBackViewController(url: authenticationURL.absoluteString)
         reauthFallbackViewController.title = self.parameters.title
-                
-        // Tchap: move navigationController init before actions closures for the closures to capture the controller to dismiss it.
-        let navigationController = RiotNavigationController(rootViewController: reauthFallbackViewController)
-        
         reauthFallbackViewController.didCancel = { [weak self] in
-            guard let self = self else {
-                return
-            }
-            // Tchap: dismiss controller
-            navigationController.dismiss(animated: true)
+            guard let self = self else { return }
+            
+            self.dismissFallbackAuthentication()
             self.delegate?.reauthenticationCoordinatorDidCancel(self)
         }
         
         reauthFallbackViewController.didValidate = { [weak self] in
-            guard let self = self else {
-                return
-            }
+            guard let self = self else { return }
             
             guard let sessionId = authenticationSession.session else {
+                self.dismissFallbackAuthentication()
                 self.delegate?.reauthenticationCoordinator(self, didFailWithError: ReauthenticationCoordinatorError.failToBuildPasswordParameters)
                 return
             }
             
             let authenticationParameters = self.authenticationParametersBuilder.buildOAuthParameters(with: sessionId)
-            // Tchap: dismiss controller
-            navigationController.dismiss(animated: true)
+            self.dismissFallbackAuthentication()
             self.delegate?.reauthenticationCoordinatorDidComplete(self, withAuthenticationParameters: authenticationParameters)
         }
         
+        let navigationController = RiotNavigationController(rootViewController: reauthFallbackViewController)
+        self.presentedNavigationController = navigationController
+        
         self.presentingViewController.present(navigationController, animated: true)
+    }
+    
+    private func dismissFallbackAuthentication() {
+        presentedNavigationController?.dismiss(animated: true)
+        presentedNavigationController = nil
     }
 }
