@@ -125,7 +125,6 @@ final class BuildSettings: NSObject {
     static let applicationAcceptableUsePolicyUrlString = ""
     static let proConnectInfoUrlString = "https://proconnect.gouv.fr/"
     static let proConnectAvailabilityFaqArticleUrlString = "https://aide.tchap.numerique.gouv.fr/fr/article/se-connecter-a-tchap-avec-proconnect-1dh1peg"
-    static let signoutAlertFaqArticleUrlString = "https://aide.tchap.numerique.gouv.fr/fr/article/dechiffrement-en-cours-mes-messages-restent-verrouilles-atnp15/"
     static let unableToDecryptFaqArticleUrlString = "https://aide.tchap.numerique.gouv.fr/fr/article/dechiffrement-en-cours-mes-messages-restent-verrouilles-atnp15/"
     static let emailNotificationFaqArticleUrlString = "https://aide.tchap.numerique.gouv.fr/fr/article/notification-par-email-draft-6k7k8"
     static let newDeviceVerificationFaqArticleUrlString = "https://aide.tchap.numerique.gouv.fr/fr/article/comment-verifier-un-nouvel-appareil-sur-tchap-xm0b0y"
