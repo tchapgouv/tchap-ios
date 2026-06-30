@@ -49,12 +49,12 @@ final class SecretsResetViewModel: SecretsResetViewModelType {
             break
         case .reset:
             // Tchap: try `resetScrets` immediately to post request with the keys to get correct response from backend.
-//            self.askAuthentication()
+//            self.resetSecrets()
             self.resetSecrets(with: [:])
         case .authenticationCancelled:
             self.authenticationCancelled()
         case .authenticationInfoEntered(let authParameters):
-            self.resetSecrets(with: authParameters)
+            self.resetSecrets(with: authParameters, hasAuthenticated: true)
         case .cancel:
             self.coordinatorDelegate?.secretsResetViewModelDidCancel(self)
         }
@@ -66,53 +66,41 @@ final class SecretsResetViewModel: SecretsResetViewModelType {
         self.viewDelegate?.secretsResetViewModel(self, didUpdateViewState: viewState)
     }
     
-    private func resetSecrets(with authParameters: [String: Any]) {
-        guard let crossSigning = self.session.crypto?.crossSigning else {
-            return
-        }
+    private func resetSecrets(with authParameters: [String: Any] = [:], hasAuthenticated: Bool = false) {
+        guard let crossSigning = self.session.crypto?.crossSigning else { return }
+        
         MXLog.debug("[SecretsResetViewModel] resetSecrets")
+        self.update(viewState: .resetting)
 
-        crossSigning.setup(withAuthParams: authParameters, success: { [weak self] in
-            guard let self = self else {
-                return
-            }
-            self.recoveryService.deleteRecovery(withDeleteServicesBackups: true, success: { [weak self] in
-                guard let self = self else {
-                    return
-                }
+        crossSigning.setup(withAuthParams: authParameters) { [weak self] in
+            guard let self else { return }
+            
+            self.recoveryService.deleteRecovery(withDeleteServicesBackups: true) { [weak self] in
+                guard let self else { return }
+                
                 self.update(viewState: .resetDone)
                 self.coordinatorDelegate?.secretsResetViewModelDidResetSecrets(self)
 
-            }, failure: { [weak self] error in
-                guard let self = self else {
-                    return
-                }
-                self.update(viewState: .error(error))
-            })
-
-        }, failure: { [weak self] error in
-            guard let self = self else {
-                return
-            }
-
-            // Tchap: handle 'authentication requested' error (401) from backend
-            let nsError = error as NSError
-            if let jsonResponse = nsError.userInfo[MXHTTPClientErrorResponseDataKey] as? [AnyHashable: Any],
-               let authenticationSession = MXAuthenticationSession(fromJSON: jsonResponse) {
-                // Begin authentication flow using authentication session informations returned by backend.
-                self.coordinatorDelegate?.secretsResetViewModel(self, needsToAuthenticateWith: authenticationSession)
-            }
-            else {
+            } failure: { [weak self] error in
+                guard let self else { return }
                 self.update(viewState: .error(error))
             }
-        })
+
+        } failure: { [weak self] error in
+            guard let self else { return }
+             if let responseData = (error as NSError).userInfo[MXHTTPClientErrorResponseDataKey] as? [AnyHashable: Any],
+                let authenticationSession = MXAuthenticationSession(fromJSON: responseData),
+                !hasAuthenticated { // Don't re-presenting authentication if the user closes the web view without finishing.
+                askAuthentication(session: authenticationSession)
+             } else {
+                self.update(viewState: .error(error))
+             }
+        }
     }
     
-    private func askAuthentication() {
+    private func askAuthentication(session: MXAuthenticationSession) {
         let setupCrossSigningRequest = self.crossSigningService.setupCrossSigningRequest()
-        self.coordinatorDelegate?.secretsResetViewModel(self, needsToAuthenticateWith: setupCrossSigningRequest)
-
-        self.update(viewState: .resetting)
+        self.coordinatorDelegate?.secretsResetViewModel(self, needsToAuthenticateFor: session)
     }
     
     private func authenticationCancelled() {

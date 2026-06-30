@@ -2773,6 +2773,12 @@
 "password_policy_too_short_pwd_error" = "Mot de passe trop court";
 "accessibility_selected" = "sélectionné";
 
+// Verification Required Banner
+"verification_required_banner_title" = "Vérifier cet appareil";
+"verification_required_banner_description" = "À partir d’octobre 2026, les appareils non vérifiés ne pourront plus envoyer ni recevoir de messages.";
+"verification_required_banner_learn_more" = "En savoir plus";
+"verification_required_banner_verify_button" = "Vérifier maintenant";
+
 // Tchap: override some MatrixKit strings
 "attachment_e2e_keys_file_prompt" = "Ce fichier contient des clés Tchap exportées d'un client Tchap.\nVoulez-vous voir le contenu du fichier ou importer les clés qu'il contient ?"; // Tchap
 // E2E import

@@ -43,6 +43,9 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     @IBOutlet private weak var recoverSecretsButton: RoundedButton!
     @IBOutlet private weak var recoverSecretsAdditionalInformationLabel: UILabel!
     
+    @IBOutlet private weak var resetSecretsContainerView: UIView!
+    @IBOutlet private weak var resetSecretsButton: UIButton!
+    
     // Tchap: UI to enable user to cancel this view if no recover secrets method is available
     // It can happen on an account created before setting `secureBackupRequired` to true.
     // This account can have cross-signing activated but no more session connected (all devices disconnected).
@@ -115,6 +118,13 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         self.recoverSecretsAvailabilityLoadingLabel.textColor = theme.textSecondaryColor
         self.recoverSecretsAvailabilityActivityIndicatorView.color = theme.tintColor
         
+        // Reset secrets button
+        let resetSecretsAttributedString = NSMutableAttributedString(string: VectorL10n.secretsRecoveryResetActionPart1,
+                                                                     attributes: [.foregroundColor: self.theme.textPrimaryColor])
+        resetSecretsAttributedString.append(NSAttributedString(string: VectorL10n.secretsRecoveryResetActionPart2,
+                                                               attributes: [.foregroundColor: self.theme.warningColor]))
+        self.resetSecretsButton.setAttributedTitle(resetSecretsAttributedString, for: .normal)
+        
         // Tchap:
         self.tchapNoRecoverSecretsMethodAvailableInformationLabel.textColor = theme.textSecondaryColor
         
@@ -138,6 +148,9 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
 
             self.navigationItem.rightBarButtonItem = cancelBarButtonItem
             self.cancelBarButtonItem = cancelBarButtonItem
+            
+            self.resetSecretsButton.vc_enableMultiLinesTitle()
+            self.resetSecretsButton.isHidden = !RiotSettings.shared.secretsRecoveryAllowReset
         }
         
         self.titleLabel.text = VectorL10n.deviceVerificationSelfVerifyOpenOnOtherDeviceTitle(AppInfo.current.displayName)
@@ -189,22 +202,26 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         self.recoverSecretsAvailabilityActivityIndicatorView.startAnimating()
         self.recoverSecretsAvailabilityLoadingContainerView.isHidden = false
         self.recoverSecretsContainerView.isHidden = true
+        self.resetSecretsContainerView.isHidden = true
     }
     
     private func renderLoaded(viewData: KeyVerificationSelfVerifyWaitViewData) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         
         self.cancelBarButtonItem?.title = viewData.isNewSignIn ? VectorL10n.skip : VectorL10n.cancel
-   
+        
         let hideRecoverSecrets: Bool
+        let hideResetSecrets: Bool
         let recoverSecretsButtonTitle: String?
         
         switch viewData.secretsRecoveryAvailability {
         case .notAvailable:
             hideRecoverSecrets = true
+            hideResetSecrets = false
             recoverSecretsButtonTitle = nil
         case .available(let secretsRecoveryMode):
             hideRecoverSecrets = false
+            hideResetSecrets = true
             
             switch secretsRecoveryMode {
                 // Tchap : use only generated key as recovery mode
@@ -219,6 +236,8 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         self.recoverSecretsAvailabilityActivityIndicatorView.stopAnimating()
         self.recoverSecretsContainerView.isHidden = hideRecoverSecrets
         self.recoverSecretsButton.setTitle(recoverSecretsButtonTitle, for: .normal)
+        
+        self.resetSecretsContainerView.isHidden = hideResetSecrets
         
         // Tchap: show no recovery secrets method available only if hideRecoverSecrets is true.
         // The UI will propose the user to verify is session with another device.
@@ -267,6 +286,10 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     
     @IBAction private func recoverSecretsButtonAction(_ sender: Any) {
         self.viewModel.process(viewAction: .recoverSecrets)
+    }
+    
+    @IBAction private func resetSecretsButtonAction(_ sender: Any) {
+        self.viewModel.process(viewAction: .resetSecrets)
     }
     
     // Tchap: Help button action

@@ -195,6 +195,17 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
         return coordinator
     }
     
+    private func showSecretsReset() {
+        let coordinator = SecretsResetCoordinator(session: self.session, isCancellable: false)
+        coordinator.delegate = self
+        coordinator.start()
+
+        self.add(childCoordinator: coordinator)
+        self.navigationRouter.push(coordinator.toPresentable(), animated: true, popCompletion: { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        })
+    }
+
     private func showSecretsRecovery(with recoveryMode: SecretsRecoveryMode) {
         let coordinator = SecretsRecoveryCoordinator(session: self.session, recoveryMode: recoveryMode, recoveryGoal: .verifyDevice, navigationRouter: self.navigationRouter, cancellable: self.cancellable)
         coordinator.delegate = self
@@ -442,8 +453,12 @@ extension KeyVerificationCoordinator: KeyVerificationSelfVerifyWaitCoordinatorDe
         self.didCancel()
     }
     
-    func keyVerificationSelfVerifyWaitCoordinator(_ coordinator: KeyVerificationSelfVerifyWaitCoordinatorType, wantsToRecoverSecretsWith secretsRecoveryMode: SecretsRecoveryMode) {        
+    func keyVerificationSelfVerifyWaitCoordinator(_ coordinator: KeyVerificationSelfVerifyWaitCoordinatorType, wantsToRecoverSecretsWith secretsRecoveryMode: SecretsRecoveryMode) {
         self.showSecretsRecovery(with: secretsRecoveryMode)
+    }
+
+    func keyVerificationSelfVerifyWaitCoordinatorWantsToResetSecrets(_ coordinator: KeyVerificationSelfVerifyWaitCoordinatorType) {
+        self.showSecretsReset()
     }
 }
 
@@ -470,5 +485,17 @@ extension KeyVerificationCoordinator: SecretsRecoveryCoordinatorDelegate {
     func secretsRecoveryCoordinatorDidCancel(_ coordinator: SecretsRecoveryCoordinatorType) {
         self.remove(childCoordinator: coordinator)
         self.didCancel()
+    }
+}
+
+// MARK: - SecretsResetCoordinatorDelegate
+extension KeyVerificationCoordinator: SecretsResetCoordinatorDelegate {
+
+    func secretsResetCoordinatorDidResetSecrets(_ coordinator: SecretsResetCoordinatorType) {
+        self.showVerified(animated: true)
+    }
+
+    func secretsResetCoordinatorDidCancel(_ coordinator: SecretsResetCoordinatorType) {
+        // Not used, the cancel button is hidden.
     }
 }
