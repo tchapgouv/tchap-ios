@@ -1,0 +1,50 @@
+{
+  "fill" : {
+    "solid" : "srgb:0.30588,0.32941,0.45490,1.00000"
+  },
+  "groups" : [
+    {
+      "layers" : [
+        {
+          "glass" : false,
+          "image-name" : "XMLID_256_.svg",
+          "name" : "XMLID_256_",
+          "position" : {
+            "scale" : 2,
+            "translation-in-points" : [
+              10,
+              17.8984375
+            ]
+          }
+        },
+        {
+          "fill" : {
+            "solid" : "srgb:1.00000,1.00000,1.00000,1.00000"
+          },
+          "glass" : false,
+          "hidden" : false,
+          "image-name" : "XMLID_71_.svg",
+          "name" : "XMLID_71_",
+          "position" : {
+            "scale" : 2,
+            "translation-in-points" : [
+              0,
+              0
+            ]
+          }
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "squares" : "shared"
+  }
+}
