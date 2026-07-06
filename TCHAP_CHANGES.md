@@ -1,3 +1,17 @@
+## Changes in 2.13.40 (2026-07-03)
+
+
+🙌 Improvements
+
+- Ajout nouveau certificat TLS ([#1288](https://github.com/tchapgouv/tchap-ios/pull/1288))
+- Rebase on Element 1.11.38 (from 1.11.35) ([#1286](https://github.com/tchapgouv/tchap-ios/issues/1286))
+- Renommer Tchap en Tchap classique ([#1273](https://github.com/tchapgouv/tchap-ios/pull/1273))
+
+🐛 Bugfixes
+
+- MAJ FAQ Urls ([#1287](https://github.com/tchapgouv/tchap-ios/pull/1287))
+
+
 ## Changes in 2.12.4 (2026-04-21)
 
 🐛 Bugfixes
