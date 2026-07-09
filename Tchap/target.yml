@@ -117,6 +117,7 @@ targetTemplates:
     - path: ../Tchap/Generated/Strings.swift
     - path: ../Tchap/Modules/Application/VersionUpdate
     - path: ../Tchap/Modules/Room/Views/BubbleCells/Antivirus
+    - path: ../Tchap/Modules/Application/MigrateToNewTchap
 
 
     # Add separately localizable files

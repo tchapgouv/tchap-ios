@@ -426,9 +426,14 @@ final class RiotSettings: NSObject {
     var tchapSecureBackupNextDisplayDate
     
     // Tchap has tried to automatically activate cross-signing.
-    // This automatic activation must be tried only once because if it fails, it could pro;pt user each time the application is activated.
+    // This automatic activation must be tried only once because if it fails, it could prompt user each time the application is activated.
     @UserDefault(key: "tchapCrossSigningAutoActivationTried", defaultValue: false, storage: defaults)
     var tchapCrossSigningAutoActivationTried
+    
+    // Tchap migrate to new Tchap last display.
+    // Register the last time the new Tchap Migration alert was displayed to decide if enough time has spent before showing the alert again.
+    @UserDefault(key: "tchapNewTchapMigrationAlertLastPresentationDate", defaultValue: Date.distantPast, storage: defaults)
+    var tchapNewTchapMigrationAlertLastPresentationDate
     
 }
 
