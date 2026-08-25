@@ -144,7 +144,26 @@ abstract_target 'TchapPods' do
 
 end
 
+def patch_AFNetworking_private_in6_header
+  [
+    'Pods/AFNetworking/AFNetworking/AFNetworkReachabilityManager.m',
+    'Pods/AFNetworking/AFNetworking/AFHTTPSessionManager.m'
+  ].each do |file|
+    next unless File.exist?(file)
+
+    content = File.read(file)
+    patched_content = content.gsub(/#import <netinet6\/in6\.h>\s*/, '')
+
+    if patched_content != content
+      File.write(file, patched_content)
+      puts "Patched #{file}"
+    end
+  end
+end
+
 post_install do |installer|
+  patch_AFNetworking_private_in6_header
+
   installer.pods_project.targets.each do |target|
 
     target.build_configurations.each do |config|
